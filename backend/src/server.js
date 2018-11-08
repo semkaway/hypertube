@@ -1,26 +1,30 @@
 import express from 'express'
-import setupMiddware from './middleware'
 import {restRouter} from './api'
-import {connect} from './db'
-import {signin, protect} from './api/modules/auth'
+import {dbConnect} from './db'
+import bodyParser from 'body-parser'
 // Declare an app from express
-const app = express()
+const app = express();
 
-setupMiddware(app)
-connect()
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+dbConnect();
 // setup basic routing for index route
 
-app.use('/signin', signin)
-app.use('/api', protect, restRouter)
+app.use('/api', restRouter);
 
 // catch all
 app.all('*', (req, res) => {
-    res.json({ok: true})
-})
+    res.json({});
+});
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(err.status).json(err)
-})
+app.use((error, req, res, next) => {
+    console.error(error.stack);
+    res.status(500).json({
+        "error": {
+            "message": error.message
+        }
+    });
+});
 
-export default app
+export default app;

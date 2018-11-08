@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-import appConfig from './config'
-mongoose.Promise = global.Promise
+import config from './config'
 
-export const connect = (config = appConfig) => {
-  return mongoose.connect(config.db.url, {
-    useMongoClient: true
-  })
-}
+mongoose.Promise = global.Promise;
+
+export const dbConnect = () =>
+    mongoose.connect(config.db.url, {
+        useMongoClient: true
+    });

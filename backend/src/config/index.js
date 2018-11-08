@@ -1,30 +1,19 @@
 import merge from 'lodash.merge'
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-
-const env = process.env.NODE_ENV
-
 const baseConfig = {
-  port: 3000,
-  secrets: {},
-  db: {
-    url: 'mongodb://localhost/hypertube'
-  }
-}
+    port: 3000,
+    secrets: {},
+    db: {
+        url: 'mongodb://localhost/hypertube'
+    }
+};
 
-let envConfig = {}
+let envConfig = {
+    disableAuth: true,
+    expireTime: '30d',
+    secrets: {
+        JWT_SECRET: 'bw5Neu7c'
+    }
+};
 
-switch (env) {
-  case 'development':
-  case 'dev':
-    envConfig = require('./dev').config
-    break;
-  case 'prod':
-  case 'production':
-    envConfig = require('./prod').config
-  default:
-    envConfig = require('./dev').config
-}
-
-
-export default merge(baseConfig, envConfig)
+export default merge(baseConfig, envConfig);
