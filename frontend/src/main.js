@@ -1,8 +1,12 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/display.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { Navbar, Form, Button, FormGroup, FormInput, Layout } from 'bootstrap-vue/es/components'
 import App from './App'
 import router from './router'
 import i18n from './locale'
@@ -33,7 +37,14 @@ const config = {
   validity: false
 };
 
-Vue.use(ElementUI);
+Vue.use(Navbar);
+Vue.use(Form);
+Vue.use(Button);
+Vue.use(FormGroup);
+Vue.use(FormInput);
+Vue.use(Layout);
+
+// Vue.use(ElementUI);
 Vue.use(VeeValidate, config);
 Vue.config.productionTip = false
 

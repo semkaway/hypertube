@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Registration from '@/components/Registration'
 import Confirmation from '@/components/Confirmation'
 import Login from '@/components/Login'
+import RestorePassword from '@/components/RestorePassword'
 
 Vue.use(Router)
 
@@ -22,14 +23,19 @@ export default new Router({
   	    component: Registration
   	},
     {
+  	    path: '/login',
+      	name: 'Login',
+  	    component: Login
+  	},
+    { //DELETE AFTER
   	    path: '/confirm',
       	name: 'Confirmation',
   	    component: Confirmation
   	},
-    {
-  	    path: '/login',
-      	name: 'Login',
-  	    component: Login
-  	}
+    { //DELETE AFTER
+  	    path: '/restore_password',
+      	name: 'RestorePassword',
+  	    component: RestorePassword
+  	},
 	]
 })

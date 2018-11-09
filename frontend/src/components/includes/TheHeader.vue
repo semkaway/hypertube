@@ -1,28 +1,41 @@
 <template>
   <div class="Header">
-      <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          mode="horizontal"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-          <el-menu-item index="1"><router-link to="/">{{ $t('button.home') }}</router-link></el-menu-item>
-          <el-menu-item index="2"><router-link to="/login">{{ $t('button.login') }}</router-link></el-menu-item>
-          <el-menu-item index="3"><router-link to="/register">{{ $t('button.register') }}</router-link></el-menu-item>
-          <el-menu-item index="4"><router-link to="/confirm">CONFIRMATION</router-link></el-menu-item>
-          <label for="locale"></label>
-          <el-select v-model="locale" id="lang-select">
-            <el-option
-              v-for="item in lang"
-              :key="item.lang"
-              :label="item.lang"
-              :value="item.short">
-              <span style="float: left">{{ item.lang }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.short }}</span>
-            </el-option>
-          </el-select>
-      </el-menu>
+      <b-navbar toggleable="md" type="dark" variant="dark">
+
+        <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+
+        <b-navbar-brand><router-link to="/">{{ $t('button.home') }}</router-link></b-navbar-brand>
+
+        <b-collapse is-nav id="nav_collapse">
+
+          <b-navbar-nav>
+            <b-nav-item> <router-link to="/login">{{ $t('button.login') }}</router-link></b-nav-item>
+            <b-nav-item> <router-link to="/register">{{ $t('button.register') }}</router-link></b-nav-item>
+          </b-navbar-nav>
+
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+
+            <b-nav-item-dropdown text="Lang" :v-model="locale" right>
+              <b-dropdown-item-button v-for="item in lang"
+                                      :label="item.lang"
+                                      :key="item.lang"
+                                      :value="item.short"
+                                      @click="language_change(item.short)">{{item.short}}</b-dropdown-item-button>
+            </b-nav-item-dropdown>
+
+            <b-nav-item-dropdown right>
+              <!-- Using button-content slot -->
+              <template slot="button-content">
+                <em>User</em>
+              </template>
+              <b-dropdown-item href="#">Profile</b-dropdown-item>
+              <b-dropdown-item href="#">Signout</b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
+
+        </b-collapse>
+      </b-navbar>
     </div>
 </template>
 
@@ -30,7 +43,6 @@
 export default {
   data() {
     return {
-      activeIndex: '1',
       locale: 'en',
       lang: {
         en: {
@@ -49,18 +61,22 @@ export default {
     }
   },
   methods: {
-
- },
- watch: {
-   locale (val) {
-     this.$i18n.locale = val
-   }
+    language_change(val) {
+      this.$i18n.locale = val
+    }
  },
 }
 </script>
 
 <style scoped>
-.el-select {
-  margin-top: 1.4vh;
+
+a {
+  color: #fff;
+  text-decoration: none;
 }
+
+a:hover {
+  color: #ffd04b;
+}
+
 </style>

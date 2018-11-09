@@ -1,17 +1,19 @@
 const messages = {
   en: {
     button: {
-      home: "home",
+      home: "Home",
       login: "log in",
       register: "register",
       submit: "submit",
-      reset: "reset"
+      reset: "reset",
+      forgot_password: 'forgot password',
+      send: 'send'
     },
     home: {
       title: 'home'
     },
     registration: {
-      title: 'registration',
+      title: 'Registration',
       first_name: 'First name',
       last_name: 'Last name',
       email: 'Email',
@@ -21,12 +23,22 @@ const messages = {
                       lowercase letters,
                       digits,
                       and be at least 8 characters long`,
-      omniauth_text: 'via your social networks'
+      omniauth_text: 'Via your social networks'
     },
     confirmation: {
-      title: "registration confirmed",
+      title: "Registration confirmed",
       message: "You are now registered and can log in to your account"
-    }
+    },
+    login: {
+      title: "Login",
+      email: 'Email',
+      password: 'Password',
+      omniauth_text: 'Via your social networks'
+    },
+    forgot_password: {
+      title: "Restore password",
+      message: "Please, tell us your email, so we could send a link to restore your password."
+    },
   },
   ru: {
     button: {
@@ -34,13 +46,15 @@ const messages = {
       login: "войти",
       register: "регистрация",
       submit: "подтвердить",
-      reset: "очистить"
+      reset: "очистить",
+      forgot_password: 'Я не помню свой пароль',
+      send: 'отправить'
     },
     home: {
-      title: 'главная'
+      title: 'Главная'
     },
     registration: {
-      title: "регистрация",
+      title: "Регистрация",
       first_name: 'Имя',
       last_name: 'Фамилия',
       email: 'Email',
@@ -48,12 +62,22 @@ const messages = {
       repeat_password: 'Повторите пароль',
       password_hint: `Пароль должен содержать заглавные буквы, строчные буквы и цифры.
                       Он не может быть короче 8 символов`,
-      omniauth_text: 'через социальные сети'
+      omniauth_text: 'Через социальные сети'
     },
     confirmation: {
-      title: "регистрация подтверждена",
+      title: "Регистрация подтверждена",
       message: "Вы успешно подтвердили регистрацию и теперь можете войти в свой аккаунт."
-    }
+    },
+    login: {
+      title: "Войти",
+      email: 'Email',
+      password: 'Пароль',
+      omniauth_text: 'Через социальные сети'
+    },
+    forgot_password: {
+      title: "Восстановить пароль",
+      message: "Пожалуйста, введите свой email, чтобы получить ссылку для восстановления пароля."
+    },
   },
   ua: {
     button: {
@@ -61,13 +85,15 @@ const messages = {
       login: "увійти",
       register: "реєстрація",
       submit: "підтвердити",
-      reset: "очистити"
+      reset: "очистити",
+      forgot_password: "Я не пам'ятаю свій пароль",
+      send: 'відправити'
     },
     home: {
-      title: 'головна'
+      title: 'Головна'
     },
     registration: {
-      title: "реєстрація",
+      title: "Реєстрація",
       first_name: "Ім'я",
       last_name: 'Прізвище',
       email: 'Email',
@@ -75,12 +101,22 @@ const messages = {
       repeat_password: 'Повторіть пароль',
       password_hint: `Пароль повинен містити великі та малі літери, а також цифри.
                       Він не може бути коротшим за 8 символів`,
-      omniauth_text: 'через соціальні мережі'
+      omniauth_text: 'Через соціальні мережі'
     },
     confirmation: {
-      title: "реєстрацію підтверджено",
+      title: "Реєстрацію підтверджено",
       message: "Ви успішно підтвердили свою реєстрацію та можете увійти до свого акаунту."
-    }
+    },
+    login: {
+      title: "Увійти",
+      email: 'Email',
+      password: 'Пароль',
+      omniauth_text: 'Через соціальні мережі'
+    },
+    forgot_password: {
+      title: "Відновити пароль",
+      message: "Будь ласка, введіть свій email, щоб отримати посилання для відновлення паролю."
+    },
   }
 }
 

@@ -1,72 +1,76 @@
 <template>
   <div>
-    <h1>{{ $t("registration.title") }}</h1>
-    <el-row :gutter="20">
-        <el-col :span="12" :offset="5">
-          <div class="grid-content">
-            <el-form :model="registrationForm" ref="registrationForm" label-width="12vw" method='post'>
-                <el-form-item v-bind:label="$t('registration.first_name')" :error="errors.first('first_name')">
-                    <el-input name="first_name"
-                              v-model="registrationForm.first_name"
-                              v-bind:placeholder="$t('registration.first_name')"
-                              data-vv-as=" "
-                              v-validate.disable="'required|alpha|min:3|max:15'">
-                    </el-input>
-                </el-form-item>
-                <el-form-item v-bind:label="$t('registration.last_name')" :error="errors.first('last_name')">
-                    <el-input name="last_name"
-                              v-model="registrationForm.last_name"
-                              v-bind:placeholder="$t('registration.last_name')"
-                              data-vv-as=" "
-                              v-validate.disable="'required|alpha|min:3|max:15'">
-                    </el-input>
-                </el-form-item>
-                <el-form-item v-bind:label="$t('registration.email')" :error="errors.first('email')">
-                    <el-input name="email"
-                              v-model="registrationForm.email"
-                              v-bind:placeholder="$t('registration.email')"
-                              data-vv-as=" "
-                              v-validate.disable="'required|email'">
-                    </el-input>
-                </el-form-item>
-                <el-form-item v-bind:label="$t('registration.password')" :error="errors.first('password')">
-                  <el-popover
-                      placement="top-start"
-                      width="200"
-                      trigger="hover"
-                      :content="$t('registration.password_hint')">
-                      <el-input slot="reference"
-                                name="password"
-                                ref="passwordRef"
-                                type="password"
-                                v-model="registrationForm.password"
-                                v-bind:placeholder="$t('registration.password')"
-                                data-vv-as=" "
-                                v-validate.disable="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
-                      </el-input>
-                    </el-popover>
-                </el-form-item>
-                <el-form-item v-bind:label="$t('registration.repeat_password')" :error="errors.first('repeat_password')">
-                    <el-input name="repeat_password"
-                              type="password"
-                              v-model="registrationForm.repeat_password"
-                              v-bind:placeholder="$t('registration.repeat_password')"
-                              data-vv-as=" "
-                              v-validate="'required|confirmed:passwordRef'">
-                    </el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="validateForm">{{ $t("button.submit") }}</el-button>
-                  <button type="reset" value="Reset">{{ $t("button.reset") }}</button>
-                </el-form-item>
-              </el-form>
-              <hr>
-              <p>{{ $t('registration.omniauth_text')}}</p>
-              <el-button type="info">42 Intra</el-button>
-              <el-button type="warning">Something else</el-button>
-            </div>
-          </el-col>
-    </el-row>
+    <b-row>
+      <b-col></b-col>
+      <b-col align-self="center">
+        <h1>{{ $t("registration.title") }}</h1>
+        <b-form @submit="onSubmit" @reset="onReset">
+          <b-form-group v-bind:label="$t('registration.first_name')">
+              <b-form-input name="first_name"
+                        v-model="registrationForm.first_name"
+                        v-bind:placeholder="$t('registration.first_name')"
+                        data-vv-as=" "
+                        v-validate.disable="'required|alpha|min:3|max:15'">
+              </b-form-input>
+              <b-row>
+                  <span>{{ errors.first('first_name') }}</span>
+              </b-row>
+          </b-form-group>
+          <b-form-group v-bind:label="$t('registration.last_name')">
+              <b-form-input name="last_name"
+                        v-model="registrationForm.last_name"
+                        v-bind:placeholder="$t('registration.last_name')"
+                        data-vv-as=" "
+                        v-validate.disable="'required|alpha|min:3|max:15'">
+              </b-form-input>
+              <b-row>
+                  <span>{{ errors.first('last_name') }}</span>
+              </b-row>
+          </b-form-group>
+          <b-form-group v-bind:label="$t('registration.email')">
+              <b-form-input name="email"
+                        v-model="registrationForm.email"
+                        v-bind:placeholder="$t('registration.email')"
+                        data-vv-as=" "
+                        v-validate.disable="'required|email'">
+              </b-form-input>
+              <b-row>
+                  <span>{{ errors.first('email') }}</span>
+              </b-row>
+          </b-form-group>
+          <b-form-group v-bind:label="$t('registration.password')"
+                        :error="errors.first('password')"
+                        :description="$t('registration.password_hint')">
+            <b-form-input name="password"
+                          ref="passwordRef"
+                          type="password"
+                          v-model="registrationForm.password"
+                          v-bind:placeholder="$t('registration.password')"
+                          data-vv-as=" "
+                          v-validate.disable="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
+            </b-form-input>
+            <b-row>
+                <span>{{ errors.first('password') }}</span>
+            </b-row>
+          </b-form-group>
+          <b-form-group v-bind:label="$t('registration.repeat_password')">
+              <b-form-input name="repeat_password"
+                        type="password"
+                        v-model="registrationForm.repeat_password"
+                        v-bind:placeholder="$t('registration.repeat_password')"
+                        data-vv-as=" "
+                        v-validate="'required|confirmed:passwordRef'">
+              </b-form-input>
+              <b-row>
+                  <span>{{ errors.first('repeat_password') }}</span>
+              </b-row>
+          </b-form-group>
+          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="reset" variant="danger">Reset</b-button>
+        </b-form>
+      </b-col>
+      <b-col></b-col>
+    </b-row>
   </div>
 </template>
 
@@ -85,18 +89,32 @@ export default {
     };
   },
   methods: {
-    validateForm() {
-        this.$validator.validateAll()
-        .then(result => {
-          if(!result) {
-            console.log('error')
-            return false
-          }
-            console.log('success. submit form')
-        })
-        .catch(() => {
+    onSubmit (evt) {
+      evt.preventDefault();
+      this.$validator.validateAll()
+      .then(result => {
+        if(!result) {
           console.log('error')
-        })
+          return false
+        }
+          console.log('success. submit form.')
+      })
+      .catch(() => {
+        console.log('error')
+      })
+    },
+    onReset (evt) {
+      evt.preventDefault();
+      /* Reset our form values */
+      this.registrationForm.email = '';
+      this.registrationForm.first_name = '';
+      this.registrationForm.last_name = '';
+      this.registrationForm.password = '';
+      this.registrationForm.repeat_password = '';
+      this.registrationForm.checked = [];
+      /* Trick to reset/clear native browser form validation state */
+      this.show = false;
+      this.$nextTick(() => { this.show = true });
     }
   }
 }
@@ -104,5 +122,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.reset-button {
+  height: 40px;
+  padding: 1rem;
+  background-color: inherit;
+  border: none;
+  /* font-weight: bold; */
+  font-size: 0.8rem;
+}
 
+.reset-button:hover {
+  color: #606266;
+}
+
+
+.reset-button:focus{
+  outline: 0;
+
+}
 </style>

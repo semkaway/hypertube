@@ -12,19 +12,12 @@
 
 import AppHeader from './components/includes/TheHeader.vue'
 import AppFooter from './components/includes/TheFooter.vue'
-import Home from './components/Home'
-import Registration from './components/Registration'
-import Confirmation from './components/Confirmation'
-import Login from './components/Login'
+
 export default {
   name: 'App',
   components: {
-    Home,
-    Registration,
-    Confirmation,
-    Login,
     'app-header': AppHeader,
-    'app-footer': AppFooter
+    'app-footer': AppFooter,
   },
 }
 </script>
@@ -53,5 +46,19 @@ export default {
 
 a {
   text-decoration: none;
+}
+
+h1 {
+  text-transform: full-width;
+}
+
+hr {
+  height: 6px;
+	background: url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0;
+  border: 0;
+}
+
+.omniauth {
+  text-transform: uppercase;
 }
 </style>
