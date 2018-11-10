@@ -10,7 +10,6 @@ const baseConfig = {
 
 let envConfig = {
     disableAuth: true,
-    expireTime: '30d',
     secrets: {
         JWT_SECRET: 'bw5Neu7c'
     }

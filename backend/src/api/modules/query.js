@@ -57,7 +57,7 @@ export const getOne = (model) => (req, res, next) => {
 
 export const getAll = (model) => (req, res, next) => {
     return controllers.getAll(model)
-        .then(docs => res.json([1, 2, 3]))
+        .then(docs => res.json(docs))
         .catch(error => next(error));
 };
 
@@ -78,7 +78,6 @@ export const findByParam = (model) => (req, res, next, id) => {
             next(error);
         });
 };
-
 
 export const generateControllers = (model, overrides = {}) => {
     const defaults = {

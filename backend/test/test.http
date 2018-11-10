@@ -7,16 +7,24 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form
 # with a text or file field (multipart/form-data);
 
-POST http://localhost:3000/api
+POST http://localhost:3000/api/user/create
 Content-Type: application/json
 
 {
-  "name": "value"
+  "first": "first2 name",
+  "last": "last name",
+  "email": "test@mail.com",
+  "password": "12345678aA"
 }
 
 ###
 
-GET http://localhost:3000/api
-Accept: application/json
+POST http://localhost:3000/api/user/check-email-exist
+Content-Type: application/json
+
+{
+  "email": "test@mail.com"
+}
 
 ###
+

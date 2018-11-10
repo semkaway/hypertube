@@ -1,15 +1,13 @@
 import express from 'express'
 import userController from './user.controller'
+import {beforeSaveValidation} from './user.validation'
 
 export const userRouter = express.Router();
 
-userRouter.param('id', userController.findByParam);
+userRouter.route('/create').post(
+    beforeSaveValidation,
+    userController.createUser);
 
-userRouter.route('/')
-    .get(userController.getAll)
-    .post(userController.createOne);
+userRouter.route('/check-email-exist').post(userController.emailExist);
 
-userRouter.route('/:id')
-    .get(userController.getOne)
-    .put(userController.updateOne)
-    .delete(userController.createOne);
+//userRouter.route('/activate').post(userController.updateOne);
