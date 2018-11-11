@@ -28,3 +28,14 @@ Content-Type: application/json
 
 ###
 
+POST http://localhost:3000/api/user/activate
+Content-Type: application/json
+
+{
+  "email": "test@mail.com",
+  "token": "s8v0bwxkpdehoj6k"
+}
+
+###
+
+

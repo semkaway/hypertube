@@ -1,7 +1,7 @@
 import * as EmailValidator from 'email-validator'
 import validator from 'password-validator'
 
-const checkForUndefined = body => {
+export const checkForUndefined = body => {
     let fields = [];
     for (let [field, value] of Object.entries(body)) {
         if (value === undefined || value === '') {
@@ -36,7 +36,7 @@ const validateUserFields = body => {
     return fields;
 };
 
-const errorFields = (error, fields) => {
+export const errorFields = (error, fields) => {
     if (fields.length === 0) {
         return '';
     }

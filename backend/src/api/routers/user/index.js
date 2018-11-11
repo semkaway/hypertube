@@ -8,4 +8,4 @@ userRouter.route('/create').post(beforeUserSave, userController.createUser);
 
 userRouter.route('/check-email-exist').post(userController.emailExist);
 
-//userRouter.route('/activate').post(userController.updateOne);
+userRouter.route('/activate').post(userController.activateUser);
