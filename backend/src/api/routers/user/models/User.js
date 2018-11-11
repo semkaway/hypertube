@@ -1,17 +1,15 @@
 import mongoose from 'mongoose'
 
 const stringRequired = {type: String, required: true};
-const stringNull = {type: String, default: null};
+const stringNull     = {type: String, default: null};
 
 const userSchema = new mongoose.Schema({
     email: {...stringRequired, unique: true},
     password: stringRequired,
     first: stringRequired,
     last: stringRequired,
-    activation: {
-        type: Boolean,
-        default: false
-    },
+    locale: {type: String, default: "en"},
+    activation: {type: Boolean, default: false},
     activationToken: stringNull,
     resetPasswordToken: stringNull
 }, {timestamps: true});

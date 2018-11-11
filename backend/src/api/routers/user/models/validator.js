@@ -11,23 +11,25 @@ export const checkForUndefined = body => {
     return fields;
 };
 
+export const valid = {
+    email: mail => EmailValidator.validate(mail),
+    password: pass => new validator()
+        .is().min(8)
+        .is().max(20)
+        .has().uppercase()
+        .has().lowercase()
+        .has().digits().validate(pass),
+    first: name => new validator()
+        .is().min(3)
+        .is().max(15).validate(name),
+    last: name => new validator()
+        .is().min(3)
+        .is().max(15).validate(name)
+};
+
 const validateUserFields = body => {
-    let fields = [],
-        valid  = {
-            email: mail => EmailValidator.validate(mail),
-            password: pass => new validator()
-                .is().min(8)
-                .is().max(20)
-                .has().uppercase()
-                .has().lowercase()
-                .has().digits().validate(pass),
-            first: name => new validator()
-                .is().min(3)
-                .is().max(15).validate(name),
-            last: name => new validator()
-                .is().min(3)
-                .is().max(15).validate(name)
-        };
+    let fields = [];
+
     for (let [field, value] of Object.entries(body)) {
         if (valid[field](value) === false) {
             fields.push(`'${field}'`);
