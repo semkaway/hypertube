@@ -1,170 +1,176 @@
 <template>
-  <div>
-    <h1>{{ $t("login.title") }}</h1>
-    <b-row>
-      <b-col></b-col>
-      <b-col align-self="center">
-          <b-form @submit="onSubmit" @reset="onReset">
-            <b-form-group v-bind:label="$t('login.email')">
-                <b-form-input name="email"
-                          v-model="loginForm.email"
-                          v-bind:placeholder="$t('login.email')"
-                          data-vv-as=" "
-                          v-validate.disable="'required|email'">
-                </b-form-input>
-                <b-row>
-                    <span>{{ errors.first('email') }}</span>
-                </b-row>
-            </b-form-group>
-            <b-form-group v-bind:label="$t('login.password')"
-                          :error="errors.first('password')"
-                          :description="$t('registration.password_hint')">
-              <b-form-input name="password"
-                            ref="passwordRef"
-                            type="password"
-                            v-model="loginForm.password"
-                            v-bind:placeholder="$t('login.password')"
-                            data-vv-as=" "
-                            v-validate.disable="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
-              </b-form-input>
-              <b-row>
-                  <span>{{ errors.first('password') }}</span>
-              </b-row>
-              </b-form-group>
-              <b-button type="submit" variant="primary">Submit</b-button>
-              <router-link to="/register" class="register-link">{{ $t('button.register') }}</router-link><br>
-            </b-form>
-          </b-col>
-          <b-col></b-col>
-      </b-row>
-      <b-row>
-        <b-col></b-col>
-        <b-col>
-          <p>{{ $t('forgot_password.message') }}</p>
-          <b-button variant="primary">{{ $t("button.send") }}</b-button>
-        </b-col>
-        <b-col></b-col>
-      </b-row>
-      <b-row>
-        <b-col></b-col>
-        <b-col>
-          <hr>
-          <p class="omniauth">{{ $t('login.omniauth_text')}}</p>
-          <b-button type="info">42 Intra</b-button>
-          <b-button type="warning">Something else</b-button>
-        </b-col>
-        <b-col></b-col>
-      </b-row>
-      <!-- <el-row :gutter="20">
-        <el-col :span="10" :offset="7">
-          <el-collapse accordion>
-            <el-row :gutter="20">
-              <el-col :offset="1">
-                <el-collapse-item :title="$t('button.forgot_password') " name="1">
-                  <el-form ref="forgotPasswordForm" label-width="12vw" method='post'>
-                    <el-form-item>
-                      <p>{{ $t('forgot_password.message') }}</p>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-input v-model="email"
-                                name="forgot_password_email"
-                                v-bind:placeholder="$t('login.email')"
-                                data-vv-as=" ">
-                      </el-input>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="forgotPassword">{{ $t("button.send") }}</el-button>
-                    </el-form-item>
-                  </el-form>
-                </el-collapse-item>
-              </el-col>
-            </el-row>
-          </el-collapse>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="10" :offset="7">
-          <hr>
-          <p class="omniauth">{{ $t('login.omniauth_text')}}</p>
-          <el-button type="info">42 Intra</el-button>
-          <el-button type="warning">Something else</el-button>
-        </el-col>
-    </el-row> -->
-  </div>
+	<div>
+		<b-alert variant="success" :show="showAlert" class="mt-3">{{$t('forgot_password.alert')}}</b-alert>
+		<b-alert variant="success" :show="showAlertSuccess" class="mt-3">{{$t('login.success_alert')}}</b-alert>
+    <b-alert variant="danger" :show="showAlertDanger" class="mt-3">{{$t('login.error_alert')}}</b-alert>
+		<b-row>
+			<b-col sm="3" lg="4"></b-col>
+			<b-col sm="5" lg="4" class="mt-4 mb-5">
+				<h1>{{ $t("login.title") }}</h1>
+					<b-form @submit="onSubmit" class="mt-4">
+						<b-form-group v-bind:label="$t('login.email')"
+													class="font-weight-bold">
+								<b-form-input name="email"
+													v-model="loginForm.email"
+													v-bind:placeholder="$t('login.email')"
+													data-vv-as=" "
+													v-validate="'required|email'"
+													:class="{'form-control': true, 'error': errors.has('email') }">
+								</b-form-input>
+								<span class="error-message">{{ errors.first('email') }}</span>
+						</b-form-group>
+						<b-form-group v-bind:label="$t('login.password')"
+													:error="errors.first('password')"
+													class="font-weight-bold">
+							<b-form-input name="password"
+														ref="passwordRef"
+														type="password"
+														v-model="loginForm.password"
+														v-bind:placeholder="$t('login.password')"
+														data-vv-as=" "
+														v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
+														:class="{'form-control': true, 'error': errors.has('password') }">
+							</b-form-input>
+							<span class="error-message">{{ errors.first('password') }}</span><br>
+							<span class="font-weight-light text-muted forgot-password" v-b-modal.modal-center>{{ $t('forgot_password.message') }}</span>
+							<b-modal  ref="myModal" 
+												id="modal-center"
+												centered
+												:title="$t('forgot_password.title')"
+												hide-footer >
+								<b-form class="mt-4">
+									<b-form-group v-bind:label="$t('login.email')"
+																class="font-weight-bold">
+											<b-form-input name="sendEmail"
+																v-model="loginForm.email"
+																v-bind:placeholder="$t('login.email')"
+																data-vv-as=" "
+																v-validate="'required|email'"
+																:class="{'form-control': true, 'error': errors.has('email') }">
+											</b-form-input>
+											<span class="error-message">{{ errors.first('email') }}</span>
+									</b-form-group>
+									<b-btn class="mt-3" variant="outline-secondary"  @click="resetPassword">{{ $t('button.send')}}</b-btn>
+								</b-form>
+							</b-modal>
+						</b-form-group>
+						<b-button type="submit" variant="warning" >{{$t('button.submit')}}</b-button>
+						<p class="mt-4 text-left text-muted">{{$t('login.go_to_register')}}<router-link to="/register" class="register-link"> {{ $t('button.register') }}</router-link></p><br>
+					</b-form>
+					<hr>
+					<p class="omniauth">{{ $t('login.omniauth_text')}}</p>
+					<b-button variant="dark">42 Intra</b-button>
+					<b-button variant="danger">Something else</b-button>
+				</b-col>
+				<b-col sm="3" lg="4"></b-col>
+			</b-row>
+	</div>
 </template>
 
-    <script>
-    export default {
-      name: 'Login',
-      data() {
-        return {
-          loginForm: {
-            first_name: '',
-            last_name: '',
-            email: '',
-            password: '',
-            password_repeat: ''
-          },
-          email: ''
-        };
-      },
-      methods: {
-      //   validateForm() {
-      //       this.$validator.validateAll()
-      //       .then(result => {
-      //         if(!result) {
-      //           console.log('error')
-      //           return false
-      //         }
-      //           console.log('success. submit form')
-      //       })
-      //       .catch(() => {
-      //         console.log('error')
-      //       })
-      //   },
-      //   forgotPassword() {
-      //     console.log('sending message to ' + this.email)
-      //   },
-      // }
-      onSubmit (evt) {
-        evt.preventDefault();
-        this.$validator.validateAll()
-        .then(result => {
-          if(!result) {
-            console.log('error')
-            return false
-          }
-            console.log('success. submit form.')
-        })
-        .catch(() => {
-          console.log('error')
-        })
-      },
-      onReset (evt) {
-        evt.preventDefault();
-        /* Reset our form values */
-        this.loginForm.email = '';
-        this.loginForm.first_name = '';
-        this.loginForm.last_name = '';
-        this.loginForm.password = '';
-        this.loginForm.repeat_password = '';
-        this.loginForm.checked = [];
-        /* Trick to reset/clear native browser form validation state */
-        this.show = false;
-        this.$nextTick(() => { this.show = true });
-      }
-    }
-  }
-    </script>
+ <script>
 
-    <!-- Add "scoped" attribute to limit CSS to this component only -->
-    <style scoped>
-    .register-link {
-      color: #569aef;
-      font-size: 1rem;
-    }
+	import {HTTP} from '../http-common';
+	
+	export default {
+		name: 'Login',
+		data() {
+			return {
+				loginForm: {
+					first_name: '',
+					last_name: '',
+					email: '',
+					password: '',
+					password_repeat: ''
+				},
+				showAlert: false,
+				showAlertDanger: false,
+      	showAlertSuccess: false
+			};
+		},
+		methods: {
+			onSubmit (evt) {
+				evt.preventDefault();
+				this.$validator.validateAll()
+				.then(result => {
+					if(!result) {
+						console.log('error')
+						return false
+					}
+					 HTTP
+						.post(`/api/user/login`, {
+							"email": this.loginForm.email,
+							"password": this.loginForm.password
+						})
+						.then(response => {
+							if (response.success == true) {
+								this.showAlertDanger = false
+								this.showAlertSuccess = true
+							} else if (response.success == false) {
+								this.showAlertSuccess = false
+								this.showAlertDanger = true
+							}
+						})
+				})
+				.catch(() => {
+					console.log('error')
+				})
+			},
+			resetPassword() {
+				console.log("email: "+this.loginForm.email)
+				this.$validator.validate('email', this.loginForm.email)
+				.then(result => {
+					if(!result) {
+						console.log('error')
+						return false
+					}
+						console.log('success. submit form.')
+						this.showAlert = true
+						this.$refs.myModal.hide()
+				})
+				.catch(() => {
+					console.log('error')
+				})
+			}
+		}
+	}
+</script>
 
-    .register-link hover {
-      color: #76b0f9;
-    }
-    </style>
+		<!-- Add "scoped" attribute to limit CSS to this component only -->
+		<style scoped>
+
+	.form-control.error {
+		border-color: #E84444;
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
+	}
+
+	.form-control.error:focus {
+		border-color: #E84444;
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
+	}
+
+	.form-control:focus {
+		border-color: #207c23;
+		box-shadow: 0 1px 1px rgba(33, 153, 37,.075), 0 0 8px rgba(33, 153, 37, 0.6);
+	}
+
+	.error-message {
+		color: red;
+		font-size: 0.8rem;
+		font-weight: normal;
+	}
+
+	.forgot-password:hover {
+		cursor: pointer;
+		color: #2c3e50 !important;
+	}
+
+	a {
+		color: #ffc107;
+		text-transform: capitalize;
+	}
+
+	a:hover {
+		color: #e0a800;
+		text-decoration: none;
+	}
+		</style>

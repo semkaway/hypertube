@@ -14,7 +14,7 @@ const messages = {
   decimal: (field, [decimals = '*'] = []) => `Поле ${field} повинно бути числовим та може містити ${decimals === '*' ? '' : decimals} десяткових числа.`,
   digits: (field, [length]) => `Поле ${field} повинно бути числовим та точно містити ${length} цифри.`,
   dimensions: (field, [width, height]) => `Поле ${field} повинно бути ${width} пікселів на ${height} пікселів.`,
-  email: (field) => `Поле ${field} повинно бути дійсною електронною адресою.`,
+  email: (field) => `Поле ${field} повинно бути коректною адресою електронної пошти.`,
   excluded: (field) => `Поле ${field} повинно бути допустимим значенням.`,
   ext: (field, [...args]) => `Поле ${field} повинно бути допустимим дійсним файлом. (${args})`,
   image: (field) => `Поле ${field} повинно бути зображенням.`,

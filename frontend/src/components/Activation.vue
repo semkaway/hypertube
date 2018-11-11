@@ -1,19 +1,20 @@
 <template>
   <div>
-    <h1>{{ $t('confirmation.title')}}</h1>
-    <p>{{ $t('confirmation.message')}}</p>
+    <h1>{{ $t('activation.title')}}</h1>
+    <p>{{ $t('activation.message')}}</p>
     <button>{{ $t('button.login')}}</button>
   </div>
 </template>
 
 <script>
+
 export default {
-  name: 'Confirmation',
+  name: 'Activation',
   data () {
     return {
+      }
+    },
 
-    }
-  }
 }
 </script>
 
