@@ -17,7 +17,7 @@ app.use('/api', restRouter);
 app.all('*', (req, res) => {
     res.status(404).send('Not Found');
 });
-//
+
 app.use((error, req, res, next) => {
     console.error(error.stack);
     res.status(500).json({

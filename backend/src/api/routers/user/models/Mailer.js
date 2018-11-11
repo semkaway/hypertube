@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-export class Mail {
+export class Mailer {
     constructor() {
         this.transporter = nodemailer.createTransport({
             sendmail: true,
@@ -8,6 +8,7 @@ export class Mail {
             path: '/usr/sbin/sendmail'
         });
     }
+
     sendActivation({email, first, last, activationToken}) {
         return this.transporter.sendMail({
             from: 'no-reply@hypertube.ua',

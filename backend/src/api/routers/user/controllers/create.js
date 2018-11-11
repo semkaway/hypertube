@@ -1,9 +1,8 @@
-import {User} from './user.model'
 import randomToken from 'random-token'
 import bcrypt from 'bcrypt'
-import {Mail} from './Mail'
+import {Mailer} from '../models'
 
-const mail = new Mail();
+const mail = new Mailer();
 
 const saveUser = (model, body, res, next) => {
     body.activationToken = randomToken(16);
@@ -22,8 +21,7 @@ const saveUser = (model, body, res, next) => {
         .catch(error => next(error));
 };
 
-const createUser = model => (req, res, next) => {
-
+export const createUser = model => (req, res, next) => {
     model.where({email: req.body.email}).findOne()
         .then(found => {
             if (found === null) {
@@ -37,19 +35,3 @@ const createUser = model => (req, res, next) => {
         })
         .catch(error => next(error));
 };
-
-const emailExist = model => (req, res, next) => {
-    if (req.body.email === undefined) {
-        throw new Error("Require 'email' field");
-    }
-    model.where({email: mail}).findOne()
-        .then(found => res.status(200).json({"exist": found !== null}))
-        .catch(error => next(error));
-};
-
-const controllers = {
-    createUser: createUser(User),
-    emailExist: emailExist(User)
-};
-
-export default controllers

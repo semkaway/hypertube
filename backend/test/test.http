@@ -11,7 +11,7 @@ POST http://localhost:3000/api/user/create
 Content-Type: application/json
 
 {
-  "first": "first2 name",
+  "first": "first name",
   "last": "last name",
   "email": "test@mail.com",
   "password": "12345678aA"

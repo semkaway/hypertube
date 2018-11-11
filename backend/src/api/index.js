@@ -1,5 +1,5 @@
 import express from 'express'
-import {userRouter} from './resources/user'
+import {userRouter} from './routers/user'
 
 export const restRouter = express.Router();
 
