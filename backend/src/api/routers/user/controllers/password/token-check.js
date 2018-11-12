@@ -9,7 +9,15 @@ export const tokenCheck = model => (req, res, next) => {
     }
     model.where({email: req.query.email}).findOne()
         .then(found => {
-            res.status(200).json({"exist": found !== null});
+            if (found === null ||
+                found.resetPasswordToken !== req.query.token) {
+                res.status(200).json({
+                    "success": false,
+                    "message": `Invalid ${found ? 'token' : 'email'}`
+                });
+            } else {
+                res.status(200).json({"success": true});
+            }
         })
         .catch(error => next(error));
 };

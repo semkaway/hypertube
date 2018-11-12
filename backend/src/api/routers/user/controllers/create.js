@@ -10,8 +10,8 @@ const saveUser = (model, body, res, next) => {
     body.password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(10));
 
     model.create(body)
-        .then(() =>
-            mail.sendActivation(body)
+        .then(user =>
+            mail.sendActivation(user)
                 .then(() =>
                     res.status(201).json({
                         "success": true,

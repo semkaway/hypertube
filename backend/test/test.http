@@ -7,6 +7,10 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form
 # with a text or file field (multipart/form-data);
 
+#
+### User Registration
+#
+
 POST http://localhost:3000/api/user/create
 Content-Type: application/json
 
@@ -32,7 +36,9 @@ Content-Type: application/json
   "token": "dvfdmf3g8blmhbv0"
 }
 
-###
+#
+###  User Reset Password
+#
 
 POST http://localhost:3000/api/user/password/token-generate
 Content-Type: application/json
@@ -43,4 +49,7 @@ Content-Type: application/json
 
 ###
 
+GET http://localhost:3000/api/user/password/token-check?email=test@mail.com&token=48ru49ri9
+Accept: application/json
 
+###
