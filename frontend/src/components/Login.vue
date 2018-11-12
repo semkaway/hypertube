@@ -97,7 +97,7 @@
 						return false
 					}
 					 HTTP
-						.post(`/api/user/login`, {
+						.post(`user/login`, {
 							"email": this.loginForm.email,
 							"password": this.loginForm.password
 						})

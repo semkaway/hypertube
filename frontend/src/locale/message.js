@@ -40,8 +40,14 @@ const messages = {
 			error_alert: 'Ooopsie, something went wrong.'
 		},
 		activation: {
-			title: "Registration confirmed",
-			message: "You are now registered and can log in to your account"
+			success_title: "Registration confirmed",
+			success_alert: "You are now registered and can log in to your account",
+			error_title: "Registration was not confirmed",
+			error_alert: 'Ooopsie, something went wrong.',
+      invalid_alert: 'Something went wrong with your data.',
+      redirect_error_text: "You will be redirected to the home page in ",
+			redirect_success_text: "You will be redirected to the login page in ",
+      redirect_seconds: " seconds."
 		},
 		login: {
 			title: "Login",
@@ -99,8 +105,14 @@ const messages = {
 			error_alert: 'Ой. Что-то пошло не так.'
 		},
 		activation: {
-			title: "Регистрация подтверждена",
-			message: "Вы успешно подтвердили регистрацию и теперь можете войти в свой аккаунт."
+			success_title: "Регистрация подтверждена",
+			success_alert: "Вы успешно подтвердили регистрацию и теперь можете войти в свой аккаунт.",
+			error_title: "Регистрация не подтверждена",
+			error_alert: 'Ой. Что-то пошло не так.',
+      invalid_alert: "К сожалению, произошла ошибка с Вашими данными.",
+      redirect_error_text: "Вас перенаправят на главную страницу через ",
+      redirect_success_text: "Вас перенаправят на страницу входа через ",
+      redirect_seconds: " секунд."
 		},
 		login: {
 			title: "Войти",
@@ -158,8 +170,14 @@ const messages = {
 			error_alert: 'Ой. Щось пішло не так.'
 		},
 		activation: {
-			title: "Реєстрацію підтверджено",
-			message: "Ви успішно підтвердили свою реєстрацію та можете увійти до свого акаунту."
+			success_title: "Реєстрацію підтверджено",
+			success_alert: "Ви успішно підтвердили свою реєстрацію та можете увійти до свого акаунту.",
+			error_title: "Реєстрацію не підтверджено",
+			error_alert: 'Ой. Щось пішло не так.',
+      invalid_alert: "Нажаль, сталась помилка, пов'язана з Вашими даними.",
+			redirect_error_text: "Вас буде перенаправлено на головну сторінку через ",
+      redirect_success_text: "Вас буде перенаправлено на сторінку входу через ",
+      redirect_seconds: " секунд."
 		},
 		login: {
 			title: "Увійти",

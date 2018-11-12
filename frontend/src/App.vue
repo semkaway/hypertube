@@ -10,7 +10,7 @@
 
 <script>
 
-import AppHeader from './components/includes/TheHeader.vue'
+import AppHeader from './components/includes/TheHeader'
 import AppFooter from './components/includes/TheFooter.vue'
 
 export default {
