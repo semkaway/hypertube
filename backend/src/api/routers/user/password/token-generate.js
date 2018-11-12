@@ -1,4 +1,4 @@
-import {Mailer} from "../../models";
+import {Mailer} from "../models";
 import randomToken from 'random-token'
 
 const mail = new Mailer();

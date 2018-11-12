@@ -1,4 +1,4 @@
-import {checkForUndefined, errorFields} from "../../models";
+import {checkForUndefined, errorFields} from "../models";
 
 export const change = model => (req, res, next) => {
     let error = errorFields('Missing', checkForUndefined({

@@ -1,7 +1,7 @@
 import express from 'express'
 import userController from './controllers'
 import {beforeUserSave} from './models'
-import {passwordRouter} from "./controllers/password";
+import {passwordRouter} from "./password";
 
 export const userRouter = express.Router();
 

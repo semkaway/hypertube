@@ -12,27 +12,26 @@ export const checkForUndefined = body => {
 };
 
 export const valid = {
-    email: mail => EmailValidator.validate(mail),
+    email: mail => EmailValidator.validate(mail.toString()),
     password: pass => new validator()
         .is().min(8)
         .is().max(20)
         .has().uppercase()
         .has().lowercase()
-        .has().digits().validate(pass),
+        .has().digits().validate(pass.toString()),
     first: name => new validator()
         .is().min(3)
-        .is().max(15).validate(name),
+        .is().max(15).validate(name.toString()),
     last: name => new validator()
         .is().min(3)
-        .is().max(15).validate(name),
+        .is().max(15).validate(name.toString()),
     locale: lang => new validator()
         .is().oneOf(['en', 'ru', 'ua'])
-        .validate(lang)
+        .validate(lang.toString())
 };
 
 const validateUserFields = body => {
     let fields = [];
-
     for (let [field, value] of Object.entries(body)) {
         if (valid[field](value) === false) {
             fields.push(`'${field}'`);
@@ -56,16 +55,13 @@ export const beforeUserSave = (req, res, next) => {
 
     req.body = {email, password, first, last, locale};
 
-    for (let error of [
-        errorFields('Missing', checkForUndefined(req.body)),
-        errorFields('Invalid', validateUserFields(req.body))
-    ]) {
-        if (error !== '') {
-            res.status(200).json({
-                "success": false,
-                "message": error
-            });
-        }
+    let error = errorFields('Missing', checkForUndefined(req.body));
+    if (error === '') {
+        error = errorFields('Invalid', validateUserFields(req.body));
     }
-    next();
+    if (error !== '') {
+        res.status(200).json({"success": false, "message": error});
+    } else {
+        next();
+    }
 };

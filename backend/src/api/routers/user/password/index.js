@@ -2,7 +2,7 @@ import express from 'express'
 import {tokenGenerate} from "./token-generate";
 import {tokenCheck} from "./token-check";
 import {change} from "./change";
-import {User} from "../../models";
+import {User} from "../models";
 
 export const passwordRouter = express.Router();
 
