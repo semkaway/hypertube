@@ -9,6 +9,6 @@ userRouter.use('/password', passwordRouter);
 
 userRouter.route('/create').post(beforeUserSave, userController.createUser);
 
-userRouter.route('/check-email-exist').post(userController.emailExist);
+userRouter.route('/check-email').get(userController.checkEmail);
 
 userRouter.route('/activate').post(userController.activateUser);

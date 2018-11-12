@@ -1,11 +1,11 @@
 import {createUser} from './create'
-import {emailExist} from "./check-email-exist";
+import {checkEmail} from "./check-email";
 import {activateUser} from "./activate";
 import {User} from '../models'
 
 const controllers = {
     createUser: createUser(User),
-    emailExist: emailExist(User),
+    checkEmail: checkEmail(User),
     activateUser: activateUser(User)
 };
 
