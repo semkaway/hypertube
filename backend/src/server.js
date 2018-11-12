@@ -2,6 +2,7 @@ import express from 'express'
 import {restRouter} from './api'
 import {dbConnect} from './db'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 // Declare an app from express
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(bodyParser.json());
 dbConnect();
 // setup basic routing for index route
 
-app.use('/api', restRouter);
+app.use('/api', cors(), restRouter);
 
 // catch all
 app.all('*', (req, res) => {

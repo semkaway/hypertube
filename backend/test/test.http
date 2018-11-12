@@ -29,7 +29,16 @@ Content-Type: application/json
 
 {
   "email": "test@mail.com",
-  "token": "s8v0bwxkpdehoj6k"
+  "token": "dvfdmf3g8blmhbv0"
+}
+
+###
+
+POST http://localhost:3000/api/user/password/token-generate
+Content-Type: application/json
+
+{
+  "email": "test@mail.com"
 }
 
 ###

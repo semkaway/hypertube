@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     activation: {type: Boolean, default: false},
     activationToken: stringNull,
     resetPasswordToken: stringNull
-}, {timestamps: true});
+});
 
 //userSchema.methods = {
 //    authenticate(plaintTextPassword) {
