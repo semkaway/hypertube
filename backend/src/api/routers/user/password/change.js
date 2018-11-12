@@ -1,15 +1,30 @@
-import {checkForUndefined, errorFields} from "../models";
+import {checkForUndefined, errorFields, valid} from "../models";
+import bcrypt from "bcrypt";
 
 export const change = model => (req, res, next) => {
-    let error = errorFields('Missing', checkForUndefined({
-        email: req.query.email, token: req.query.token
-    }));
+    let {email, token, password} = req.body;
+
+    let error = errorFields('Missing', checkForUndefined({email, token, password}));
     if (error !== '') {
         throw new Error(error);
     }
-    model.where({email: req.query.email}).findOne()
-        .then(found => {
-            res.status(200).json({"exist": found !== null});
+    model.where({email: email}).findOne()
+        .then(user => {
+            token = user ? user.resetPasswordToken === token : token;
+            if (user === null ||
+                valid['password'](password) === false || token === false) {
+                res.status(200).json({
+                    "success": false,
+                    "message": user ? `Invalid ${token ? 'password' : 'token'}` :
+                        "User with this email doesn't exist"
+                });
+            } else {
+                user.resetPasswordToken = null;
+                user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+                user.save()
+                    .then(() => res.status(200).json({"success": true}))
+                    .catch(error => next(error));
+            }
         })
         .catch(error => next(error));
 };
