@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     password: stringRequired,
     first: stringRequired,
     last: stringRequired,
-    locale: {type: String, default: "en"},
+    locale: String,
     activation: {type: Boolean, default: false},
     activationToken: stringNull,
     resetPasswordToken: stringNull

@@ -1,6 +1,4 @@
 import nodemailer from 'nodemailer'
-import activationLetter from "./mails/activation";
-import resetPasswordLetter from "./mails/reset-password";
 
 export class Mailer {
     constructor() {
@@ -11,21 +9,23 @@ export class Mailer {
         });
     }
 
-    sendActivation({email, first, last, activationToken}) {
+    sendActivation({email, first, last, activationToken, locale}) {
         return this.transporter.sendMail({
             from: 'no-reply@hypertube.ua',
             to: email,
             subject: 'Activation',
-            html: activationLetter(first, last, activationToken)
+            ...(require(`./letters/${locale}/activation`)
+            (email, first, last, activationToken))
         });
     }
 
-    sendResetPasswordLink({email, first, last, resetPasswordToken}) {
+    sendResetPasswordLink({email, first, last, resetPasswordToken, locale}) {
         return this.transporter.sendMail({
             from: 'no-reply@hypertube.ua',
             to: email,
             subject: 'Reset Password',
-            html: resetPasswordLetter(first, last, resetPasswordToken)
+            ...(require(`./letters/${locale}/reset-password`)
+            (email, first, last, resetPasswordToken))
         });
     }
 }

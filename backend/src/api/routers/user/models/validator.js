@@ -24,7 +24,10 @@ export const valid = {
         .is().max(15).validate(name),
     last: name => new validator()
         .is().min(3)
-        .is().max(15).validate(name)
+        .is().max(15).validate(name),
+    locale: lang => new validator()
+        .is().oneOf(['en', 'ru', 'ua'])
+        .validate(lang)
 };
 
 const validateUserFields = body => {
@@ -49,9 +52,9 @@ export const errorFields = (error, fields) => {
 };
 
 export const beforeUserSave = (req, res, next) => {
-    let {email, password, first, last} = req.body;
+    let {email, password, first, last, locale} = req.body;
 
-    req.body = {email, password, first, last};
+    req.body = {email, password, first, last, locale};
 
     for (let error of [
         errorFields('Missing', checkForUndefined(req.body)),
