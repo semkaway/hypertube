@@ -64,4 +64,16 @@ Content-Type: application/json
   "token": "wy7vjyoz5fr8co0m"
 }
 
+#
+###  User Login
+#
+
+POST http://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+  "email": "test@mail.com",
+  "password": "12345678aA"
+}
+
 ###
