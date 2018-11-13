@@ -100,7 +100,7 @@ export default {
 			hideEmailExists: true,
 			showAlertDanger: false,
 			showAlertSuccess: false,
-            emailError: false
+      emailError: false
 		};
 	},
 	methods: {
@@ -112,21 +112,24 @@ export default {
 					console.log('error')
 					return false
 				}
+				console.log(this.$i18n.locale)
 				HTTP
 					.post(`user/create`, {
 						"first": this.registrationForm.first_name,
 						"last": this.registrationForm.last_name,
 						"email": this.registrationForm.email,
-						"password": this.registrationForm.password
+						"password": this.registrationForm.password,
+						"locale": this.$i18n.locale
 					})
 					.then(response => {
-                    if (response.data.success == true) {
-                    	this.showAlertDanger = false
-                    	this.showAlertSuccess = true
-                    } else if (response.data.success == false) {
-                    	this.showAlertSuccess = false
-                    	this.showAlertDanger = true
-                    }
+						console.log(response)
+            if (response.data.success == true) {
+            	this.showAlertDanger = false
+            	this.showAlertSuccess = true
+            } else if (response.data.success == false) {
+            	this.showAlertSuccess = false
+            	this.showAlertDanger = true
+            }
 					})
 			})
 			.catch(() => {
@@ -147,7 +150,6 @@ export default {
 			this.$nextTick(() => { this.show = true });
 		},
 		checkIfEmailExists() {
-            console.log("yeah1")
 			HTTP
 			.get(`user/check-email?email=`+this.registrationForm.email)
 			.then(response => {
@@ -167,12 +169,12 @@ export default {
 
 <style scoped>
 
-    .form-control.error {
+.form-control.error {
 	border-color: #E84444;
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
 }
 
-    .form-control.error:focus {
+.form-control.error:focus {
 	border-color: #E84444;
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
 }
@@ -182,15 +184,15 @@ export default {
 	box-shadow: 0 1px 1px rgba(33, 153, 37,.075), 0 0 8px rgba(33, 153, 37, 0.6);
 }
 
-    .email-error {
-        border-color: #E84444;
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
-    }
+.email-error {
+    border-color: #E84444;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
+}
 
-    .email-error:focus {
-        border-color: #E84444;
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
-    }
+.email-error:focus {
+    border-color: #E84444;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(232,68,68,.6);
+}
 
 span {
 	color: red;

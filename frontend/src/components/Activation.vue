@@ -55,6 +55,7 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
       const myToken = urlParams.get('token');
       const myEmail = urlParams.get('email');
+
       console.log(myToken)
       console.log(myEmail)
       HTTP

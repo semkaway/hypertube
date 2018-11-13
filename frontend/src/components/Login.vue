@@ -33,7 +33,7 @@
 							</b-form-input>
 							<span class="error-message">{{ errors.first('password') }}</span><br>
 							<span class="font-weight-light text-muted forgot-password" v-b-modal.modal-center>{{ $t('forgot_password.message') }}</span>
-							<b-modal  ref="myModal" 
+							<b-modal  ref="myModal"
 												id="modal-center"
 												centered
 												:title="$t('forgot_password.title')"
@@ -70,7 +70,7 @@
  <script>
 
 	import {HTTP} from '../http-common';
-	
+
 	export default {
 		name: 'Login',
 		data() {
@@ -122,17 +122,27 @@
 					if(!result) {
 						console.log('error')
 						return false
-					}
-						console.log('success. submit form.')
-						this.showAlert = true
-						this.$refs.myModal.hide()
-				})
-				.catch(() => {
-					console.log('error')
-				})
-			}
+					} else {
+					  HTTP
+              .post('user/password/token-generate', {
+                  email: this.loginForm.email
+								})
+              .then(response => {
+                  if (response.data.success == true) {
+                      this.showAlert = true
+                      this.$refs.myModal.hide()
+                  } else {
+                      console.log(response)
+                  }
+              })
+						}
+				// .catch(() => {
+				// 	console.log('error')
+				// })
+			})
 		}
 	}
+}
 </script>
 
 		<!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -21,7 +21,7 @@ export default new Router({
 				path: '/register',
 				name: 'Registration',
 				component: Registration,
-				// meta: { 
+				// meta: {
 				//   guest: true
 				// }
 		},
@@ -29,17 +29,17 @@ export default new Router({
 				path: '/login',
 				name: 'Login',
 				component: Login,
-				// meta: { 
+				// meta: {
 				//   guest: true
 				// }
 		},
 		{ //DELETE AFTER
-				path: '/activate/',
+				path: '/activate',
 				name: 'Activation',
 				component: Activation
 		},
 		{ //DELETE AFTER
-				path: '/restore_password',
+				path: '/reset-password',
 				name: 'RestorePassword',
 				component: RestorePassword
 		},

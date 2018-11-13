@@ -10,7 +10,7 @@ http://localhost:8080/activate?email=${email}&token=${token}
 <strong>${firstName} ${lastName}</strong>.
 <br>
 Для восстановление пароля вот 
-<a href="http://localhost:8080/activate?email=${email}&token=${token}">Ссылка</a>
+<a href="http://localhost:8080/reset-password?email=${email}&token=${token}">Ссылка</a>
 <br>
 
 `});
