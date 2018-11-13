@@ -5,7 +5,7 @@
     <b-alert variant="danger" :show="showAlertDanger" class="mt-3">{{$t('login.error_alert')}}</b-alert>
 		<b-row>
 			<b-col sm="3" lg="4"></b-col>
-			<b-col sm="5" lg="4" class="mt-4 mb-5">
+			<b-col sm="5" lg="4" class="mt-4 mb-5" :class="{'hideForm': hideForm}">
 				<h1>{{ $t("login.title") }}</h1>
 					<b-form @submit="onSubmit" class="mt-4">
 						<b-form-group v-bind:label="$t('login.email')"
@@ -84,7 +84,8 @@
 				},
 				showAlert: false,
 				showAlertDanger: false,
-      	showAlertSuccess: false
+      	showAlertSuccess: false,
+				hideForm: false
 			};
 		},
 		methods: {
@@ -102,12 +103,18 @@
 							"password": this.loginForm.password
 						})
 						.then(response => {
-							if (response.success == true) {
+							console.log(response.data)
+							if (response.data.success == true) {
 								this.showAlertDanger = false
 								this.showAlertSuccess = true
-							} else if (response.success == false) {
+								this.hideForm = true
+								this.$i18n.locale = response.data.locale
+								setTimeout(() => { this.$router.push('/') }, 2000)
+							} else if (response.data.success == false) {
 								this.showAlertSuccess = false
 								this.showAlertDanger = true
+								this.hideForm = true
+								setTimeout(() => { this.$router.push('/') }, 2000)
 							}
 						})
 				})
@@ -182,5 +189,9 @@
 	a:hover {
 		color: #e0a800;
 		text-decoration: none;
+	}
+
+	.hideForm {
+		display: none;
 	}
 		</style>

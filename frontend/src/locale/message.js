@@ -61,7 +61,8 @@ const messages = {
 		forgot_password: {
 			title: "Restore password",
 			message: "Forgot password?",
-			alert: "Check your email to restore your password."
+			alert: "Check your email to restore your password.",
+			error_title: "Sorry, we cannot change your password right now."
 		},
 	},
 	ru: {
@@ -126,7 +127,8 @@ const messages = {
 		forgot_password: {
 			title: "Восстановить пароль",
 			message: "Забыли пароль?",
-			alert: "Проверьте почту для восстановления пароля."
+			alert: "Проверьте почту для восстановления пароля.",
+			error_title: "Извините, но сейчас мы не можем изменить Ваш пароль."
 		},
 	},
 	ua: {
@@ -191,7 +193,8 @@ const messages = {
 		forgot_password: {
 			title: "Відновити пароль",
 			message: "Забули пароль?",
-			alert: "Перевірте пошту для відновлення пароля."
+			alert: "Перевірте пошту для відновлення пароля.",
+			error_title: "Вибачте, але зараз ми не можемо змінити Ваш пароль."
 		},
 	}
 }

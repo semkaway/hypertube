@@ -64,4 +64,21 @@ Content-Type: application/json
   "token": "wy7vjyoz5fr8co0m"
 }
 
+<<<<<<< Updated upstream
 ###
+=======
+GET http://localhost:3000/api/
+Accept: application/json
+
+###
+
+POST http://localhost:3000/api/user/activate
+Content-Type: application/json
+
+{
+  "email": "semkaway@gmail.com",
+  "token": "hgkw8i3nth4pmkir"
+}
+
+###
+>>>>>>> Stashed changes

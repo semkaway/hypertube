@@ -6,10 +6,27 @@ http://localhost:8080/reset-password?email=${email}&token=${token}
 
 `,
     html: `
+<html>
+<head>
+<style>
+    body {
+        background-color: #5a6268;
+    }
+    
+    a {
+        color: red;
+        text-decoration: none;
+    }
+</style>
+
+</head>
+<body>
 <h3>Hi</h3>
 <strong>${firstName} ${lastName}</strong>.
 <br>
 Here is your reset password 
-<a href="http://localhost:8080/reset-password?email=${email}&token=${token}">Link</a><br>
+<a style="color:red;" href="http://localhost:8080/reset-password?email=${email}&token=${token}">Link</a><br>
+</body>
+</html>
 
 `});
