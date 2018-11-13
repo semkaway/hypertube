@@ -1,4 +1,5 @@
 export const checkEmail = model => (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     if (req.query.email === undefined) {
         throw new Error("Require 'email' param");
     }

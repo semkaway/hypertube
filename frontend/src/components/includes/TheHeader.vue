@@ -1,16 +1,16 @@
 <template>
   <div class="Header">
-      <b-navbar toggleable="md" type="dark" variant="dark">
+      <b-navbar toggleable="md" type="light" variant="light" class="mx-1">
 
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-        <b-navbar-brand><router-link to="/">{{ $t('button.home') }}</router-link></b-navbar-brand>
+        <b-navbar-brand to="/">{{ $t('button.home') }}</b-navbar-brand>
 
         <b-collapse is-nav id="nav_collapse">
 
           <b-navbar-nav>
-            <b-nav-item> <router-link to="/login">{{ $t('button.login') }}</router-link></b-nav-item>
-            <b-nav-item> <router-link to="/register">{{ $t('button.register') }}</router-link></b-nav-item>
+            <b-nav-item to="/login">{{ $t('button.login') }}</b-nav-item>
+            <b-nav-item to="/register">{{ $t('button.register') }}</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
