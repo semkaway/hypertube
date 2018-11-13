@@ -7,7 +7,7 @@ export const tokenGenerate = model => (req, res, next) => {
     if (req.body.email === undefined) {
         throw new Error("Require 'email' field");
     }
-    model.where({email: req.body.email}).findOne()
+    model.findOne({email: req.body.email})
         .then(found => {
             if (found === null) {
                 res.status(200).json({

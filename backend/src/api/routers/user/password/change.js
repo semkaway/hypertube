@@ -8,7 +8,7 @@ export const change = model => (req, res, next) => {
     if (error !== '') {
         throw new Error(error);
     }
-    model.where({email: email}).findOne()
+    model.findOne({email: email})
         .then(user => {
             token = user ? user.resetPasswordToken === token : token;
             if (user === null ||

@@ -7,7 +7,7 @@ export const activateUser = model => (req, res, next) => {
     if (error !== '') {
         throw new Error(error);
     }
-    model.where({email: req.body.email}).findOne()
+    model.findOne({email: req.body.email})
         .then(found => {
             if (found === null) {
                 res.status(200).json({

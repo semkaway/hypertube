@@ -1,4 +1,3 @@
-import merge from 'lodash.merge'
 import mongoose from 'mongoose'
 
 export const controllers = {
@@ -7,7 +6,6 @@ export const controllers = {
     },
 
     updateOne(docToUpdate, update) {
-        merge(docToUpdate, update);
         return docToUpdate.save();
     },
 

@@ -20,7 +20,6 @@
     "express": "^4.16.1",
     "express-jwt": "^5.3.0",
     "jsonwebtoken": "^8.1.0",
-    "lodash.merge": "^4.6.0",
     "mongoose": "^4.12.1",
     "nodemailer": "^4.6.8",
     "password-validator": "^4.1.1",

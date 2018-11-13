@@ -22,7 +22,7 @@ const saveUser = (model, body, res, next) => {
 };
 
 export const createUser = model => (req, res, next) => {
-    model.where({email: req.body.email}).findOne()
+    model.findOne({email: req.body.email})
         .then(found => {
             if (found === null) {
                 saveUser(model, req.body, res, next)

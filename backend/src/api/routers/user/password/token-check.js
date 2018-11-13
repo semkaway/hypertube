@@ -7,7 +7,7 @@ export const tokenCheck = model => (req, res, next) => {
     if (error !== '') {
         throw new Error(error);
     }
-    model.where({email: req.query.email}).findOne()
+    model.findOne({email: req.query.email})
         .then(found => {
             if (found === null ||
                 found.resetPasswordToken !== req.query.token) {
