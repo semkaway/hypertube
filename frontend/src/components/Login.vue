@@ -218,7 +218,8 @@
 					if(!result) {
 						console.log('error')
 						return false
-					} else {
+					}
+				else {
 					  HTTP
               .post('user/password/token-generate', {
                   email: this.loginForm.email
@@ -236,17 +237,52 @@
 			          console.log("can't connect to server")
 			        })
 						}
-				// .catch(() => {
-				// 	console.log('error')
-				// })
+					})
+				.catch(() => {
+					console.log('error')
 			})
 		},
 		sendActivationLink() {
-			console.log("message sent")
-			this.showNoValidationAlert = false
-			this.showEmailSentSuccess = true;
-		}
-	}
+			this.$validator.validate('email', this.loginForm.email)
+			.then(result => {
+				if(!result) {
+					console.log('error')
+					return false
+				} else {
+					HTTP
+						.post('user/resend-activation', {
+								email: this.loginForm.email
+							})
+						.then(response => {
+								if (response.data.success == true) {
+									this.showNoValidationAlert = false
+									this.showEmailSentSuccess = true;
+								} else if (response.data.success == false && (response.data.message == "User with this email doesn't exist")){
+									this.showNoEmailAlert = true
+									this.showAlertSuccess = false
+									this.showAlertDanger = false
+									this.showAlert = false
+									this.showWrongPassAlert = false
+									this.showNoValidationAlert = false
+									this.showEmailSentSuccess = false
+								}
+								else {
+									this.showNoEmailAlert = false
+									this.showAlertSuccess = false
+									this.showAlertDanger = true
+									this.showAlert = false
+									this.showWrongPassAlert = false
+									this.showNoValidationAlert = false
+									this.showEmailSentSuccess = false
+								}
+						})
+						.catch(() => {
+							console.log("can't connect to server")
+						})
+					}
+				})
+			},
+}
 }
 </script>
 
