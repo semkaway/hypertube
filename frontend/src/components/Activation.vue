@@ -55,15 +55,7 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
       const myToken = urlParams.get('token');
       const myEmail = urlParams.get('email');
-      // const myLocale = urlParams.get('locale');
-      // if (myLocale != '') {
-      //   this.i18n.locale = myLocale;
-      // } else {
-      //   this.i18n.locale = 'en';
-      // }
 
-      console.log(myToken)
-      console.log(myEmail)
       HTTP
         .post(`user/activate`, {
           "email": myEmail,

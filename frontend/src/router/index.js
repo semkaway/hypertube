@@ -6,6 +6,7 @@ import Activation from '@/components/Activation'
 import Login from '@/components/Login'
 import RestorePassword from '@/components/RestorePassword'
 import UserPage from '@/components/UserPage'
+import oauth42 from '@/components/42oauth'
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ let router = new Router({
 				path: '/reset-password',
 				name: 'restorepassword',
 				component: RestorePassword
+		},
+		{
+				path: '/42oauth',
+				name: '42oauth',
+				component: oauth42
 		},
 		{
 			path: '/user',
