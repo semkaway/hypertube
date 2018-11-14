@@ -19,9 +19,10 @@ export const login = model => (req, res, next) => {
                         (user.activation ? 'Invalid password' : 'User not activated')
                 });
             } else {
+                let secret = req.app.get('config').secrets.jwt;
                 res.status(200).json({
                     "success": true,
-                    "token": jwt.sign({id: user._id}, 'bw5Neu7c'),
+                    "token": jwt.sign({id: user._id}, secret),
                     "locale": user.locale
                 });
             }

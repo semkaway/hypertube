@@ -105,7 +105,7 @@
 					</b-form>
 					<hr>
 					<p class="omniauth">{{ $t('login.omniauth_text')}}</p>
-					<b-button variant="dark">42 Intra</b-button>
+					<b-button href="https://api.intra.42.fr/oauth/authorize?client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth&response_type=code" variant="dark">42 Intra</b-button>
 					<b-button variant="danger">Something else</b-button>
 				</b-col>
 				<b-col sm="3" lg="4"></b-col>

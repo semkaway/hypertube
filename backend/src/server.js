@@ -1,6 +1,7 @@
 import express from 'express'
 import {restRouter} from './api'
 import {dbConnect} from './db'
+import config from './config'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 // Declare an app from express
@@ -10,8 +11,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 dbConnect();
-// setup basic routing for index route
 
+app.set('config', config);
+
+// setup basic routing for index route
 app.use('/api', cors(), restRouter);
 
 // catch all

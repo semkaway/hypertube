@@ -13,6 +13,7 @@
     "db": "/usr/local/mongodb/bin/mongod --dbpath database"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",

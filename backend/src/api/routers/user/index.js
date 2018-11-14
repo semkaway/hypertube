@@ -2,10 +2,13 @@ import express from 'express'
 import userController from './controllers'
 import {beforeUserSave} from './models'
 import {passwordRouter} from "./password";
+import {oauthRouter} from "./oauth";
 
 export const userRouter = express.Router();
 
 userRouter.use('/password', passwordRouter);
+
+userRouter.use('/oauth', oauthRouter);
 
 userRouter.route('/create').post(beforeUserSave, userController.createUser);
 

@@ -5,7 +5,7 @@ const stringNull     = {type: String, default: null};
 
 const userSchema = new mongoose.Schema({
     email: {...stringRequired, unique: true},
-    password: stringRequired,
+    password: stringNull,
     first: stringRequired,
     last: stringRequired,
     locale: String,

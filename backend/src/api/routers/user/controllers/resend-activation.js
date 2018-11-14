@@ -5,7 +5,7 @@ const mail = new Mailer();
 
 export const resendActivation = model => (req, res, next) => {
     if (req.body.email === undefined) {
-        throw new Error("Require 'email' param");
+        throw new Error("Require 'email' field");
     }
     model.findOne({email: req.body.email})
         .then(user => {

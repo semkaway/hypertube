@@ -1,6 +1,8 @@
 const baseConfig = {
     port: 3000,
-    secrets: {},
+    secrets: {
+        jwt: 'bw5Neu7c'
+    },
     db: {
         url: 'mongodb://localhost/hypertube'
     }
