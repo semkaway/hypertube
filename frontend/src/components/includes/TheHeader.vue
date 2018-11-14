@@ -1,6 +1,6 @@
 <template>
   <div class="Header">
-      <b-navbar toggleable="md" type="light" variant="light" class="mx-1">
+      <b-navbar toggleable="md" type="dark" variant="secondary" class="mx-1">
 
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -24,14 +24,7 @@
                                       @click="language_change(item.short)">{{item.short}}</b-dropdown-item-button>
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right>
-              <!-- Using button-content slot -->
-              <template slot="button-content">
-                <em>User</em>
-              </template>
-              <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Signout</b-dropdown-item>
-            </b-nav-item-dropdown>
+            <b-nav-item to="/user">{{ $t('button.user') }}</b-nav-item>
           </b-navbar-nav>
 
         </b-collapse>
@@ -63,8 +56,23 @@ export default {
   methods: {
     language_change(val) {
       this.$i18n.locale = val
+      localStorage.locale = val
     }
  },
+ mounted() {
+   if (localStorage.token) {
+     console.log(localStorage.token);
+   }
+    if (localStorage.locale) {
+      this.$i18n.locale = localStorage.locale;
+      console.log(localStorage.locale);
+    }
+  },
+  watch: {
+    locale() {
+      this.$i18n.locale = localStorage.locale;
+    }
+  }
 }
 </script>
 

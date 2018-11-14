@@ -3,7 +3,7 @@ import Vue from 'vue'
 // import VueAxios from 'vue-axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import { Navbar, Form, Button, FormGroup, FormInput, Layout, Modal, Alert } from 'bootstrap-vue/es/components'
+import { Navbar, Form, Button, FormGroup, FormInput, Layout, Modal, Alert, Carousel } from 'bootstrap-vue/es/components'
 import App from './App'
 import router from './router'
 import i18n from './locale'
@@ -43,6 +43,7 @@ Vue.use(FormInput);
 Vue.use(Layout);
 Vue.use(Modal);
 Vue.use(Alert);
+Vue.use(Carousel);
 
 // Vue.use(VueAxios, axios);
 // Vue.use(HTTP);

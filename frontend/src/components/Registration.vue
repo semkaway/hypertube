@@ -119,7 +119,7 @@ export default {
 						"last": this.registrationForm.last_name,
 						"email": this.registrationForm.email,
 						"password": this.registrationForm.password,
-						"locale": this.$i18n.locale
+						"locale": localStorage.locale
 					})
 					.then(response => {
 						console.log(response)
@@ -129,11 +129,18 @@ export default {
             } else if (response.data.success == false) {
             	this.showAlertSuccess = false
             	this.showAlertDanger = true
-            }
+            } else {
+							this.showAlertSuccess = false
+            	this.showAlertDanger = true
+						}
+					})
+					.catch(() => {
+						this.showAlertSuccess = false
+						this.showAlertDanger = true
 					})
 			})
 			.catch(() => {
-				console.log('error')
+				console.log("can't reach the server")
 			})
 		},
 		onReset (evt) {
@@ -157,10 +164,13 @@ export default {
 					this.hideEmailExists = false
                   this.emailError = true
 				} else if (response.data.exist == false) {
-                  this.hideEmailExists = true
-                  this.emailError = false
-                }
+            this.hideEmailExists = true
+            this.emailError = false
+				}
 				console.log(response.data.exist)
+			})
+			.catch(() => {
+				console.log("can't reach the server")
 			})
 		}
 	}

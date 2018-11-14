@@ -55,6 +55,12 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
       const myToken = urlParams.get('token');
       const myEmail = urlParams.get('email');
+      // const myLocale = urlParams.get('locale');
+      // if (myLocale != '') {
+      //   this.i18n.locale = myLocale;
+      // } else {
+      //   this.i18n.locale = 'en';
+      // }
 
       console.log(myToken)
       console.log(myEmail)
@@ -76,14 +82,17 @@ export default {
                 setTimeout(() => { this.$router.push('/') }, 5000)
           }
         })
+        .catch(() => {
+          console.log("can't connect to server")
+        })
       },
       methods: {
         countDownChanged (dismissCountDown) {
           this.dismissCountDown = dismissCountDown
         },
-          countDownChanged1 (dismissCountDown1) {
-              this.dismissCountDown1 = dismissCountDown1
-          },
+        countDownChanged1 (dismissCountDown1) {
+            this.dismissCountDown1 = dismissCountDown1
+        },
         countDownChanged2 (dismissCountDown2) {
           this.dismissCountDown2 = dismissCountDown2
         },

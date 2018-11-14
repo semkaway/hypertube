@@ -2,23 +2,59 @@
   <div>
     <b-row id="first-row" class="mx-1">
       <b-col></b-col>
-      <b-col><h1 class="text-white">Hello hrere is some text to test my styling</h1></b-col>
+      <b-col><h1 class="text-white align-middle">Hello hrere is some text to test my styling</h1></b-col>
       <b-col></b-col>
     </b-row>
     <b-row id="second-row">
-      <b-col></b-col>
-      <b-col></b-col>
-      <b-col></b-col>
+      <b-col>
+        <h1 class="text-dark">Hello hrere is some text to test my styling</h1>
+      </b-col>
+      <b-col>
+        <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=40aeba3c68446f98649f5bf962faf5f0&auto=format&fit=crop&w=2840&q=80">
+      </b-col>
     </b-row>
     <b-row id="third-row">
-      <b-col></b-col>
-      <b-col></b-col>
-      <b-col></b-col>
+      <b-col>
+        <img src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?ixlib=rb-0.3.5&s=190b7715b0eda47d2e3cb2c43c8ec9b1&auto=format&fit=crop&w=2851&q=80">
+      </b-col>
+      <b-col>
+        <h1 class="text-dark">Hello hrere is some text to test my styling</h1>
+      </b-col>
     </b-row>
     <b-row id="fourth-row">
-      <b-col></b-col>
-      <b-col></b-col>
-      <b-col></b-col>
+      <!-- <b-col></b-col> -->
+      <!-- <b-col> -->
+      <b-carousel id="carousel1"
+                style="text-shadow: 1px 1px 2px #333;"
+                background="#ababab"
+                :interval="4000"
+                img-width="1024"
+                v-model="slide"
+                @sliding-start="onSlideStart"
+                @sliding-end="onSlideEnd"
+                class="mx-auto"
+    >
+
+      <b-carousel-slide caption="First slide"
+                        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
+                        img-src="https://picsum.photos/1024/480/?image=52"
+      ></b-carousel-slide>
+
+      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+        <h1>Hello world!</h1>
+      </b-carousel-slide>
+
+      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58">
+      </b-carousel-slide>
+
+      <b-carousel-slide>
+        <img slot="img" class="d-block img-fluid w-100" width="1024" height="480"
+             src="https://picsum.photos/1024/480/?image=55" alt="image slot">
+      </b-carousel-slide>
+
+    </b-carousel>
+    <!-- </b-col> -->
+    <!-- <b-col></b-col> -->
     </b-row>
   </div>
 </template>
@@ -28,9 +64,18 @@ export default {
   name: 'Home',
   data () {
     return {
-
+      slide: 0,
+      sliding: null
     }
-  }
+  },
+  methods: {
+    onSlideStart (slide) {
+        this.sliding = true
+      },
+      onSlideEnd (slide) {
+        this.sliding = false
+      }
+    }
 }
 </script>
 
@@ -44,7 +89,8 @@ export default {
   ackground-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 25vh;
+  height: 25rem;
+  border: solid red;
 }
 
 #second-row {
@@ -52,7 +98,8 @@ export default {
 	background-position: center;
   background-repeat: no-repeat;
   background-size: cover; */
-  height: 25vh;
+  height: 25rem;
+  border: solid red;
 }
 
 #third-row {
@@ -60,7 +107,8 @@ export default {
 	background-position: center;
   background-repeat: no-repeat;
   background-size: cover; */
-  height: 25vh;
+  height: 25rem;
+  border: solid red;
 }
 
 #fourth-row {
@@ -68,7 +116,13 @@ export default {
 	background-position: center;
   background-repeat: no-repeat;
   background-size: cover; */
-  height: 25vh;
+  /* min-height: 25rem; */
+  height: 100%;
+  border: solid red;
+}
+
+img {
+  width: 35rem;
 }
 
 </style>

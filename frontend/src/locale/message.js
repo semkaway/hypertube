@@ -7,7 +7,9 @@ const messages = {
 			submit: "submit",
 			reset: "reset",
 			forgot_password: 'forgot password',
-			send: 'send'
+			send: 'send',
+			user: 'user',
+			send_activation_link: 'send activation link'
 		},
 		home: {
 			title: 'home'
@@ -56,12 +58,15 @@ const messages = {
 			omniauth_text: 'Via your social networks',
 			go_to_register: 'Don\'t have an account?',
 			success_alert: 'You successfully logged in.',
-			error_alert: 'Ooopsie, something went wrong.'
+			error_alert: 'Ooopsie, something went wrong.',
+			wrong_pass_alert: 'Sorry, your password is incorrect',
+			no_validation_alert: 'Sorry, your account is not validated.'
 		},
 		forgot_password: {
 			title: "Restore password",
 			message: "Forgot password?",
-			alert: "Check your email to restore your password.",
+			sucess_alert: "Check your email to restore your password.",
+			error_alert: "User with this email doesn't exist.",
 			error_title: "Sorry, we cannot change your password right now."
 		},
 	},
@@ -73,7 +78,9 @@ const messages = {
 			submit: "подтвердить",
 			reset: "очистить",
 			forgot_password: 'Я не помню свой пароль',
-			send: 'отправить'
+			send: 'отправить',
+			user: 'пользователь',
+			send_activation_link: 'отправить ссылку активации'
 		},
 		home: {
 			title: 'Главная'
@@ -122,12 +129,15 @@ const messages = {
 			omniauth_text: 'Через социальные сети',
 			go_to_register: 'Нет аккаунта?',
 			success_alert: 'Вы успешно вошли в свой аккаунт.',
+			wrong_pass_alert: 'Вы ввели неверный пароль.',
+			no_validation_alert: 'Извтните, Ваш аккаунт не подтвержден.',
 			error_alert: 'Ой. Что-то пошло не так.'
 		},
 		forgot_password: {
 			title: "Восстановить пароль",
 			message: "Забыли пароль?",
-			alert: "Проверьте почту для восстановления пароля.",
+			success_alert: "Проверьте почту для восстановления пароля.",
+			error_alert: "Пользователя с таким email не существует.",
 			error_title: "Извините, но сейчас мы не можем изменить Ваш пароль."
 		},
 	},
@@ -139,7 +149,9 @@ const messages = {
 			submit: "підтвердити",
 			reset: "очистити",
 			forgot_password: "Я не пам'ятаю свій пароль",
-			send: 'надіслати'
+			send: 'надіслати',
+			user: 'користувач',
+			send_activation_link: 'надіслати посилання активації'
 		},
 		home: {
 			title: 'Головна'
@@ -187,13 +199,16 @@ const messages = {
 			password: 'Пароль',
 			omniauth_text: 'Через соціальні мережі',
 			go_to_register: 'Немає акаунта?',
-			success_alert: 'Ви успішло увійшли до свого акаунту.',
+			success_alert: 'Ви успішно увійшли до свого акаунту.',
+			wrong_pass_alert: 'Неправильний пароль.',
+			no_validation_alert: 'Активуйте свій акаунт, будь ласка.',
 			error_alert: 'Ой. Щось пішло не так.'
 		},
 		forgot_password: {
 			title: "Відновити пароль",
 			message: "Забули пароль?",
-			alert: "Перевірте пошту для відновлення пароля.",
+			success_alert: "Перевірте пошту для відновлення пароля.",
+			error_alert: "Користувача з таким email не існує.",
 			error_title: "Вибачте, але зараз ми не можемо змінити Ваш пароль."
 		},
 	}
