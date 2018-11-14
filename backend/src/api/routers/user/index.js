@@ -13,4 +13,6 @@ userRouter.route('/check-email').get(userController.checkEmail);
 
 userRouter.route('/activate').post(userController.activateUser);
 
+userRouter.route('/resend-activation').post(userController.resendActivation);
+
 userRouter.route('/login').post(userController.login);

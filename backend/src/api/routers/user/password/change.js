@@ -22,7 +22,7 @@ export const change = model => (req, res, next) => {
                 user.resetPasswordToken = null;
                 user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
                 user.save()
-                    .then(() => res.status(200).json({"success": true}))
+                    .then(() => res.status(201).json({"success": true}))
                     .catch(error => next(error));
             }
         })

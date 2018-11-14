@@ -19,7 +19,7 @@ export const tokenGenerate = model => (req, res, next) => {
                 found.save()
                     .then(user =>
                         mail.sendResetPasswordLink(user)
-                            .then(() => res.status(200).json({
+                            .then(() => res.status(201).json({
                                 "success": true,
                                 "message": "To reset password check your mail"
                             }))

@@ -8,26 +8,21 @@ export const activateUser = model => (req, res, next) => {
         throw new Error(error);
     }
     model.findOne({email: req.body.email})
-        .then(found => {
-            if (found === null) {
+        .then(user => {
+            if (user === null || user.activationToken !== req.body.token) {
                 res.status(200).json({
                     "success": false,
-                    "message": "Invalid email"
+                    "message": `Invalid ${user ? 'token' : 'email'}`
                 });
-            } else if (found.activationToken === req.body.token) {
-                found.activation      = true;
-                found.activationToken = null;
-                found.save()
-                    .then(() => res.status(200).json({
+            } else {
+                user.activation      = true;
+                user.activationToken = null;
+                user.save()
+                    .then(() => res.status(201).json({
                         "success": true,
                         "message": "User activated"
                     }))
                     .catch(error => next(error));
-            } else {
-                res.status(200).json({
-                    "success": false,
-                    "message": "Invalid token"
-                });
             }
         })
         .catch(error => next(error));
