@@ -1,7 +1,19 @@
 <template>
 	<div>
-		<b-alert variant="success" :show="showAlertSuccess" class="mt-3">{{$t('registration.success_alert')}}</b-alert>
-		<b-alert variant="danger" :show="showAlertDanger" class="mt-3">{{$t('registration.error_alert')}}</b-alert>
+		<b-row>
+			<b-col sm="3" lg="4"></b-col>
+			<b-col sm="5" lg="4">
+				<b-alert 	variant="success"
+									:show="showAlertSuccess"
+									class="mt-3">{{$t('registration.success_alert')}}
+				</b-alert>
+				<b-alert 	variant="danger"
+									:show="showAlertDanger"
+									class="mt-3">{{$t('registration.error_alert')}}
+				</b-alert>
+			</b-col>
+			<b-col sm="3" lg="4"></b-col>
+		</b-row>
 		<b-row>
 			<b-col sm="3" lg="4"></b-col>
 			<b-col sm="5" lg="4" class="mt-4 mb-5">
@@ -73,10 +85,6 @@
 					<b-button type="reset" variant="outline-warning">{{$t('button.reset')}}</b-button>
 				</b-form>
 				<p class="mt-3 text-left">{{ $t('registration.account_exists') }} <router-link to="/login">{{$t('button.login')}}</router-link></p>
-				<hr>
-				<p class="omniauth">{{ $t('login.omniauth_text')}}</p>
-				<b-button variant="dark">42 Intra</b-button>
-				<b-button variant="danger">Something else</b-button>
 			</b-col>
 			<b-col sm="3" lg="4"></b-col>
 		</b-row>
@@ -158,7 +166,7 @@ export default {
 		},
 		checkIfEmailExists() {
 			HTTP
-			.get(`user/check-email?email=`+this.registrationForm.email)
+			.get(`user/check-email/`+this.registrationForm.email)
 			.then(response => {
 				if (response.data.exist == true) {
 					this.hideEmailExists = false

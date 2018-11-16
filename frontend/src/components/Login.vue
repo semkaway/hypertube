@@ -1,54 +1,58 @@
 <template>
 	<div>
-		<b-alert 	variant="success"
-							:show="showAlert"
-							class="mt-3">{{$t('forgot_password.success_alert')}}
-		</b-alert>
-		<b-alert 	variant="danger"
-							:show="showNoEmailAlert"
-							class="mt-3">{{$t('forgot_password.error_alert')}}
-		</b-alert>
-		<b-alert 	variant="danger"
-							:show="showNoValidationAlert"
-							class="mt-3">
-							<b-row>
-							<b-col sm="3" lg="4"></b-col>
-							<b-col sm="5" lg="4">
-								<h1>{{$t('login.no_validation_alert')}}</h1>
-							<b-form class="mt-4">
-								<b-form-group v-bind:label="$t('login.email')"
-															class="font-weight-bold">
-										<b-form-input name="sendEmail"
-															v-model="loginForm.email"
-															v-bind:placeholder="$t('login.email')"
-															data-vv-as=" "
-															v-validate="'required|email'"
-															:class="{'form-control': true, 'error': errors.has('email') }">
-										</b-form-input>
-										<span class="error-message">{{ errors.first('email') }}</span>
-								</b-form-group>
-								<b-btn class="mt-3" variant="outline-secondary"  @click="sendActivationLink">{{ $t('button.send_activation_link')}}</b-btn>
-							</b-form>
-						</b-col>
-						<b-col sm="3" lg="4"></b-col>
-					</b-row>
-		</b-alert>
-		<b-alert 	variant="success"
-							:show="showEmailSentSuccess"
-							class="mt-3">{{$t('registration.success_alert')}}
-		</b-alert>
-		<b-alert 	variant="success"
-							:show="showAlertSuccess"
-							class="mt-3">{{$t('login.success_alert')}}
-		</b-alert>
-    <b-alert 	variant="danger"
-							:show="showAlertDanger"
-							class="mt-3">{{$t('login.error_alert')}}
-		</b-alert>
-		<b-alert 	variant="danger"
-							:show="showWrongPassAlert"
-							class="mt-3">{{$t('login.wrong_pass_alert')}}
-		</b-alert>
+		<b-row>
+			<b-col sm="3" lg="4"></b-col>
+			<b-col sm="5" lg="4">
+				<b-alert 	variant="success"
+									:show="showAlert"
+									class="mt-3">{{$t('forgot_password.success_alert')}}
+				</b-alert>
+				<b-alert 	variant="danger"
+									:show="showNoEmailAlert"
+									class="mt-3">{{$t('forgot_password.error_alert')}}
+				</b-alert>
+				<b-alert 	variant="danger"
+									:show="showNoValidationAlert"
+									class="mt-3">
+									<b-row>
+									<b-col sm="3" lg="4"></b-col>
+									<b-col sm="5" lg="4">
+										<h1>{{$t('login.no_validation_alert')}}</h1>
+									<b-form class="mt-4">
+										<b-form-group v-bind:label="$t('login.email')"
+																	class="font-weight-bold">
+												<b-form-input name="sendEmail"
+																	v-model="loginForm.email"
+																	v-bind:placeholder="$t('login.email')"
+																	data-vv-as=" "
+																	v-validate="'required|email'"
+																	:class="{'form-control': true, 'error': errors.has('email') }">
+												</b-form-input>
+												<span class="error-message">{{ errors.first('email') }}</span>
+										</b-form-group>
+										<b-btn class="mt-3" variant="outline-secondary"  @click="sendActivationLink">{{ $t('button.send_activation_link')}}</b-btn>
+									</b-form>
+								</b-col>
+								<b-col sm="3" lg="4"></b-col>
+							</b-row>
+				</b-alert>
+				<b-alert 	variant="success"
+									:show="showEmailSentSuccess"
+									class="mt-3">{{$t('registration.success_alert')}}
+				</b-alert>
+		    <b-alert 	variant="danger"
+									dismissible
+									:show="showAlertDanger"
+									class="mt-3">{{$t('login.error_alert')}}
+				</b-alert>
+				<b-alert 	variant="danger"
+									:show="showWrongPassAlert"
+									class="mt-3">{{$t('login.wrong_pass_alert')}}
+				</b-alert>
+			</b-col>
+			<b-col sm="3" lg="4"></b-col>
+		</b-row>
+
 		<b-row>
 			<b-col sm="3" lg="4"></b-col>
 			<b-col sm="5" lg="4" class="mt-4 mb-5" :class="{'hideForm': hideForm}">
@@ -105,7 +109,7 @@
 					</b-form>
 					<hr>
 					<p class="omniauth">{{ $t('login.omniauth_text')}}</p>
-					<b-button href="https://api.intra.42.fr/oauth/authorize?client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7&redirect_uri=http%3A%2F%2Flocalhost%3A8084%2Fintra&response_type=code" variant="dark">42 Intra</b-button>
+					<b-button @click="openIntra" variant="dark">42 Intra</b-button>
 					<b-button variant="danger">Something else</b-button>
 				</b-col>
 				<b-col sm="3" lg="4"></b-col>
@@ -155,21 +159,12 @@
 						.then(response => {
 							console.log(response.data)
 							if (response.data.success == true) {
-								this.showAlertDanger = false
-								this.showAlertSuccess = true
-								this.showAlert = false
-								this.showNoEmailAlert = false
-								this.showWrongPassAlert = false
-								this.showNoValidationAlert = false
-								this.showEmailSentSuccess = false
-								this.hideForm = true
 								this.$i18n.locale = response.data.locale
 								localStorage.locale = response.data.locale
 								localStorage.token = response.data.token
-								setTimeout(() => { this.$router.push('/') }, 2000)
+								this.$router.push('/')
 							} else if (response.data.success == false) {
 								if (response.data.message == "Invalid email") {
-									this.showAlertSuccess = false
 									this.showNoEmailAlert = true
 									this.showAlert = false
 									this.showWrongPassAlert = false
@@ -177,7 +172,6 @@
 									this.showAlertDanger = false
 									this.showEmailSentSuccess = false
 								} else if (response.data.message == "Invalid password") {
-									this.showAlertSuccess = false
 									this.showWrongPassAlert = true
 									this.showAlert = false
 									this.showNoEmailAlert = false
@@ -185,7 +179,6 @@
 									this.showAlertDanger = false
 									this.showEmailSentSuccess = false
 								} else if (response.data.message == "User not activated") {
-									this.showAlertSuccess = false
 									this.showNoValidationAlert = true
 									this.showAlert = false
 									this.showNoEmailAlert = false
@@ -193,7 +186,6 @@
 									this.showAlertDanger = false
 									this.showEmailSentSuccess = false
 								} else {
-									this.showAlertSuccess = false
 									this.showAlertDanger = true
 									this.showAlert = false
 									this.showNoEmailAlert = false
@@ -259,7 +251,6 @@
 									this.showEmailSentSuccess = true;
 								} else if (response.data.success == false && (response.data.message == "User with this email doesn't exist")){
 									this.showNoEmailAlert = true
-									this.showAlertSuccess = false
 									this.showAlertDanger = false
 									this.showAlert = false
 									this.showWrongPassAlert = false
@@ -268,7 +259,6 @@
 								}
 								else {
 									this.showNoEmailAlert = false
-									this.showAlertSuccess = false
 									this.showAlertDanger = true
 									this.showAlert = false
 									this.showWrongPassAlert = false
@@ -282,7 +272,10 @@
 					}
 				})
 			},
-}
+			openIntra() {
+				console.log('opening Intra')
+			}
+		}
 }
 </script>
 

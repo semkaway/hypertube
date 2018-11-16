@@ -25,7 +25,7 @@ http://localhost:8080/reset-password?email=${email}&token=${resetPasswordToken}
 <strong>${first} ${last}</strong>.
 <br>
 ${l['Here is your reset password']} 
-<a style="color:red;" href="http://localhost:8080/reset-password?email=${email}&token=${resetPasswordToken}">${l['link']}</a><br>
+<a style="color:red;" href="http://localhost:8084/reset-password?email=${email}&token=${resetPasswordToken}">${l['link']}</a><br>
 </body>
 </html>
 

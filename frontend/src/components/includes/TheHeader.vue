@@ -33,6 +33,9 @@
 </template>
 
 <script>
+
+import {HTTP} from '../../http-common';
+
 export default {
   data() {
     return {
@@ -57,6 +60,13 @@ export default {
     language_change(val) {
       this.$i18n.locale = val
       localStorage.locale = val
+      // if (localStorage.token != '') {
+        // HTTP
+        //   .post('user/someurl', {
+        //     'token': localStorage.token
+        //     'locale': val
+        //   })
+      // }
     }
  },
  mounted() {

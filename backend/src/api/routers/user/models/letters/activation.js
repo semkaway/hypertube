@@ -11,7 +11,7 @@ http://localhost:8080/activate?email=${email}&token=${activationToken}
   <strong>${first} ${last}</strong>, ${l['and welcome']}.
   <br>
   ${l['Here is an activation']} 
-  <a href="http://localhost:8080/activate?email=${email}&token=${activationToken}">${l['link']}</a>
+  <a href="http://localhost:8084/activate?email=${email}&token=${activationToken}">${l['link']}</a>
   <br>
 </html>
 

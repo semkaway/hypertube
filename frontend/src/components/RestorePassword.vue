@@ -146,16 +146,13 @@ export default {
 
     const myEmail = urlParams.get('email');
     const myToken = urlParams.get('token');
-    // if (myLocale != '') {
-    //   this.i18n.locale = myLocale;
-    // } else {
-    //   this.i18n.locale = 'en';
-    // }
-    console.log(myToken)
-    console.log(myEmail)
-    console.log(`user/password/token-check?email=`+myEmail+`&token=`+myToken)
+
+
     HTTP
-      .get(`user/password/token-check?email=`+myEmail+`&token=`+myToken)
+      .post(`user/password/token-check`, {
+        "email": myEmail,
+        "token": myToken
+      })
       .then(response => {
         console.log(response)
         if (response.data.success == true) {

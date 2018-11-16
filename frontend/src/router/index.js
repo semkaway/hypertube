@@ -46,8 +46,8 @@ let router = new Router({
 				component: RestorePassword
 		},
 		{
-				path: '/42oauth',
-				name: '42oauth',
+				path: '/intra',
+				name: 'oauth',
 				component: oauth42
 		},
 		{
