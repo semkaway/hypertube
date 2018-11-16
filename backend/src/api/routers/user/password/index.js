@@ -8,6 +8,6 @@ export const passwordRouter = express.Router();
 
 passwordRouter.route('/token-generate').post(tokenGenerate(User));
 
-passwordRouter.route('/token-check').get(tokenCheck(User));
+passwordRouter.route('/token-check').post(tokenCheck(User));
 
 passwordRouter.route('/change').post(change(User));
