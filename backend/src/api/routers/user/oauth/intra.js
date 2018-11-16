@@ -41,6 +41,7 @@ export const intra = model => (req, res, next) => {
                             'first': response.data.first_name,
                             'last': response.data.last_name,
                             'locale': locale,
+                            'oauth': 'intra',
                             'image': response.data.image_url,
                         })
                             .then(user => returnToken(res, secret, user))

@@ -110,7 +110,7 @@
 					<hr>
 					<p class="omniauth">{{ $t('login.omniauth_text')}}</p>
 					<b-button @click="openIntra" variant="dark">42 Intra</b-button>
-					<b-button variant="danger">Something else</b-button>
+					<b-button href="https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff" variant="danger">Github</b-button>
 				</b-col>
 				<b-col sm="3" lg="4"></b-col>
 			</b-row>

@@ -102,3 +102,14 @@ Content-Type: application/json
 
 
 ###
+
+POST http://localhost:3000/api/user/oauth/github
+Content-Type: application/json
+
+{
+  "code": "e9de40ebee82fc008db1",
+  "locale": "ru"
+}
+
+
+###
