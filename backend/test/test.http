@@ -87,14 +87,4 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/user/oauth/intra
-Content-Type: application/json
-
-{
-  "code": "d06e553a21ec86e0f4f8b10117d8c9e52ff18ae51a9f340b0964f057acd43f13",
-  "locale": "ru"
-}
-
-
-###
 
