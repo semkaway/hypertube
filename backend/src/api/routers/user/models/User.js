@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 
 const stringRequired = {type: String, required: true};
 const stringNull     = {type: String, default: null};
+const False          = {type: Boolean, default: false};
 
 const userSchema = new mongoose.Schema({
     email: {...stringRequired, unique: true},
@@ -9,9 +10,11 @@ const userSchema = new mongoose.Schema({
     first: stringRequired,
     last: stringRequired,
     locale: String,
-    activation: {type: Boolean, default: false},
+    oauth: stringNull,
+    activation: False,
     activationToken: stringNull,
-    resetPasswordToken: stringNull
+    resetPasswordToken: stringNull,
+    image: stringNull,
 });
 
 //userSchema.methods = {
