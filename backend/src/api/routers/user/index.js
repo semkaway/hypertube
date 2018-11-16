@@ -1,21 +1,13 @@
 import express from 'express'
-import userController from './controllers'
-import {beforeUserSave} from './models'
+import {mainRouter} from './controllers'
 import {passwordRouter} from "./password";
 import {oauthRouter} from "./oauth";
 
 export const userRouter = express.Router();
 
+userRouter.use(mainRouter);
+
 userRouter.use('/password', passwordRouter);
 
 userRouter.use('/oauth', oauthRouter);
 
-userRouter.route('/create').post(beforeUserSave, userController.createUser);
-
-userRouter.route('/check-email').get(userController.checkEmail);
-
-userRouter.route('/activate').post(userController.activateUser);
-
-userRouter.route('/resend-activation').post(userController.resendActivation);
-
-userRouter.route('/login').post(userController.login);
