@@ -4,5 +4,5 @@ import {User} from "../models";
 
 export const oauthRouter = express.Router();
 
-//oauthRouter.route('/intra').post(intra(User));
+oauthRouter.route('/intra').post(intra(User));
 
