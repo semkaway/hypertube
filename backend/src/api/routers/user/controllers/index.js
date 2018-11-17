@@ -14,6 +14,6 @@ mainRouter.route('/check-email/:email').get(checkEmail(User));
 
 mainRouter.route('/activate').post(activateUser(User));
 
-mainRouter.route('/resend-activation').post(login(User));
+mainRouter.route('/resend-activation').post(resendActivation(User));
 
-mainRouter.route('/login').post(resendActivation(User));
+mainRouter.route('/login').post(login(User));
