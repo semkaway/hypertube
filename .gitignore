@@ -1,4 +1,5 @@
 .idea
+.idea/httpRequest
 .DS_Store
 node_modules
 dist
