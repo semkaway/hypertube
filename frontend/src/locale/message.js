@@ -130,7 +130,7 @@ const messages = {
 			go_to_register: 'Нет аккаунта?',
 			success_alert: 'Вы успешно вошли в свой аккаунт.',
 			wrong_pass_alert: 'Вы ввели неверный пароль.',
-			no_validation_alert: 'Извтните, Ваш аккаунт не подтвержден.',
+			no_validation_alert: 'Извините, Ваш аккаунт не подтвержден.',
 			error_alert: 'Ой. Что-то пошло не так.'
 		},
 		forgot_password: {
