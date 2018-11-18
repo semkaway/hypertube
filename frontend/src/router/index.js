@@ -6,7 +6,7 @@ import Activation from '@/components/Activation'
 import Login from '@/components/Login'
 import RestorePassword from '@/components/RestorePassword'
 import UserPage from '@/components/UserPage'
-import oauth42 from '@/components/42oauth'
+import oauth from '@/components/Oauth'
 
 Vue.use(Router)
 
@@ -47,16 +47,21 @@ let router = new Router({
 		},
 		{
 				path: '/intra',
-				name: 'oauth',
-				component: oauth42
+				name: 'oauth42',
+				component: oauth
+		},
+		{
+				path: '/github',
+				name: 'oauthGit',
+				component: oauth
 		},
 		{
 			path: '/user',
 			name: 'userpage',
 			component: UserPage,
 			meta: {
-          requiresAuth: true
-        }
+          		requiresAuth: true
+        	}
 		}
 
 	]

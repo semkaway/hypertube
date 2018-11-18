@@ -17,6 +17,7 @@ export default {
     },
     mounted() {
       const urlParams = new URLSearchParams(window.location.search);
+      const currUrl = window.location.pathname
       const myCode = urlParams.get('code');
       const accessDenied = urlParams.get('error');
 
@@ -25,23 +26,26 @@ export default {
         this.$router.push('/')
       } else if (myCode != null && accessDenied == null) {
         console.log('not null')
-        // HTTP
-        //   .post(`user/activate`, {
-        //     "code": myCode,
-        //   })
-        //   .then(response => {
-        //     console.log(response.data.message)
-        //     if (response.data.success == true) {
-        //       console.log('code recieved')
-        //       setTimeout(() => { this.$router.push('login') }, 5000)
-        //     } else {
-        //       console.log('code not recieved')
-        //       setTimeout(() => { this.$router.push('login') }, 5000)
-        //     }
-        //   })
-        //   .catch(() => {
-        //     console.log("can't connect to server")
-        //   })
+        HTTP
+          .post(`user/oauth`+currUrl, {
+            "code": myCode,
+            "locale": this.i18n.locale
+          })
+          .then(response => {
+            console.log(response.data.message)
+            if (response.data.success == true) {
+              this.$i18n.locale = response.data.locale
+              localStorage.locale = response.data.locale
+              localStorage.token = response.data.token
+              this.$router.push('/')
+            } else {
+              console.log('code not recieved')
+              this.$router.push('login?fail=true')
+            }
+          })
+          .catch(() => {
+            console.log("can't connect to server")
+          })
       } else if (myCode == null && accessDenied != null) {
           console.log('access denied')
           this.$router.push('/')
