@@ -32,19 +32,20 @@ export default {
             "locale": this.$i18n.locale
           })
           .then(response => {
-            console.log(response.data)
             if (response.data.success == true) {
               this.$i18n.locale = response.data.locale
               localStorage.locale = response.data.locale
               localStorage.token = response.data.token
+              console.log("oauth: "+this.$token )
               this.$router.push('/')
             } else {
               console.log('code not recieved')
               this.$router.push('login?fail=true')
             }
           })
-          .catch(() => {
-            console.log("can't connect to server")
+          .catch((err) => {
+            console.log(err.response.data.error.message)
+            console.log("server error")
           })
       } else if (myCode == null && accessDenied != null) {
           console.log('access denied')

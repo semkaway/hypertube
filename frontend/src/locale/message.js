@@ -65,7 +65,7 @@ const messages = {
 		forgot_password: {
 			title: "Restore password",
 			message: "Forgot password?",
-			sucess_alert: "Check your email to restore your password.",
+			success_alert: "Check your email to restore your password.",
 			error_alert: "User with this email doesn't exist.",
 			error_title: "Sorry, we cannot change your password right now."
 		},

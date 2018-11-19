@@ -4,20 +4,19 @@
 			<b-col sm="3" lg="4"></b-col>
 			<b-col sm="5" lg="4">
 				<b-alert 	variant="success"
+									dismissible
 									:show="showAlert"
 									class="mt-3">{{$t('forgot_password.success_alert')}}
 				</b-alert>
 				<b-alert 	variant="danger"
+									dismissible
 									:show="showNoEmailAlert"
 									class="mt-3">{{$t('forgot_password.error_alert')}}
 				</b-alert>
 				<b-alert 	variant="danger"
 									:show="showNoValidationAlert"
 									class="mt-3">
-									<b-row>
-									<b-col sm="3" lg="4"></b-col>
-									<b-col sm="5" lg="4">
-										<h1>{{$t('login.no_validation_alert')}}</h1>
+									<h3>{{$t('login.no_validation_alert')}}</h3>
 									<b-form class="mt-4">
 										<b-form-group v-bind:label="$t('login.email')"
 																	class="font-weight-bold">
@@ -32,11 +31,9 @@
 										</b-form-group>
 										<b-btn class="mt-3" variant="outline-secondary"  @click="sendActivationLink">{{ $t('button.send_activation_link')}}</b-btn>
 									</b-form>
-								</b-col>
-								<b-col sm="3" lg="4"></b-col>
-							</b-row>
 				</b-alert>
 				<b-alert 	variant="success"
+									dismissible
 									:show="showEmailSentSuccess"
 									class="mt-3">{{$t('registration.success_alert')}}
 				</b-alert>
@@ -46,6 +43,7 @@
 									class="mt-3">{{$t('login.error_alert')}}
 				</b-alert>
 				<b-alert 	variant="danger"
+									dismissible
 									:show="showWrongPassAlert"
 									class="mt-3">{{$t('login.wrong_pass_alert')}}
 				</b-alert>
@@ -196,7 +194,8 @@
 							}
 						})
 						.catch(() => {
-		          console.log("can't connect to server")
+							console.log(err.response.data.error.message)
+			        console.log("server error")
 		        })
 				})
 				.catch(() => {
@@ -226,7 +225,8 @@
                   }
               })
 							.catch(() => {
-			          console.log("can't connect to server")
+								console.log(err.response.data.error.message)
+				        console.log("server error")
 			        })
 						}
 					})
@@ -267,7 +267,8 @@
 								}
 						})
 						.catch(() => {
-							console.log("can't connect to server")
+							console.log(err.response.data.error.message)
+			        console.log("server error")
 						})
 					}
 				})
@@ -278,9 +279,10 @@
 					'&redirect_uri=http://localhost:8084/intra&' +
 					'response_type=code';
 					console.log('opening Intra')
+
 			},
 			openGit() {
-                window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff';
+        window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff';
 				console.log('opening Git')
 			},
 		},

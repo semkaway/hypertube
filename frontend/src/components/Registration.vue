@@ -148,7 +148,8 @@ export default {
 					})
 			})
 			.catch(() => {
-				console.log("can't reach the server")
+				console.log(err.response.data.error.message)
+				console.log("server error")
 			})
 		},
 		onReset (evt) {
@@ -178,7 +179,8 @@ export default {
 				console.log(response.data.exist)
 			})
 			.catch(() => {
-				console.log("can't reach the server")
+				console.log(err.response.data.error.message)
+				console.log("server error")
 			})
 		}
 	}

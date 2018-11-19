@@ -8,7 +8,7 @@
 
         <b-collapse is-nav id="nav_collapse">
 
-          <b-navbar-nav>
+          <b-navbar-nav v-if="token === ''">
             <b-nav-item to="/login">{{ $t('button.login') }}</b-nav-item>
             <b-nav-item to="/register">{{ $t('button.register') }}</b-nav-item>
           </b-navbar-nav>
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       locale: 'en',
+      token: '',
       lang: {
         en: {
           lang: 'English',
@@ -66,16 +67,23 @@ export default {
         //     'token': localStorage.token
         //     'locale': val
         //   })
+        // .catch((err) => {
+        //   console.log(err.response.data.error.message)
+        //   console.log("server error")
+        // })
       // }
     }
  },
  mounted() {
+   // console.log('localStoragetoken: '+localStorage.token);
+   // console.log('token: '+this.$token);
    if (localStorage.token) {
-     console.log(localStorage.token);
+     // console.log(localStorage.token);
+     this.token = localStorage.token
    }
     if (localStorage.locale) {
       this.$i18n.locale = localStorage.locale;
-      console.log(localStorage.locale);
+      // console.log(localStorage.locale);
     }
   },
   watch: {
