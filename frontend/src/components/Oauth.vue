@@ -29,10 +29,10 @@ export default {
         HTTP
           .post(`user/oauth`+currUrl, {
             "code": myCode,
-            "locale": this.i18n.locale
+            "locale": this.$i18n.locale
           })
           .then(response => {
-            console.log(response.data.message)
+            console.log(response.data)
             if (response.data.success == true) {
               this.$i18n.locale = response.data.locale
               localStorage.locale = response.data.locale

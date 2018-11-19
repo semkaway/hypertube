@@ -273,11 +273,11 @@
 				})
 			},
 			openIntra() {
-                window.location.href = 'https://api.intra.42.fr/oauth/authorize?' +
+          window.location.href = 'https://api.intra.42.fr/oauth/authorize?' +
 					'client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7' +
 					'&redirect_uri=http://localhost:8084/intra&' +
 					'response_type=code';
-				console.log('opening Intra')
+					console.log('opening Intra')
 			},
 			openGit() {
                 window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff';
