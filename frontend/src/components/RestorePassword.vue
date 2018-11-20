@@ -3,21 +3,21 @@
     <b-alert  variant="success"
               :show="dismissCountDown"
               class="mt-3">
-      <h3>{{ $t('activation.success_title')}}</h3>
+      <h1>{{ $t('activation.success_title')}}</h1>
       <p>{{ $t('activation.success_alert')}}</p>
             <b-button :to="'/login'" variant="warning">{{$t('button.login')}}</b-button>
     </b-alert>
       <b-alert  variant="danger"
                 :show="dismissCountDown1"
                 class="mt-3">
-          <h3>{{ $t('forgot_password.error_title')}}</h3>
+          <h1>{{ $t('forgot_password.error_title')}}</h1>
           <p>{{ $t('activation.error_alert')}}</p>
           <b-button :to="'/'" variant="secondary">{{$t('button.home')}}</b-button>
       </b-alert>
       <b-alert  variant="danger"
                 :show="dismissCountDown2"
                 class="mt-3">
-          <h3>{{ $t('forgot_password.error_title')}}</h3>
+          <h1>{{ $t('forgot_password.error_title')}}</h1>
           <p>{{ $t('activation.invalid_alert')}}</p>
           <b-button :to="'/'" variant="secondary">{{$t('button.home')}}</b-button>
       </b-alert>
@@ -89,12 +89,9 @@ export default {
             return false
           } else {
             const urlParams = new URLSearchParams(window.location.search);
-
-            const myEmail = urlParams.get('email');
             const myToken = urlParams.get('token');
             HTTP
               .post('user/password/change', {
-                'email': myEmail,
                 'token': myToken,
                 'password': this.restorePassForm.password
               })
@@ -126,10 +123,7 @@ export default {
 
 
     HTTP
-      .post(`user/password/token-check`, {
-        "email": myEmail,
-        "token": myToken
-      })
+      .get(`user/password/token-check/`+myToken)
       .then(response => {
         console.log(response)
         if (response.data.success == true) {
@@ -140,7 +134,7 @@ export default {
               this.dismissCountDown2 = true
         }
       })
-      .catch(() => {
+      .catch((err) => {
         console.log(err.response.data.error.message)
         console.log("server error")
       })
@@ -174,6 +168,10 @@ span {
 	color: red;
 	font-size: 0.8rem;
 	font-weight: normal;
+}
+
+h1 {
+  font-size: 1.5rem;
 }
 
 </style>

@@ -1,6 +1,4 @@
 import Vue from 'vue'
-// import axios from 'axios'
-// import VueAxios from 'vue-axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { Navbar, Form, Button, FormGroup, FormInput, Layout, Modal, Alert, Carousel } from 'bootstrap-vue/es/components'
@@ -8,12 +6,12 @@ import App from './App'
 import router from './router'
 import i18n from './locale'
 import VeeValidate, { Validator } from 'vee-validate'
-import ru from 'vee-validate/dist/locale/ru'
+import ru from './locale/ru'
 import en from 'vee-validate/dist/locale/en'
 import ua from './locale/ua'
-// import {HTTP} from './http-common';
 
 Validator.localize(ua);
+Validator.localize(ru);
 
 const config = {
 	aria: true,

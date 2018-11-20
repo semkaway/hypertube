@@ -5,7 +5,8 @@ import Registration from '@/components/Registration'
 import Activation from '@/components/Activation'
 import Login from '@/components/Login'
 import RestorePassword from '@/components/RestorePassword'
-import UserPage from '@/components/UserPage'
+import UserProfile from '@/components/UserProfile'
+import UserSettings from '@/components/UserSettings'
 import oauth from '@/components/Oauth'
 
 Vue.use(Router)
@@ -55,15 +56,32 @@ let router = new Router({
 				name: 'oauthGit',
 				component: oauth
 		},
+		// {
+		// 		path: '/oauth42',
+		// 		name: 'oauthGeneral42',
+		// 		component: oauth
+		// },
+		// {
+		// 		path: '/oauthgit',
+		// 		name: 'oauthGeneralGit',
+		// 		component: oauth
+		// },
 		{
-			path: '/user',
-			name: 'userpage',
-			component: UserPage,
+			path: '/user/profile',
+			name: 'userProfile',
+			component: UserProfile,
 			meta: {
-          		requiresAuth: true
-        	}
-		}
-
+      		requiresAuth: true
+    	}
+		},
+		{
+			path: '/user/settings',
+			name: 'userSettings',
+			component: UserSettings,
+			meta: {
+      		requiresAuth: true
+    	}
+		},
 	]
 })
 
@@ -84,7 +102,7 @@ router.beforeEach((to, from, next) => {
             next()
         }
         else{
-            next({ path: '/user'})
+            next({ path: '/user/profile'})
         }
     } else {
         next()

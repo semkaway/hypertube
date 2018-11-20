@@ -9,7 +9,10 @@ const messages = {
 			forgot_password: 'forgot password',
 			send: 'send',
 			user: 'user',
-			send_activation_link: 'send activation link'
+			send_activation_link: 'send activation link',
+			logout: 'log out',
+			language: 'language',
+			save: 'save'
 		},
 		home: {
 			title: 'home'
@@ -47,9 +50,6 @@ const messages = {
 			error_title: "Registration was not confirmed",
 			error_alert: 'Ooopsie, something went wrong.',
       invalid_alert: 'Something went wrong with your data.',
-      redirect_error_text: "You will be redirected to the home page in ",
-			redirect_success_text: "You will be redirected to the login page in ",
-      redirect_seconds: " seconds."
 		},
 		login: {
 			title: "Login",
@@ -69,6 +69,22 @@ const messages = {
 			error_alert: "User with this email doesn't exist.",
 			error_title: "Sorry, we cannot change your password right now."
 		},
+		profile: {
+			profile_title: 'profile',
+			settings_title: 'settings',
+			success_alert: 'All good, your data was saved.',
+			profile: {
+
+			},
+			settings: {
+				change_password: 'Change password',
+				change_email: 'Change email',
+				change_info: 'Change personal info',
+				old_password: 'Old password',
+				new_password: 'New password',
+				new_password_repeat: 'Repeat new password'
+			}
+		},
 	},
 	ru: {
 		button: {
@@ -80,7 +96,10 @@ const messages = {
 			forgot_password: 'Я не помню свой пароль',
 			send: 'отправить',
 			user: 'пользователь',
-			send_activation_link: 'отправить ссылку активации'
+			send_activation_link: 'отправить ссылку активации',
+			logout: 'выйти',
+			language: 'язык',
+			save: 'сохранить'
 		},
 		home: {
 			title: 'Главная'
@@ -118,9 +137,6 @@ const messages = {
 			error_title: "Регистрация не подтверждена",
 			error_alert: 'Ой. Что-то пошло не так.',
       invalid_alert: "К сожалению, произошла ошибка с Вашими данными.",
-      redirect_error_text: "Вас перенаправят на главную страницу через ",
-      redirect_success_text: "Вас перенаправят на страницу входа через ",
-      redirect_seconds: " секунд."
 		},
 		login: {
 			title: "Войти",
@@ -140,6 +156,22 @@ const messages = {
 			error_alert: "Пользователя с таким email не существует.",
 			error_title: "Извините, но сейчас мы не можем изменить Ваш пароль."
 		},
+		profile: {
+			profile_title: 'профиль',
+			settings_title: 'настройки',
+			success_alert: 'Ваши данные были сохранены.',
+			profile: {
+
+			},
+			settings: {
+				change_password: 'Изменить пароль',
+				change_email: 'Изменить email',
+				change_info: 'Изменить персональные данные',
+				old_password: 'Старый пароль',
+				new_password: 'Новый пароль',
+				new_password_repeat: 'Повторите новый пароль'
+			}
+		},
 	},
 	ua: {
 		button: {
@@ -151,7 +183,10 @@ const messages = {
 			forgot_password: "Я не пам'ятаю свій пароль",
 			send: 'надіслати',
 			user: 'користувач',
-			send_activation_link: 'надіслати посилання активації'
+			send_activation_link: 'надіслати посилання активації',
+			logout: 'вийти',
+			language: 'мова',
+			save: 'зберегти'
 		},
 		home: {
 			title: 'Головна'
@@ -189,9 +224,6 @@ const messages = {
 			error_title: "Реєстрацію не підтверджено",
 			error_alert: 'Ой. Щось пішло не так.',
       invalid_alert: "Нажаль, сталась помилка, пов'язана з Вашими даними.",
-			redirect_error_text: "Вас буде перенаправлено на головну сторінку через ",
-      redirect_success_text: "Вас буде перенаправлено на сторінку входу через ",
-      redirect_seconds: " секунд."
 		},
 		login: {
 			title: "Увійти",
@@ -210,6 +242,22 @@ const messages = {
 			success_alert: "Перевірте пошту для відновлення пароля.",
 			error_alert: "Користувача з таким email не існує.",
 			error_title: "Вибачте, але зараз ми не можемо змінити Ваш пароль."
+		},
+		profile: {
+			profile_title: 'профіль',
+			settings_title: 'налаштування',
+			success_alert: 'Ваші дані було збережено.',
+			profile: {
+
+			},
+			settings: {
+				change_password: 'Змінити пароль',
+				change_email: 'Змінити email',
+				change_info: 'Змінити персональні дані',
+				old_password: 'Старий пароль',
+				new_password: 'Новий пароль',
+				new_password_repeat: 'Повторіть новий пароль'
+			}
 		},
 	}
 }

@@ -52,13 +52,4 @@ h1 {
 	text-transform: full-width;
 }
 
-hr {
-	height: 6px;
-	background: url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0;
-	border: 0;
-}
-
-.omniauth {
-	text-transform: uppercase;
-}
 </style>

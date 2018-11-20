@@ -147,7 +147,7 @@ export default {
 						this.showAlertDanger = true
 					})
 			})
-			.catch(() => {
+			.catch((err) => {
 				console.log(err.response.data.error.message)
 				console.log("server error")
 			})
@@ -178,8 +178,8 @@ export default {
 				}
 				console.log(response.data.exist)
 			})
-			.catch(() => {
-				console.log(err.response.data.error.message)
+			.catch((err) => {
+				console.log(err.response.data.error)
 				console.log("server error")
 			})
 		}

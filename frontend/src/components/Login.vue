@@ -16,7 +16,7 @@
 				<b-alert 	variant="danger"
 									:show="showNoValidationAlert"
 									class="mt-3">
-									<h3>{{$t('login.no_validation_alert')}}</h3>
+									<h1>{{$t('login.no_validation_alert')}}</h1>
 									<b-form class="mt-4">
 										<b-form-group v-bind:label="$t('login.email')"
 																	class="font-weight-bold">
@@ -118,6 +118,7 @@
  <script>
 
 	import {HTTP} from '../http-common';
+	import PromiseWindow from 'promise-window'
 
 	export default {
 		name: 'Login',
@@ -242,7 +243,7 @@
 					return false
 				} else {
 					HTTP
-						.post('user/resend-activation', {
+						.post('user/send-activation', {
 								email: this.loginForm.email
 							})
 						.then(response => {
@@ -279,11 +280,42 @@
 					'&redirect_uri=http://localhost:8084/intra&' +
 					'response_type=code';
 					console.log('opening Intra')
+					// PromiseWindow.open('http://localhost:8084/oauth42', {height: 500, width: 600}).then(
+					// 	function(data) {
+					// 		window.location.href = '/'
+					// 	},
+					// 	function(error) {
+					// 		switch(error) {
+				  //     case 'closed':
+				  //       console.log('closed')
+				  //       break;
+				  //     case 'my-custom-message':
+				  //       console.log('some error')
+				  //       break;
+				  //   }
+					// 	}
+					// )
 
 			},
 			openGit() {
         window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff';
 				console.log('opening Git')
+				// PromiseWindow.open('http://localhost:8084/oauthgit').then(
+				// 	function(data) {
+				// 		window.location.href = '/'
+				// 	},
+				// 	function(error) {
+				// 		switch(error) {
+				// 		case 'closed':
+				// 			console.log('closed')
+				// 			break;
+				// 		case 'my-custom-message':
+				// 			console.log('some error')
+				// 			break;
+				// 	}
+				// 	}
+				// )
+
 			},
 		},
 		mounted() {
@@ -340,4 +372,19 @@
 	.hideForm {
 		display: none;
 	}
+
+	hr {
+		height: 6px;
+		background: url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0;
+		border: 0;
+	}
+
+	.omniauth {
+		text-transform: uppercase;
+	}
+
+	h1 {
+	  font-size: 1.5rem;
+	}
+
 		</style>

@@ -16,7 +16,7 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
 
-            <b-nav-item-dropdown text="Lang" :v-model="locale" right>
+            <b-nav-item-dropdown :text="$t('button.language')" :v-model="locale" right>
               <b-dropdown-item-button v-for="item in lang"
                                       :label="item.lang"
                                       :key="item.lang"
@@ -24,7 +24,20 @@
                                       @click="language_change(item.short)">{{item.short}}</b-dropdown-item-button>
             </b-nav-item-dropdown>
 
-            <b-nav-item to="/user">{{ $t('button.user') }}</b-nav-item>
+            <b-nav-item-dropdown  v-if="token !== ''"
+                                  :text="$t('button.user')">
+              <b-dropdown-item-button label="profile"
+                                      key="profile"
+                                      value="profile">
+                                      <router-link to="/user/profile">{{ $t('profile.profile_title') }}</router-link>
+              </b-dropdown-item-button>
+              <b-dropdown-item-button label="settings"
+                                      key="settings"
+                                      value="settings">
+                                      <router-link to="/user/settings">{{ $t('profile.settings_title') }}</router-link>
+              </b-dropdown-item-button>
+              <b-dropdown-item-button @click="logout">{{ $t('button.logout') }}</b-dropdown-item-button>
+            </b-nav-item-dropdown>
           </b-navbar-nav>
 
         </b-collapse>
@@ -72,24 +85,27 @@ export default {
         //   console.log("server error")
         // })
       // }
+    },
+    fetchData () {
+      this.token = localStorage.token
+      if (localStorage.locale) {
+         this.$i18n.locale = localStorage.locale;
+       }
+    },
+    logout() {
+      localStorage.token = ''
+      window.location.href = '/'
+      // this.$router.push('/')
     }
  },
- mounted() {
-   // console.log('localStoragetoken: '+localStorage.token);
-   // console.log('token: '+this.$token);
-   if (localStorage.token) {
-     // console.log(localStorage.token);
-     this.token = localStorage.token
-   }
-    if (localStorage.locale) {
-      this.$i18n.locale = localStorage.locale;
-      // console.log(localStorage.locale);
-    }
+  created () {
+    this.fetchData()
   },
   watch: {
     locale() {
       this.$i18n.locale = localStorage.locale;
-    }
+    },
+    '$route': 'fetchData'
   }
 }
 </script>
@@ -97,12 +113,12 @@ export default {
 <style scoped>
 
 a {
-  color: #fff;
+  color: black;
   text-decoration: none;
 }
 
 a:hover {
-  color: #ffd04b;
+  color: #606266;
 }
 
 </style>

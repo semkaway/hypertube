@@ -2,29 +2,23 @@
   <div>
 		<b-alert  variant="success"
               :show="dismissCountDown"
-
               class="mt-3">
-      <h3>{{ $t('activation.success_title')}}</h3>
+      <h1>{{ $t('activation.success_title')}}</h1>
       <p>{{ $t('activation.success_alert')}}</p>
-      <!-- <p>{{$t('activation.redirect_success_text')}}{{dismissCountDown}}{{$t('activation.redirect_seconds')}}</p> -->
             <b-button :to="'/login'" variant="warning">{{$t('button.login')}}</b-button>
     </b-alert>
       <b-alert  variant="danger"
                 :show="dismissCountDown1"
-
                 class="mt-3">
-          <h3>{{ $t('activation.error_title')}}</h3>
+          <h1>{{ $t('activation.error_title')}}</h1>
           <p>{{ $t('activation.error_alert')}}</p>
-          <!-- <p>{{$t('activation.redirect_error_text')}}{{dismissCountDown1}}{{$t('activation.redirect_seconds')}}</p> -->
           <b-button :to="'/'" variant="secondary">{{$t('button.home')}}</b-button>
       </b-alert>
       <b-alert  variant="danger"
                 :show="dismissCountDown2"
-
                 class="mt-3">
-          <h3>{{ $t('activation.error_title')}}</h3>
+          <h1>{{ $t('activation.error_title')}}</h1>
           <p>{{ $t('activation.invalid_alert')}}</p>
-          <!-- <p>{{$t('activation.redirect_error_text')}}{{dismissCountDown2}}{{$t('activation.redirect_seconds')}}</p> -->
           <b-button :to="'/'" variant="secondary">{{$t('button.home')}}</b-button>
       </b-alert>
 
@@ -47,11 +41,9 @@ export default {
     mounted() {
       const urlParams = new URLSearchParams(window.location.search);
       const myToken = urlParams.get('token');
-      const myEmail = urlParams.get('email');
 
       HTTP
         .post(`user/activate`, {
-          "email": myEmail,
           "token": myToken
         })
         .then(response => {
@@ -64,7 +56,7 @@ export default {
                 this.dismissCountDown2 = true
           }
         })
-        .catch(() => {
+        .catch((err) => {
           console.log(err.response.data.error.message)
           console.log("server error")
         })
@@ -74,5 +66,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+h1 {
+  font-size: 1.5rem;
+}
 </style>
