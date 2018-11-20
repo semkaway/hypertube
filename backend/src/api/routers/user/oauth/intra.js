@@ -30,28 +30,25 @@ export const intra = model => (req, res, next) => {
         .then(response => axios.get('https://api.intra.42.fr/v2/me', {
             headers: {'Authorization': `Bearer ${response.data.access_token}`}
         })
-            .then(response => {
-                console.log(response.data);
-                model.findOne({'intraId': response.data.id})
-                    .then(user => {
-                        let secret = req.app.get('config').secrets.jwt;
-                        if (user === null) {
-                            model.create({
-                                'activated': true,
-                                'intraId': response.data.id,
-                                'first': response.data.first_name,
-                                'last': response.data.last_name,
-                                'locale': locale,
-                                'image': response.data.image_url,
-                            })
-                                .then(user => returnToken(res, secret, user))
-                                .catch(error => next(error))
-                        } else {
-                            returnToken(res, secret, user);
-                        }
-                    })
-                    .catch(error => next(error))
-            })
+            .then(response => model.findOne({'intraId': response.data.id})
+                .then(user => {
+                    let secret = req.app.get('config').secrets.jwt;
+                    if (user === null) {
+                        model.create({
+                            'activated': true,
+                            'intraId': response.data.id,
+                            'first': response.data.first_name,
+                            'last': response.data.last_name,
+                            'locale': locale,
+                            'image': response.data.image_url,
+                        })
+                            .then(user => returnToken(res, secret, user))
+                            .catch(error => next(error))
+                    } else {
+                        returnToken(res, secret, user);
+                    }
+                })
+                .catch(error => next(error)))
             .catch(error => next(error)))
         .catch(error => next(error));
 };

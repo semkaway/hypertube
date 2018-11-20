@@ -33,7 +33,6 @@ POST http://localhost:3000/api/user/activate
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
   "token": "dvfdmf3g8blmhbv0"
 }
 
@@ -50,13 +49,8 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/user/password/token-check
-Content-Type: application/json
-
-{
-  "email": "test@mail.com",
-  "token": "xplbgkhahycf83ue"
-}
+GET http://localhost:3000/api/user/password/token-check/dvfdmf3g8blmhbv0
+Accept: application/json
 
 ###
 
@@ -64,7 +58,6 @@ POST http://localhost:3000/api/user/password/change
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
   "password": "123456aA",
   "token": "wy7vjyoz5fr8co0m"
 }
@@ -83,7 +76,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/user/resend-activation
+POST http://localhost:3000/api/user/send-activation
 Content-Type: application/json
 
 {
@@ -100,7 +93,6 @@ Content-Type: application/json
   "locale": "ru"
 }
 
-
 ###
 
 POST http://localhost:3000/api/user/oauth/github
@@ -110,6 +102,5 @@ Content-Type: application/json
   "code": "e9de40ebee82fc008db1",
   "locale": "ru"
 }
-
 
 ###

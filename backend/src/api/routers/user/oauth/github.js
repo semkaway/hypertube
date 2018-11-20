@@ -33,26 +33,25 @@ export const github = model => (req, res, next) => {
                 axios.get('https://api.github.com/user', {
                     headers: {'Authorization': `token ${response.data.access_token}`}
                 })
-                    .then(response => {
-                        model.findOne({'githubId': response.data.id})
-                            .then(user => {
-                                let secret = req.app.get('config').secrets.jwt;
-                                if (user === null) {
-                                    model.create({
-                                        'githubId': response.data.id,
-                                        'activated': true,
-                                        'first': response.data.name ?
-                                            response.data.name : response.data.login,
-                                        'locale': locale,
-                                        'image': response.data.avatar_url,
-                                    })
-                                        .then(user => returnToken(res, secret, user))
-                                        .catch(error => next(error));
-                                } else {
-                                    returnToken(res, secret, user);
-                                }
-                            }).catch(error => next(error))
-                    }).catch(error => next(error))
+                    .then(response => model.findOne({'githubId': response.data.id})
+                        .then(user => {
+                            let secret = req.app.get('config').secrets.jwt;
+                            if (user === null) {
+                                model.create({
+                                    'githubId': response.data.id,
+                                    'activated': true,
+                                    'first': response.data.name ?
+                                        response.data.name : response.data.login,
+                                    'locale': locale,
+                                    'image': response.data.avatar_url,
+                                })
+                                    .then(user => returnToken(res, secret, user))
+                                    .catch(error => next(error));
+                            } else {
+                                returnToken(res, secret, user);
+                            }
+                        }).catch(error => next(error)))
+                    .catch(error => next(error))
             }
         }).catch(error => next(error));
 };
