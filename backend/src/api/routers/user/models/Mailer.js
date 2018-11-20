@@ -9,23 +9,23 @@ export class Mailer {
         });
     }
 
-    sendActivation(user) {
+    sendActivation(user, config) {
         let locale = require('./letters/locale')[user.locale];
         return this.transporter.sendMail({
             from: 'no-reply@hypertube.ua',
             to: user.email,
             subject: locale['Activation'],
-            ...(require('./letters/activation')(user, locale))
+            ...(require('./letters/activation')(user, locale, config))
         });
     }
 
-    sendResetPasswordLink(user) {
+    sendResetPasswordLink(user, config) {
         let locale = require('./letters/locale')[user.locale];
         return this.transporter.sendMail({
             from: 'no-reply@hypertube.ua',
             to: user.email,
             subject: locale['Reset Password'],
-            ...(require('./letters/reset-password')(user, locale))
+            ...(require('./letters/reset-password')(user, locale, config))
         });
     }
 }

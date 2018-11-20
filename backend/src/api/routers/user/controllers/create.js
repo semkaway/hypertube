@@ -1,17 +1,17 @@
-import randomToken from 'random-token'
+import Cryptr from 'cryptr'
 import bcrypt from 'bcrypt'
 import {Mailer} from '../models'
 
 const mail = new Mailer();
 
-const saveUser = (model, body, res, next) => {
-    body.activationToken = randomToken(16);
-
-    body.password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(10));
-
-    model.create(body)
+const saveUser = (model, req, res, next) => {
+    const config = req.app.get('config');
+    const crypt  = new Cryptr(config.secrets.crypt);
+    req.body.activationToken = crypt.encrypt(req.body.email);
+    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    model.create(req.body)
         .then(user =>
-            mail.sendActivation(user)
+            mail.sendActivation(user, config)
                 .then(() =>
                     res.status(201).json({
                         "success": true,
@@ -25,7 +25,7 @@ export const createUser = model => (req, res, next) => {
     model.findOne({email: req.body.email})
         .then(found => {
             if (found === null) {
-                saveUser(model, req.body, res, next)
+                saveUser(model, req, res, next)
             } else {
                 res.status(200).json({
                     "success": false,

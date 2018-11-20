@@ -1,29 +1,31 @@
-import {checkForUndefined, errorFields} from "../models";
+import Cryptr from 'cryptr'
 
 export const activateUser = model => (req, res, next) => {
-    let error = errorFields('Missing', checkForUndefined({
-        email: req.body.email, token: req.body.token
-    }));
-    if (error !== '') {
-        throw new Error(error);
+    if (req.body.token === undefined) {
+        throw new Error("Require 'token' field");
     }
-    model.findOne({email: req.body.email})
-        .then(user => {
-            if (user === null || user.activationToken !== req.body.token) {
-                res.status(200).json({
-                    "success": false,
-                    "message": `Invalid ${user ? 'token' : 'email'}`
-                });
-            } else {
-                user.activation      = true;
-                user.activationToken = null;
-                user.save()
-                    .then(() => res.status(201).json({
-                        "success": true,
-                        "message": "User activated"
-                    }))
-                    .catch(error => next(error));
-            }
-        })
-        .catch(error => next(error));
+    if (req.body.token.toString().length < 32) {
+        res.status(200).json({"success": false, "message": 'Invalid token'});
+    } else {
+        const secret = req.app.get('config').secrets.crypt;
+        const crypt  = new Cryptr(secret);
+        const email  = crypt.decrypt(req.body.token);
+
+        model.findOne({'email': email})
+            .then(user => {
+                if (user === null || user.activationToken !== req.body.token) {
+                    res.status(200).json({"success": false, "message": 'Invalid token'});
+                } else {
+                    user.activated       = true;
+                    user.activationToken = null;
+                    user.save()
+                        .then(() => res.status(201).json({
+                            "success": true,
+                            "message": "User activated"
+                        }))
+                        .catch(error => next(error));
+                }
+            })
+            .catch(error => next(error));
+    }
 };

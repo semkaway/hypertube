@@ -1,7 +1,7 @@
 import {createUser} from './create'
 import {checkEmail} from "./check-email"
 import {activateUser} from "./activate"
-import {resendActivation} from "./resend-activation";
+import {sendActivation} from "./send-activation";
 import {login} from "./login"
 import {beforeUserSave, User} from '../models'
 import express from "express";
@@ -14,6 +14,6 @@ mainRouter.route('/check-email/:email').get(checkEmail(User));
 
 mainRouter.route('/activate').post(activateUser(User));
 
-mainRouter.route('/resend-activation').post(resendActivation(User));
+mainRouter.route('/send-activation').post(sendActivation(User));
 
 mainRouter.route('/login').post(login(User));

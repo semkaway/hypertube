@@ -1,8 +1,8 @@
-module.exports = ({email, first, last, resetPasswordToken}, l) => ({
+module.exports = ({first, last, resetPasswordToken}, l, config) => ({
     text: `
 ${l['Hi']} ${first} ${last}.
 ${l['Here is your reset password']} ${l['link']}
-http://localhost:8080/reset-password?email=${email}&token=${resetPasswordToken}
+http://${config.front}/reset-password?token=${resetPasswordToken}
 
 `,
     html: `
@@ -25,7 +25,7 @@ http://localhost:8080/reset-password?email=${email}&token=${resetPasswordToken}
 <strong>${first} ${last}</strong>.
 <br>
 ${l['Here is your reset password']} 
-<a style="color:red;" href="http://localhost:8084/reset-password?email=${email}&token=${resetPasswordToken}">${l['link']}</a><br>
+<a style="color:red;" href="http://${config.front}/reset-password?token=${resetPasswordToken}">${l['link']}</a><br>
 </body>
 </html>
 

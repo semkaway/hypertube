@@ -19,7 +19,7 @@ export const login = model => (req, res, next) => {
             if (user === null) {
                 successFalse(res, 'Invalid email');
             } else {
-                if (user.activation === false) {
+                if (user.activated === false) {
                     successFalse(res, 'User not activated');
                 } else if (user.password === null ||
                     bcrypt.compareSync(req.body.password, user.password) === false) {

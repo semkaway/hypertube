@@ -1,23 +1,21 @@
-import {checkForUndefined, errorFields} from "../models";
+import Cryptr from "cryptr";
 
 export const tokenCheck = model => (req, res, next) => {
-    let error = errorFields('Missing', checkForUndefined({
-        email: req.body.email, token: req.body.token
-    }));
-    if (error !== '') {
-        throw new Error(error);
+    if (req.params.token.toString().length < 32) {
+        res.status(200).json({"success": false, "message": 'Invalid token'});
+    } else {
+        const config = req.app.get('config');
+        const crypt  = new Cryptr(config.secrets.crypt);
+        const email  = crypt.decrypt(req.params.token);
+
+        model.findOne({'email': email})
+            .then(user => {
+                if (user === null || user.resetPasswordToken !== req.params.token) {
+                    res.status(200).json({"success": false, "message": 'Invalid token'});
+                } else {
+                    res.status(200).json({"success": true});
+                }
+            })
+            .catch(error => next(error));
     }
-    model.findOne({email: req.body.email})
-        .then(found => {
-            if (found === null ||
-                found.resetPasswordToken !== req.body.token) {
-                res.status(200).json({
-                    "success": false,
-                    "message": `Invalid ${found ? 'token' : 'email'}`
-                });
-            } else {
-                res.status(200).json({"success": true});
-            }
-        })
-        .catch(error => next(error));
 };

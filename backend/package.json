@@ -17,14 +17,14 @@
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "cryptr": "^4.0.1",
     "email-validator": "^2.0.4",
     "express": "^4.16.1",
     "express-jwt": "^5.3.0",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.12.1",
     "nodemailer": "^4.6.8",
-    "password-validator": "^4.1.1",
-    "random-token": "0.0.8"
+    "password-validator": "^4.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
