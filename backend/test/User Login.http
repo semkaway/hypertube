@@ -1,0 +1,49 @@
+# For a quick start check out our HTTP Requests collection
+# (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form
+# with a text or file field (multipart/form-data);
+
+###
+
+POST http://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+  "email": "xegaka@moruzza.com",
+  "password": "123qweAA"
+}
+
+###
+
+POST http://localhost:3000/api/user/send-activation
+Content-Type: application/json
+
+{
+  "email": "test@mail.com"
+}
+
+###
+
+POST http://localhost:3000/api/user/oauth/intra
+Content-Type: application/json
+
+{
+  "code": "3af76a5d683d263768685e0c6064c1ec03bdec55dfb14419a65160ae41482c0d",
+  "locale": "ru"
+}
+
+###
+
+POST http://localhost:3000/api/user/oauth/github
+Content-Type: application/json
+
+{
+  "code": "e9de40ebee82fc008db1",
+  "locale": "ru"
+}
+
+###
