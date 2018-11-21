@@ -3,8 +3,8 @@
     <b-alert  variant="success"
               :show="dismissCountDown"
               class="mt-3">
-      <h1>{{ $t('activation.success_title')}}</h1>
-      <p>{{ $t('activation.success_alert')}}</p>
+      <h1>{{ $t('forgot_password.restore_pass_success_title')}}</h1>
+      <p>{{ $t('forgot_password.restore_pass_success_alert')}}</p>
             <b-button :to="'/login'" variant="warning">{{$t('button.login')}}</b-button>
     </b-alert>
       <b-alert  variant="danger"
@@ -104,7 +104,7 @@ export default {
                   this.dismissCountDown1 = true
                 }
               })
-              .catch(() => {
+              .catch((err) => {
                 console.log(err.response.data.error.message)
                 console.log("server error")
               })

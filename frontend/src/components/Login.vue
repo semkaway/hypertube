@@ -6,15 +6,18 @@
 				<b-alert 	variant="success"
 									dismissible
 									:show="showAlert"
+									@dismissed="showAlert=false"
 									class="mt-3">{{$t('forgot_password.success_alert')}}
 				</b-alert>
 				<b-alert 	variant="danger"
 									dismissible
 									:show="showNoEmailAlert"
+									@dismissed="showNoEmailAlert=false"
 									class="mt-3">{{$t('forgot_password.error_alert')}}
 				</b-alert>
 				<b-alert 	variant="danger"
 									:show="showNoValidationAlert"
+									@dismissed="showNoValidationAlert=false"
 									class="mt-3">
 									<h1>{{$t('login.no_validation_alert')}}</h1>
 									<b-form class="mt-4">
@@ -35,16 +38,19 @@
 				<b-alert 	variant="success"
 									dismissible
 									:show="showEmailSentSuccess"
+									@dismissed="showEmailSentSuccess=false"
 									class="mt-3">{{$t('registration.success_alert')}}
 				</b-alert>
 		    <b-alert 	variant="danger"
 									dismissible
 									:show="showAlertDanger"
+									@dismissed="showAlertDanger=false"
 									class="mt-3">{{$t('login.error_alert')}}
 				</b-alert>
 				<b-alert 	variant="danger"
 									dismissible
 									:show="showWrongPassAlert"
+									@dismissed="showWrongPassAlert=false"
 									class="mt-3">{{$t('login.wrong_pass_alert')}}
 				</b-alert>
 			</b-col>
@@ -194,7 +200,7 @@
 								}
 							}
 						})
-						.catch(() => {
+						.catch((err) => {
 							console.log(err.response.data.error.message)
 			        console.log("server error")
 		        })
@@ -225,7 +231,7 @@
 										this.$refs.myModal.hide()
                   }
               })
-							.catch(() => {
+							.catch((err) => {
 								console.log(err.response.data.error.message)
 				        console.log("server error")
 			        })
@@ -267,7 +273,7 @@
 									this.showEmailSentSuccess = false
 								}
 						})
-						.catch(() => {
+						.catch((err) => {
 							console.log(err.response.data.error.message)
 			        console.log("server error")
 						})

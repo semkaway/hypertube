@@ -67,7 +67,9 @@ const messages = {
 			message: "Forgot password?",
 			success_alert: "Check your email to restore your password.",
 			error_alert: "User with this email doesn't exist.",
-			error_title: "Sorry, we cannot change your password right now."
+			error_title: "Sorry, we cannot change your password right now.",
+			restore_pass_success_title: "Success!",
+			restore_pass_success_alert: "You can now log in with your new password."
 		},
 		profile: {
 			profile_title: 'profile',
@@ -154,7 +156,9 @@ const messages = {
 			message: "Забыли пароль?",
 			success_alert: "Проверьте почту для восстановления пароля.",
 			error_alert: "Пользователя с таким email не существует.",
-			error_title: "Извините, но сейчас мы не можем изменить Ваш пароль."
+			error_title: "Извините, но сейчас мы не можем изменить Ваш пароль.",
+			restore_pass_success_title: "Пароль успешно изменен",
+			restore_pass_success_alert: "Теперь вы сможете войти в свой аккаунт, используя новый пароль."
 		},
 		profile: {
 			profile_title: 'профиль',
@@ -241,7 +245,9 @@ const messages = {
 			message: "Забули пароль?",
 			success_alert: "Перевірте пошту для відновлення пароля.",
 			error_alert: "Користувача з таким email не існує.",
-			error_title: "Вибачте, але зараз ми не можемо змінити Ваш пароль."
+			error_title: "Вибачте, але зараз ми не можемо змінити Ваш пароль.",
+			restore_pass_success_title: "Пароль успішно оновлено",
+			restore_pass_success_alert: "Тепер ви можете увійти в свій акаунт, використовуючи новий пароль."
 		},
 		profile: {
 			profile_title: 'профіль',

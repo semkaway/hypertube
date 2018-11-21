@@ -6,11 +6,13 @@
 				<b-alert 	variant="success"
 									dismissible
 									:show="showSuccessAlert"
+                  @dismissed="showSuccessAlert=false"
 									class="mt-3">{{$t('profile.success_alert')}}
 				</b-alert>
 				<b-alert 	variant="danger"
 									dismissible
 									:show="showErrorAlert"
+                  @dismissed="showErrorAlert=false"
 									class="mt-3">{{$t('login.error_alert')}}
 				</b-alert>
 			</b-col>
@@ -126,7 +128,7 @@ export default {
                         //this.showSuccessAlert = false
               //     }
               //   })
-              //   .catch(() => {
+              //   .catch((err) => {
               //     console.log(err.response.data.error.message)
               //     console.log("server error")
               //   })
