@@ -70,8 +70,8 @@ POST http://localhost:3000/api/user/login
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
-  "password": "12345678aA"
+  "email": "xegaka@moruzza.com",
+  "password": "123qweAA"
 }
 
 ###
@@ -100,6 +100,18 @@ Content-Type: application/json
 
 {
   "code": "e9de40ebee82fc008db1",
+  "locale": "ru"
+}
+
+#
+###  User Change
+#
+
+PUT http://localhost:3000/api/user/change/locale
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
   "locale": "ru"
 }
 
