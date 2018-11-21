@@ -30,7 +30,7 @@ export const valid = {
         .validate(lang.toString())
 };
 
-const validateUserFields = body => {
+export const validateUserFields = body => {
     let fields = [];
     for (let [field, value] of Object.entries(body)) {
         if (valid[field](value) === false) {

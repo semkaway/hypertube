@@ -17,5 +17,4 @@ export const locale = model => (req, res, next) => {
                 .catch(error => next(error));
         })
         .catch(error => next(error));
-
 };

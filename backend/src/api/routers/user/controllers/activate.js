@@ -35,5 +35,4 @@ export const activateUser = model => (req, res, next) => {
                 .catch(error => next(error));
         })
         .catch(error => next(error));
-
 };

@@ -8,4 +8,3 @@ export const oauthRouter = express.Router();
 oauthRouter.route('/intra').post(intra(User));
 
 oauthRouter.route('/github').post(github(User));
-
