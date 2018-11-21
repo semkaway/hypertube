@@ -9,46 +9,22 @@
 
 ###
 
-PUT http://localhost:3000/api/user/change/locale
+POST http://localhost:3000/api/user/add/email
 Content-Type: application/json
 
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
-  "locale": "ru"
+  "email": "cesukud@mailhex.com"
 }
 
 ###
 
-PUT http://localhost:3000/api/user/change/image
+POST http://localhost:3000/api/user/add/password
 Content-Type: application/json
 
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
-  "image": "image.png"
-}
-
-###
-
-PUT http://localhost:3000/api/user/change/email
-Content-Type: application/json
-
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
-  "email": "jeliy@rsvhr.com",
   "password": "123qweAA"
-}
-
-###
-
-PUT http://localhost:3000/api/user/change/data
-Content-Type: application/json
-
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
-  "first": "John",
-  "last": "Smith",
-  "oldPassword": "123qweAA",
-  "newPassword": "123qweAB"
 }
 
 ###
