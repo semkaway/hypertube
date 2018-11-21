@@ -9,11 +9,11 @@ export class Mailer {
         });
     }
 
-    sendActivation(user, config) {
+    sendActivation(email, user, config) {
         let locale = require('./letters/locale')[user.locale];
         return this.transporter.sendMail({
             from: 'no-reply@hypertube.ua',
-            to: user.email,
+            to: email,
             subject: locale['Activation'],
             ...(require('./letters/activation')(user, locale, config))
         });

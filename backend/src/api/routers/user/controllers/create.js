@@ -11,7 +11,7 @@ const saveUser = (model, req, res, next) => {
     req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     model.create(req.body)
         .then(user =>
-            mail.sendActivation(user, config)
+            mail.sendActivation(user.email, user, config)
                 .then(() =>
                     res.status(201).json({
                         "success": true,
@@ -22,9 +22,14 @@ const saveUser = (model, req, res, next) => {
 };
 
 export const createUser = model => (req, res, next) => {
-    model.findOne({email: req.body.email})
-        .then(found => {
-            if (found === null) {
+    model.findOne({
+        $or: [
+            {'email': req.body.email},
+            {'pendingEmail': req.body.email}
+        ]
+    })
+        .then(user => {
+            if (user === null) {
                 saveUser(model, req, res, next)
             } else {
                 res.status(200).json({

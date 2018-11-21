@@ -11,11 +11,20 @@ export const activateUser = model => (req, res, next) => {
         const crypt  = new Cryptr(secret);
         const email  = crypt.decrypt(req.body.token);
 
-        model.findOne({'email': email})
+        model.findOne({
+            $or: [
+                {'email': email},
+                {'pendingEmail': email}
+            ]
+        })
             .then(user => {
                 if (user === null || user.activationToken !== req.body.token) {
                     res.status(200).json({"success": false, "message": 'Invalid token'});
                 } else {
+                    if (user.pendingEmail === email) {
+                        user.email        = email;
+                        user.pendingEmail = null;
+                    }
                     user.activated       = true;
                     user.activationToken = null;
                     user.save()

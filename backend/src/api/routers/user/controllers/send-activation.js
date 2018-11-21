@@ -20,7 +20,7 @@ export const sendActivation = model => (req, res, next) => {
                 const crypt  = new Cryptr(config.secrets.crypt);
                 user.activationToken = crypt.encrypt(req.body.email);
                 user.save()
-                    .then(user => mail.sendActivation(user, config)
+                    .then(user => mail.sendActivation(user.email, user, config)
                         .then(() => res.status(201).json({
                             "success": true,
                             "message": "Activation was sent to your email"
