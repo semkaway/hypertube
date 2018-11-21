@@ -35,13 +35,13 @@ export default {
 }
 
 .container-fluid {
-		min-height: calc(100vh - 40px);
+		min-height: calc(100vh - 80px);
 }
 
 #footer {
 		width: 100%;
 		background-color: #545c64;
-		height: 40px;
+		height: 80px;
 }
 
 a {

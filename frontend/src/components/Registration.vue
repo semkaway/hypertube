@@ -171,7 +171,7 @@ export default {
 			.then(response => {
 				if (response.data.exist == true) {
 					this.hideEmailExists = false
-                  this.emailError = true
+          this.emailError = true
 				} else if (response.data.exist == false) {
             this.hideEmailExists = true
             this.emailError = false

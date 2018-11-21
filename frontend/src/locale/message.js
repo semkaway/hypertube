@@ -12,7 +12,9 @@ const messages = {
 			send_activation_link: 'send activation link',
 			logout: 'log out',
 			language: 'language',
-			save: 'save'
+			save: 'save',
+			delete: 'delete',
+			cancel: 'cancel'
 		},
 		home: {
 			title: 'home'
@@ -29,6 +31,7 @@ const messages = {
 												<b-col>
 													<div class="float-lg-left text-left">
 														<p>&#10003 8 characters minimum</p>
+														<p>&#10003 Only latin letters</p>
 														<p>&#10003 One uppercase letter</p>
 													</div>
 													<div class="float-lg-right text-left">
@@ -82,9 +85,15 @@ const messages = {
 				change_password: 'Change password',
 				change_email: 'Change email',
 				change_info: 'Change personal info',
+				change_picture: 'Change profile picture',
+				add_media: 'Link social media accounts',
 				old_password: 'Old password',
 				new_password: 'New password',
-				new_password_repeat: 'Repeat new password'
+				new_password_repeat: 'Repeat new password',
+				create_email_and_pass: 'Create email and password',
+				delete_account_title: 'Delete account',
+				delete_account_text: `Are you sure you want to delete your account?
+															This action is irreversible and you will lose all your data.`
 			}
 		},
 	},
@@ -101,7 +110,9 @@ const messages = {
 			send_activation_link: 'отправить ссылку активации',
 			logout: 'выйти',
 			language: 'язык',
-			save: 'сохранить'
+			save: 'сохранить',
+			delete: 'удалить',
+			cancel: 'отмена'
 		},
 		home: {
 			title: 'Главная'
@@ -118,6 +129,7 @@ const messages = {
 												<b-col>
 													<div class="float-lg-left text-left">
 														<p>&#10003 Минимум 8 символов</p>
+														<p>&#10003 Буквы только латинского алфавита</p>
 														<p>&#10003 Одна заглавная буква</p>
 													</div>
 													<div class="float-lg-right text-left">
@@ -158,7 +170,7 @@ const messages = {
 			error_alert: "Пользователя с таким email не существует.",
 			error_title: "Извините, но сейчас мы не можем изменить Ваш пароль.",
 			restore_pass_success_title: "Пароль успешно изменен",
-			restore_pass_success_alert: "Теперь вы сможете войти в свой аккаунт, используя новый пароль."
+			restore_pass_success_alert: "Теперь Вы сможете войти в свой аккаунт, используя новый пароль."
 		},
 		profile: {
 			profile_title: 'профиль',
@@ -171,9 +183,14 @@ const messages = {
 				change_password: 'Изменить пароль',
 				change_email: 'Изменить email',
 				change_info: 'Изменить персональные данные',
+				change_picture: 'Изменить фото профиля',
+				add_media: 'Добавить социальные сети',
 				old_password: 'Старый пароль',
 				new_password: 'Новый пароль',
-				new_password_repeat: 'Повторите новый пароль'
+				new_password_repeat: 'Повторите новый пароль',
+				create_email_and_pass: 'Создать email и пароль',
+				delete_account_title: 'Удалить аккаунт',
+				delete_account_text: 'Вы уверены? Вы не сможете отменить это действие. Все Ваши данные будут утеряны.'
 			}
 		},
 	},
@@ -190,7 +207,9 @@ const messages = {
 			send_activation_link: 'надіслати посилання активації',
 			logout: 'вийти',
 			language: 'мова',
-			save: 'зберегти'
+			save: 'зберегти',
+			delete: 'видалити',
+			cancel: 'скасувати'
 		},
 		home: {
 			title: 'Головна'
@@ -207,6 +226,7 @@ const messages = {
 												<b-col>
 													<div class="float-lg-left text-left">
 														<p>&#10003 Мінімум 8 символів</p>
+														<p>&#10003 Літери тільки латинського алфавіту</p>
 														<p>&#10003 Одна велика літера</p>
 													</div>
 													<div class="float-lg-right text-left">
@@ -247,7 +267,7 @@ const messages = {
 			error_alert: "Користувача з таким email не існує.",
 			error_title: "Вибачте, але зараз ми не можемо змінити Ваш пароль.",
 			restore_pass_success_title: "Пароль успішно оновлено",
-			restore_pass_success_alert: "Тепер ви можете увійти в свій акаунт, використовуючи новий пароль."
+			restore_pass_success_alert: "Тепер Ви можете увійти в свій акаунт, використовуючи новий пароль."
 		},
 		profile: {
 			profile_title: 'профіль',
@@ -260,9 +280,14 @@ const messages = {
 				change_password: 'Змінити пароль',
 				change_email: 'Змінити email',
 				change_info: 'Змінити персональні дані',
+				change_picture: 'Змінити фото профіля',
+				add_media: 'Додати соціальні мережі',
 				old_password: 'Старий пароль',
 				new_password: 'Новий пароль',
-				new_password_repeat: 'Повторіть новий пароль'
+				new_password_repeat: 'Повторіть новий пароль',
+				create_email_and_pass: 'Створити email та пароль',
+				delete_account_title: 'Видалити акаунт',
+				delete_account_text: 'Ви впевнені? Ви не зможете відмінити цю дію. Всі Ваші дані будуть втрачені.'
 			}
 		},
 	}

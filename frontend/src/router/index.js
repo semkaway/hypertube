@@ -67,7 +67,7 @@ let router = new Router({
 		// 		component: oauth
 		// },
 		{
-			path: '/user/profile',
+			path: '/user',
 			name: 'userProfile',
 			component: UserProfile,
 			meta: {

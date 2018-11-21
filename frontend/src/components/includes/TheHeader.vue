@@ -29,7 +29,7 @@
               <b-dropdown-item-button label="profile"
                                       key="profile"
                                       value="profile">
-                                      <router-link to="/user/profile">{{ $t('profile.profile_title') }}</router-link>
+                                      <router-link to="/user">{{ $t('profile.profile_title') }}</router-link>
               </b-dropdown-item-button>
               <b-dropdown-item-button label="settings"
                                       key="settings"
