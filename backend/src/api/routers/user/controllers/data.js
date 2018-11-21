@@ -9,6 +9,7 @@ export const data = model => (req, res, next) => {
 
             body.intra  = user.intraId !== null;
             body.github = user.githubId !== null;
+            body.password = user.password !== null;
             res.status(200).json({
                 "success": true,
                 ...body
