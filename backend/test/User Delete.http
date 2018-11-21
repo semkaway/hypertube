@@ -13,3 +13,8 @@ DELETE http://localhost:3000/api/user/delete/pending-email/eyJhbGciOiJIUzI1NiIsI
 Accept: application/json
 
 ###
+
+DELETE http://localhost:3000/api/user/delete/self/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q
+Accept: application/json
+
+###
