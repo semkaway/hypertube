@@ -17,7 +17,7 @@ export const github = model => (req, res, next) => {
         throw new Error(error);
     }
 
-    if (valid['locale'](locale) === false) {
+    if (valid.locale(locale) === false) {
         locale = 'en';
     }
 

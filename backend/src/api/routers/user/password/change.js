@@ -19,7 +19,7 @@ export const change = model => (req, res, next) => {
             .then(user => {
                 if (user === null || token !== user.resetPasswordToken) {
                     res.status(200).json({"success": false, "message": 'Invalid token'});
-                } else if (valid['password'](password) === false) {
+                } else if (valid.password(password) === false) {
                     res.status(200).json({"success": false, "message": 'Invalid password'});
                 } else {
                     user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
