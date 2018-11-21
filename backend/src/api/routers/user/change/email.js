@@ -1,14 +1,23 @@
-import {Mailer, valid} from "../models";
+import {checkForUndefined, errorFields, Mailer, valid} from "../models";
 import Cryptr from "cryptr";
+import bcrypt from "bcrypt";
+
+const successFalse = (res, msg) => res.status(200).json({
+    "success": false,
+    "message": msg
+});
 
 const mail = new Mailer();
 
 export const email = model => (req, res, next) => {
-    if (req.body.email === undefined) {
-        throw new Error("Require 'email' field");
+    const {email, password} = req.body;
+
+    let error = errorFields('Missing', checkForUndefined({email, password}));
+    if (error !== '') {
+        throw new Error(error);
     }
-    if (valid.email(req.body.email) === false) {
-        return res.status(200).json({"success": false, "message": 'Invalid email'});
+    if (valid.email(email) === false) {
+        return successFalse(res, 'Invalid email');
     }
     model.findOne({
         $or: [
@@ -18,20 +27,26 @@ export const email = model => (req, res, next) => {
     })
         .then((user) => {
             if (user !== null) {
-                return res.status(200).json({"success": false, "message": 'Email exist'});
+                return successFalse(res, 'Email exist');
             }
             model.findById(req.id)
                 .then(user => {
                     if (user === null) {
-                        return res.status(200).json({"success": false, "message": 'Invalid token'});
+                        return successFalse(res, 'Invalid token');
+                    }
+                    if (user.email === null || user.password === null) {
+                        throw new Error("Can't change email");
+                    }
+                    if (bcrypt.compareSync(password, user.password) === false) {
+                        return successFalse(res, 'Invalid password');
                     }
                     const config = req.app.get('config');
                     const crypt  = new Cryptr(config.secrets.crypt);
 
-                    user.activationToken = crypt.encrypt(req.body.email);
-                    user.pendingEmail    = req.body.email;
+                    user.activationToken = crypt.encrypt(email);
+                    user.pendingEmail    = email;
                     user.save()
-                        .then(user => mail.sendActivation(user.pendingEmail, user, config)
+                        .then(user => mail.sendActivation(email, user, config)
                             .then(() => res.status(201).json({
                                 "success": true,
                                 "message": "Activation was sent to your new email"
