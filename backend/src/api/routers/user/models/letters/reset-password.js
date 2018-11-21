@@ -1,6 +1,6 @@
-module.exports = ({first, last, resetPasswordToken}, l, config) => ({
+module.exports = ({first, resetPasswordToken}, l, config) => ({
     text: `
-${l['Hi']} ${first} ${last}.
+${l['Hi']} ${first}.
 ${l['Here is your reset password']} ${l['link']}
 http://${config.front}/reset-password?token=${resetPasswordToken}
 
@@ -22,7 +22,7 @@ http://${config.front}/reset-password?token=${resetPasswordToken}
 </head>
 <body>
 <h3>${l['Hi']}</h3>
-<strong>${first} ${last}</strong>.
+<strong>${first}</strong>.
 <br>
 ${l['Here is your reset password']} 
 <a style="color:red;" href="http://${config.front}/reset-password?token=${resetPasswordToken}">${l['link']}</a><br>

@@ -1,6 +1,6 @@
-module.exports = ({first, last, activationToken}, l, config) => ({
+module.exports = ({first, activationToken}, l, config) => ({
     text: `
-${l['Hi']} ${first} ${last}, ${l['and welcome']}.
+${l['Hi']} ${first}, ${l['and welcome']}.
 ${l['Here is an activation']} ${l['link']}
 http://${config.front}/activate?token=${activationToken}
 
@@ -8,7 +8,7 @@ http://${config.front}/activate?token=${activationToken}
     html: `
 <html>
   <h3>${l['Hi']}</h3>
-  <strong>${first} ${last}</strong>, ${l['and welcome']}.
+  <strong>${first}</strong>, ${l['and welcome']}.
   <br>
   ${l['Here is an activation']} 
   <a href="http://${config.front}/activate?token=${activationToken}">${l['link']}</a>
