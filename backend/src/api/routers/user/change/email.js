@@ -34,7 +34,10 @@ export const email = model => (req, res, next) => {
                     if (user === null) {
                         return successFalse(res, 'Invalid token');
                     }
-                    if (user.email === null || user.password === null) {
+                    if (user.password === null) {
+                        return successFalse(res, 'Need to add password');
+                    }
+                    if (user.email === null) {
                         throw new Error("Can't change email");
                     }
                     if (bcrypt.compareSync(password, user.password) === false) {
