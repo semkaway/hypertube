@@ -60,8 +60,7 @@ export const beforeUserSave = (req, res, next) => {
         error = errorFields('Invalid', validateUserFields(req.body));
     }
     if (error !== '') {
-        res.status(200).json({"success": false, "message": error});
-    } else {
-        next();
+        return res.status(200).json({"success": false, "message": error});
     }
+    next();
 };

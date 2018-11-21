@@ -5,12 +5,11 @@ export const image = model => (req, res, next) => {
     model.findById(req.id)
         .then(user => {
             if (user === null) {
-                res.status(200).json({"success": false, "message": 'Invalid token'});
-            } else {
-                user.image = req.body.image;
-                user.save().then(() => res.status(201).json({"success": true}))
-                    .catch(error => next(error));
+                return res.status(200).json({"success": false, "message": 'Invalid token'});
             }
+            user.image = req.body.image;
+            user.save().then(() => res.status(201).json({"success": true}))
+                .catch(error => next(error));
         })
         .catch(error => next(error));
 };

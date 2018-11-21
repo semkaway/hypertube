@@ -30,13 +30,12 @@ export const createUser = model => (req, res, next) => {
     })
         .then(user => {
             if (user === null) {
-                saveUser(model, req, res, next)
-            } else {
-                res.status(200).json({
-                    "success": false,
-                    "message": "User with this email already exist"
-                });
+                return saveUser(model, req, res, next)
             }
+            res.status(200).json({
+                "success": false,
+                "message": "User with this email already exist"
+            });
         })
         .catch(error => next(error));
 };
