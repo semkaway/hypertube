@@ -13,7 +13,7 @@ POST http://localhost:3000/api/user/add/email
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjY5OWQ5ZmUyOGZkMjZjNGU0ODkyMCIsImlhdCI6MTU0Mjg4Nzk4OX0.fI9XJAjsFThNiPQGNkHmgKDchF8du_934qHsc_oIaFo",
   "email": "cesukud@mailhex.com"
 }
 
@@ -25,6 +25,26 @@ Content-Type: application/json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
   "password": "123qweAA"
+}
+
+###
+
+POST http://localhost:3000/api/user/add/github
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjY5OWQ5ZmUyOGZkMjZjNGU0ODkyMCIsImlhdCI6MTU0Mjg4Nzk4OX0.fI9XJAjsFThNiPQGNkHmgKDchF8du_934qHsc_oIaFo",
+  "code": "3af76a5d683d263768685e0c6064c1ec03bdec55dfb14419a65160ae41482c0d"
+}
+
+###
+
+POST http://localhost:3000/api/user/add/intra
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjY5OWQ5ZmUyOGZkMjZjNGU0ODkyMCIsImlhdCI6MTU0Mjg4Nzk4OX0.fI9XJAjsFThNiPQGNkHmgKDchF8du_934qHsc_oIaFo",
+  "code": "3af76a5d683d263768685e0c6064c1ec03bdec55dfb14419a65160ae41482c0d"
 }
 
 ###
