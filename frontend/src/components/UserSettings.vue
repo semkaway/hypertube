@@ -174,7 +174,7 @@
         <hr>
         <div id="picture" class="mt-4 p-3">
           <h1 class="text-left mb-3">{{ $t('profile.settings.change_picture') }}</h1>
-          <canvas id="myCanvas" width="200" height="100" style="border:5px solid red;">
+          <input type=file @change="onFileSelected">
           </canvas>
           <b-button variant="info" @click="Upload">Upload</b-button>
         </div>
@@ -209,7 +209,7 @@
 <script>
 
 import {HTTP} from '../http-common';
-import saveAs from 'file-saver';
+// import saveAs from 'file-saver';
 
 export default {
   name: 'UserPage',
@@ -235,7 +235,9 @@ export default {
         omniauthHide: true,
         normalHide: false,
         headerBgVariant: 'danger',
-        headerTextVariant: 'light'
+        headerTextVariant: 'light',
+        imageSelected: null,
+        maxSize: 1024
       }
     },
     mounted() {
@@ -429,13 +431,35 @@ export default {
       },
       Upload() {
         // FileSaver.saveAs("https://images.pexels.com/photos/1249214/pexels-photo-1249214.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", "hypertube/frontend/vuetestimg.jpg");
-        var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d");
-        // draw to canvas...
-        canvas.toBlob(function(blob) {
-            saveAs(blob, "vuetestimg.png");
-            console.log(blob)
-        });
+        // var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d");
+        // // draw to canvas...
+        // canvas.toBlob(function(blob) {
+        //     saveAs(blob, "vuetestimg.png");
+        //     console.log(blob)
+        // });
+        const fd = new FormData()
+        fd.append('userimg', this.imageSelected, this.imageSelected.name)
+        console.log(fd['userimg'])
         console.log('img uploaded')
+      },
+      onFileSelected(image){
+        console.log('something happened')
+        const { maxSize } = this
+        const fileUploaded = image.target.files[0]
+
+        if(fileUploaded.name.length > 0) {
+          console.log('enter here')
+          let size = fileUploaded.size / maxSize / maxSize
+          if (!fileUploaded.type.match('image.*')) {
+            // check whether the upload is an image
+            console.log('lol, not an image')
+          } else if (size>1) {
+            // check whether the size is greater than the size limit
+            console.log('your file is too big')
+          } else {
+          this.imageSelected = image.target.files[0]
+        }
+      }
       }
     }
 
