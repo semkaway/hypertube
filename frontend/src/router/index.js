@@ -102,7 +102,7 @@ router.beforeEach((to, from, next) => {
             next()
         }
         else{
-            next({ path: '/user/profile'})
+            next({ path: '/user'})
         }
     } else {
         next()

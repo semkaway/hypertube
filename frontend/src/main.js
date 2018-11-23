@@ -10,7 +10,8 @@ import { 	Navbar,
 					Modal,
 					Alert,
 					Carousel,
-					ListGroup } from 'bootstrap-vue/es/components'
+					ListGroup,
+					Image } from 'bootstrap-vue/es/components'
 // import { Scrollspy } from 'bootstrap-vue/es/directives';
 import App from './App'
 import router from './router'
@@ -54,6 +55,7 @@ Vue.use(Alert);
 Vue.use(Carousel);
 // Vue.use(Scrollspy);
 Vue.use(ListGroup);
+Vue.use(Image);
 
 // Vue.use(VueAxios, axios);
 // Vue.use(HTTP);

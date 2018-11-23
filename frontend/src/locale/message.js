@@ -78,19 +78,22 @@ const messages = {
 			profile_title: 'profile',
 			settings_title: 'settings',
 			success_alert: 'All good, your data was saved.',
+			error_pass_alert: 'Looks like your old password is incorrect.',
 			profile: {
 
 			},
 			settings: {
 				change_password: 'Change password',
 				change_email: 'Change email',
+				email_pending: 'To change your email check activation on: ',
 				change_info: 'Change personal info',
 				change_picture: 'Change profile picture',
 				add_media: 'Link social media accounts',
 				old_password: 'Old password',
 				new_password: 'New password',
 				new_password_repeat: 'Repeat new password',
-				create_email_and_pass: 'Create email and password',
+				create_email: 'Create email',
+				create_pass: 'Create password',
 				delete_account_title: 'Delete account',
 				delete_account_text: `Are you sure you want to delete your account?
 															This action is irreversible and you will lose all your data.`
@@ -176,19 +179,22 @@ const messages = {
 			profile_title: 'профиль',
 			settings_title: 'настройки',
 			success_alert: 'Ваши данные были сохранены.',
+			error_pass_alert: 'Похоже, Вы неверно ввели старый пароль.',
 			profile: {
 
 			},
 			settings: {
 				change_password: 'Изменить пароль',
 				change_email: 'Изменить email',
+				email_pending: 'Для изменения email активируйте его на: ',
 				change_info: 'Изменить персональные данные',
 				change_picture: 'Изменить фото профиля',
 				add_media: 'Добавить социальные сети',
 				old_password: 'Старый пароль',
 				new_password: 'Новый пароль',
 				new_password_repeat: 'Повторите новый пароль',
-				create_email_and_pass: 'Создать email и пароль',
+				create_email: 'Создать email',
+				create_pass: 'Создать пароль',
 				delete_account_title: 'Удалить аккаунт',
 				delete_account_text: 'Вы уверены? Вы не сможете отменить это действие. Все Ваши данные будут утеряны.'
 			}
@@ -273,19 +279,22 @@ const messages = {
 			profile_title: 'профіль',
 			settings_title: 'налаштування',
 			success_alert: 'Ваші дані було збережено.',
+			error_pass_alert: 'Здається, Ви неправильно ввели старий пароль.',
 			profile: {
 
 			},
 			settings: {
 				change_password: 'Змінити пароль',
 				change_email: 'Змінити email',
+				email_pending: 'Для зміни email активуйте його на: ',
 				change_info: 'Змінити персональні дані',
 				change_picture: 'Змінити фото профіля',
 				add_media: 'Додати соціальні мережі',
 				old_password: 'Старий пароль',
 				new_password: 'Новий пароль',
 				new_password_repeat: 'Повторіть новий пароль',
-				create_email_and_pass: 'Створити email та пароль',
+				create_email: 'Створити email',
+				create_pass: 'Створити пароль',
 				delete_account_title: 'Видалити акаунт',
 				delete_account_text: 'Ви впевнені? Ви не зможете відмінити цю дію. Всі Ваші дані будуть втрачені.'
 			}

@@ -9,11 +9,29 @@
                   @dismissed="showSuccessAlert=false"
 									class="mt-3">{{$t('profile.success_alert')}}
 				</b-alert>
+        <b-alert 	variant="success"
+									dismissible
+									:show="showSuccessPassAlert"
+                  @dismissed="showSuccessPassAlert=false"
+									class="mt-3">{{$t('forgot_password.restore_pass_success_title')}} {{$t('forgot_password.restore_pass_success_alert')}}
+				</b-alert>
 				<b-alert 	variant="danger"
+									dismissible
+									:show="showErrorPassAlert"
+                  @dismissed="showErrorPassAlert=false"
+									class="mt-3">{{$t('profile.error_pass_alert')}}
+				</b-alert>
+        <b-alert 	variant="danger"
 									dismissible
 									:show="showErrorAlert"
                   @dismissed="showErrorAlert=false"
 									class="mt-3">{{$t('login.error_alert')}}
+				</b-alert>
+        <b-alert 	variant="success"
+									dismissible
+									:show="showEmailSentSuccess"
+									@dismissed="showEmailSentSuccess=false"
+									class="mt-3">{{$t('registration.success_alert')}}
 				</b-alert>
 			</b-col>
 			<b-col sm="3" lg="4"></b-col>
@@ -23,19 +41,20 @@
         <div class="text-left mt-5 ml-5 d-none d-lg-block" id="scrollspy">
           <h3 href="#">{{ $t('profile.settings_title') }}</h3>
           <b-list-group>
-            <b-list-group-item class="hover-items" :class="{'normalHide': normalHide}"><a href="#password">{{ $t('profile.settings.change_password') }}</a></b-list-group-item>
-            <b-list-group-item class="hover-items" :class="{'normalHide': normalHide}"><a href="#email">{{ $t('profile.settings.change_email') }}</a></b-list-group-item>
-            <b-list-group-item class="hover-items" :class="{'omniauthHide': omniauthHide}"><a href="#email-and-pass">{{ $t('profile.settings.create_email_and_pass') }}</a></b-list-group-item>
-            <b-list-group-item class="hover-items"><a href="#personal">{{ $t('profile.settings.change_info') }}</a></b-list-group-item>
-            <b-list-group-item class="hover-items"><a href="#picture">{{ $t('profile.settings.change_picture') }}</a></b-list-group-item>
-            <b-list-group-item class="hover-items"><a href="#social-media">{{ $t('profile.settings.add_media') }}</a></b-list-group-item>
-            <b-list-group-item class="hover-items"><a href="#delete-account">{{ $t('profile.settings.delete_account_title') }}</a></b-list-group-item>
+            <b-list-group-item class="hover-items" href="#password" :class="{'normalHide': normalHide}">{{ $t('profile.settings.change_password') }}</b-list-group-item>
+            <b-list-group-item class="hover-items" href="#email" :class="{'normalHide': !createEmailHide}">{{ $t('profile.settings.change_email') }}</b-list-group-item>
+            <b-list-group-item class="hover-items" href="#create-email" :class="{'omniauthHide': createEmailHide}">{{ $t('profile.settings.create_email') }}</b-list-group-item>
+            <b-list-group-item class="hover-items" href="#create-pass" :class="{'omniauthHide': passwordHide}">{{ $t('profile.settings.create_pass') }}</b-list-group-item>
+            <b-list-group-item class="hover-items" href="#personal">{{ $t('profile.settings.change_info') }}</b-list-group-item>
+            <b-list-group-item class="hover-items" href="#picture">{{ $t('profile.settings.change_picture') }}</b-list-group-item>
+            <b-list-group-item class="hover-items" href="#social-media" :class="{'socialHide': socialHide}">{{ $t('profile.settings.add_media') }}</b-list-group-item>
+            <b-list-group-item class="hover-items" href="#delete-account">{{ $t('profile.settings.delete_account_title') }}</b-list-group-item>
           </b-list-group>
         </div>
       </b-col>
       <b-col sm="5" lg="5" class="mt-4 mb-4" >
-        <div :class="{'normalHide': normalHide}">
-          <b-form @submit="onSubmitPass" class="mt-4 p-3" id="password">
+        <!-- <div :class="{'normalHide': normalHide}"> -->
+          <b-form @submit="onSubmitPass" class="mt-4 p-3" id="password" :class="{'normalHide': normalHide}">
             <h1 class="text-left mb-3">{{ $t('profile.settings.change_password') }}</h1>
             <b-form-group :label="$t('profile.settings.old_password')"
   												:error="errors.first('password')"
@@ -73,21 +92,23 @@
   												v-bind:placeholder="$t('profile.settings.new_password_repeat')"
   												data-vv-as=" "
   												v-validate="'required|confirmed:passwordRef'"
-  												:class="{'form-control': true, 'error': errors.has('repeat_password') }">
+  												:class="{'form-control': true, 'error': errors.has('new_password_repeat') }">
   							</b-form-input>
-  							<span>{{ errors.first('repeat_password') }}</span>
+  							<span>{{ errors.first('new_password_repeat') }}</span>
   					</b-form-group>
             <b-button type="submit" variant="outline-success" class="mt-2 t">{{$t('button.save')}}</b-button>
+            <hr>
           </b-form>
-          <hr>
           <b-form @submit="onSubmitEmail" class="mt-4 p-3" id="email">
-            <h1 class="text-left mb-3">{{ $t('profile.settings.change_email') }}</h1>
+            <h1 class="text-left mb-3" :class="{'normalHide': !createEmailHide}">{{ $t('profile.settings.change_email') }} </h1>
+            <h1 class="text-left mb-3" :class="{'createEmailHide': createEmailHide}">{{ $t('profile.settings.create_email') }}</h1>
             <b-form-group :label="$t('registration.email')"
   												class="font-weight-bold">
   							<b-form-input name="email"
   												v-model="settings.email"
   												v-bind:placeholder="$t('registration.email')"
   												data-vv-as=" "
+                          :value="user.email"
   												v-validate="'required|email'"
   												:class="{'form-control': true, 'error': errors.has('email'), 'email-error': emailError }"
   												@keyup.native="checkIfEmailExists(settings.email)">
@@ -95,56 +116,57 @@
   							<span>{{ errors.first('email') }}</span>
   							<span :class="{ 'hideEmailExists': hideEmailExists }">{{$t('registration.emailExists')}}</span>
               </b-form-group>
-              <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
-          </b-form>
-        </div>
-        <div style="border: solid red 0.5px;" :class="{'omniauthHide': omniauthHide}">
-          <b-form @submit="onSubmitEmailandPass" class="mt-4 p-3" id="email-and-pass">
-            <h1 class="text-left mb-3">{{ $t('profile.settings.create_email_and_pass') }}</h1>
-            <b-form-group :label="$t('registration.email')"
-  												class="font-weight-bold">
-  							<b-form-input name="create_email"
-  												v-model="create.email"
-  												v-bind:placeholder="$t('registration.email')"
-  												data-vv-as=" "
-  												v-validate="'required|email'"
-  												:class="{'form-control': true, 'error': errors.has('email'), 'email-error': emailError }"
-  												@keyup.native="checkIfEmailExists(create.email)">
-  							</b-form-input>
-  							<span>{{ errors.first('create_email') }}</span>
-  							<span :class="{ 'hideEmailExists': hideEmailExists }">{{$t('registration.emailExists')}}</span>
-              </b-form-group>
-              <b-form-group :label="$t('registration.password')"
-    												:error="errors.first('create_password')"
-    												:description="$t('registration.password_hint')"
-    												class="font-weight-bold">
-    						<b-form-input name="create_password"
-    													ref="password_create"
+              <b-form-group :label="$t('login.password')"
+    												class="font-weight-bold"
+                            :class="{'createEmailHide': !createEmailHide}">
+    						<b-form-input name="email_password"
     													type="password"
-    													v-model="create.password"
-    													v-bind:placeholder="$t('registration.password')"
+    													v-model="settings.email_password"
+    													v-bind:placeholder="$t('login.password')"
     													data-vv-as=" "
     													v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
-    													:class="{'form-control': true, 'error': errors.has('new_password') }">
+    													:class="{'form-control': true, 'error': errors.has('email_password')}">
     						</b-form-input>
-    						<span>{{ errors.first('create_password') }}</span>
-    					</b-form-group>
-              <b-form-group :label="$t('registration.repeat_password')"
-    												class="font-weight-bold">
-    							<b-form-input name="create_password_repeat"
-    												type="password"
-    												v-model="create.password_repeat"
-    												v-bind:placeholder="$t('registration.repeat_password')"
-    												data-vv-as=" "
-    												v-validate="'required|confirmed:password_create'"
-    												:class="{'form-control': true, 'error': errors.has('repeat_password') }">
-    							</b-form-input>
-    							<span>{{ errors.first('create_password_repeat') }}</span>
-    					</b-form-group>
+                <span>{{ errors.first('email_password') }}</span>
+              </b-form-group>
+              <span class="text-muted" :class="{'newEmailSpan': newEmailSpan}">{{ $t('profile.settings.email_pending') }}</span>
+              <span class="text-info" :class="{'newEmailSpan': newEmailSpan}" v-if="user.pendingEmail !== null">{{user.pendingEmail}}</span>
+              <span class="text-info" :class="{'newEmailSpan': newEmailSpan}" v-else>{{user.email}}</span><br>
               <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
+              <hr>
           </b-form>
-        </div>
-        <hr>
+          <b-form @submit="onSubmitCreatePass" class="mt-4 p-3" id="create-pass" :class="{'passwordHide': passwordHide}">
+            <h1 class="text-left mb-3">{{ $t('profile.settings.create_pass') }}</h1>
+            <b-form-group :label="$t('registration.password')"
+  												:error="errors.first('create_password')"
+  												:description="$t('registration.password_hint')"
+  												class="font-weight-bold">
+  						<b-form-input name="create_password"
+  													ref="password_create"
+  													type="password"
+  													v-model="create.password"
+  													v-bind:placeholder="$t('registration.password')"
+  													data-vv-as=" "
+  													v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
+  													:class="{'form-control': true, 'error': errors.has('create_password') }">
+  						</b-form-input>
+  						<span>{{ errors.first('create_password') }}</span>
+  					</b-form-group>
+            <b-form-group :label="$t('registration.repeat_password')"
+  												class="font-weight-bold">
+  							<b-form-input name="create_password_repeat"
+  												type="password"
+  												v-model="create.password_repeat"
+  												v-bind:placeholder="$t('registration.repeat_password')"
+  												data-vv-as=" "
+  												v-validate="'required|confirmed:password_create'"
+  												:class="{'form-control': true, 'error': errors.has('create_password_repeat') }">
+  							</b-form-input>
+  							<span>{{ errors.first('create_password_repeat') }}</span>
+  					</b-form-group>
+            <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
+            <hr>
+        </b-form>
         <b-form @submit="onSubmitPersonal" class="mt-4 p-3" id="personal">
           <h1 class="text-left mb-3">{{ $t('profile.settings.change_info') }}</h1>
           <b-form-group :label="$t('registration.first_name')"
@@ -153,6 +175,7 @@
 												v-model="settings.first_name"
 												v-bind:placeholder="$t('registration.first_name')"
 												data-vv-as=" "
+                        :value="user.first_name"
 												v-validate="'required|alpha|min:3|max:15'"
 												:class="{'form-control': true, 'error': errors.has('first_name') }">
 							</b-form-input>
@@ -164,6 +187,7 @@
 												v-model="settings.last_name"
 												v-bind:placeholder="$t('registration.last_name')"
 												data-vv-as=" "
+                        :value="user.last_name"
 												v-validate="'required|alpha|min:3|max:15'"
 												:class="{'form-control': true, 'error': errors.has('last_name') }">
 							</b-form-input>
@@ -179,12 +203,12 @@
           <b-button variant="info" @click="Upload">Upload</b-button>
         </div>
         <hr>
-        <div id="social-media" class="mt-4 p-3">
+        <div id="social-media" class="mt-4 p-3" :class="{'socialHide': socialHide}">
           <h1 class="text-left mb-3">{{ $t('profile.settings.add_media') }}</h1>
-          <b-btn class="mt-3" variant="dark" @click="deleteAccount">42 Intra</b-btn>
-          <b-btn class="mt-3" variant="dark" @click="hideModal">Github</b-btn>
+          <b-btn class="mt-3 button" :class="{'intra': intra}" variant="dark" href='https://api.intra.42.fr/oauth/authorize?client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7&redirect_uri=http://localhost:8084/intra&response_type=code'>42 Intra</b-btn>
+          <b-btn class="mt-3 button" :class="{'github': github}" variant="dark" href='https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'>Github</b-btn>
+          <hr>
         </div>
-        <hr>
         <div class="mt-4 p-3" id="delete-account">
           <h1 class="text-left mb-3">{{ $t('profile.settings.delete_account_title') }}</h1>
           <b-button variant="danger" size="lg" @click="showModal" class="mt-2">{{$t('button.delete')}}</b-button>
@@ -220,6 +244,7 @@ export default {
           new_password: '',
           new_password_repeat: '',
           email: '',
+          email_password: '',
           first_name: '',
           last_name: ''
         },
@@ -228,12 +253,31 @@ export default {
           password_repeat: '',
           email: ''
         },
+        user: {
+          first_name: '',
+          last_name: '',
+          email: '',
+          pendingEmail: '',
+          image: '',
+          password: '',
+          intra: '',
+          github: ''
+        },
         showSuccessAlert: false,
         showErrorAlert: false,
+        showSuccessPassAlert: false,
+        showErrorPassAlert: false,
         hideEmailExists: true,
+        showEmailSentSuccess: false,
+        newEmailSpan: true,
         emailError: false,
         omniauthHide: true,
+        createEmailHide: true,
         normalHide: false,
+        socialHide: false,
+        passwordHide: true,
+        intra: false,
+        github: false,
         headerBgVariant: 'danger',
         headerTextVariant: 'light',
         imageSelected: null,
@@ -241,7 +285,47 @@ export default {
       }
     },
     mounted() {
-
+        HTTP
+          .get('user/data/'+localStorage.token)
+          .then(result => {
+            if (result.data.success == true) {
+              this.user.first_name = result.data.first
+              this.user.last_name = result.data.last
+              this.user.email = result.data.email
+              this.user.pendingEmail = result.data.pendingEmail
+              this.user.image = result.data.image
+              this.user.password = result.data.password
+              this.user.intra = result.data.intra
+              this.user.github = result.data.github
+              console.log("email: "+this.user.email+" pendingEmail: "+this.user.pendingEmail+" intra: "+this.user.intra+" git: "+this.user.github+" pass: "+this.user.password)
+              if (this.user.email == null) {
+                this.normalHide = true
+                this.omniauthHide = false
+              }
+              if (this.user.intra === true) {
+                this.intra = true
+              }
+              if (this.user.github === true) {
+                this.github = true
+              }
+              if (this.user.github === true && this.user.intra === true) {
+                this.socialHide = true
+              }
+              if (this.user.pendingEmail !== null) {
+                this.newEmailSpan = false
+              }
+              if (this.user.email === null) {
+                this.createEmailHide = false
+              }
+              if (this.user.password === false) {
+                this.passwordHide = false
+                this.normalHide = true
+              }
+            } else if (result.data.success == false) {
+              localStorage.token = ''
+              this.$router.push('/')
+            }
+          })
       },
     methods: {
       logout() {
@@ -260,30 +344,44 @@ export default {
               return false
             }
             else {
-              // HTTP
-              //   .post('someurl', {
-              //     'old_password': this.settings.old_password,
-              //     'new_password': this.settings.new_password,
-              //     'new_password_repeat': this.settings.new_password_repeat
-              //   })
-              //   .then (response => {
-              //     if (response.data.success == true) {
-                    this.showSuccessAlert = true
-                     this.showErrorAlert = false
-              //     } else {
-              //       this.showErrorAlert = true
-                        //this.showSuccessAlert = false
-              //     }
-              //   })
-              //   .catch((err) => {
-              //     console.log(err.response.data.error.message)
-              //     console.log("server error")
-              //   })
+              HTTP
+                .put('user/change/data', {
+                  'token': localStorage.token,
+                  'oldPassword': this.settings.old_password,
+                  'newPassword': this.settings.new_password,
+                })
+                .then (response => {
+                  if (response.data.success == true) {
+                    this.showSuccessPassAlert = true
+                    this.showErrorAlert = false
+                    this.showSuccessAlert = false
+                    this.showErrorPassAlert = false
+                    setTimeout(() => { localStorage.token = ''; this.$router.push('/login')}, 3000)
+                  } else if (response.data.message === "Invalid oldPassword") {
+                    console.log(response.data)
+                    this.showErrorPassAlert = true
+                    this.showErrorAlert = false
+                    this.showSuccessAlert = false
+                    this.showSuccessPassAlert = false
+                  } else if (response.data.message === "Invalid token") {
+                    localStorage.token = ''
+                    this.$router.push('/')
+                  } else {
+                    this.showErrorPassAlert = false
+                    this.showErrorAlert = true
+                    this.showSuccessAlert = false
+                    this.showSuccessPassAlert = false
+                  }
+                })
+                .catch((err) => {
+                  console.log(err.response.data.error.message)
+                  console.log("server error")
+                })
             }
           })
-          // .catch(() => {
-          //   console.log('error')
-          // })
+          .catch(() => {
+            console.log('error')
+          })
       },
       checkIfEmailExists(email) {
   			HTTP
@@ -305,39 +403,82 @@ export default {
   		},
       onSubmitEmail(evt) {
         evt.preventDefault();
-        this.$validator.validate('email', this.settings.email)
-        .then(result => {
-          if(!result) {
+        if (this.user.email !== null) {
+          this.$validator.validate('email_password', this.settings.email_password)
+          this.$validator.validate('email', this.settings.email)
+          .then(result => {
+            if(!result) {
+              console.log('error')
+              return false
+            } else {
+              HTTP
+                .put('user/change/email', {
+                  'token': localStorage.token,
+                  'email': this.settings.email,
+                  'password': this.settings.email_password
+                })
+                .then (response => {
+                  if (response.data.success == true) {
+                    this.showEmailSentSuccess = true
+                    this.newEmailSpan = false
+                    this.showErrorAlert = false
+                  } else if (response.data.message === "Invalid token") {
+                    localStorage.token = ''
+                    this.$router.push('/')
+                  } else {
+                    console.log(response.data)
+                    this.showErrorAlert = true
+                    this.showSuccessAlert = false
+                  }
+                })
+                .catch((err) => {
+                  console.log(err.response.data.error.message)
+                  console.log("server error")
+                })
+            }
+          })
+          .catch(() => {
             console.log('error')
-            return false
-          }
-          else {
-            // HTTP
-            //   .post('someurl', {
-            //     'email': this.settings.email
-            //   })
-            //   .then (response => {
-            //     if (response.data.success == true) {
-                  // this.showSuccessAlert = true
-                  //  this.showErrorAlert = false
-            //     } else {
-                  // this.showErrorAlert = true
-                  //     this.showSuccessAlert = false
-            //     }
-            //   })
-            //   .catch((err) => {
-            //     console.log(err.response.data.error.message)
-            //     console.log("server error")
-            //   })
-          }
-        })
-        // .catch(() => {
-        //   console.log('error')
-        // })
+          })
+        } else {
+          this.$validator.validate('email', this.settings.email)
+          .then(result => {
+            if(!result) {
+              console.log('error')
+              return false
+            } else {
+              HTTP
+                .post('user/add/email', {
+                  'token': localStorage.token,
+                  'email': this.settings.email
+                })
+                .then (response => {
+                  if (response.data.success == true) {
+                    this.showEmailSentSuccess = true
+                    this.newEmailSpan = false
+                    this.showErrorAlert = false
+                  } else if (response.data.message === "Invalid token") {
+                    localStorage.token = ''
+                    this.$router.push('/')
+                  } else {
+                    console.log(response.data)
+                    this.showErrorAlert = true
+                    this.showSuccessAlert = false
+                  }
+                })
+                .catch((err) => {
+                  console.log(err.response.data.error.message)
+                  console.log("server error")
+                })
+            }
+          })
+          .catch(() => {
+            console.log('error')
+          })
+        }
       },
-      onSubmitEmailandPass(evt) {
+      onSubmitCreatePass(evt) {
         evt.preventDefault();
-        this.$validator.validate('create_email', this.create.email)
         this.$validator.validate('create_password', this.create.password)
         this.$validator.validate('create_password_repeat', this.create.password_repeat)
         .then(result => {
@@ -346,28 +487,32 @@ export default {
             return false
           }
           else {
-            // HTTP
-            //   .post('someurl', {
-            //     'email': this.settings.email
-            //   })
-            //   .then (response => {
-            //     if (response.data.success == true) {
+            HTTP
+              .post('user/add/password', {
+                'token': localStorage.token,
+                'password': this.create.password
+              })
+              .then (response => {
+                if (response.data.success == true) {
                   this.showSuccessAlert = true
-                   this.showErrorAlert = false
-            //     } else {
-                  // this.showErrorAlert = true
-                  //     this.showSuccessAlert = false
-            //     }
-            //   })
-            //   .catch((err) => {
-            //     console.log(err.response.data.error.message)
-            //     console.log("server error")
-            //   })
+                  this.showErrorAlert = false
+                } else if (response.data.message === "Invalid token") {
+                  localStorage.token = ''
+                  this.$router.push('/')
+                } else {
+                  this.showErrorAlert = true
+                  this.showSuccessAlert = false
+                }
+              })
+              .catch((err) => {
+                console.log(err.response.data.error.message)
+                console.log("server error")
+              })
           }
         })
-        // .catch(() => {
-        //   console.log('error')
-        // })
+        .catch(() => {
+          console.log('error')
+        })
       },
       onSubmitPersonal(evt) {
         evt.preventDefault();
@@ -379,28 +524,33 @@ export default {
             return false
           }
           else {
-            // HTTP
-            //   .post('someurl', {
-            //     'email': this.settings.email
-            //   })
-            //   .then (response => {
-            //     if (response.data.success == true) {
+            HTTP
+              .put('user/change/data', {
+                'token': localStorage.token,
+                'first': this.settings.first_name,
+                'last': this.settings.last_name,
+              })
+              .then (response => {
+                if (response.data.success == true) {
                   this.showSuccessAlert = true
-                   this.showErrorAlert = false
-            //     } else {
-                  // this.showErrorAlert = true
-                  //     this.showSuccessAlert = false
-            //     }
-            //   })
-            //   .catch((err) => {
-            //     console.log(err.response.data.error.message)
-            //     console.log("server error")
-            //   })
+                  this.showErrorAlert = false
+                } else if (response.data.message === "Invalid token") {
+                  localStorage.token = ''
+                  this.$router.push('/')
+                } else {
+                  this.showErrorAlert = true
+                  this.showSuccessAlert = false
+                }
+              })
+              .catch((err) => {
+                console.log(err.response.data.error.message)
+                console.log("server error")
+              })
           }
         })
-        // .catch(() => {
-        //   console.log('error')
-        // })
+        .catch(() => {
+          console.log('error')
+        })
       },
       showModal () {
         this.$refs.deleteAccount.show()
@@ -409,37 +559,41 @@ export default {
         this.$refs.deleteAccount.hide()
       },
       deleteAccount() {
-        console.log('account deleted')
-        // HTTP
-        //   .post('someurl', {
-        //     'token': localStorage.token
-        //   })
-        //   .then (response => {
-        //     if (response.data.success == true) {
-              // localStorage.token = ''
-              // window.location.href = '/'
-        //     } else {
-              // this.showErrorAlert = true
-              //     this.showSuccessAlert = false
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err.response.data.error.message)
-        //     console.log("server error")
-        //   })
+        HTTP
+          .delete('user/delete/self/'+localStorage.token)
+          .then (response => {
+            if (response.data.success == true) {
+              console.log('account deleted')
+            }
+              localStorage.token = ''
+              window.location.href = '/'
+          })
+          .catch((err) => {
+            console.log(err.response.data.error.message)
+            console.log("server error")
+          })
         this.hideModal()
       },
       Upload() {
-        // FileSaver.saveAs("https://images.pexels.com/photos/1249214/pexels-photo-1249214.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", "hypertube/frontend/vuetestimg.jpg");
-        // var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d");
-        // // draw to canvas...
-        // canvas.toBlob(function(blob) {
-        //     saveAs(blob, "vuetestimg.png");
-        //     console.log(blob)
-        // });
         const fd = new FormData()
         fd.append('userimg', this.imageSelected, this.imageSelected.name)
-        console.log(fd['userimg'])
+        HTTP
+          .put('user/change/image', {
+            'image': fd,
+            'token': localStorage.token
+          })
+          .then (result => {
+            if (response.data.success == true) {
+              this.showSuccessAlert = true
+              this.showErrorAlert = false
+            } else if (response.data.message === "Invalid token") {
+              localStorage.token = ''
+              this.$router.push('/')
+            } else {
+              this.showErrorAlert = true
+              this.showSuccessAlert = false
+            }
+          })
         console.log('img uploaded')
       },
       onFileSelected(image){
@@ -451,13 +605,11 @@ export default {
           console.log('enter here')
           let size = fileUploaded.size / maxSize / maxSize
           if (!fileUploaded.type.match('image.*')) {
-            // check whether the upload is an image
             console.log('lol, not an image')
-          } else if (size>1) {
-            // check whether the size is greater than the size limit
+          } else if (size > 1) {
             console.log('your file is too big')
           } else {
-          this.imageSelected = image.target.files[0]
+            this.imageSelected = image.target.files[0]
         }
       }
       }
@@ -504,7 +656,7 @@ span {
 	font-weight: normal;
 }
 
-.hideEmailExists, .omniauthHide, .normalHide {
+.hideEmailExists, .omniauthHide, .normalHide, .intra, .github, .socialHide, .newEmailSpan, .createEmailHide, .passwordHide {
 	display: none;
 }
 
@@ -523,6 +675,14 @@ a:hover {
 
 .hover-items:hover {
   background-color: #dff7cf;
+}
+
+.button {
+  color: white;
+}
+
+.button:hover {
+  color: #606266;
 }
 
 </style>
