@@ -2,7 +2,7 @@ export const data = model => (req, res, next) => {
     model.findById(req.id)
         .then(user => {
             if (user === null) {
-                res.status(200).json({"success": false, "message": "Invalid token"});
+               return res.status(200).json({"success": false, "message": "Invalid token"});
             }
             let body = (({first, last, email, pendingEmail, image}) =>
                 ({first, last, email, pendingEmail, image}))(user);
