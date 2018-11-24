@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
+import Movies from '@/components/Movies'
 import Registration from '@/components/Registration'
 import Activation from '@/components/Activation'
 import Login from '@/components/Login'
@@ -19,6 +20,11 @@ let router = new Router({
 				path: '/',
 				name: 'home',
 				component: Home
+		},
+		{
+				path: '/movies',
+				name: 'movies',
+				component: Movies
 		},
 		{
 				path: '/register',

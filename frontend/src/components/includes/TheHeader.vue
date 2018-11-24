@@ -5,6 +5,7 @@
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
         <b-navbar-brand to="/">{{ $t('button.home') }}</b-navbar-brand>
+        <b-navbar-brand to="/movies">Movies</b-navbar-brand>
 
         <b-collapse is-nav id="nav_collapse">
 
