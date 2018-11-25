@@ -197,9 +197,10 @@
         <hr>
         <div id="picture" class="mt-4 p-3">
           <h1 class="text-left mb-3">{{ $t('profile.settings.change_picture') }}</h1>
-          <input type=file @change="onFileSelected"><br>
-          <b-img :src="user.image" rounded="circle" height="200" alt="Image preview..."></b-img><br>
-          <b-button variant="info" @click="Upload">Upload</b-button>
+          <label class="file-select">
+            <img :src="user.image" height="200" alt="Image preview..."><br>
+            <input type="file" @change="onFileSelected"/>
+          </label><br>
         </div>
         <hr>
         <div id="social-media" class="mt-4 p-3" :class="{'socialHide': socialHide}">
@@ -234,6 +235,7 @@
 import {HTTP} from '../http-common';
 // import saveAs from 'file-saver';
 var reader  = new FileReader();
+import imageCompression from 'browser-image-compression';
 
 
 export default {
@@ -277,6 +279,7 @@ export default {
         normalHide: false,
         socialHide: false,
         passwordHide: true,
+        hideButton: true,
         intra: false,
         github: false,
         headerBgVariant: 'danger',
@@ -581,7 +584,8 @@ export default {
         this.hideModal()
       },
       Upload() {
-        console.log(reader.result)
+        // console.log(reader.result)
+        // this.compressImg(reader.result)
         HTTP
           .put('user/change/image', {
             'image': reader.result,
@@ -605,33 +609,64 @@ export default {
           })
         console.log('img uploaded')
       },
-      onFileSelected(image){
-        console.log('something happened')
-        const { maxSize } = this
-        const fileUploaded = image.target.files[0]
+    onFileSelected(event) {
 
-        if(fileUploaded.name.length > 0) {
-          console.log('enter here')
-          let size = fileUploaded.size / maxSize / maxSize
-          if (!fileUploaded.type.match('image.*')) {
-            console.log('lol, not an image')
-          } else if (size > 1) {
-            console.log('your file is too big')
-          } else {
-            this.imageSelected = image.target.files[0]
-            var preview = document.querySelector('img');
-            // var reader  = new FileReader();
-            reader.addEventListener("load", function () {
-              preview.src = reader.result;
-            }, false);
+        var imageFile = event.target.files[0];
+        var preview = document.querySelector('img');
 
-            if (this.imageSelected) {
-              reader.readAsDataURL(this.imageSelected);
-            }
-        }
-      }
+        if(imageFile.name.length > 0) {
+          console.log('ty durak')
+              if (!imageFile.type.match('image.*')) {
+                console.log('lol, not an image')
+              } else {
+                console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+                console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+
+                var maxSizeMB = 1;
+                var maxWidthOrHeight = 300; // compressedFile will scale down by ratio to a point that width or height is smaller than maxWidthOrHeight
+                imageCompression(imageFile, maxSizeMB, maxWidthOrHeight) // maxSizeMB, maxWidthOrHeight are optional
+                  .then(function (compressedFile) {
+                    console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+                    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+                    reader.readAsDataURL(compressedFile);
+                    reader.addEventListener("load", function () {
+                            console.log("res: "+reader.result)
+                            preview.src = reader.result
+                            this.fileUploaded = reader.result
+                            HTTP
+                              .put('user/change/image', {
+                                'image': reader.result,
+                                'token': localStorage.token
+                              })
+                              .then (response => {
+                                if (response.data.success == true) {
+                                  this.showSuccessAlert = true
+                                  this.showErrorAlert = false
+                                } else if (response.data.message === "Invalid token") {
+                                  localStorage.token = ''
+                                  this.$router.push('/')
+                                } else {
+                                  this.showErrorAlert = true
+                                  this.showSuccessAlert = false
+                                }
+                              })
+                              .catch((err) => {
+                                console.log(err.response.data.error.message)
+                                console.log("server error")
+                              })
+                            console.log('img uploaded')
+                          })
+                  })
+                  .catch(function (error) {
+                    console.log(error.message);
+                  });
+                }
+      } else {
+        console.log('you fucked up')
       }
     }
+  }
 
   }
 </script>
@@ -674,7 +709,15 @@ span {
 	font-weight: normal;
 }
 
-.hideEmailExists, .omniauthHide, .normalHide, .intra, .github, .socialHide, .newEmailSpan, .createEmailHide, .passwordHide {
+.hideEmailExists,
+.omniauthHide,
+.normalHide,
+.intra,
+.github,
+.socialHide,
+.newEmailSpan,
+.createEmailHide,
+.passwordHide {
 	display: none;
 }
 
@@ -701,6 +744,32 @@ a:hover {
 
 .button:hover {
   color: #606266;
+}
+
+.file-select {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.file-select img {
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.file-select > input[type="file"] {
+  display: none;
 }
 
 </style>
