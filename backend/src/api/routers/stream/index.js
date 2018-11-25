@@ -4,12 +4,7 @@ import torrentStream from "torrent-stream"
 export const streamRouter = express.Router();
 
 streamRouter.route('/:magnet').get((req, res) => {
-    const engine = torrentStream(req.params.magnet, {
-        connections: 1000,
-        uploads: 1000,
-        tmp: '/tmp/stream/torrent',
-        path: '/tmp/stream/movies'
-    });
+    const engine = torrentStream(req.params.magnet);
     engine.on('ready', () => {
         const video = engine.files.reduce((f1, f2) => f1.length > f2.length ? f1 : f2);
         const range = req.headers.range ? req.headers.range.substring(6).split('-') : [0, video.length - 1];
