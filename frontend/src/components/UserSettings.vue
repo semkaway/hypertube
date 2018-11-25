@@ -130,8 +130,7 @@
                 <span>{{ errors.first('email_password') }}</span>
               </b-form-group>
               <span class="text-muted" :class="{'newEmailSpan': newEmailSpan}">{{ $t('profile.settings.email_pending') }}</span>
-              <span class="text-info" :class="{'newEmailSpan': newEmailSpan}" v-if="user.pendingEmail !== null">{{user.pendingEmail}}</span>
-              <span class="text-info" :class="{'newEmailSpan': newEmailSpan}" v-else>{{user.email}}</span><br>
+              <span class="text-info" :class="{'newEmailSpan': newEmailSpan}">{{user.pendingEmail}}</span><br>
               <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
               <hr>
           </b-form>
@@ -198,8 +197,8 @@
         <hr>
         <div id="picture" class="mt-4 p-3">
           <h1 class="text-left mb-3">{{ $t('profile.settings.change_picture') }}</h1>
-          <input type=file @change="onFileSelected">
-          </canvas>
+          <input type=file @change="onFileSelected"><br>
+          <b-img :src="user.image" rounded="circle" height="200" alt="Image preview..."></b-img><br>
           <b-button variant="info" @click="Upload">Upload</b-button>
         </div>
         <hr>
@@ -234,6 +233,8 @@
 
 import {HTTP} from '../http-common';
 // import saveAs from 'file-saver';
+var reader  = new FileReader();
+
 
 export default {
   name: 'UserPage',
@@ -320,6 +321,9 @@ export default {
               if (this.user.password === false) {
                 this.passwordHide = false
                 this.normalHide = true
+              }
+              if (this.user.image === null) {
+                this.user.image = "https://images.pexels.com/photos/248280/pexels-photo-248280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
               }
             } else if (result.data.success == false) {
               localStorage.token = ''
@@ -422,6 +426,7 @@ export default {
                     this.showEmailSentSuccess = true
                     this.newEmailSpan = false
                     this.showErrorAlert = false
+                    this.user.pendingEmail = this.settings.email
                   } else if (response.data.message === "Invalid token") {
                     localStorage.token = ''
                     this.$router.push('/')
@@ -457,6 +462,7 @@ export default {
                     this.showEmailSentSuccess = true
                     this.newEmailSpan = false
                     this.showErrorAlert = false
+                    this.user.pendingEmail = this.settings.email
                   } else if (response.data.message === "Invalid token") {
                     localStorage.token = ''
                     this.$router.push('/')
@@ -575,14 +581,13 @@ export default {
         this.hideModal()
       },
       Upload() {
-        const fd = new FormData()
-        fd.append('userimg', this.imageSelected, this.imageSelected.name)
+        console.log(reader.result)
         HTTP
           .put('user/change/image', {
-            'image': fd,
+            'image': reader.result,
             'token': localStorage.token
           })
-          .then (result => {
+          .then (response => {
             if (response.data.success == true) {
               this.showSuccessAlert = true
               this.showErrorAlert = false
@@ -593,6 +598,10 @@ export default {
               this.showErrorAlert = true
               this.showSuccessAlert = false
             }
+          })
+          .catch((err) => {
+            console.log(err.response.data.error.message)
+            console.log("server error")
           })
         console.log('img uploaded')
       },
@@ -610,6 +619,15 @@ export default {
             console.log('your file is too big')
           } else {
             this.imageSelected = image.target.files[0]
+            var preview = document.querySelector('img');
+            // var reader  = new FileReader();
+            reader.addEventListener("load", function () {
+              preview.src = reader.result;
+            }, false);
+
+            if (this.imageSelected) {
+              reader.readAsDataURL(this.imageSelected);
+            }
         }
       }
       }

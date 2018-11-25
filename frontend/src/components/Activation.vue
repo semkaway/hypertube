@@ -3,9 +3,15 @@
 		<b-alert  variant="success"
               :show="dismissCountDown"
               class="mt-3">
-      <h1>{{ $t('activation.success_title')}}</h1>
-      <p>{{ $t('activation.success_alert')}}</p>
-            <b-button :to="'/login'" variant="warning">{{$t('button.login')}}</b-button>
+        <div v-if="token === ''">
+          <h1>{{ $t('activation.success_title')}}</h1>
+          <p>{{ $t('activation.success_alert')}}</p>
+          <b-button :to="'/login'" variant="warning">{{$t('button.login')}}</b-button>
+        </div>
+        <div v-if="token !== ''">
+          <h1>{{ $t('activation.new_success_title')}}</h1>
+          <b-button :to="'/user'" variant="warning">{{$t('button.profile')}}</b-button>
+        </div>
     </b-alert>
       <b-alert  variant="danger"
                 :show="dismissCountDown1"
@@ -35,7 +41,8 @@ export default {
     return {
         dismissCountDown: 0,
         dismissCountDown1: 0,
-        dismissCountDown2: 0
+        dismissCountDown2: 0,
+        token: localStorage.getItem('token')
       }
     },
     mounted() {

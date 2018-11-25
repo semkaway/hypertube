@@ -26,7 +26,7 @@
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown  v-if="token !== ''"
-                                  :text="$t('button.user')">
+                                  :text="$t('button.profile')">
               <b-dropdown-item-button label="profile"
                                       key="profile"
                                       value="profile">
