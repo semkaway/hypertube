@@ -197,10 +197,14 @@
         <hr>
         <div id="picture" class="mt-4 p-3">
           <h1 class="text-left mb-3">{{ $t('profile.settings.change_picture') }}</h1>
+          <p>Please, enter an url</p>
+          <input type="text">
+          <p>or click on an image below</p>
           <label class="file-select">
             <img :src="user.image" height="200" alt="Image preview..."><br>
-            <input type="file" @change="onFileSelected"/>
+            <input type="file" @change="onFileSelected"/><br>
           </label><br>
+          <b-button variant="success" @click="Upload" :class="{'hideButton': hideButton}">Change picture</b-button>
         </div>
         <hr>
         <div id="social-media" class="mt-4 p-3" :class="{'socialHide': socialHide}">
@@ -290,9 +294,9 @@ export default {
     },
     mounted() {
         HTTP
-          // .get('user/data/'+localStorage.token)
           .get('user/data/')
           .then(result => {
+            console.log(result)
             if (result.data.success == true) {
               this.user.first_name = result.data.first
               this.user.last_name = result.data.last
@@ -334,6 +338,11 @@ export default {
               this.$router.push('/')
             }
           })
+          .catch((err) => {
+            console.log(err)
+            localStorage.token = ''
+            this.$router.push('/')
+          })
       },
     methods: {
       logout() {
@@ -372,7 +381,7 @@ export default {
                     this.showSuccessAlert = false
                     this.showSuccessPassAlert = false
                   } else if (response.data.message === "Invalid token") {
-                    // localStorage.token = ''
+                    localStorage.token = ''
                     this.$router.push('/')
                   } else {
                     this.showErrorPassAlert = false
@@ -536,7 +545,6 @@ export default {
           else {
             HTTP
               .put('user/change/data', {
-                // 'token': localStorage.token,
                 'first': this.settings.first_name,
                 'last': this.settings.last_name,
               })
@@ -585,84 +593,52 @@ export default {
         this.hideModal()
       },
       Upload() {
-        // console.log(reader.result)
-        // this.compressImg(reader.result)
-        HTTP
-          .put('user/change/image', {
-            'image': reader.result
-            // 'token': localStorage.token
-          })
-          .then (response => {
-            if (response.data.success == true) {
-              this.showSuccessAlert = true
-              this.showErrorAlert = false
-            } else if (response.data.message === "Invalid token") {
-              localStorage.token = ''
-              this.$router.push('/')
-            } else {
-              this.showErrorAlert = true
-              this.showSuccessAlert = false
-            }
-          })
-          .catch((err) => {
-            console.log(err.response.data.error.message)
-            console.log("server error")
-          })
-        console.log('img uploaded')
+          HTTP
+            .put('user/change/image', {
+              'image': reader.result
+            })
+            .then (response => {
+              if (response.data.success == true) {
+                this.showSuccessAlert = true
+                this.showErrorAlert = false
+                console.log('img uploaded')
+              } else if (response.data.message === "Invalid token") {
+                localStorage.token = ''
+                this.$router.push('/')
+              } else {
+                this.showErrorAlert = true
+                this.showSuccessAlert = false
+              }
+            })
+            .catch((err) => {
+              console.log(err.response.data.error.message)
+              console.log("server error")
+            })
       },
-    onFileSelected(event) {
+      onFileSelected(event) {
 
         var imageFile = event.target.files[0];
         var preview = document.querySelector('img');
 
         if(imageFile.name.length > 0) {
-          console.log('ty durak')
               if (!imageFile.type.match('image.*')) {
                 console.log('lol, not an image')
               } else {
-                console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
-                console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
-
                 var maxSizeMB = 1;
-                var maxWidthOrHeight = 300; // compressedFile will scale down by ratio to a point that width or height is smaller than maxWidthOrHeight
-                imageCompression(imageFile, maxSizeMB, maxWidthOrHeight) // maxSizeMB, maxWidthOrHeight are optional
+                var maxWidthOrHeight = 300;
+                imageCompression(imageFile, maxSizeMB, maxWidthOrHeight)
                   .then(function (compressedFile) {
-                    console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-                    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-
                     reader.readAsDataURL(compressedFile);
                     reader.addEventListener("load", function () {
-                            console.log("res: "+reader.result)
                             preview.src = reader.result
-                            this.fileUploaded = reader.result
-                            HTTP
-                              .put('user/change/image', {
-                                'image': reader.result
-                                // 'token': localStorage.token
-                              })
-                              .then (response => {
-                                if (response.data.success == true) {
-                                  this.showSuccessAlert = true
-                                  this.showErrorAlert = false
-                                } else if (response.data.message === "Invalid token") {
-                                  localStorage.token = ''
-                                  this.$router.push('/')
-                                } else {
-                                  this.showErrorAlert = true
-                                  this.showSuccessAlert = false
-                                }
-                              })
-                              .catch((err) => {
-                                console.log(err.response.data.error.message)
-                                console.log("server error")
-                              })
-                            console.log('img uploaded')
                           })
                   })
                   .catch(function (error) {
                     console.log(error.message);
                   });
                 }
+                this.imageSelected = reader.result
+                this.hideButton = false
       } else {
         console.log('you fucked up')
       }
@@ -718,7 +694,8 @@ span {
 .socialHide,
 .newEmailSpan,
 .createEmailHide,
-.passwordHide {
+.passwordHide,
+.hideButton {
 	display: none;
 }
 

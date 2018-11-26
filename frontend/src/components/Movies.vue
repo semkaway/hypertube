@@ -45,7 +45,7 @@
         </div> -->
         <b-row class="mt-4">
           <b-col v-for="movie in movies" :key="movie.id" class="movie">
-            <img :src="'http://image.tmdb.org/t/p/w185/'+movie.poster_path">
+            <b-img width="75" :src="'http://image.tmdb.org/t/p/w185/'+movie.poster_path"></b-img>
             <p>{{movie.title}}</p>
             <!-- <p class="description">{{movie.overview}}</p> -->
           </b-col>
