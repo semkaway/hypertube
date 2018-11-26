@@ -11,9 +11,9 @@
 
 PUT http://localhost:3000/api/user/change/locale
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDExZDA4MjhiYzE3NyIsImlhdCI6MTU0MzI0NjUwMX0.EwyKIdcBCLAbmSgLdjMeeN8WOXUrqBGah4f1oPQC_dU
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
   "locale": "ru"
 }
 
@@ -21,9 +21,9 @@ Content-Type: application/json
 
 PUT http://localhost:3000/api/user/change/image
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDExZDA4MjhiYzE3NyIsImlhdCI6MTU0MzI0NjUwMX0.EwyKIdcBCLAbmSgLdjMeeN8WOXUrqBGah4f1oPQC_dU
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
   "image": "image.png"
 }
 
@@ -31,9 +31,9 @@ Content-Type: application/json
 
 PUT http://localhost:3000/api/user/change/email
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDExZDA4MjhiYzE3NyIsImlhdCI6MTU0MzI0NjUwMX0.EwyKIdcBCLAbmSgLdjMeeN8WOXUrqBGah4f1oPQC_dU
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
   "email": "jeliy@rsvhr.com",
   "password": "123qweAA"
 }
@@ -42,9 +42,9 @@ Content-Type: application/json
 
 PUT http://localhost:3000/api/user/change/data
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDExZDA4MjhiYzE3NyIsImlhdCI6MTU0MzI0NjUwMX0.EwyKIdcBCLAbmSgLdjMeeN8WOXUrqBGah4f1oPQC_dU
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q",
   "first": "John",
   "last": "Smith",
   "oldPassword": "123qweAA",

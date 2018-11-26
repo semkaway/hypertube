@@ -9,7 +9,8 @@
 
 ###
 
-GET http://localhost:3000/api/user/data/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZjQyZDE5MWJlMjc4MWJmM2ZlNWNkYiIsImlhdCI6MTU0MjgxMDM3OX0.LQvEdSRD8QNQ1yrURTCtektYWgXHdVJUCgCU-kPEq0Q
+GET http://localhost:3000/api/user/data
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDExZDA4MjhiYzE3NyIsImlhdCI6MTU0MzI0NjUwMX0.EwyKIdcBCLAbmSgLdjMeeN8WOXUrqBGah4f1oPQC_dU
 Accept: application/json
 
 ###
