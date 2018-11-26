@@ -34,8 +34,8 @@ export default {
           console.log('adding')
           HTTP
             .post(`user/add`+currUrl, {
-              "code": myCode,
-              "token": localStorage.token
+              "code": myCode
+              // "token": localStorage.token
             })
             .then(response => {
               if (response.data.success == true) {

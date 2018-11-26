@@ -36,7 +36,7 @@ export default {
     },
       mounted() {
         HTTP
-          .get('user/data/'+localStorage.token)
+          .get('user/data/')
           .then(result => {
             if (result.data.success == true) {
               this.user.first_name = result.data.first

@@ -570,7 +570,7 @@ export default {
       },
       deleteAccount() {
         HTTP
-          .delete('user/delete/self/'+localStorage.token)
+          .delete('user/delete/self/')
           .then (response => {
             if (response.data.success == true) {
               console.log('account deleted')
