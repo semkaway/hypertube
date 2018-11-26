@@ -26,7 +26,7 @@ export const valid = {
         .is().min(3)
         .is().max(15).validate(name.toString()),
     locale: lang => new validator()
-        .is().oneOf(['en', 'ru', 'ua'])
+        .is().oneOf(['en', 'ru', 'uk'])
         .validate(lang.toString())
 };
 
