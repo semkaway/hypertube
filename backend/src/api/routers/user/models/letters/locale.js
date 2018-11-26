@@ -17,7 +17,7 @@ module.exports = {
         'link': 'ссылка',
         'Here is your reset password': 'Для восстановление пароля вот',
     },
-    'ua': {
+    'uk': {
         'Activation': 'Активація',
         'Reset Password': 'Відновлення Паролю',
         'Hi': 'Привіт',
