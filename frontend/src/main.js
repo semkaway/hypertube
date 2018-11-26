@@ -20,6 +20,7 @@ import VeeValidate, { Validator } from 'vee-validate'
 import ru from './locale/ru'
 import en from 'vee-validate/dist/locale/en'
 import uk from './locale/uk'
+import setAuthorizationToken from './utils/setAuthToken'
 
 Validator.localize(uk);
 Validator.localize(ru);
@@ -62,6 +63,8 @@ Vue.use(Image);
 
 Vue.use(VeeValidate, config);
 Vue.config.productionTip = false
+
+setAuthorizationToken(localStorage.token)
 
 /* eslint-disable no-new */
 new Vue({
