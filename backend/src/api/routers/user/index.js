@@ -19,4 +19,4 @@ userRouter.use('/change', decodeToken, changeRouter);
 
 userRouter.use('/add', decodeToken, addRouter);
 
-userRouter.use('/delete', deleteRouter);
+userRouter.use('/delete', decodeToken, deleteRouter);

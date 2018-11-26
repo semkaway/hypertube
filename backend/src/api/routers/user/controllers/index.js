@@ -19,4 +19,4 @@ mainRouter.route('/send-activation').post(sendActivation(User));
 
 mainRouter.route('/login').post(login(User));
 
-mainRouter.route('/data/:token').get(decodeToken, data(User));
+mainRouter.route('/data').get(decodeToken, data(User));
