@@ -7,9 +7,9 @@ import cors from 'cors'
 // Declare an app from express
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.urlencoded({limit: '500kb', extended: true}));
 app.use(bodyParser.json({limit: '500kb'}));
-app.use(cors());
 
 dbConnect();
 
@@ -25,7 +25,6 @@ app.all('*', (req, res) => {
 
 app.use((error, req, res, next) => {
     console.error(error.stack);
-    res.append('Access-Control-Allow-Origin', ['*']);
     res.status(500).json({
         "error": {
             "message": error.message

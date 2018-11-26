@@ -3,11 +3,11 @@
         <div class="panel">
             <label class="l" for="order">order</label>
             <select id="order" ref="order" @change="change()">
-                <option value="last added">last added</option>
-                <option value="rating">rating</option>
-                <option value="title">title</option>
                 <option value="trending">trending</option>
+                <option value="rating">rating</option>
                 <option value="year">year</option>
+                <option value="title">title</option>
+                <option value="last added">last added</option>
             </select>
             <label class="l" for="pages">page</label>
             <select id="pages" ref="pages" @change="change()">
