@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="panel">
+        <!-- <div class="panel">
             <label class="l" for="order">order</label>
             <select id="order" ref="order" @change="change()">
                 <option value="trending">trending</option>
@@ -42,34 +42,44 @@
                     </video>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <b-row class="mt-4">
+          <b-col v-for="movie in movies" :key="movie.id" class="movie">
+            <img :src="'http://image.tmdb.org/t/p/w185/'+movie.poster_path">
+            <p>{{movie.title}}</p>
+            <!-- <p class="description">{{movie.overview}}</p> -->
+          </b-col>
+        </b-row>
     </div>
 </template>
 
 <script>
     import {HTTP} from '../http-common';
+    import axios from 'axios'
 
     export default {
         name: 'Movies',
         data() {
-            return {}
+            return {
+              movies: '',
+              page: 1,
+            }
         },
         mounted() {
-            HTTP.get('movies')
-                .then(res => {
-                    let pages = this.$refs.pages;
-                    res.data.forEach(num => {
-                        num              = parseInt(num.split('/')[1]);
-                        let option       = document.createElement('option');
-                        option.innerHTML = num;
-                        option.setAttribute('value', num);
-                        pages.append(option);
-                    });
-                })
-                .catch(err => console.error(err));
-
+          this.requestMovies(1)
         },
         methods: {
+            requestMovies(page) {
+              console.log(page)
+              axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
+                            +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
+                            '&page='+page)
+              .then(result => {
+                console.log(result)
+                this.movies = result.data.results
+                console.log(this.movies)
+              })
+            },
             apply() {
                 const sizeIndex = this.$refs.size.options.selectedIndex;
                 const langIndex = this.$refs.lang.options.selectedIndex;
@@ -168,13 +178,34 @@
                     })
                         .catch(err => console.error(err));
                 }
+            },
+            handleScroll () {
+              console.log(this.page)
+              var d = document.documentElement;
+              var offset = d.scrollTop + window.innerHeight;
+              var height = d.offsetHeight;
+
+              if (offset === height) {
+                this.page = this.page + 1;
+                this.requestMovies(this.page)
+                console.log(this.page)
+              }
             }
+        },
+        watch: {
+
+        },
+        created () {
+          window.addEventListener('scroll', this.handleScroll);
+        },
+        destroyed () {
+          window.removeEventListener('scroll', this.handleScroll);
         }
     }
 </script>
 
 <style scoped>
-    .panel {
+    /* .panel {
         padding         : 10px;
         display         : flex;
         flex-direction  : row;
@@ -206,6 +237,20 @@
         height          : 100%;
         top             : 0;
         left            : 0;
-    }
+    } */
+
+/* .movie {
+  border: solid red 1px;
+}
+
+.movie:hover ~ .description{
+    border: solid green 1px;
+    display: block;
+
+}
+
+.description {
+    display: none;
+} */
 
 </style>

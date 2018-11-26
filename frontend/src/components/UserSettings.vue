@@ -290,7 +290,8 @@ export default {
     },
     mounted() {
         HTTP
-          .get('user/data/'+localStorage.token)
+          // .get('user/data/'+localStorage.token)
+          .get('user/data/')
           .then(result => {
             if (result.data.success == true) {
               this.user.first_name = result.data.first
@@ -353,7 +354,7 @@ export default {
             else {
               HTTP
                 .put('user/change/data', {
-                  'token': localStorage.token,
+                  // 'token': localStorage.token,
                   'oldPassword': this.settings.old_password,
                   'newPassword': this.settings.new_password,
                 })
@@ -371,7 +372,7 @@ export default {
                     this.showSuccessAlert = false
                     this.showSuccessPassAlert = false
                   } else if (response.data.message === "Invalid token") {
-                    localStorage.token = ''
+                    // localStorage.token = ''
                     this.$router.push('/')
                   } else {
                     this.showErrorPassAlert = false
@@ -420,7 +421,7 @@ export default {
             } else {
               HTTP
                 .put('user/change/email', {
-                  'token': localStorage.token,
+                  // 'token': localStorage.token,
                   'email': this.settings.email,
                   'password': this.settings.email_password
                 })
@@ -457,7 +458,7 @@ export default {
             } else {
               HTTP
                 .post('user/add/email', {
-                  'token': localStorage.token,
+                  // 'token': localStorage.token,
                   'email': this.settings.email
                 })
                 .then (response => {
@@ -498,7 +499,7 @@ export default {
           else {
             HTTP
               .post('user/add/password', {
-                'token': localStorage.token,
+                // 'token': localStorage.token,
                 'password': this.create.password
               })
               .then (response => {
@@ -535,7 +536,7 @@ export default {
           else {
             HTTP
               .put('user/change/data', {
-                'token': localStorage.token,
+                // 'token': localStorage.token,
                 'first': this.settings.first_name,
                 'last': this.settings.last_name,
               })
@@ -588,8 +589,8 @@ export default {
         // this.compressImg(reader.result)
         HTTP
           .put('user/change/image', {
-            'image': reader.result,
-            'token': localStorage.token
+            'image': reader.result
+            // 'token': localStorage.token
           })
           .then (response => {
             if (response.data.success == true) {
@@ -636,8 +637,8 @@ export default {
                             this.fileUploaded = reader.result
                             HTTP
                               .put('user/change/image', {
-                                'image': reader.result,
-                                'token': localStorage.token
+                                'image': reader.result
+                                // 'token': localStorage.token
                               })
                               .then (response => {
                                 if (response.data.success == true) {

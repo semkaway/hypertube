@@ -125,6 +125,7 @@
 
 	import {HTTP} from '../http-common';
 	import PromiseWindow from 'promise-window'
+	import setAuthorizationToken from '../utils/setAuthToken'
 
 	export default {
 		name: 'Login',
@@ -167,6 +168,7 @@
 								this.$i18n.locale = response.data.locale
 								localStorage.locale = response.data.locale
 								localStorage.token = response.data.token
+								setAuthorizationToken(response.data.token)
 								this.$router.push('/')
 							} else if (response.data.success == false) {
 								if (response.data.message == "Invalid email") {

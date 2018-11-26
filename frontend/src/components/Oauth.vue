@@ -7,6 +7,7 @@
 <script>
 
 import {HTTP} from '../http-common';
+import setAuthorizationToken from '../utils/setAuthToken'
 
 
 export default {
@@ -65,6 +66,7 @@ export default {
                 this.$i18n.locale = response.data.locale
                 localStorage.locale = response.data.locale
                 localStorage.token = response.data.token
+                setAuthorizationToken(response.data.token)
                 this.$router.push('/')
               } else {
                 console.log('code not recieved')
