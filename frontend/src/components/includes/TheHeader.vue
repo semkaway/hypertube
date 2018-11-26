@@ -66,7 +66,7 @@ export default {
         },
         ua: {
           lang: 'Українська',
-          short: "ua"
+          short: "uk"
         },
       }
     }

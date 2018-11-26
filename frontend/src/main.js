@@ -19,9 +19,9 @@ import i18n from './locale'
 import VeeValidate, { Validator } from 'vee-validate'
 import ru from './locale/ru'
 import en from 'vee-validate/dist/locale/en'
-import ua from './locale/ua'
+import uk from './locale/uk'
 
-Validator.localize(ua);
+Validator.localize(uk);
 Validator.localize(ru);
 
 const config = {
@@ -32,7 +32,7 @@ const config = {
 	dictionary: {
 		 ru: ru,
 		 en: en,
-		 ua: ua
+		 uk: uk
 	 },
 	errorBagName: 'errors', // change if property conflicts
 	events: 'input|blur',

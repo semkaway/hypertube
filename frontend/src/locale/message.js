@@ -202,7 +202,7 @@ const messages = {
 			}
 		},
 	},
-	ua: {
+	uk: {
 		button: {
 			home: "головна",
 			login: "увійти",
