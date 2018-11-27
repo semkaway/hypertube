@@ -1,12 +1,13 @@
 import express from 'express'
 import {userRouter} from './routers/user'
-import {streamRouter} from './routers/stream'
+import {movieRouter} from './routers/movie'
+import {decodeToken} from './routers/utils/decodeToken'
 
 export const restRouter = express.Router();
 
 restRouter.use('/user', userRouter);
 
-restRouter.use('/stream', streamRouter);
+restRouter.use('/movie', decodeToken, movieRouter);
 
 const axios = require('axios');
 restRouter.route('/movies').get((req, res, next) => axios.get('https://tv-v2.api-fetch.website/movies').then(data => res.json(data.data)).catch(err => next(err)));

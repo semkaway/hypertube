@@ -6,7 +6,6 @@ export const data = model => (req, res, next) => {
             }
             let body = (({first, last, email, pendingEmail, image}) =>
                 ({first, last, email, pendingEmail, image}))(user);
-
             body.intra  = user.intraId !== null;
             body.github = user.githubId !== null;
             body.password = user.password !== null;
