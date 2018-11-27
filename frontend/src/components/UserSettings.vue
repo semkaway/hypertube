@@ -197,9 +197,17 @@
         <hr>
         <div id="picture" class="mt-4 p-3">
           <h1 class="text-left mb-3">{{ $t('profile.settings.change_picture') }}</h1>
-          <p>Please, enter an url</p>
-          <input type="text">
-          <p>or click on an image below</p>
+          <p>{{$t('profile.settings.enter_url')}}</p>
+          <b-form-input
+                  type="text"
+                  name="img_url"
+                  v-model="img_url"
+                  placeholder='https://images.pexels.com/photos/1616227/pexels-photo-1616227.jpeg'
+                  data-vv-as=" "
+                  v-validate="'url:require_protocol'"
+                  @change="onFileSelected"></b-form-input><br>
+          <span>{{ errors.first('img_url') }}</span>
+          <p>{{$t('profile.settings.click')}}</p>
           <label class="file-select">
             <img :src="user.image" height="200" alt="Image preview..."><br>
             <input type="file" @change="onFileSelected"/><br>
@@ -237,7 +245,6 @@
 <script>
 
 import {HTTP} from '../http-common';
-// import saveAs from 'file-saver';
 var reader  = new FileReader();
 import imageCompression from 'browser-image-compression';
 
@@ -270,6 +277,7 @@ export default {
           intra: '',
           github: ''
         },
+        img_url: '',
         showSuccessAlert: false,
         showErrorAlert: false,
         showSuccessPassAlert: false,
@@ -593,9 +601,13 @@ export default {
         this.hideModal()
       },
       Upload() {
+        if (this.imageSelected === null) {
+          this.imageSelected = reader.result
+        }
+        console.log(this.imageSelected)
           HTTP
             .put('user/change/image', {
-              'image': reader.result
+              'image': this.imageSelected
             })
             .then (response => {
               if (response.data.success == true) {
@@ -616,31 +628,46 @@ export default {
             })
       },
       onFileSelected(event) {
-
-        var imageFile = event.target.files[0];
         var preview = document.querySelector('img');
 
-        if(imageFile.name.length > 0) {
-              if (!imageFile.type.match('image.*')) {
-                console.log('lol, not an image')
-              } else {
-                var maxSizeMB = 1;
-                var maxWidthOrHeight = 300;
-                imageCompression(imageFile, maxSizeMB, maxWidthOrHeight)
-                  .then(function (compressedFile) {
-                    reader.readAsDataURL(compressedFile);
-                    reader.addEventListener("load", function () {
-                            preview.src = reader.result
-                          })
-                  })
-                  .catch(function (error) {
-                    console.log(error.message);
-                  });
-                }
-                this.imageSelected = reader.result
-                this.hideButton = false
+        if (event.target !== undefined && event.target.files !== null) {
+          var imageFile = event.target.files[0];
+
+          if(imageFile.name.length > 0) {
+                if (!imageFile.type.match('image.*')) {
+                  console.log('lol, not an image')
+                } else {
+                  var maxSizeMB = 1;
+                  var maxWidthOrHeight = 300;
+                  imageCompression(imageFile, maxSizeMB, maxWidthOrHeight)
+                    .then(function (compressedFile) {
+                      reader.readAsDataURL(compressedFile);
+                      reader.addEventListener("load", function () {
+                              preview.src = reader.result
+                            })
+                    })
+                    .catch(function (error) {
+                      console.log(error.message);
+                    });
+                  }
+                  this.imageSelected = reader.result
+                  console.log(reader.result)
+                  this.hideButton = false
+        } else {
+          console.log('you fucked up')
+        }
       } else {
-        console.log('you fucked up')
+        this.$validator.validate('img_url', this.img_url)
+        .then(result => {
+          if(!result) {
+            console.log('error')
+            return false
+          } else {
+            preview.src = this.img_url
+            this.imageSelected = preview.src
+            this.hideButton = false
+          }
+        })
       }
     }
   }

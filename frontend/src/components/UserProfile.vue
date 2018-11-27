@@ -56,6 +56,11 @@ export default {
               this.$router.push('/')
             }
           })
+          .catch((err) => {
+            console.log(err)
+            localStorage.token = ''
+            this.$router.push('/')
+          })
       },
       methods: {
         logout() {

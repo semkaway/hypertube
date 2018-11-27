@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       locale: 'en',
-      token: '',
+      token: localStorage.getItem('token'),
       lang: {
         en: {
           lang: 'English',

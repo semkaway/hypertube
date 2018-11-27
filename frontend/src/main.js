@@ -66,7 +66,6 @@ Vue.config.productionTip = false
 
 setAuthorizationToken(localStorage.token)
 
-/* eslint-disable no-new */
 new Vue({
 	el: '#app',
 	components: {

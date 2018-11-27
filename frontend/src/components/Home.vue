@@ -86,7 +86,24 @@ export default {
     }
   },
   mounted() {
-    this.requestMovies(1)
+    HTTP
+      .get('user/data/')
+      .then(result => {
+        console.log(result)
+        if (result.data.success == true) {
+          this.token = result.data.token
+          this.requestMovies(1)
+        } else if (result.data.success == false) {
+          localStorage.token = ''
+          this.$router.push('/')
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        this.token = ''
+        localStorage.token = ''
+        this.$router.push('/')
+      })
   },
   methods: {
       requestMovies(page) {
@@ -95,13 +112,13 @@ export default {
                       +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
                       '&page='+page)
         .then(result => {
-          console.log(result)
+          // console.log(result)
           this.movies = result.data.results
-          console.log(this.movies)
+          // console.log(this.movies)
         })
       },
       handleScroll () {
-        console.log(this.page)
+        // console.log(this.page)
         var d = document.documentElement;
         var offset = d.scrollTop + window.innerHeight;
         var height = d.offsetHeight;
@@ -109,7 +126,7 @@ export default {
         if (offset === height) {
           this.page = this.page + 1;
           this.requestMovies(this.page)
-          console.log(this.page)
+          // console.log(this.page)
         }
       },
       onSlideStart (slide) {
