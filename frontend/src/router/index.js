@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Movies from '@/components/Movies'
+import Movie from '@/components/Movie'
 import Registration from '@/components/Registration'
 import Activation from '@/components/Activation'
 import Login from '@/components/Login'
@@ -18,13 +19,25 @@ let router = new Router({
 	routes: [
 		{
 				path: '/',
+				component: Home,
 				name: 'home',
-				component: Home
+				meta: {
+				  homePage: true
+				}
 		},
 		{
 				path: '/movies',
-				name: 'movies',
-				component: Movies
+				component: Movies,
+				meta: {
+	      		requiresAuth: true
+	    	}
+		},
+		{
+				path: '/movies/:id',
+				component: Movie,
+				meta: {
+	      		requiresAuth: true
+	    	}
 		},
 		{
 				path: '/register',
@@ -62,16 +75,6 @@ let router = new Router({
 				name: 'oauthGit',
 				component: oauth
 		},
-		// {
-		// 		path: '/oauth42',
-		// 		name: 'oauthGeneral42',
-		// 		component: oauth
-		// },
-		// {
-		// 		path: '/oauthgit',
-		// 		name: 'oauthGeneralGit',
-		// 		component: oauth
-		// },
 		{
 			path: '/user',
 			name: 'userProfile',
@@ -109,6 +112,13 @@ router.beforeEach((to, from, next) => {
         }
         else{
             next({ path: '/user'})
+        }
+    } else if(to.matched.some(record => record.meta.homePage)) {
+        if(localStorage.getItem('token') == ''){
+            next()
+        }
+        else{
+            next({ path: '/movies'})
         }
     } else {
         next()

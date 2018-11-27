@@ -130,7 +130,8 @@
                 <span>{{ errors.first('email_password') }}</span>
               </b-form-group>
               <span class="text-muted" :class="{'newEmailSpan': newEmailSpan}">{{ $t('profile.settings.email_pending') }}</span>
-              <span class="text-info" :class="{'newEmailSpan': newEmailSpan}">{{user.pendingEmail}}</span><br>
+              <span class="text-info" :class="{'newEmailSpan': newEmailSpan}">{{user.pendingEmail}}</span>
+              <span class="text-danger" :class="{'newEmailSpan': newEmailSpan}" @click="deleteEmail">{{$t('button.delete')}}</span><br>
               <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
               <hr>
           </b-form>
@@ -175,7 +176,7 @@
 												v-bind:placeholder="$t('registration.first_name')"
 												data-vv-as=" "
                         :value="user.first_name"
-												v-validate="'required|alpha|min:3|max:15'"
+												v-validate="'alpha|min:3|max:15'"
 												:class="{'form-control': true, 'error': errors.has('first_name') }">
 							</b-form-input>
 							<span>{{ errors.first('first_name') }}</span>
@@ -187,7 +188,7 @@
 												v-bind:placeholder="$t('registration.last_name')"
 												data-vv-as=" "
                         :value="user.last_name"
-												v-validate="'required|alpha|min:3|max:15'"
+												v-validate="'alpha|min:3|max:15'"
 												:class="{'form-control': true, 'error': errors.has('last_name') }">
 							</b-form-input>
 							<span>{{ errors.first('last_name') }}</span>
@@ -401,11 +402,15 @@ export default {
                 .catch((err) => {
                   console.log(err.response.data.error.message)
                   console.log("server error")
+                  localStorage.token = ''
+                  this.$router.push('/')
                 })
             }
           })
           .catch(() => {
             console.log('error')
+            localStorage.token = ''
+            this.$router.push('/')
           })
       },
       checkIfEmailExists(email) {
@@ -424,6 +429,8 @@ export default {
   			.catch((err) => {
   				console.log(err.response.data.error)
   				console.log("server error")
+          localStorage.token = ''
+          this.$router.push('/')
   			})
   		},
       onSubmitEmail(evt) {
@@ -460,11 +467,15 @@ export default {
                 .catch((err) => {
                   console.log(err.response.data.error.message)
                   console.log("server error")
+                  localStorage.token = ''
+                  this.$router.push('/')
                 })
             }
           })
           .catch(() => {
             console.log('error')
+            localStorage.token = ''
+            this.$router.push('/')
           })
         } else {
           this.$validator.validate('email', this.settings.email)
@@ -496,13 +507,39 @@ export default {
                 .catch((err) => {
                   console.log(err.response.data.error.message)
                   console.log("server error")
+                  localStorage.token = ''
+                  this.$router.push('/')
                 })
             }
           })
           .catch(() => {
             console.log('error')
+            localStorage.token = ''
+            this.$router.push('/')
           })
         }
+      },
+      deleteEmail() {
+        HTTP
+          .delete('user/delete/pending-email')
+          .then (response => {
+            if (response.data.success == true) {
+              this.newEmailSpan = true
+            } else if (response.data.message === "Invalid token") {
+              localStorage.token = ''
+              this.$router.push('/')
+            } else {
+              console.log(response.data)
+              this.showErrorAlert = true
+              this.showSuccessAlert = false
+            }
+          })
+          .catch((err) => {
+            console.log(err.response.data.error.message)
+            console.log("server error")
+            localStorage.token = ''
+            this.$router.push('/')
+          })
       },
       onSubmitCreatePass(evt) {
         evt.preventDefault();
@@ -534,11 +571,15 @@ export default {
               .catch((err) => {
                 console.log(err.response.data.error.message)
                 console.log("server error")
+                localStorage.token = ''
+                this.$router.push('/')
               })
           }
         })
         .catch(() => {
           console.log('error')
+          localStorage.token = ''
+          this.$router.push('/')
         })
       },
       onSubmitPersonal(evt) {
@@ -571,11 +612,15 @@ export default {
               .catch((err) => {
                 console.log(err.response.data.error.message)
                 console.log("server error")
+                localStorage.token = ''
+                this.$router.push('/')
               })
           }
         })
         .catch(() => {
           console.log('error')
+          localStorage.token = ''
+          this.$router.push('/')
         })
       },
       showModal () {
@@ -597,6 +642,8 @@ export default {
           .catch((err) => {
             console.log(err.response.data.error.message)
             console.log("server error")
+            localStorage.token = ''
+            this.$router.push('/')
           })
         this.hideModal()
       },
@@ -625,6 +672,8 @@ export default {
             .catch((err) => {
               console.log(err.response.data.error.message)
               console.log("server error")
+              localStorage.token = ''
+              this.$router.push('/')
             })
       },
       onFileSelected(event) {
@@ -648,6 +697,8 @@ export default {
                     })
                     .catch(function (error) {
                       console.log(error.message);
+                      localStorage.token = ''
+                      this.$router.push('/')
                     });
                   }
                   this.imageSelected = reader.result

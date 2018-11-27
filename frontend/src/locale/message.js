@@ -215,7 +215,7 @@ const messages = {
 			reset: "очистити",
 			forgot_password: "Я не пам'ятаю свій пароль",
 			send: 'надіслати',
-			user: 'профіль',
+			profile: 'профіль',
 			send_activation_link: 'надіслати посилання активації',
 			logout: 'вийти',
 			language: 'мова',
