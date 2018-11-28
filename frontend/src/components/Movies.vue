@@ -1,6 +1,14 @@
 <template>
     <div>
     <v-container grid-list-md text-xs-center>
+      <v-text-field
+        class="mx-3"
+        flat
+        label="Search"
+        v-model="search"
+        prepend-inner-icon="search"
+        @keyup.native="searchMovies"
+      ></v-text-field>
       <v-layout row wrap>
         <v-flex v-for="movie in movies" :key="movie.id" class="movie" lg3>
             <router-link :to="'/movies/'+movie.id">
@@ -23,7 +31,7 @@
                      >
                      <v-layout row wrap>
                         <v-flex xs12>
-                          <p>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
+                          <p><v-icon v-html="'$vuetify.icons.calendar_today'"></v-icon>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
                         </v-flex>
                         <v-flex class="mx-2" xs12>
                           <p style="width:100%;overflow:hidden;height:150px;line-height:20px;">{{movie.overview}}</p>
@@ -52,6 +60,7 @@
           return {
             movies: [],
             page: 1,
+            search: ''
           }
         },
         mounted() {
@@ -103,9 +112,9 @@
               // console.log(this.page)
             }
           },
-        },
-        watch: {
-
+          searchMovies() {
+            console.log(this.search)
+          },
         },
         created () {
           window.addEventListener('scroll', this.handleScroll);
