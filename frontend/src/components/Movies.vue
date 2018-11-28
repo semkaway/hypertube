@@ -1,21 +1,44 @@
 <template>
     <div>
-      <b-row class="mt-4 mx-5">
-        <b-col lg='1'></b-col>
-        <b-col lg='10'>
-          <b-row v-for="(items, index) in movies" :key="`items-${index}`">
-            <b-col v-for="movie in items" :key="movie.id" class="movie">
-                <router-link :to="'/movies/'+movie.id">
-                  <b-img :src="'http://image.tmdb.org/t/p/w185/'+movie.poster_path">
-                  </b-img>
-                </router-link>
-                <p>{{movie.title}}</p>
-                <!-- <p class="description">{{movie.overview}}</p> -->
-            </b-col>
-          </b-row>
-        </b-col>
-        <b-col lg='1'></b-col>
-      </b-row>
+    <v-container grid-list-md text-xs-center>
+      <v-layout row wrap>
+        <v-flex v-for="movie in movies" :key="movie.id" class="movie" lg3>
+            <router-link :to="'/movies/'+movie.id">
+              <v-hover>
+               <v-card
+                 slot-scope="{ hover }"
+                 class="mx-auto"
+                 color="grey lighten-4"
+                 max-width="250"
+               >
+                 <v-img
+                   :aspect-ratio="1/1.5"
+                   :src="'http://image.tmdb.org/t/p/w300/'+movie.poster_path"
+                 >
+                   <v-expand-transition>
+                       <div
+                       v-if="hover"
+                       class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
+                       style="height: 100%; opacity: 0.9;"
+                     >
+                     <v-layout row wrap>
+                        <v-flex xs12>
+                          <p>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
+                        </v-flex>
+                        <v-flex class="mx-2" xs12>
+                          <p style="width:100%;overflow:hidden;height:150px;line-height:20px;">{{movie.overview}}</p>
+                        </v-flex>
+                      </v-layout>
+                    </div>
+                   </v-expand-transition>
+                 </v-img>
+               </v-card>
+             </v-hover>
+             <p class="mt-2 subheading">{{movie.title}}</p>
+            </router-link>
+        </v-flex>
+      </v-layout>
+    </v-container>
     </div>
 </template>
 
@@ -35,7 +58,6 @@
           HTTP
             .get('user/data/')
             .then(result => {
-              console.log(result)
               if (result.data.success == true) {
                 this.token = result.data.token
                 this.requestMovies(1)
@@ -58,10 +80,15 @@
                           +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
                           '&page='+page)
             .then(result => {
-              console.log(result.data.results)
-              this.movies.push(result.data.results)
-              // this.movies.forEach(console.log)
-
+              for (var i = 0; i < result.data.results.length; i++) {
+                for(var key in result.data.results[i]) {
+                    if (key == 'release_date') {
+                      var year = result.data.results[i][key].split('-')
+                      result.data.results[i][key] = year[0]
+                    }
+                  }
+                this.movies.push(result.data.results[i])
+              }
             })
           },
           handleScroll () {
@@ -91,5 +118,17 @@
 
 <style scoped>
 
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: .5;
+  position: absolute;
+  width: 100%;
+}
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
 </style>

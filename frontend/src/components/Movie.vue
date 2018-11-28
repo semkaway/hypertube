@@ -1,8 +1,9 @@
 <template>
-  <div>
-		<h1>Movie {{ $route.params.id }}</h1>
+  <!-- <div>
+		<h1>{{movie.title}}</h1>
+    <b-img class="float-left ml-4" :src="'http://image.tmdb.org/t/p/w300/'+movie.poster_path"></b-img>
+  </div> -->
 
-  </div>
 </template>
 
 <script>
@@ -18,17 +19,18 @@ export default {
         movie: []
       }
     },
-    mounted() {
+    beforeCreate() {
       HTTP
-        .get('user/data/')
+        .get('movie/one/'+this.$route.params.id)
         .then(result => {
-          console.log(result)
+          // console.log(result.data.data)
           if (result.data.success == true) {
-            this.token = result.data.token
-            this.getMovieInfo()
+            // this.token = result.data.token
+            // this.getMovieInfo()
+            this.movie = result.data.data
           } else if (result.data.success == false) {
-            localStorage.token = ''
-            this.$router.push('/')
+            // localStorage.token = ''
+            // this.$router.push('/')
           }
         })
         .catch((err) => {
@@ -39,16 +41,16 @@ export default {
         })
     },
     methods: {
-      getMovieInfo() {
-        axios.get(`https://api.themoviedb.org/3/movie/`+this.$route.params.id+`?api_key=09665afd54623c9413c3f9336484b01c&language=`
-                      +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null')
-        .then(result => {
-          console.log(result)
-          // this.movies.push(result.data.results)
-          // this.movies.forEach(console.log)
-
-        })
-      },
+      // getMovieInfo() {
+      //   axios.get(`https://api.themoviedb.org/3/movie/`+this.$route.params.id+`?api_key=09665afd54623c9413c3f9336484b01c&language=`
+      //                 +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null')
+      //   .then(result => {
+      //     console.log(result)
+      //     // this.movies.push(result.data.results)
+      //     // this.movies.forEach(console.log)
+      //
+      //   })
+      // },
       }
   }
 </script>

@@ -13,6 +13,9 @@ import { 	Navbar,
 					ListGroup,
 					Image } from 'bootstrap-vue/es/components'
 // import { Scrollspy } from 'bootstrap-vue/es/directives';
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import App from './App'
 import router from './router'
 import i18n from './locale'
@@ -57,6 +60,10 @@ Vue.use(Carousel);
 // Vue.use(Scrollspy);
 Vue.use(ListGroup);
 Vue.use(Image);
+
+Vue.use(Vuetify, {
+  iconfont: 'mdi' // 'md' || 'mdi' || 'fa' || 'fa4'
+})
 
 // Vue.use(VueAxios, axios);
 // Vue.use(HTTP);
