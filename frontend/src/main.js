@@ -24,6 +24,8 @@ import ru from './locale/ru'
 import en from 'vee-validate/dist/locale/en'
 import uk from './locale/uk'
 import setAuthorizationToken from './utils/setAuthToken'
+import Vuelidate from 'vuelidate'
+import vuelidateErrorExtractor, { templates } from "vuelidate-error-extractor";
 
 Validator.localize(uk);
 Validator.localize(ru);
@@ -57,6 +59,12 @@ Vue.use(Layout);
 Vue.use(Modal);
 Vue.use(Alert);
 Vue.use(Carousel);
+Vue.use(Vuelidate)
+Vue.use(vuelidateErrorExtractor, {
+	templates,
+	messages: i18n.messages,
+	i18n: 'validation' // Where validation is the key under which all validation messages are contained. Can be deeper nested if needed.
+  })
 // Vue.use(Scrollspy);
 Vue.use(ListGroup);
 Vue.use(Image);

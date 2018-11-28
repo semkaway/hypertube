@@ -1,8 +1,11 @@
 <template>
-  <!-- <div>
+ <div>
 		<h1>{{movie.title}}</h1>
+    lalaalal
+     <v-icon>school</v-icon>
+    
     <b-img class="float-left ml-4" :src="'http://image.tmdb.org/t/p/w300/'+movie.poster_path"></b-img>
-  </div> -->
+  </div>
 
 </template>
 

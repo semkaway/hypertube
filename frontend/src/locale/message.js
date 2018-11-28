@@ -1,5 +1,9 @@
 const messages = {
 	en: {
+		validation:{
+			required: 'The {attribute} field is required',
+			email: 'The {attribte} field contains an invalid email address'
+		},
 		button: {
 			home: "Home",
 			login: "login",
@@ -104,6 +108,10 @@ const messages = {
 		},
 	},
 	ru: {
+		validation:{
+		required: 'раовыарл',
+		email: 'успех'
+		},
 		button: {
 			home: "главная",
 			login: "войти",
@@ -207,6 +215,10 @@ const messages = {
 		},
 	},
 	uk: {
+		validation:{
+			required: 'Tыыыuired',
+			email: 'ыыыыы'
+		},
 		button: {
 			home: "головна",
 			login: "увійти",
