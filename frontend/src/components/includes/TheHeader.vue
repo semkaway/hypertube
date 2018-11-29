@@ -46,7 +46,6 @@
 </template>
 
 <script>
-
 import {HTTP} from '../../http-common';
 
 export default {

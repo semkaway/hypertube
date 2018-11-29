@@ -11,11 +11,9 @@
             </v-btn>
         </v-toolbar-items>
         <LogInForm  v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' />
-         <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
         <v-toolbar-items>
-            <v-menu color="grey darken-3" dark bottom
-                    origin="center center"
-                    transition="scale-transition">
+            <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
                 <v-btn flat slot="activator">
                     <v-icon>language</v-icon>
                     <span class='ml-2'>{{ locale }}</span>
@@ -99,8 +97,7 @@ this.$i18n.locale = locale
     filters: {
         capitalize (value) {
             if (!value) return ''
-            value = value.toString()
-            return value.toUpperCase()
+            return value.toString().toUpperCase()
         }
     },
     watch: {
