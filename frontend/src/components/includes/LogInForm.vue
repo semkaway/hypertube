@@ -5,7 +5,6 @@
         <v-icon x-large color="white" dark class="white--text" flat @click="$emit('toggleForm')" right>clear</v-icon>
        </v-layout>
     <v-card >
-
       <v-card-title>
         <v-toolbar class='hidden-sm-and-down'>
           <v-toolbar-items >
@@ -59,11 +58,12 @@ export default {
           repeatePassword: '',
           firstName: '',
           lastName: '',
+          hasError: false
       }
     },
 
     validations: {
-      email: { required, email },
+      email: { required, email, serverFail: function() { return this.hasError } },
       firstName: { required, minLength: minLength(3) },
       lastName: { required, minLength: minLength(3) },
       password: { required, minLength: minLength(8)},
@@ -91,10 +91,13 @@ export default {
         }
       },
       loginViaIntra() {
-        console.log('login via intra')
+         window.location.href = 'https://api.intra.42.fr/oauth/authorize?' + 
+          'client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7' + 
+          '&redirect_uri=http://localhost:8084/intra&' +
+				  'response_type=code'
       },
       loginViaGit() {
-        console.log('login via git')
+        window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'
       },
       logInUser() {
         console.log('login')
@@ -103,6 +106,33 @@ export default {
           console.log('login user')
           console.log('email', this.email)
           console.log('pass', this.password)
+          HTTP.post('user/login', {email: this.email, password: this.password})
+          .then(response => {
+            console.log('res', response)
+            if (response.data.success) {
+              console.log('success')
+              // setAuthtoken
+              // router push /
+            } else {
+              // show errors
+              this.hasError = true
+              console.log(this.$v.email)
+              // this.$v.email.$errorMessage('hello wrld')
+              if (response.data.message == "Invalid email") {
+                  // this.emailErrors()
+								} else if (response.data.message == "Invalid password") {
+
+								} else if (response.data.message == "User not activated") {
+
+                } else {
+
+                }
+            }
+          })
+          .catch(err => {
+            console.log('error', err)
+          })
+
         }
       },
       registerUser() {
@@ -117,8 +147,8 @@ export default {
             console.log('first name', this.firstName)
             console.log('last name', this.lastName)
             console.log('pass', this.password)
+            console.log(this.$i18n.locale)
 
-    console.log(this.$i18n.locale)
               HTTP.post(`user/create`, {
                   "first": this.firstName,
                   "last": this.lastName,
@@ -149,24 +179,21 @@ export default {
       },
 
       checkIfEmailExists() {
-              HTTP.get(`user/check-email/`+this.email)
-                .then(response => {
-                  if (response.data.exist == true) {
-                    this.hideEmailExists = false
-                    this.emailError = true
-                  } else if (response.data.exist == false) {
-                      this.hideEmailExists = true
-                      this.emailError = false
-                  }
-                  console.log(response.data.exist)
-                  })
-                  .catch((err) => {
-                    console.log(err.response.data.error)
-                    console.log("server error")
-                  })
+        HTTP.get(`user/check-email/`+this.email)
+        .then(response => {
+          if (response.data.exist == true) {
+            this.hideEmailExists = false
+            this.emailError = true
+          } else if (response.data.exist == false) {
+              this.hideEmailExists = true
+              this.emailError = false
+          }
+          console.log(response.data.exist)
+          })
+        .catch((err) => {
+          console.log(err.response.data.error)
+        })
         }
-
-
     },
 
     computed: {
@@ -189,6 +216,7 @@ export default {
         if (!this.$v.email.$dirty || !this.$v.email.$model.length) return errors
         !this.$v.email.email && errors.push('Must be valid e-mail')
         !this.$v.email.required && errors.push('E-mail is required')
+        !this.$v.email.serverFail && errors.push('Server fail')
         return errors
       },
       passwordErrors() {
