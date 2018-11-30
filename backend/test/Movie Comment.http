@@ -1,0 +1,21 @@
+# For a quick start check out our HTTP Requests collection
+# (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form
+# with a text or file field (multipart/form-data);
+
+###
+
+POST http://localhost:3000/api/movie/comment
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMDAwNTdjNmVjYzMwMzRjOGUyZDNhMyIsImlhdCI6MTU0MzU4NzkzNX0.40wO2VgEzUTEd2eJM-NuqNFiMmzPJFM4-K-W0Tgu-tE
+
+{
+  "movieId": "123",
+  "text": "I like this film"
+}
+
+###
