@@ -7,7 +7,7 @@ export const comment = (req, res, next) => {
     if (error !== '') {
         throw new Error(error);
     }
-    if (req.body.text === '' || req.body.text.length > 1000) {
+    if (req.body.text.trim() === '' || req.body.text.length > 1000) {
         return res.status(200).json({"success": false, "message": "Invalid text"});
     }
     const now = new Date();
