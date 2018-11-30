@@ -38,7 +38,7 @@
             LogInForm
         },
         data: () => ({
-        locale: 'en',
+        locale: localStorage.getItem('locale'),
         token: localStorage.getItem('token'),
         showForm: false,
         lang: {
