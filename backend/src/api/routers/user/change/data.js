@@ -30,30 +30,23 @@ const checkForInvalid = ({first, last, oldPassword, newPassword}) => {
     return invalid;
 };
 
-export const data = model => (req, res, next) => {
+export const data = (req, res, next) => {
     let {first, last, oldPassword, newPassword} = req.body;
 
     const invalid = checkForInvalid(req.body);
     if (invalid.length !== 0) {
         return successFalse(res, `Invalid ${invalid.join(' ')}`)
     }
-    model.findById(req.id)
-        .then(user => {
-            if (user === null) {
-                return successFalse(res, 'Invalid token');
-            }
-            if (oldPassword !== undefined &&
-                bcrypt.compareSync(oldPassword, user.password) === false) {
-                return successFalse(res, 'Invalid oldPassword');
-            }
-            if (newPassword !== undefined) {
-                user.password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
-            }
-            user.first = first !== undefined ? first : user.first;
-            user.last  = last !== undefined ? last : user.last;
-            user.save()
-                .then(() => res.status(200).json({"success": true}))
-                .catch(error => next(error));
-        })
+    if (oldPassword !== undefined &&
+        bcrypt.compareSync(oldPassword, req.user.password) === false) {
+        return successFalse(res, 'Invalid oldPassword');
+    }
+    if (newPassword !== undefined) {
+        req.user.password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
+    }
+    req.user.first = first !== undefined ? first : req.user.first;
+    req.user.last  = last !== undefined ? last : req.user.last;
+    req.user.save()
+        .then(() => res.status(200).json({"success": true}))
         .catch(error => next(error));
 };

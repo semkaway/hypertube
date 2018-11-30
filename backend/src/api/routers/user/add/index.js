@@ -7,9 +7,9 @@ import {github} from "./github";
 
 export const addRouter = express.Router();
 
-addRouter.route('/email').post(email(User));
+addRouter.route('/email').post(email);
 
-addRouter.route('/password').post(password(User));
+addRouter.route('/password').post(password);
 
 addRouter.route('/intra').post(intra(User));
 

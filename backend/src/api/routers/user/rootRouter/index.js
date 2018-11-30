@@ -21,6 +21,6 @@ rootRouter.route('/send-activation').post(sendActivation(User));
 
 rootRouter.route('/login').post(login(User));
 
-rootRouter.route('/data').get(decodeToken, data(User));
+rootRouter.route('/data').get(decodeToken, data);
 
 rootRouter.route('/commented-movies/:id').get(decodeToken, commentedMovies(User));

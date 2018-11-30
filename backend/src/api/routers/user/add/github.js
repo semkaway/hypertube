@@ -27,18 +27,12 @@ export const github = model => (req, res, next) => {
                         if (user !== null) {
                             return successFalse(res, 'User exist');
                         }
-                        model.findById(req.id)
-                            .then(user => {
-                                if (user === null) {
-                                    return successFalse(res, 'Invalid token');
-                                }
-                                if (user.image === null) {
-                                    user.image = response.data.avatar_url;
-                                }
-                                user.githubId = response.data.id;
-                                user.save().then(() => res.status(201).json({"success": true}))
-                                    .catch(error => next(error));
-                            })
+                        if (req.user.image === null) {
+                            req.user.image = response.data.avatar_url;
+                        }
+                        req.user.githubId = response.data.id;
+                        req.user.save()
+                            .then(() => res.status(201).json({"success": true}))
                             .catch(error => next(error));
                     })
                     .catch(error => next(error)))

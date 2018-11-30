@@ -1,22 +1,10 @@
-const successFalse = (res, msg) => res.status(200).json({
-    "success": false,
-    "message": msg
-});
-
-export const pendingEmail = model => (req, res, next) => {
-    model.findById(req.id)
-        .then(user => {
-            if (user === null) {
-                return successFalse(res, 'Invalid token');
-            }
-            if (user.pendingEmail === null) {
-                return successFalse(res, 'No pending email');
-            }
-            user.pendingEmail = null;
-            user.activationToken = null;
-            user.save()
-                .then(() => res.status(201).json({"success": true}))
-                .catch(error => next(error));
-        })
+export const pendingEmail = (req, res, next) => {
+    if (req.user.pendingEmail === null) {
+        return res.status(200).json({"success": false, "message": 'No pending email'});
+    }
+    req.user.pendingEmail    = null;
+    req.user.activationToken = null;
+    req.user.save()
+        .then(() => res.status(201).json({"success": true}))
         .catch(error => next(error));
 };
