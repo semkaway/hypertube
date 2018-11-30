@@ -18,21 +18,47 @@
               <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showRegister' flat>{{ $t('button.register') }}</v-btn>
               <v-btn :color='showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
          </v-layout>
-         <v-flex></v-flex>
       </v-card-title>
         <v-card-text>
           <form>
-              <v-text-field v-if='showRegisterForm == true' :error-messages="firstNameErrors" @input="$v.firstName.$touch()"  v-model="firstName" :label="$t('registration.first_name')" color="grey darken-1"></v-text-field>
-              <v-text-field v-if='showRegisterForm == true' :error-messages="lastNameErrors" @input="$v.lastName.$touch()"  v-model="lastName" :label="$t('registration.last_name')" color="grey darken-1"></v-text-field>
-              <v-text-field @keyup.native="checkIfEmailExists" v-model="email" :error-messages="arrayOfEmailErrors" label="Email" color="grey darken-1" @input="$v.email.$touch()"></v-text-field>
-              <v-text-field v-if='!showForgotPassForm' v-model="password" :error-messages="arrayOfPasswordErrors" @input="$v.password.$touch()" :label="$t('registration.password')" color="grey darken-1"></v-text-field>
-              <v-text-field v-model="repeatePassword" :error-messages="repeatePasswordErrors" @input="$v.repeatePassword.$touch()"  v-if='showRegisterForm == true'  :label="$t('registration.repeat_password')" color="grey darken-1"></v-text-field>
+              <v-text-field
+              @keyup.native='validateInput'
+              hint="Min 8 chars, one digit, one lower and upper case " 
+              v-if='showRegisterForm == true' 
+              :error-messages="arrayOfFirstNameErrors" 
+              v-model="firstName" 
+              :label="$t('registration.first_name')" 
+              color="grey darken-1"
+              name='firstName'
+							v-validate="'required|alpha|min:3|max:15'"></v-text-field>
+
+              <v-text-field
+              @keyup.native='validateInput'
+              v-if='showRegisterForm == true' 
+              :error-messages="arrayOfLastNameErrors" 
+              v-model="lastName" 
+              :label="$t('registration.last_name')" 
+              color="grey darken-1"
+              name='lastName'
+              v-validate="'required|alpha|min:3|max:15'"></v-text-field>
+
+              <v-text-field 
+              @keyup.native="checkIfEmailExists" 
+              name="email" 
+              v-validate="'required|email'" 
+              v-model="email" 
+              :error-messages="arrayOfEmailErrors" 
+              label="Email" 
+              color="grey darken-1"></v-text-field>
+
+              <v-text-field v-if='!showForgotPassForm' :type="showPassword ? 'text' : 'password'" @keyup.native='validateInput' name="password" v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" @click:append="showPassword = !showPassword"  :append-icon="showPassword ? 'visibility_off' : 'visibility'" v-model="password" :error-messages="arrayOfPasswordErrors" :label="$t('registration.password')" color="grey darken-1"></v-text-field>
+              <v-text-field v-model="repeatPassword" :type="showPassword ? 'text' : 'password'" @keyup.native='validateInput' :error-messages="arrayOfRepeatPasswordErrors" name="repeatPassword" v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" v-if='showRegisterForm == true'  :label="$t('registration.repeat_password')" color="grey darken-1"></v-text-field>
           </form>
            <v-layout justify-start>
             <v-flex>
-              <v-btn  v-if='!showRegisterForm && !showForgotPassForm' color="grey" class="white--text" @click='logInUser'>{{ $t('button.login') }}</v-btn>
-              <v-btn  v-if='showRegisterForm == true && !showForgotPassForm' color="grey" class="white--text"  @click='registerUser'>{{ $t('button.register') }}</v-btn>
-              <v-btn  v-if='showForgotPassForm == true' color="grey" class="white--text" @click='sendEmail'>{{ $t('button.send') }}</v-btn>
+              <v-btn v-if='!showRegisterForm && !showForgotPassForm' color="grey" class="white--text" @click='logInUser'>{{ $t('button.login') }}</v-btn>
+              <v-btn v-if='showRegisterForm == true && !showForgotPassForm' color="grey" class="white--text"  @click='registerUser'>{{ $t('button.register') }}</v-btn>
+              <v-btn v-if='showForgotPassForm == true' color="grey" class="white--text" @click='sendEmail'>{{ $t('button.send') }}</v-btn>
               <v-btn color="grey" class="white--text" @click='loginViaIntra'>42 Intra <v-icon right dark>school</v-icon></v-btn>
               <v-btn color="grey" class="white--text" @click='loginViaGit' >Github<v-icon right dark>public</v-icon></v-btn>
               </v-flex>
@@ -45,13 +71,13 @@
 
 <script>
   import { HTTP } from '../../http-common'
-  import { required, maxLength, minLength, email, sameAs } from 'vuelidate/lib/validators'
 
 export default {
     name: 'LogInForm',
     props: ['showForm'],
     data: function () {
       return {
+          showPassword: false,
           showRegisterForm: false,
           showForgotPassForm: false,
           email: '',
@@ -60,20 +86,16 @@ export default {
           firstName: '',
           lastName: '',
           arrayOfEmailErrors: [],
-          arrayOfPasswordErrors: []
+          arrayOfPasswordErrors: [],
+          arrayOfFirstNameErrors: [],
+          arrayOfLastNameErrors: [],
+          arrayOfRepeatPasswordErrors: [],
       }
-    },
-
-    validations: {
-      email: { required, email },
-      firstName: { required, minLength: minLength(3) },
-      lastName: { required, minLength: minLength(3) },
-      password: { required, minLength: minLength(8)},
-      repeatPassword: { sameAsPassword: sameAs('password') }
     },
 
     methods: {
       showForgotPass() {
+        this.arrayOfEmailErrors = []
         this.showRegisterForm = false
         this.showForgotPassForm = true
 
@@ -81,8 +103,10 @@ export default {
       showRegister() {
         this.showRegisterForm = true
         this.showForgotPassForm = false
+        this.checkIfEmailExists()
       },
       showLogin() {
+        this.arrayOfEmailErrors = []
         this.showRegisterForm = false
         this.showForgotPassForm = false
       },
@@ -102,11 +126,11 @@ export default {
         window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'
       },
       logInUser() {
+        console.log('login pass errors=>', this.arrayOfPasswordErrors)
+
+        this.$validator.validateAll()
         if (!this.arrayOfPasswordErrors.length    && this.email.length && 
             !this.arrayOfPasswordErrors.length && this.password.length) {
-          console.log('login user')
-          console.log('email', this.email)
-          console.log('pass', this.password)
           HTTP.post('user/login', {email: this.email, password: this.password})
           .then(response => {
             console.log('res', response)
@@ -115,32 +139,33 @@ export default {
               // setAuthtoken
               // router push /
             } else {
-              // show errors
               if (response.data.message == "Invalid email") {
-                    this.arrayOfEmailErrors = ['Invalid email']
+                    this.arrayOfEmailErrors = [this.$t('validation.invalidEmail')]
 								} else if (response.data.message == "Invalid password") {
-                       this.arrayOfPasswordErrors = ['Invalid password']
+                    this.arrayOfPasswordErrors = [this.$t('validation.invalidPassword')]
 								} else if (response.data.message == "User not activated") {
-                       this.arrayOfEmailErrors = ['User not activated']
-                       this.arrayOfPasswordErrors = ['User not activated']
+                    this.arrayOfEmailErrors = [this.$t('validation.notActivated')]
+                    this.arrayOfPasswordErrors = [this.$t('validation.notActivated')]
                 } else {
-
+                    this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
+                    this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
                 }
             }
           })
           .catch(err => {
-            console.log('error', err)
+            this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
+            this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
           })
 
         }
       },
       registerUser() {
          if (
-          !this.firstNameErrors.length        && this.email.length &&
-          !this.lastNameErrors.length         && this.lastName.length &&
-          !this.emailErrors.length            && this.firstName.length &&
-          !this.passwordErrors.length         && this.password.length &&
-          !this.repeatPasswordErrors.length  && this.repeatPassword.length) {
+          !this.arrayOfFirstNameErrors.length        && this.email.length &&
+          !this.arrayOfLastNameErrors.length         && this.lastName.length &&
+          !this.arrayOfEmailErrors.length            && this.firstName.length &&
+          !this.arrayOfPasswordErrors.length         && this.password.length &&
+          !this.arrayOfRepeatPasswordErrors.length   && this.repeatPassword.length) {
             console.log('register user')
             console.log('email', this.email)
             console.log('first name', this.firstName)
@@ -169,69 +194,43 @@ export default {
                   }
                 })
                 .catch(() => {
-                  this.showAlertSuccess = false
-                  this.showAlertDanger = true
+                    this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
+                    this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
                 })
-
-
           }
       },
 
       checkIfEmailExists() {
-        HTTP.get(`user/check-email/`+this.email)
-        .then(response => {
-          if (response.data.exist == true) {
-            this.hideEmailExists = false
-            this.emailError = true
-          } else if (response.data.exist == false) {
-              this.hideEmailExists = true
-              this.emailError = false
-          }
-          console.log(response.data.exist)
-          })
-        .catch((err) => {
-          console.log(err.response.data.error)
-        })
+        this.validateInput()
+        if (this.showRegisterForm && !this.showForgotPassForm) {
+          HTTP.get(`user/check-email/` + this.email)
+          .then(response => { this.arrayOfEmailErrors = response.data.exist == true ? [this.$t('validation.serverError')] : [] })
+          .catch((err) => { this.arrayOfEmailErrors = [this.$t('registration.error_alert')] })
         }
-    },
+      },
 
-    computed: {
-      firstNameErrors() {
-        const errors = []
-        if (!this.$v.firstName.$dirty || !this.$v.firstName.$model.length) return errors
-        !this.$v.firstName.required && errors.push(this.$t('validation.required'))
-        !this.$v.firstName.minLength && errors.push(this.$t('validation.firstName'))
-        return errors
-      },
-      lastNameErrors() {
-        const errors = []
-        if (!this.$v.lastName.$dirty || !this.$v.lastName.$model.length) return errors
-        !this.$v.lastName.required && errors.push(this.$t('validation.required'))
-        !this.$v.lastName.minLength && errors.push(this.$t('validation.firstName'))
-        return errors
-      },
-      emailErrors() {
-        const errors = []
-        if (!this.$v.email.$dirty || !this.$v.email.$model.length) return errors
-        !this.$v.email.email && errors.push(this.$t('validation.email'))
-        !this.$v.email.required && errors.push(this.$t('validation.required'))
-        !this.$v.email.serverFail && errors.push(this.$t('validation.serverError'))
-        return errors
-      },
-      passwordErrors() {
-        const errors = []
-        if (!this.$v.password.$dirty || !this.$v.password.$model.length) return errors
-        !this.$v.password.required && errors.push(this.$t('validation.required'))
-        !this.$v.password.minLength && errors.push(this.$t('validation.password'))
-        return errors
-      },
-      repeatPasswordErrors() {
-        const errors = []
-        if (!this.$v.repeatPassword.$dirty || !this.$v.repeatPassword.$model.length) return errors
-        !this.$v.repeatPassword.sameAsPassword && errors.push(this.$t('validation.repeatPassword'))
-        return errors
+validateInput() {
+      // debugger
+      console.log(this.errors.any())
+      console.log('this.errors', this.errors)
+      console.log("this.errors.has('firstName')", this.errors.has('firstName'))
+      console.log("this.errors.first('firstName')", this.errors.first('firstName'))
+      if (this.errors.any()) {
+            this.arrayOfEmailErrors = this.errors.has('email') ? this.errors.first('email') : []
+            this.arrayOfPasswordErrors = this.errors.has('password') ? this.errors.first('password') : []
+            this.arrayOfFirstNameErrors = this.errors.has('firstName') ? this.errors.first('firstName') : []
+            this.arrayOfLastNameErrors = this.errors.has('lastName') ? this.errors.first('lastName') : []
+      } else {
+          this.arrayOfEmailErrors = []
+          this.arrayOfPasswordErrors = []
+          this.arrayOfFirstNameErrors = []
+          this.arrayOfLastNameErrors = []
+          this.arrayOfRepeatPasswordErrors = []
       }
+      console.log('arrays =>', this.arrayOfEmailErrors, this.arrayOfPasswordErrors, this.arrayOfFirstNameErrors)
     }
+
+    },
 }
 
 </script>
