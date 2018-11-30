@@ -10,7 +10,6 @@ const getComments = (model, movieId) =>
                 'user_id': '$_id',
                 'first': 1,
                 'image': 1,
-                'comment_id': '$comments._id',
                 'date': '$comments.date',
                 'text': '$comments.text',
             }

@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
         default: {}
     },
     comments: [{
+        _id: false,
         movieId: String,
         date: Date,
         text: String,
