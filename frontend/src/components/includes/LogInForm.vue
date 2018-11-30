@@ -18,13 +18,14 @@
               <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showRegister' flat>{{ $t('button.register') }}</v-btn>
               <v-btn :color='showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
          </v-layout>
+         <v-flex></v-flex>
       </v-card-title>
         <v-card-text>
           <form>
               <v-text-field v-if='showRegisterForm == true' :error-messages="firstNameErrors" @input="$v.firstName.$touch()"  v-model="firstName" :label="$t('registration.first_name')" color="grey darken-1"></v-text-field>
               <v-text-field v-if='showRegisterForm == true' :error-messages="lastNameErrors" @input="$v.lastName.$touch()"  v-model="lastName" :label="$t('registration.last_name')" color="grey darken-1"></v-text-field>
-              <v-text-field @keyup.native="checkIfEmailExists" v-model="email" :error-messages="$t('validation.email')" label="Email" color="grey darken-1" @input="$v.email.$touch()"></v-text-field>
-              <v-text-field v-if='!showForgotPassForm' v-model="password" :error-messages="passwordErrors" @input="$v.password.$touch()" :label="$t('registration.password')" color="grey darken-1"></v-text-field>
+              <v-text-field @keyup.native="checkIfEmailExists" v-model="email" :error-messages="arrayOfEmailErrors" label="Email" color="grey darken-1" @input="$v.email.$touch()"></v-text-field>
+              <v-text-field v-if='!showForgotPassForm' v-model="password" :error-messages="arrayOfPasswordErrors" @input="$v.password.$touch()" :label="$t('registration.password')" color="grey darken-1"></v-text-field>
               <v-text-field v-model="repeatePassword" :error-messages="repeatePasswordErrors" @input="$v.repeatePassword.$touch()"  v-if='showRegisterForm == true'  :label="$t('registration.repeat_password')" color="grey darken-1"></v-text-field>
           </form>
            <v-layout justify-start>
@@ -58,12 +59,13 @@ export default {
           repeatePassword: '',
           firstName: '',
           lastName: '',
-          hasError: false
+          arrayOfEmailErrors: [],
+          arrayOfPasswordErrors: []
       }
     },
 
     validations: {
-      email: { required, email, serverFail: function() { return this.hasError } },
+      email: { required, email },
       firstName: { required, minLength: minLength(3) },
       lastName: { required, minLength: minLength(3) },
       password: { required, minLength: minLength(8)},
@@ -100,9 +102,8 @@ export default {
         window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'
       },
       logInUser() {
-        console.log('login')
-        if (!this.emailErrors.length    && this.email.length && 
-            !this.passwordErrors.length && this.password.length) {
+        if (!this.arrayOfPasswordErrors.length    && this.email.length && 
+            !this.arrayOfPasswordErrors.length && this.password.length) {
           console.log('login user')
           console.log('email', this.email)
           console.log('pass', this.password)
@@ -115,15 +116,13 @@ export default {
               // router push /
             } else {
               // show errors
-              this.hasError = true
-              console.log(this.$v.email)
-              // this.$v.email.$errorMessage('hello wrld')
               if (response.data.message == "Invalid email") {
-                  // this.emailErrors()
+                    this.arrayOfEmailErrors = ['Invalid email']
 								} else if (response.data.message == "Invalid password") {
-
+                       this.arrayOfPasswordErrors = ['Invalid password']
 								} else if (response.data.message == "User not activated") {
-
+                       this.arrayOfEmailErrors = ['User not activated']
+                       this.arrayOfPasswordErrors = ['User not activated']
                 } else {
 
                 }
@@ -212,19 +211,16 @@ export default {
         return errors
       },
       emailErrors() {
-        const errors = []
-        if (!this.$v.email.$dirty || !this.$v.email.$model.length) return errors
-        !this.$v.email.email && errors.push('Must be valid e-mail')
-        !this.$v.email.required && errors.push('E-mail is required')
-        !this.$v.email.serverFail && errors.push('Server fail')
-        return errors
+        this.arrayOfEmailErrors = []
+        if (!this.$v.email.$dirty || !this.$v.email.$model.length) return this.arrayOfEmailErrors
+        !this.$v.email.email && this.arrayOfEmailErrors.push('Must be valid e-mail')
+        !this.$v.email.required && this.arrayOfEmailErrors.push('E-mail is required')
       },
       passwordErrors() {
-        const errors = []
-        if (!this.$v.password.$dirty || !this.$v.password.$model.length) return errors
-        !this.$v.password.required && errors.push('Password is required')
-        !this.$v.password.minLength && errors.push('The password must be at least 8 characters')
-        return errors
+        this.arrayOfPasswordErrors = []
+        if (!this.$v.password.$dirty || !this.$v.password.$model.length) return this.arrayOfPasswordErrors
+        !this.$v.password.required && this.arrayOfPasswordErrors.push('Password is required')
+        !this.$v.password.minLength && this.arrayOfPasswordErrors.push('The password must be at least 8 characters')
       },
       repeatePasswordErrors() {
         const errors = []
