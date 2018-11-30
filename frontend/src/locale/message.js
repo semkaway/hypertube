@@ -5,8 +5,11 @@ const messages = {
 			firstName: 'Must be at least 3 characters long',
 			email: 'Must be a valid email',
 			password: 'Must be at least 8 characters long',
+			invalidEmail: 'Invalid email',
+			invalidPassword: 'Invalid password',
 			repeatPassword: 'Passwords don\'t match',
-			serverError: 'User with this email already exists'
+			serverError: 'User with this email already exists',
+			notActivated: 'User is not activated'
 		},
 		button: {
 			home: "Home",
@@ -117,8 +120,11 @@ const messages = {
 			firstName: 'Не может быть короче 3 символов',
 			email: 'Неверный формат email',
 			password: 'Не может быть короче 8 символов',
+			invalidEmail: 'Неправильный email',
+			invalidPassword: 'Неправильный пароль',
 			repeatPassword: 'Пароли не совпадают',
-			serverError: 'Пользователь с таким email уже существует'
+			serverError: 'Пользователь с таким email уже существует',
+			notActivated: 'Пользователь не активирован'
 		},
 		button: {
 			home: "главная",
@@ -228,8 +234,11 @@ const messages = {
 			firstName: 'Не може бути менше ніж 3 символи',
 			email: 'Помилковий формат email',
 			password: 'Не може бути менше ніж 8 символів',
+			invalidEmail: 'Неправильний email',
+			invalidPassword: 'Неправильний пароль',
 			repeatPassword: 'Паролі не співпадають',
-			serverError: 'Користувач з таким email вже існує'
+			serverError: 'Користувач з таким email вже існує',
+			notActivated: 'Користувач не активований'
 		},
 		button: {
 			home: "головна",
