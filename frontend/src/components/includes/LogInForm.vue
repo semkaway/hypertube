@@ -56,7 +56,7 @@ export default {
           showForgotPassForm: false,
           email: '',
           password: '',
-          repeatePassword: '',
+          repeatPassword: '',
           firstName: '',
           lastName: '',
           arrayOfEmailErrors: [],
@@ -69,7 +69,7 @@ export default {
       firstName: { required, minLength: minLength(3) },
       lastName: { required, minLength: minLength(3) },
       password: { required, minLength: minLength(8)},
-      repeatePassword: { sameAsPassword: sameAs('password') }
+      repeatPassword: { sameAsPassword: sameAs('password') }
     },
 
     methods: {
@@ -93,8 +93,8 @@ export default {
         }
       },
       loginViaIntra() {
-         window.location.href = 'https://api.intra.42.fr/oauth/authorize?' + 
-          'client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7' + 
+         window.location.href = 'https://api.intra.42.fr/oauth/authorize?' +
+          'client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7' +
           '&redirect_uri=http://localhost:8084/intra&' +
 				  'response_type=code'
       },
@@ -137,10 +137,10 @@ export default {
       registerUser() {
          if (
           !this.firstNameErrors.length        && this.email.length &&
-          !this.lastNameErrors.length         && this.lastName.length && 
+          !this.lastNameErrors.length         && this.lastName.length &&
           !this.emailErrors.length            && this.firstName.length &&
           !this.passwordErrors.length         && this.password.length &&
-          !this.repeatePasswordErrors.length  && this.repeatePassword.length) {
+          !this.repeatPasswordErrors.length  && this.repeatPassword.length) {
             console.log('register user')
             console.log('email', this.email)
             console.log('first name', this.firstName)
@@ -199,33 +199,36 @@ export default {
       firstNameErrors() {
         const errors = []
         if (!this.$v.firstName.$dirty || !this.$v.firstName.$model.length) return errors
-        !this.$v.firstName.required && errors.push('First name is required')
-        !this.$v.firstName.minLength && errors.push('The first name must be at least 3 characters')
+        !this.$v.firstName.required && errors.push(this.$t('validation.required'))
+        !this.$v.firstName.minLength && errors.push(this.$t('validation.firstName'))
         return errors
       },
       lastNameErrors() {
         const errors = []
         if (!this.$v.lastName.$dirty || !this.$v.lastName.$model.length) return errors
-        !this.$v.lastName.required && errors.push('Last name is required')
-        !this.$v.lastName.minLength && errors.push('The last name must be at least 3 characters')
+        !this.$v.lastName.required && errors.push(this.$t('validation.required'))
+        !this.$v.lastName.minLength && errors.push(this.$t('validation.firstName'))
         return errors
       },
       emailErrors() {
-        this.arrayOfEmailErrors = []
-        if (!this.$v.email.$dirty || !this.$v.email.$model.length) return this.arrayOfEmailErrors
-        !this.$v.email.email && this.arrayOfEmailErrors.push('Must be valid e-mail')
-        !this.$v.email.required && this.arrayOfEmailErrors.push('E-mail is required')
+        const errors = []
+        if (!this.$v.email.$dirty || !this.$v.email.$model.length) return errors
+        !this.$v.email.email && errors.push(this.$t('validation.email'))
+        !this.$v.email.required && errors.push(this.$t('validation.required'))
+        !this.$v.email.serverFail && errors.push(this.$t('validation.serverError'))
+        return errors
       },
       passwordErrors() {
-        this.arrayOfPasswordErrors = []
-        if (!this.$v.password.$dirty || !this.$v.password.$model.length) return this.arrayOfPasswordErrors
-        !this.$v.password.required && this.arrayOfPasswordErrors.push('Password is required')
-        !this.$v.password.minLength && this.arrayOfPasswordErrors.push('The password must be at least 8 characters')
-      },
-      repeatePasswordErrors() {
         const errors = []
-        if (!this.$v.repeatePassword.$dirty || !this.$v.repeatePassword.$model.length) return errors
-        !this.$v.repeatePassword.sameAsPassword && errors.push('Passwords should be identical')
+        if (!this.$v.password.$dirty || !this.$v.password.$model.length) return errors
+        !this.$v.password.required && errors.push(this.$t('validation.required'))
+        !this.$v.password.minLength && errors.push(this.$t('validation.password'))
+        return errors
+      },
+      repeatPasswordErrors() {
+        const errors = []
+        if (!this.$v.repeatPassword.$dirty || !this.$v.repeatPassword.$model.length) return errors
+        !this.$v.repeatPassword.sameAsPassword && errors.push(this.$t('validation.repeatPassword'))
         return errors
       }
     }

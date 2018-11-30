@@ -1,8 +1,12 @@
 const messages = {
 	en: {
 		validation:{
-			required: 'The {attribute} field is required',
-			email: 'The {attribte} field contains an invalid email address'
+			required: 'This field is required',
+			firstName: 'Must be at least 3 characters long',
+			email: 'Must be a valid email',
+			password: 'Must be at least 8 characters long',
+			repeatPassword: 'Passwords don\'t match',
+			serverError: 'User with this email already exists'
 		},
 		button: {
 			home: "Home",
@@ -109,8 +113,12 @@ const messages = {
 	},
 	ru: {
 		validation:{
-		required: 'раовыарл',
-		email: 'успех'
+			required: 'Поле обязательно для заполнения',
+			firstName: 'Не может быть короче 3 символов',
+			email: 'Неверный формат email',
+			password: 'Не может быть короче 8 символов',
+			repeatPassword: 'Пароли не совпадают',
+			serverError: 'Пользователь с таким email уже существует'
 		},
 		button: {
 			home: "главная",
@@ -216,8 +224,12 @@ const messages = {
 	},
 	uk: {
 		validation:{
-			required: 'Tыыыuired',
-			email: 'ыыыыы'
+			required: 'Поле обов\'язкове для заповнення',
+			firstName: 'Не може бути менше ніж 3 символи',
+			email: 'Помилковий формат email',
+			password: 'Не може бути менше ніж 8 символів',
+			repeatPassword: 'Паролі не співпадають',
+			serverError: 'Користувач з таким email вже існує'
 		},
 		button: {
 			home: "головна",
