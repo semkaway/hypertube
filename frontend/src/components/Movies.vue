@@ -1,16 +1,16 @@
 <template>
     <div>
-    <v-container grid-list-md text-xs-center>
+    <v-container grid-list-md text-xs-center class="mt-5">
       <v-text-field
-        class="mx-3"
+        class="mx-3 mt-5"
+        v-model="searchParams"
         flat
         label="Search"
-        v-model="search"
-        prepend-inner-icon="search"
-        @keyup.native="searchMovies"
+        append-icon="search"
+        @keyup.native.enter="searchMovies"
       ></v-text-field>
-      <v-layout row wrap>
-        <v-flex v-for="movie in movies" :key="movie.id" class="movie" lg3>
+      <v-layout row wrap class="mt-3">
+        <v-flex v-for="movie in movies" class="movie" lg3>
             <router-link :to="'/movies/'+movie.id">
               <v-hover>
                <v-card
@@ -21,7 +21,7 @@
                >
                  <v-img
                    :aspect-ratio="1/1.5"
-                   :src="'http://image.tmdb.org/t/p/w300/'+movie.poster_path"
+                   :src="movie.poster_path"
                  >
                    <v-expand-transition>
                        <div
@@ -60,7 +60,8 @@
           return {
             movies: [],
             page: 1,
-            search: ''
+            searchParams: '',
+            query: ''
           }
         },
         mounted() {
@@ -69,6 +70,9 @@
             .then(result => {
               if (result.data.success == true) {
                 this.token = result.data.token
+                this.query = `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
+                              +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
+                              '&page='
                 this.requestMovies(1)
               } else if (result.data.success == false) {
                 localStorage.token = ''
@@ -83,11 +87,9 @@
             })
         },
         methods: {
-          requestMovies(page) {
-            console.log(page)
-            axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
-                          +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
-                          '&page='+page)
+          requestMovies() {
+            console.log('yo')
+            axios.get(this.query+this.page)
             .then(result => {
               for (var i = 0; i < result.data.results.length; i++) {
                 for(var key in result.data.results[i]) {
@@ -95,26 +97,40 @@
                       var year = result.data.results[i][key].split('-')
                       result.data.results[i][key] = year[0]
                     }
+                    if (key == 'poster_path') {
+                      if (result.data.results[i][key] == null) {
+                        result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                      } else {
+                        result.data.results[i][key] = 'http://image.tmdb.org/t/p/w300/'+result.data.results[i][key]
+                      }
+                    }
                   }
                 this.movies.push(result.data.results[i])
               }
             })
           },
           handleScroll () {
-            // console.log(this.page)
             var d = document.documentElement;
             var offset = d.scrollTop + window.innerHeight;
-            var height = d.offsetHeight;
+            var height = d.scrollHeight;
 
             if (offset === height) {
               this.page = this.page + 1;
-              this.requestMovies(this.page)
-              // console.log(this.page)
+              this.requestMovies()
             }
           },
           searchMovies() {
-            console.log(this.search)
-          },
+            console.log(this.searchParams)
+            this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
+                          +localStorage.locale+'&query='+this.searchParams+'&images&include_image_language='+localStorage.locale+',null'+
+                          '&page='
+            this.movies = []
+            this.page = 1
+            this.requestMovies()
+          }
+        },
+        watch: {
+
         },
         created () {
           window.addEventListener('scroll', this.handleScroll);
@@ -140,4 +156,5 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
 </style>

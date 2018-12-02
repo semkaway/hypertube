@@ -57,6 +57,7 @@ export default {
           console.log(response.data.message)
           if (response.data.success == true) {
             this.dismissCountDown = true
+            this.$router.push('/')
           } else if (response.data.success == false && (response.data.message != "Invalid email" && response.data.message != "Invalid token")) {
               this.dismissCountDown1 = true
           } else {
