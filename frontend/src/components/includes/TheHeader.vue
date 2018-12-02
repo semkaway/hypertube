@@ -52,14 +52,14 @@
         }
     }),
     methods: {
-        changeLanguage (locale) { 
+        changeLanguage (locale) {
             this.locale = locale
             this.$i18n.locale = locale
             localStorage.locale = locale
             if (localStorage.token != '') {
             HTTP.put('user/change/locale', {
                 'token': localStorage.token,
-                'locale': val
+                'locale': locale
             }).then(result => {
                 if (result.data.success == false) {
                     localStorage.token = ''

@@ -87,42 +87,45 @@
             </v-subheader>
             <template v-for="crew in this.crew">
               <v-list-tile>
-                <v-list-tile-avatar size="55"
+                <v-list-tile-avatar v-if="crew.profile_path !== null"
+                                    size="55"
                                     class="actorPicture mr-2"
                                     :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+crew.profile_path + ')'}">
                 </v-list-tile-avatar>
 
+                <v-list-tile-avatar v-else
+                                    size="55"
+                                    class="actorPicture mr-2"
+                                    :style="{ 'background-image':`url('https://images.pexels.com/photos/1468389/pexels-photo-1468389.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+                </v-list-tile-avatar>
+
                 <v-list-tile-content>
-                  <v-list-tile-title>{{crew.character}}</v-list-tile-title>
-                  <v-list-tile-sub-title>{{crew.name}}</v-list-tile-sub-title>
+                  <v-list-tile-title>{{crew.job}}</v-list-tile-title>
+                  <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+crew.name" target="_blank">{{crew.name}}</a></v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
-          <!-- <v-list-tile>
-          <v-list-tile-avatar size="55"
-                              class="actorPicture mr-2"
-                              :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+this.crew.profile_path + ')'}">
-          </v-list-tile-avatar>
-
-          <v-list-tile-content>
-            <v-list-tile-title>{{this.crew.job}}</v-list-tile-title>
-            <v-list-tile-sub-title>{{this.crew.name}}</v-list-tile-sub-title>
-          </v-list-tile-content>
-          </v-list-tile> -->
           <v-divider inset></v-divider>
           <v-subheader>
               Cast
             </v-subheader>
           <template v-for="actor in this.actors">
             <v-list-tile>
-              <v-list-tile-avatar size="55"
+              <v-list-tile-avatar v-if="actor.profile_path !== null"
+                                  size="55"
                                   class="actorPicture mr-2"
                                   :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+actor.profile_path + ')'}">
               </v-list-tile-avatar>
 
+              <v-list-tile-avatar v-else
+                                  size="55"
+                                  class="actorPicture mr-2"
+                                  :style="{ 'background-image':`url('https://images.pexels.com/photos/134/light-creative-abstract-colorful.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+              </v-list-tile-avatar>
+
               <v-list-tile-content>
                 <v-list-tile-title>{{actor.character}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{actor.name}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+actor.name" target="_blank">{{actor.name}}</a></v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
           </template>
@@ -184,8 +187,6 @@ export default {
                 }
             this.movie = result.data.data
             console.log(this.movie)
-            console.log(this.director)
-            console.log(this.actors)
             this.genres = this.genres.slice(0, this.genres.length-2)
           } else if (result.data.success == false) {
 
@@ -193,34 +194,24 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-          // this.token = ''
-          // localStorage.token = ''
-          // this.$router.push('/')
         })
     },
     methods: {
-      // getMovieInfo() {
-      //   axios.get(`https://api.themoviedb.org/3/movie/`+this.$route.params.id+`?api_key=09665afd54623c9413c3f9336484b01c&language=`
-      //                 +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null')
-      //   .then(result => {
-      //     console.log(result)
-      //     // this.movies.push(result.data.results)
-      //     // this.movies.forEach(console.log)
-      //
-      //   })
-      // },
       }
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 .actorPicture {
   border-radius: 50%;
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+a {
+  text-decoration: none;
 }
 
 </style>
