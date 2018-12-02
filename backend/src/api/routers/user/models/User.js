@@ -16,12 +16,10 @@ const userSchema = new mongoose.Schema({
     activationToken: stringNull,
     resetPasswordToken: stringNull,
     image: stringNull,
-    watchedMovies: [{
-        _id: false,
-        id: String,
-        file: String,
-        date: Date,
-    }],
+    watchedMovies: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {}
+    },
     comments: [{
         _id: false,
         movieId: String,
@@ -31,7 +29,8 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.virtual('watchedIds').get(function () {
-    return this.watchedMovies.map(movie => movie.id)
+    return Object.keys(this.watchedMovies)
+        .map(fileName => this.watchedMovies[fileName].movieId)
         .filter((id, index, array) => array.indexOf(id) === index);
 });
 

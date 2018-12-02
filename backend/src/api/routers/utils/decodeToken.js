@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import {User} from "../user/models";
 
 export const decodeToken = (req, res, next) => {
     const config = req.app.get('config');
@@ -12,7 +13,15 @@ export const decodeToken = (req, res, next) => {
             }
             return next(error);
         }
-        req.id = decoded.id;
-        next();
+        User.findById(decoded.id)
+            .then(user => {
+                if (user === null || user.activated === false) {
+                    return res.status(200).json({"success": false, "message": 'Invalid token'});
+                }
+                req.user = user;
+                req.id = decoded.id;
+                next();
+            })
+            .catch(error => next(error));
     });
 };

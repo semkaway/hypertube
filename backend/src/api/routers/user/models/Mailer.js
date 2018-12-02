@@ -2,10 +2,20 @@ import nodemailer from 'nodemailer'
 
 export class Mailer {
     constructor() {
+        // UNIX SENDMAIL TRANSPORT
+
+        // this.transporter = nodemailer.createTransport({
+        //     sendmail: true,
+        //     newline: 'unix',
+        //     path: '/usr/sbin/sendmail'
+        // });
+
+        // END OF UNIX SENDMAIL TRANSPORT
+
         this.transporter = nodemailer.createTransport({
-            sendmail: true,
-            newline: 'unix',
-            path: '/usr/sbin/sendmail'
+            host: 'localhost',
+            port: 1025,
+            secure: false
         });
     }
 
