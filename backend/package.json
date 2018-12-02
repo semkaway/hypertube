@@ -23,6 +23,7 @@
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.12.1",
     "nodemailer": "^4.6.8",
+    "opensubtitles-api": "^4.1.0",
     "password-validator": "^4.1.1",
     "torrent-stream": "^1.1.0"
   },
