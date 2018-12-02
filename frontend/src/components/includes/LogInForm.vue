@@ -5,7 +5,7 @@
         <v-icon x-large color="white" dark class="white--text" flat @click="$emit('toggleForm')" right>clear</v-icon>
        </v-layout>
     <v-card >
-      <v-card-title>
+      <v-card-title v-if='showSuccess === false'>
         <v-toolbar class='hidden-sm-and-down'>
           <v-toolbar-items >
               <v-btn :color='!showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showLogin' flat>{{ $t('button.login') }}</v-btn>
@@ -19,41 +19,66 @@
               <v-btn :color='showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
          </v-layout>
       </v-card-title>
-        <v-card-text>
-          <form>
-              <v-text-field
-              @keyup.native='validateInput'
-              hint="Min 8 chars, one digit, one lower and upper case " 
-              v-if='showRegisterForm == true' 
-              :error-messages="arrayOfFirstNameErrors" 
-              v-model="firstName" 
-              :label="$t('registration.first_name')" 
-              color="grey darken-1"
-              name='firstName'
-							v-validate="'required|alpha|min:3|max:15'"></v-text-field>
-
-              <v-text-field
-              @keyup.native='validateInput'
-              v-if='showRegisterForm == true' 
-              :error-messages="arrayOfLastNameErrors" 
-              v-model="lastName" 
-              :label="$t('registration.last_name')" 
-              color="grey darken-1"
-              name='lastName'
-              v-validate="'required|alpha|min:3|max:15'"></v-text-field>
-
-              <v-text-field 
-              @keyup.native="checkIfEmailExists" 
-              name="email" 
-              v-validate="'required|email'" 
-              v-model="email" 
-              :error-messages="arrayOfEmailErrors" 
-              label="Email" 
-              color="grey darken-1"></v-text-field>
-
-              <v-text-field v-if='!showForgotPassForm' :type="showPassword ? 'text' : 'password'" @keyup.native='validateInput' name="password" v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" @click:append="showPassword = !showPassword"  :append-icon="showPassword ? 'visibility_off' : 'visibility'" v-model="password" :error-messages="arrayOfPasswordErrors" :label="$t('registration.password')" color="grey darken-1"></v-text-field>
-              <v-text-field v-model="repeatPassword" :type="showPassword ? 'text' : 'password'" @keyup.native='validateInput' :error-messages="arrayOfRepeatPasswordErrors" name="repeatPassword" v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" v-if='showRegisterForm == true'  :label="$t('registration.repeat_password')" color="grey darken-1"></v-text-field>
-          </form>
+        <v-card-text v-if='showSuccess === false'>
+            <form>
+                <v-text-field
+                @keyup.native='validateFirstName'
+                v-if='showRegisterForm == true' 
+                :error-messages="arrayOfFirstNameErrors" 
+                v-model="firstName" 
+                :label="$t('registration.first_name')" 
+                color="grey darken-1"
+                name='firstName'
+                v-validate="'required|alpha|min:3|max:15'"
+                :counter='15'
+                ></v-text-field>
+                <v-text-field
+                @keyup.native='validateLastName'
+                v-if='showRegisterForm == true' 
+                :error-messages="arrayOfLastNameErrors" 
+                v-model="lastName" 
+                :label="$t('registration.last_name')" 
+                color="grey darken-1"
+                name='lastName'
+                v-validate="'required|alpha|min:3|max:15'"
+                :counter='15'
+                ></v-text-field>
+			</form>
+          	<form>
+				<v-text-field 
+				@keyup.native="checkIfEmailExists" 
+				name="email" 
+				v-validate="'required|email'" 
+				v-model="email" 
+				:error-messages="arrayOfEmailErrors" 
+				label="Email" 
+				color="grey darken-1"></v-text-field>
+				<v-text-field 
+				v-if='!showForgotPassForm'
+				persistent-hint
+				:hint="$t('validation.passwordHint')"
+				ref="passwordRef"
+				:type="showPassword ? 'text' : 'password'" 
+				@keyup.native='validatePassword' 
+				name="password" 
+				v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" 
+				@click:append="showPassword = !showPassword"  
+				:append-icon="showPassword ? 'visibility_off' : 'visibility'" 
+				v-model="password" 
+				:error-messages="arrayOfPasswordErrors" 
+				:label="$t('registration.password')" 
+				color="grey darken-1"></v-text-field>
+				<v-text-field
+				v-if='showRegisterForm == true' 
+				v-model="repeatPassword" 
+				:type="showPassword ? 'text' : 'password'" 
+				@keyup.native='validateRepeatePassword' 
+				:error-messages="arrayOfRepeatPasswordErrors" 
+				name="repeatPassword" 
+				v-validate="'required|confirmed:passwordRef'"
+				:label="$t('registration.repeat_password')" 
+				color="grey darken-1"></v-text-field>
+          	</form>
            <v-layout justify-start>
             <v-flex>
               <v-btn v-if='!showRegisterForm && !showForgotPassForm' color="grey" class="white--text" @click='logInUser'>{{ $t('button.login') }}</v-btn>
@@ -64,13 +89,20 @@
               </v-flex>
             </v-layout>
         </v-card-text>
+		<v-card-text v-if='showSuccess === true'>
+			<v-alert :value="showSuccess" color='grey' type="success" transition="scale-transition" >
+      			{{ successMessage }}
+    		</v-alert>
+		</v-card-text>
     </v-card>
     </v-dialog>
   </v-layout>
 </template>
 
 <script>
-  import { HTTP } from '../../http-common'
+	import axios from 'axios'
+  	import { HTTP } from '../../http-common'
+  	import setAuthorizationToken from '../../utils/setAuthToken'
 
 export default {
     name: 'LogInForm',
@@ -85,6 +117,8 @@ export default {
           repeatPassword: '',
           firstName: '',
           lastName: '',
+		  showSuccess: false,
+		  successMessage: '',
           arrayOfEmailErrors: [],
           arrayOfPasswordErrors: [],
           arrayOfFirstNameErrors: [],
@@ -96,140 +130,200 @@ export default {
     methods: {
       showForgotPass() {
         this.arrayOfEmailErrors = []
+        this.arrayOfPasswordErrors = []
+        this.arrayOfFirstNameErrors = []
+        this.arrayOfLastNameErrors = []
+        this.arrayOfRepeatPasswordErrors = []
         this.showRegisterForm = false
         this.showForgotPassForm = true
-
       },
       showRegister() {
+		this.arrayOfEmailErrors = []
+        this.arrayOfPasswordErrors = []
+        this.arrayOfFirstNameErrors = []
+        this.arrayOfLastNameErrors = []
+        this.arrayOfRepeatPasswordErrors = []
         this.showRegisterForm = true
         this.showForgotPassForm = false
-        this.checkIfEmailExists()
+       
       },
       showLogin() {
         this.arrayOfEmailErrors = []
+        this.arrayOfPasswordErrors = []
+        this.arrayOfFirstNameErrors = []
+        this.arrayOfLastNameErrors = []
+        this.arrayOfRepeatPasswordErrors = []
         this.showRegisterForm = false
         this.showForgotPassForm = false
       },
 
-      sendEmail() {
-        if (!this.emailErrors.length && this.email.length) {
-          console.log('send email', this.email)
-        }
-      },
-      loginViaIntra() {
-         window.location.href = 'https://api.intra.42.fr/oauth/authorize?' +
-          'client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7' +
-          '&redirect_uri=http://localhost:8084/intra&' +
-				  'response_type=code'
-      },
-      loginViaGit() {
-        window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'
-      },
-      logInUser() {
-        console.log('login pass errors=>', this.arrayOfPasswordErrors)
+    sendEmail() {
+		if (!this.email.length) { this.arrayOfEmailErrors = [this.$t('validation.required')]}
+        if (!this.arrayOfEmailErrors.length && this.email.length) {
+			HTTP.get(`user/check-email/` + this.email)
+			.then(response => {
+				if (response.data.exist == true) {
+				HTTP.post('user/password/token-generate', { email: this.email}).then(response => {
+            		if (response.data.success == true) {
+						this.showSuccess = true
+						this.successMessage = this.$t('forgot_password.success_alert')
+						setTimeout(() => { this.$emit('toggleForm')}, 1800)
+                	} else if (response.data.success == false && (response.data.message == "User with this email doesn't exist")){
+						this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
+                	}}).catch((err) => { console.log('error: ', err) })
+			} else {
+				this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
+			}}).catch((err) => { this.arrayOfEmailErrors = [this.$t('registration.error_alert')] })
+		}
+        console.log('send email', this.email)
+    },
 
-        this.$validator.validateAll()
-        if (!this.arrayOfPasswordErrors.length    && this.email.length && 
-            !this.arrayOfPasswordErrors.length && this.password.length) {
-          HTTP.post('user/login', {email: this.email, password: this.password})
-          .then(response => {
-            console.log('res', response)
-            if (response.data.success) {
-              console.log('success')
-              // setAuthtoken
-              // router push /
-            } else {
-              if (response.data.message == "Invalid email") {
-                    this.arrayOfEmailErrors = [this.$t('validation.invalidEmail')]
-								} else if (response.data.message == "Invalid password") {
-                    this.arrayOfPasswordErrors = [this.$t('validation.invalidPassword')]
-								} else if (response.data.message == "User not activated") {
-                    this.arrayOfEmailErrors = [this.$t('validation.notActivated')]
-                    this.arrayOfPasswordErrors = [this.$t('validation.notActivated')]
-                } else {
-                    this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
-                    this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
-                }
-            }
-          })
-          .catch(err => {
-            this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
-            this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
-          })
+    loginViaIntra() {
+    	window.location.href = 'https://api.intra.42.fr/oauth/authorize?' +
+      	'client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7' +
+      	'&redirect_uri=http://localhost:8084/intra&' +
+		'response_type=code'
+    },
 
-        }
-      },
-      registerUser() {
-         if (
-          !this.arrayOfFirstNameErrors.length        && this.email.length &&
-          !this.arrayOfLastNameErrors.length         && this.lastName.length &&
-          !this.arrayOfEmailErrors.length            && this.firstName.length &&
-          !this.arrayOfPasswordErrors.length         && this.password.length &&
-          !this.arrayOfRepeatPasswordErrors.length   && this.repeatPassword.length) {
-            console.log('register user')
-            console.log('email', this.email)
-            console.log('first name', this.firstName)
-            console.log('last name', this.lastName)
-            console.log('pass', this.password)
-            console.log(this.$i18n.locale)
+    loginViaGit() {
+    	window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'
+    },
 
-              HTTP.post(`user/create`, {
-                  "first": this.firstName,
-                  "last": this.lastName,
-                  "email": this.email,
-                  "password": this.password,
-                  "locale": localStorage.locale
-                })
-                .then(response => {
-                  console.log(response)
-                  if (response.data.success == true) {
-                    this.showAlertDanger = false
-                    this.showAlertSuccess = true
-                  } else if (response.data.success == false) {
-                    this.showAlertSuccess = false
-                    this.showAlertDanger = true
-                  } else {
-                    this.showAlertSuccess = false
-                    this.showAlertDanger = true
-                  }
-                })
-                .catch(() => {
-                    this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
-                    this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
-                })
-          }
-      },
+    logInUser() {
+    	this.$validator.validateAll().then((valid) => {
+			if (!valid) {
+				this.validateEmail()
+				this.validateFirstName()
+				this.validateLastName()
+				this.validatePassword()
+				this.validateRepeatePassword()
+			} else if (!this.arrayOfEmailErrors.length && !this.arrayOfPasswordErrors.length) {
+				HTTP.post('user/login', {email: this.email, password: this.password}).then(response => {
+				if (response.data.success) {
+					this.$emit('toggleForm')
+					this.$i18n.locale = response.data.locale
+					localStorage.locale = response.data.locale
+					localStorage.token = response.data.token
+					setAuthorizationToken(response.data.token)
+					this.$router.push('/')
+				} else {
+					if (response.data.message == "Invalid email") {
+						this.arrayOfEmailErrors = [this.$t('validation.invalidEmail')]
+					} else if (response.data.message == "Invalid password") {
+						this.arrayOfPasswordErrors = [this.$t('validation.invalidPassword')]
+						} else if (response.data.message == "User not activated") {
+						this.arrayOfEmailErrors = [this.$t('validation.notActivated')]
+						this.arrayOfPasswordErrors = [this.$t('validation.notActivated')]
+					} else {
+						this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
+						this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
+					}
+				}
+				}).catch(err => {
+					this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
+					this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
+				})
+			}
+		})
+    },
 
-      checkIfEmailExists() {
-        this.validateInput()
-        if (this.showRegisterForm && !this.showForgotPassForm) {
-          HTTP.get(`user/check-email/` + this.email)
-          .then(response => { this.arrayOfEmailErrors = response.data.exist == true ? [this.$t('validation.serverError')] : [] })
-          .catch((err) => { this.arrayOfEmailErrors = [this.$t('registration.error_alert')] })
-        }
-      },
+    registerUser() {
+		this.$validator.validateAll().then((valid) => {
+			if (!valid) {
+				this.validateEmail()
+				this.validateFirstName()
+				this.validateLastName()
+				this.validatePassword()
+				this.validateRepeatePassword()
+			} else if (!this.arrayOfEmailErrors.length) {
+			HTTP.post(`user/create`, {
+			"first": this.firstName,
+			"last": this.lastName,
+			"email": this.email,
+			"password": this.password,
+			"locale": localStorage.locale })
+			.then(response => {
+				console.log(response)
+					if (response.data.success == true) {
+						this.showSuccess = true
+						this.successMessage = this.$t('registration.success_alert')
+						setTimeout(() => { this.$emit('toggleForm')}, 2100)
+					} else {
+						this.arrayOfEmailErrors = [this.$t('validation.serverError')]
+					}}).catch(() => {
+						this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
+						this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
+					})
+			} else {
+				this.arrayOfEmailErrors = [this.$t('validation.serverError')]
+			}
+  	})
+	},
 
-validateInput() {
-      // debugger
-      console.log(this.errors.any())
-      console.log('this.errors', this.errors)
-      console.log("this.errors.has('firstName')", this.errors.has('firstName'))
-      console.log("this.errors.first('firstName')", this.errors.first('firstName'))
-      if (this.errors.any()) {
-            this.arrayOfEmailErrors = this.errors.has('email') ? this.errors.first('email') : []
-            this.arrayOfPasswordErrors = this.errors.has('password') ? this.errors.first('password') : []
-            this.arrayOfFirstNameErrors = this.errors.has('firstName') ? this.errors.first('firstName') : []
-            this.arrayOfLastNameErrors = this.errors.has('lastName') ? this.errors.first('lastName') : []
-      } else {
-          this.arrayOfEmailErrors = []
-          this.arrayOfPasswordErrors = []
-          this.arrayOfFirstNameErrors = []
-          this.arrayOfLastNameErrors = []
-          this.arrayOfRepeatPasswordErrors = []
-      }
-      console.log('arrays =>', this.arrayOfEmailErrors, this.arrayOfPasswordErrors, this.arrayOfFirstNameErrors)
-    }
+		checkIfEmailExists() {
+			this.validateEmail()
+			if (!this.arrayOfEmailErrors.length && this.showRegisterForm && !this.showForgotPassForm && this.email.length) {
+			HTTP.get(`user/check-email/` + this.email)
+			.then(response => { this.arrayOfEmailErrors = response.data.exist == true ? [this.$t('validation.serverError')] : this.arrayOfEmailErrors })
+			.catch((err) => { this.arrayOfEmailErrors = [this.$t('registration.error_alert')] })
+			}
+		},
 
+		validateEmail() {
+			if (this.errors.has('email')) {
+				this.arrayOfEmailErrors = this.email.length ? [this.$t('validation.email')] : [this.$t('validation.required')]
+			} else {
+				this.arrayOfEmailErrors = []
+			}
+		},
+
+		validateFirstName() {
+			if (this.errors.has('firstName')) {
+				if (this.firstName.length > 15) {
+					this.arrayOfFirstNameErrors = [this.$t('validation.firstNameLong')]
+				} else if (!this.firstName.length){
+					this.arrayOfFirstNameErrors = [this.$t('validation.required')]
+				} else	if (this.firstName.length < 3){
+					this.arrayOfFirstNameErrors = [this.$t('validation.firstNameShort')]
+				} else {
+					this.arrayOfFirstNameErrors =  [this.$t('validation.firstNameFormat')]
+				}
+			} else {
+				this.arrayOfFirstNameErrors = []
+			}
+		},
+
+		validateLastName() {
+			if (this.errors.has('lastName')) {
+				if (this.lastName.length > 15) {
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameLong')]
+				} else if (!this.lastName.length){
+					this.arrayOfLastNameErrors = [this.$t('validation.required')]
+				} else	if (this.lastName.length < 3){
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameShort')]
+				} else {
+					this.arrayOfLastNameErrors =  [this.$t('validation.firstNameFormat')]
+				}
+			} else {
+				this.arrayOfLastNameErrors = []
+			}
+		},
+
+		validatePassword() {
+			if (this.errors.has('password')) {
+				this.arrayOfPasswordErrors = this.password.length ? [this.$t('validation.wrongFormat')] : [this.$t('validation.required')]
+			} else {
+				this.arrayOfPasswordErrors = []
+			}
+		},
+
+		validateRepeatePassword() {
+			if (this.errors.has('repeatPassword')) {
+				this.arrayOfRepeatPasswordErrors = this.repeatPassword.length ? [this.$t('validation.repeatPassword')] : [this.$t('validation.required')]
+			} else {
+				this.arrayOfRepeatPasswordErrors = []
+			}
+		}
     },
 }
 
