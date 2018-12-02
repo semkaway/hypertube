@@ -54,36 +54,33 @@
     methods: {
         changeLanguage (locale) { 
             this.locale = locale
-
-        this.$i18n.locale = locale
-        localStorage.locale = locale
-        if (localStorage.token != '') {
-        HTTP
-          .put('user/change/locale', {
-            'token': localStorage.token,
-            'locale': val
-          })
-          .then(result => {
-          if (result.data.success == false) {
-              localStorage.token = ''
-              this.$router.push('/')
+            this.$i18n.locale = locale
+            localStorage.locale = locale
+            if (localStorage.token != '') {
+            HTTP.put('user/change/locale', {
+                'token': localStorage.token,
+                'locale': val
+            }).then(result => {
+                if (result.data.success == false) {
+                    localStorage.token = ''
+                    this.$router.push('/')
+                }
+            }).catch((err) => {
+                console.log(err.response.data.error.message)
+                console.log("server error")
+            })
             }
-          })
-          .catch((err) => {
-            console.log(err.response.data.error.message)
-            console.log("server error")
-          })
-        }
-            },
+        },
+
         fetchData () {
             this.token = localStorage.token
             if (localStorage.locale) {
                 this.$i18n.locale = localStorage.locale;
             }
-            },
+        },
 
         toggleForm() {
-             this.showForm = !this.showForm
+            this.showForm = !this.showForm
         }
     },
     created () {
