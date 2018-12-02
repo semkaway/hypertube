@@ -29,7 +29,9 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.virtual('watchedIds').get(function () {
-    return Object.keys(this.watchedMovies);
+    return Object.keys(this.watchedMovies)
+        .map(fileName => this.watchedMovies[fileName].movieId)
+        .filter((id, index, array) => array.indexOf(id) === index);
 });
 
 userSchema.virtual('commentedIds').get(function () {

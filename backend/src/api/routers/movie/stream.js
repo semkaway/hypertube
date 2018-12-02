@@ -52,8 +52,8 @@ export const stream = model => (req, res, next) => {
                                 }
                                 const magnet = torrent.data.torrents.en[req.query.quality].url;
 
-                                user.watchedMovies[req.params.id] = {
-                                    'folder': magnet.match(/btih:(.+?)&/)[1].toLowerCase(),
+                                user.watchedMovies[magnet.match(/btih:(.+?)&/)[1].toLowerCase()] = {
+                                    'movieId': req.params.id,
                                     'date': new Date()
                                 };
                                 user.markModified('watchedMovies');
