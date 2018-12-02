@@ -1,5 +1,20 @@
 const messages = {
 	en: {
+		validation:{
+			required: 'This field is required',
+			firstNameShort: 'Must be at least 3 characters long',
+			firstNameLong: 'Can\'t be more than 15 characters',
+			firstNameFormat: 'Can contain only letters',
+			email: 'Must be a valid email',
+			password: 'Must be at least 8 characters long',
+			passwordHint: 'Min 8 characters, one digit, one uppercase and one lowercase letter',
+			wrongFormat: 'Invalid password format',
+			invalidEmail: 'Invalid email',
+			invalidPassword: 'Invalid password',
+			repeatPassword: 'Passwords don\'t match',
+			serverError: 'User with this email already exists',
+			notActivated: 'User is not activated'
+		},
 		button: {
 			home: "Home",
 			login: "login",
@@ -104,6 +119,21 @@ const messages = {
 		},
 	},
 	ru: {
+		validation:{
+			required: 'Поле обязательно для заполнения',
+			firstNameShort: 'Не может быть короче 3 символов',
+			firstNameLong: 'Не может быть больше 15 символов',
+			firstNameFormat: 'Может содержать только буквы',
+			email: 'Неверный формат email',
+			password: 'Не может быть короче 8 символов',
+			wrongFormat: 'Неправильный формат пароля',
+			passwordHint: 'Минимум 8 символов, одна цифра, одна большая и одна маленькая буква',
+			invalidEmail: 'Неправильный email',
+			invalidPassword: 'Неправильный пароль',
+			repeatPassword: 'Пароли не совпадают',
+			serverError: 'Пользователь с таким email уже существует',
+			notActivated: 'Пользователь не активирован'
+		},
 		button: {
 			home: "главная",
 			login: "войти",
@@ -207,6 +237,21 @@ const messages = {
 		},
 	},
 	uk: {
+		validation:{
+			required: 'Поле обов\'язкове для заповнення',
+			firstNameShort: 'Не може бути менше ніж 3 символи',
+			firstNameLong: 'Не може бути більше ніж 15 символів',
+			firstNameFormat: 'Може містити тільки літери',
+			email: 'Помилковий формат email',
+			password: 'Не може бути менше ніж 8 символів',
+			wrongFormat: 'Помилковий формат пароля',
+			passwordHint: 'Мінімум 8 символів, одна цифра, одна велика та одна маленька літера',
+			invalidEmail: 'Неправильний email',
+			invalidPassword: 'Неправильний пароль',
+			repeatPassword: 'Паролі не співпадають',
+			serverError: 'Користувач з таким email вже існує',
+			notActivated: 'Користувач не активований'
+		},
 		button: {
 			home: "головна",
 			login: "увійти",

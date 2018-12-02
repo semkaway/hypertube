@@ -57,6 +57,12 @@ Vue.use(Layout);
 Vue.use(Modal);
 Vue.use(Alert);
 Vue.use(Carousel);
+// Vue.use(Vuelidate)
+// Vue.use(vuelidateErrorExtractor, {
+// 	templates,
+// 	messages: i18n.messages,
+// 	i18n: 'validation' // Where validation is the key under which all validation messages are contained. Can be deeper nested if needed.
+//   })
 // Vue.use(Scrollspy);
 Vue.use(ListGroup);
 Vue.use(Image);
