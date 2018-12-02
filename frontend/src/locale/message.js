@@ -2,9 +2,11 @@ const messages = {
 	en: {
 		validation:{
 			required: 'This field is required',
-			firstName: 'Must be at least 3 characters long',
+			firstNameShort: 'Must be at least 3 characters long',
+			firstNameLong: 'Can\'t be more than 8 characters',
 			email: 'Must be a valid email',
 			password: 'Must be at least 8 characters long',
+			passwordHint: 'Min 8 characters, one digit, one uppercase and one lowercase letter',
 			invalidEmail: 'Invalid email',
 			invalidPassword: 'Invalid password',
 			repeatPassword: 'Passwords don\'t match',
@@ -117,9 +119,11 @@ const messages = {
 	ru: {
 		validation:{
 			required: 'Поле обязательно для заполнения',
-			firstName: 'Не может быть короче 3 символов',
+			firstNameShort: 'Не может быть короче 3 символов',
+			firstNameLong: 'Не может быть больше 8 символов',
 			email: 'Неверный формат email',
 			password: 'Не может быть короче 8 символов',
+			passwordHint: 'Минимум 8 символов, одна цифра, одна большая и одна маленькая буква',
 			invalidEmail: 'Неправильный email',
 			invalidPassword: 'Неправильный пароль',
 			repeatPassword: 'Пароли не совпадают',
@@ -231,9 +235,11 @@ const messages = {
 	uk: {
 		validation:{
 			required: 'Поле обов\'язкове для заповнення',
-			firstName: 'Не може бути менше ніж 3 символи',
+			firstNameShort: 'Не може бути менше ніж 3 символи',
+			firstNameLong: 'Не може бути більше ніж 8 символів',
 			email: 'Помилковий формат email',
 			password: 'Не може бути менше ніж 8 символів',
+			passwordHint: 'Мінімум 8 символів, одна цифра, одна велика та одна маленька літера',
 			invalidEmail: 'Неправильний email',
 			invalidPassword: 'Неправильний пароль',
 			repeatPassword: 'Паролі не співпадають',
