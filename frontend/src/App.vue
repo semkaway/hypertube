@@ -1,13 +1,13 @@
 <template>
 	 <v-app>
 		<app-header></app-header>
-		<router-view/>
+		<router-view />
 	</v-app>
 </template>
 
 <script>
 
-import AppHeader from './components/includes/TopHeader'
+import AppHeader from './components/includes/TheHeader'
 import AppFooter from './components/includes/TheFooter'
 
 export default {

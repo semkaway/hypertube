@@ -3,10 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Movies from '@/components/Movies'
 import Movie from '@/components/Movie'
-import Registration from '@/components/Registration'
 import Activation from '@/components/Activation'
-import Login from '@/components/Login'
-import RestorePassword from '@/components/RestorePassword'
 import UserProfile from '@/components/UserProfile'
 import UserSettings from '@/components/UserSettings'
 import oauth from '@/components/Oauth'
@@ -40,30 +37,9 @@ let router = new Router({
 	    	}
 		},
 		{
-				path: '/register',
-				name: 'registration',
-				component: Registration,
-				meta: {
-				  guest: true
-				}
-		},
-		{
-				path: '/login',
-				name: 'login',
-				component: Login,
-				meta: {
-				  guest: true
-				}
-		},
-		{
 				path: '/activate',
 				name: 'activation',
 				component: Activation
-		},
-		{
-				path: '/reset-password',
-				name: 'restorepassword',
-				component: RestorePassword
 		},
 		{
 				path: '/intra',
