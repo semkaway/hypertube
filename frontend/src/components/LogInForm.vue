@@ -106,7 +106,7 @@
 
 export default {
     name: 'LogInForm',
-    props: ['showForm'],
+    props: ['showForm', 'token'],
     data: function () {
       return {
           showPassword: false,
@@ -205,7 +205,7 @@ export default {
 					localStorage.locale = response.data.locale
 					localStorage.token = response.data.token
 					setAuthorizationToken(response.data.token)
-					this.$router.push('/')
+					this.$emit('setUser', {token: response.data.token, locale: response.data.locale})
 				} else {
 					if (response.data.message == "Invalid email") {
 						this.arrayOfEmailErrors = [this.$t('validation.invalidEmail')]

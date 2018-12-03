@@ -7,6 +7,7 @@ import Activation from '@/components/Activation'
 import UserProfile from '@/components/UserProfile'
 import UserSettings from '@/components/UserSettings'
 import oauth from '@/components/Oauth'
+import axios from 'axios'
 
 Vue.use(Router)
 
@@ -15,22 +16,28 @@ let router = new Router({
 	base: __dirname,
 	routes: [
 		{
-				path: '/',
-				component: localStorage.getItem('token') ?  Movies : Home ,
-				meta: {
-				requiresAuth: true,
-	    	}
+			path: '/',
+			component: Home,
+			props: true,
+		},
+		{
+			path: '/movies',
+			component: Movies,
+			props: true,
+	
 		},
 		{
 				path: '/movies/:id',
 				component: Movie,
+				props: true,
 				meta: {
-	      		requiresAuth: true
-	    	}
+	      			requiresAuth: true
+	    		}
 		},
 		{
 				path: '/activate',
 				name: 'activation',
+				props: true,
 				component: Activation
 		},
 		{
@@ -46,51 +53,34 @@ let router = new Router({
 		{
 			path: '/user',
 			name: 'userProfile',
+			props: true,
 			component: UserProfile,
 			meta: {
-      		requiresAuth: true
-    	}
+      			requiresAuth: true
+    		}
 		},
 		{
 			path: '/user/settings',
 			name: 'userSettings',
 			component: UserSettings,
+			props: true,
 			meta: {
-      		requiresAuth: true
-    	}
+      			requiresAuth: true
+    		}
 		},
 	]
 })
 
-router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth)) {
-        if (localStorage.getItem('token') == '') {
-            next({
-                path: '/',
-                params: { nextUrl: to.fullPath }
-            })
-					}
-        else {
-              next()
-          }
-    }
-		else if(to.matched.some(record => record.meta.guest)) {
-        if(localStorage.getItem('token') == ''){
-            next()
-        }
-        else{
-            next({ path: '/user'})
-        }
-    } else if(to.matched.some(record => record.meta.homePage)) {
-        if(localStorage.getItem('token') == ''){
-            next()
-        }
-        else{
-            next({ path: '/movies'})
-        }
-    } else {
+router.beforeEach((to, fromRoute, next) => {
+	console.log('to =>', to)
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!axios.defaults.headers.common['Authorization']) {
+			console.log('set path to /')
+			next({ path: '/'})
+		}
+	} else {
         next()
-    }
+	}
 })
 
 export default router

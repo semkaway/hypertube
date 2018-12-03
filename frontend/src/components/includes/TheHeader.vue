@@ -4,13 +4,13 @@
             <v-btn flat> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
             <v-btn flat @click="toggleForm"> <v-icon> exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
         </v-toolbar-items>
-        <LogInForm  v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' />
+        <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:setUser='setUser'/>
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
                 <v-btn flat slot="activator">
                     <v-icon>language</v-icon>
-                    <span class='ml-2'>{{ locale }}</span>
+                    <span class='ml-2'>{{ headerLocale }}</span>
                 </v-btn>
                 <v-list>
                     <v-list-tile v-for="(item, i) in lang" :key="i" @click="changeLanguage(item.short)">
@@ -29,12 +29,12 @@
 
     export default {
         name: 'TopHeader',
-        components: {
-            LogInForm
-        },
+        components: { LogInForm },
+        props: ['user', 'token', 'locale'],
         data: () => ({
-        locale: localStorage.getItem('locale'),
-        token: localStorage.getItem('token'),
+        headerLocale: this.locale,
+        headerToken: this.token,
+        headerUser: this.user,
         showForm: false,
         lang: {
             en: {
@@ -53,7 +53,7 @@
     }),
     methods: {
         changeLanguage (locale) {
-            this.locale = locale
+            this.headerLocale = locale
             this.$i18n.locale = locale
             localStorage.locale = locale
             if (localStorage.token != '') {
@@ -73,14 +73,18 @@
         },
 
         fetchData () {
-            this.token = localStorage.token
-            if (localStorage.locale) {
-                this.$i18n.locale = localStorage.locale;
+            this.headerLocale = localStorage.locale
+            if ( this.headerLocale) {
+                this.$i18n.locale = this.headerLocale
             }
         },
 
         toggleForm() {
             this.showForm = !this.showForm
+        },
+
+        setUser(response) { 
+            this.$emit('setTokenAndLocale', response)
         }
     },
     created () {
@@ -94,7 +98,7 @@
     },
     watch: {
             locale() {
-            this.$i18n.locale = localStorage.locale;
+                this.$i18n.locale = localStorage.locale;
             },
             '$route': 'fetchData'
         }
