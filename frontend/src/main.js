@@ -24,6 +24,8 @@ import ru from './locale/ru'
 import en from 'vee-validate/dist/locale/en'
 import uk from './locale/uk'
 import setAuthorizationToken from './utils/setAuthToken'
+import VuePlyr from 'vue-plyr';
+import 'vue-plyr/dist/vue-plyr.css';
 
 Validator.localize(uk);
 Validator.localize(ru);
@@ -66,6 +68,7 @@ Vue.use(Carousel);
 // Vue.use(Scrollspy);
 Vue.use(ListGroup);
 Vue.use(Image);
+Vue.use(VuePlyr)
 
 Vue.use(Vuetify, {
   iconfont: 'mdi' // 'md' || 'mdi' || 'fa' || 'fa4'

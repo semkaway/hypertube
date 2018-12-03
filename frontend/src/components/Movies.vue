@@ -10,7 +10,7 @@
         @keyup.native.enter="searchMovies"
       ></v-text-field>
       <v-layout row wrap class="mt-3">
-        <v-flex v-for="movie in movies" class="movie" lg3>
+        <v-flex v-for="movie in movies" :key='movie.id' class="movie" lg3>
             <router-link :to="'/movies/'+movie.id">
               <v-hover>
                <v-card

@@ -117,6 +117,15 @@ const messages = {
 															This action is irreversible and you will lose all your data.`
 			}
 		},
+		movie: {
+			duration: 'Duration',
+			min: 'min',
+			rating: 'Rating',
+			genres: 'Genres',
+			year: 'Year',
+			crew: 'Crew',
+			cast: 'Cast'
+		}
 	},
 	ru: {
 		validation:{
@@ -235,6 +244,15 @@ const messages = {
 				delete_account_text: 'Вы уверены? Вы не сможете отменить это действие. Все Ваши данные будут утеряны.'
 			}
 		},
+		movie: {
+			duration: 'Длительность',
+			min: 'мин',
+			rating: 'Рейтинг',
+			genres: 'Жанры',
+			year: 'Год',
+			crew: 'Команда',
+			cast: 'Актеры'
+		}
 	},
 	uk: {
 		validation:{
@@ -353,6 +371,15 @@ const messages = {
 				delete_account_text: 'Ви впевнені? Ви не зможете відмінити цю дію. Всі Ваші дані будуть втрачені.'
 			}
 		},
+		movie: {
+			duration: 'Тривалість',
+			min: 'хв',
+			rating: 'Рейтинг',
+			genres: 'Жанри',
+			year: 'Рік',
+			crew: 'Команда',
+			cast: 'Актори'
+		}
 	}
 }
 

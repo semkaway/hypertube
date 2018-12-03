@@ -17,9 +17,9 @@ let router = new Router({
 		{
 				path: '/',
 				component: localStorage.getItem('token') ?  Movies : Home ,
-				meta: {
-				requiresAuth: true,
-	    	}
+				// meta: {
+				// requiresAuth: true,
+	    	// }
 		},
 		{
 				path: '/movies/:id',
@@ -64,15 +64,13 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
     if(to.matched.some(record => record.meta.requiresAuth)) {
+			console.log('yo')
         if (localStorage.getItem('token') == '') {
-            next({
-                path: '/',
-                params: { nextUrl: to.fullPath }
-            })
+            next(false)
 					}
         else {
-              next()
-          }
+            next()
+        }
     }
 		else if(to.matched.some(record => record.meta.guest)) {
         if(localStorage.getItem('token') == ''){
