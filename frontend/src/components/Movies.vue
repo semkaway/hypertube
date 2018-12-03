@@ -19,24 +19,20 @@
                  color="grey lighten-4"
                  max-width="250"
                >
-                 <v-img
-                   :aspect-ratio="1/1.5"
-                   :src="movie.poster_path"
-                 >
+                 <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
                    <v-expand-transition>
-                       <div
-                       v-if="hover"
-                       class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
-                       style="height: 100%; opacity: 0.9;"
-                     >
+                    <div
+						v-if="hover"
+						class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
+						style="height: 100%; opacity: 0.9;">
                      <v-layout row wrap>
                         <v-flex xs12>
-                          <p><v-icon v-html="'$vuetify.icons.calendar_today'"></v-icon>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
+                        	<p><v-icon v-html="'$vuetify.icons.calendar_today'"></v-icon>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
                         </v-flex>
                         <v-flex class="mx-2" xs12>
-                          <p style="width:100%;overflow:hidden;height:150px;line-height:20px;">{{movie.overview}}</p>
+                        	<p style="width:100%;overflow:hidden;height:150px;line-height:20px;">{{movie.overview}}</p>
                         </v-flex>
-                      </v-layout>
+                    </v-layout>
                     </div>
                    </v-expand-transition>
                  </v-img>
@@ -53,9 +49,11 @@
 <script>
     import {HTTP} from '../http-common';
     import axios from 'axios'
+	import setAuthorizationToken from '../utils/setAuthToken'
 
     export default {
         name: 'Movies',
+        props: ['user', 'userLoggedIn', 'locale', 'token'],
         data () {
           return {
             movies: [],
@@ -64,33 +62,26 @@
             query: ''
           }
         },
-        mounted() {
-          HTTP
-            .get('user/data/')
-            .then(result => {
-              if (result.data.success == true) {
-                this.token = result.data.token
-                this.query = `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
-                              +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
-                              '&page='
-                this.requestMovies(1)
-              } else if (result.data.success == false) {
-                localStorage.token = ''
-                this.$router.push('/')
-              }
-            })
-            .catch((err) => {
-              console.log(err)
-              this.token = ''
-              localStorage.token = ''
-              this.$router.push('/')
-            })
-        },
         methods: {
-          requestMovies() {
-            console.log('yo')
-            axios.get(this.query+this.page)
-            .then(result => {
+			requestUser() {
+				HTTP.get('user/data/').then(result => {
+					console.log('result data =>', result)
+					if (result.data.success == true) {
+						this.query = `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
+						+localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
+						'&page='
+					} else if (result.data.success == false) {
+						localStorage.token = ''
+						this.$router.push('/')
+					}
+				}).catch((err) => {
+					console.log(err)
+					setAuthorizationToken(false)
+					this.$router.push('/')
+				})
+			},
+          	requestMovies() {
+            axios.get(this.query + this.page).then(result => {
               for (var i = 0; i < result.data.results.length; i++) {
                 for(var key in result.data.results[i]) {
                     if (key == 'release_date') {
@@ -109,32 +100,34 @@
               }
             })
           },
-          handleScroll () {
-            var d = document.documentElement;
-            var offset = d.scrollTop + window.innerHeight;
-            var height = d.scrollHeight;
 
-            if (offset === height) {
-              this.page = this.page + 1;
-              this.requestMovies()
-            }
-          },
-          searchMovies() {
-            console.log(this.searchParams)
-            this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
-                          +localStorage.locale+'&query='+this.searchParams+'&images&include_image_language='+localStorage.locale+',null'+
-                          '&page='
-            this.movies = []
-            this.page = 1
-            this.requestMovies()
-          }
-        },
-        watch: {
+          	handleScroll () {
+            	let d = document.documentElement;
+            	let offset = d.scrollTop + window.innerHeight;
+            	let height = d.scrollHeight;
 
+            	if (offset === height) {
+              		this.page = this.page + 1;
+              		this.requestMovies()
+            	}
+          	},
+			searchMovies() {
+				console.log(this.searchParams)
+				this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
+							+ localStorage.locale + '&query='+this.searchParams + '&images&include_image_language=' + localStorage.locale + ',null' +
+							'&page='
+				this.movies = []
+				this.page = 1
+				this.requestMovies()
+			}
         },
+
         created () {
-          window.addEventListener('scroll', this.handleScroll);
+			this.requestUser()
+			this.requestMovies()
+          	window.addEventListener('scroll', this.handleScroll);
         },
+
         destroyed () {
           window.removeEventListener('scroll', this.handleScroll);
         }

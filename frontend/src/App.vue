@@ -1,7 +1,16 @@
 <template>
 	 <v-app>
-		<app-header></app-header>
-		<router-view />
+		<app-header 
+			v-bind:user='user' 
+			v-bind:token='token' 
+			v-bind:locale='locale'  
+			v-on:setTokenAndLocale='setTokenAndLocale'
+		/>
+		<router-view 
+			v-bind:user='user' 
+			v-bind:token='token' 
+			v-bind:locale='locale' 
+		/>
 	</v-app>
 </template>
 
@@ -16,6 +25,20 @@ export default {
 		'app-header': AppHeader,
 		'app-footer': AppFooter,
 	},
+	data: () => {
+		return {
+			user: {},
+			token: localStorage.getItem('token'),
+			locale: localStorage.getItem('locale'),
+		}
+	},
+	methods: {
+		setTokenAndLocale (response) {
+			this.token = response.token
+			this.locale = response.locale
+			this.$router.push('/movies')
+		}
+	}
 }
 </script>
 

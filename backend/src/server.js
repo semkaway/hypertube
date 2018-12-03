@@ -15,6 +15,17 @@ dbConnect();
 
 app.set('config', config);
 
+// Logger to console
+app.use(function (req, res, next) {
+    var d = new Date;
+    var time = '['+ d.getHours() + ':' + d.getMinutes() + ']';
+    var method = req.method;
+    var url = 'URL: ' + req.originalUrl;
+    var logger = time + '   ' + method + '   ' + url;
+    console.log(logger) 
+    next();
+});
+
 // setup basic routing for index route
 app.use('/api', restRouter);
 

@@ -7,6 +7,7 @@ import Activation from '@/components/Activation'
 import UserProfile from '@/components/UserProfile'
 import UserSettings from '@/components/UserSettings'
 import oauth from '@/components/Oauth'
+import axios from 'axios'
 
 Vue.use(Router)
 
@@ -15,22 +16,36 @@ let router = new Router({
 	base: __dirname,
 	routes: [
 		{
+<<<<<<< HEAD
 				path: '/',
 				component: localStorage.getItem('token') ?  Movies : Home ,
 				// meta: {
 				// requiresAuth: true,
 	    	// }
+=======
+			path: '/',
+			component: Home,
+			props: true,
+		},
+		{
+			path: '/movies',
+			component: Movies,
+			props: true,
+	
+>>>>>>> 7bfc922e29803b48fad83e9d9d71f61b82cc61f4
 		},
 		{
 				path: '/movies/:id',
 				component: Movie,
+				props: true,
 				meta: {
-	      		requiresAuth: true
-	    	}
+	      			requiresAuth: true
+	    		}
 		},
 		{
 				path: '/activate',
 				name: 'activation',
+				props: true,
 				component: Activation
 		},
 		{
@@ -46,22 +61,25 @@ let router = new Router({
 		{
 			path: '/user',
 			name: 'userProfile',
+			props: true,
 			component: UserProfile,
 			meta: {
-      		requiresAuth: true
-    	}
+      			requiresAuth: true
+    		}
 		},
 		{
 			path: '/user/settings',
 			name: 'userSettings',
 			component: UserSettings,
+			props: true,
 			meta: {
-      		requiresAuth: true
-    	}
+      			requiresAuth: true
+    		}
 		},
 	]
 })
 
+<<<<<<< HEAD
 router.beforeEach((to, from, next) => {
     if(to.matched.some(record => record.meta.requiresAuth)) {
 			console.log('yo')
@@ -87,8 +105,18 @@ router.beforeEach((to, from, next) => {
             next({ path: '/movies'})
         }
     } else {
+=======
+router.beforeEach((to, fromRoute, next) => {
+	console.log('to =>', to)
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!axios.defaults.headers.common['Authorization']) {
+			console.log('set path to /')
+			next({ path: '/'})
+		}
+	} else {
+>>>>>>> 7bfc922e29803b48fad83e9d9d71f61b82cc61f4
         next()
-    }
+	}
 })
 
 export default router
