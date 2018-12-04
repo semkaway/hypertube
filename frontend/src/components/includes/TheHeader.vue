@@ -116,12 +116,21 @@
     created () {
         this.fetchData()
         this.requestUser()
+<<<<<<< HEAD
     },
 
     mounted() {
           this.headerLocale = this.locale
     },
 
+=======
+    },
+    
+    mounted() {
+          this.headerLocale = this.locale
+    },
+    
+>>>>>>> a7b6d350835c29e6c1791d4721c13bb2e9777b7f
     filters: {
         capitalize (value) {
             if (!value) return ''
