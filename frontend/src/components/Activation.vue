@@ -72,9 +72,8 @@ export default {
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  font-size: 1.5rem;
-}
+  h1 {
+    font-size: 1.5rem;
+  }
 </style>
