@@ -20,15 +20,22 @@
         data: () => ({
             items: [
                 { title: 'My profile', target: 'profile' },
+                { title: 'Settings', target: 'settings' },
                 { title: 'Logout', target: 'logout' }
             ]
         }),
         methods: {
             menuClick(target) {
+                console.log('target =>', target)
                 if (target === 'logout') {
                     setAuthorizationToken(false)
                     this.$router.push('/')
                     this.$emit('userLoggedOut')
+                } else if (target === 'settings') {
+                    console.log('push settings =>')
+                    this.$router.push('/user/settings')
+                } else if (target === 'profile') {
+                    this.$router.push('/user')
                 }
             }
         }

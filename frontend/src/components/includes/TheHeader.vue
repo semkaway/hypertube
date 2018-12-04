@@ -1,7 +1,7 @@
 <template>
     <v-toolbar color="grey darken-3" dark fixed height='68'>
         <v-toolbar-items>
-            <v-btn flat> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
+            <v-btn flat  @click='goToHomePage'> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
             <v-btn v-if='userLoggedIn === false' flat @click="toggleForm"> <v-icon> exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
         </v-toolbar-items>
         <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:setUser='setUser'/>
@@ -76,9 +76,20 @@
             }
         },
 
+        requestUser () {
+			HTTP.get('user/data/').then(result => {
+				if (result.data.success == false) {
+					setAuthorizationToken(false)
+					this.$router.push('/')
+				} else {
+                    this.userLoggedIn = true
+				}
+			}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
+		},
+
         fetchData () {
             this.headerLocale = localStorage.locale
-            if ( this.headerLocale) {
+            if (this.headerLocale) {
                 this.$i18n.locale = this.headerLocale
             }
         },
@@ -87,18 +98,30 @@
             this.showForm = !this.showForm
         },
 
-        setUser(response) { 
+        setUser(response) {
+            this.userLoggedIn = true
             this.$emit('setTokenAndLocale', response)
         },
 
         userLoggedOut() {
              this.userLoggedIn = false
+        },
+
+        goToHomePage() {
+            this.$router.push('/movies')
         }
 
     },
+
     created () {
         this.fetchData()
+        this.requestUser()
     },
+    
+    mounted() {
+          this.headerLocale = this.locale
+    },
+    
     filters: {
         capitalize (value) {
             if (!value) return ''
@@ -107,10 +130,6 @@
     },
     watch:
     {
-        user() {
-            this.userLoggedIn = true
-        },
-
         locale() {
             this.$i18n.locale = localStorage.locale;
         },
