@@ -17,19 +17,17 @@ let router = new Router({
 		{
 			path: '/',
 			component: Home,
-			// props: true,
+			props: true,
 		},
 		{
 			path: '/movies',
 			component: Movies,
+			props: true,
 		},
 		{
 			path: '/movies/:id',
 			component: Movie,
 			props: true,
-			meta: {
-	      		requiresAuth: true
-	    	}
 		},
 		{
 			path: '/activate',
