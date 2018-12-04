@@ -29,8 +29,8 @@ export default {
 	data: () => {
 		return {
 			user: {},
-			token: localStorage.getItem('token'),
-			locale: localStorage.getItem('locale'),
+			token: localStorage.token,
+			locale: localStorage.locale ? localStorage.locale : 'en',
 		}
 	},
 	methods: {
@@ -42,7 +42,7 @@ export default {
 
 		setUser (response) {
 			let { email, first, last, image } = response
-			this.user = {email, first, last, image}
+			this.user = { email, first, last, image }
 		}
 	}
 }
