@@ -55,30 +55,15 @@ let router = new Router({
 			name: 'userProfile',
 			props: true,
 			component: UserProfile,
-			meta: {
-      			requiresAuth: true
-    		}
 		},
 		{
 			path: '/user/settings',
 			name: 'userSettings',
 			component: UserSettings,
 			props: true,
-			meta: {
-      			requiresAuth: true
-    		}
+			
 		},
 	]
-})
-
-router.beforeEach((to, fromRoute, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!axios.defaults.headers.common['Authorization']) {
-			next({ path: '/'})
-		}
-	} else {
-        next()
-	}
 })
 
 export default router
