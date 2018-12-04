@@ -23,12 +23,6 @@ let router = new Router({
 		{
 			path: '/movies',
 			component: Movies,
-			props: true,
-<<<<<<< HEAD
-
-=======
-	
->>>>>>> a7b6d350835c29e6c1791d4721c13bb2e9777b7f
 		},
 		{
 			path: '/movies/:id',
@@ -65,11 +59,6 @@ let router = new Router({
 			name: 'userSettings',
 			component: UserSettings,
 			props: true,
-<<<<<<< HEAD
-
-=======
-			
->>>>>>> a7b6d350835c29e6c1791d4721c13bb2e9777b7f
 		},
 	]
 })

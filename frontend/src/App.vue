@@ -6,15 +6,9 @@
 			v-bind:locale='locale'
 			v-on:setTokenAndLocale='setTokenAndLocale'
 		/>
-<<<<<<< HEAD
 		<router-view
 			v-bind:user='user'
 			v-bind:token='token'
-=======
-		<router-view 
-			v-bind:user='user' 
-			v-bind:token='token' 
->>>>>>> a7b6d350835c29e6c1791d4721c13bb2e9777b7f
 			v-bind:locale='locale'
 			v-on:setUser='setUser'
 		/>
