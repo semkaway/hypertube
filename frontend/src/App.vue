@@ -7,9 +7,9 @@
 			v-on:setUser='setUser'
 			v-on:setTokenAndLocale='setTokenAndLocale'
 		/>
-		<router-view 
-			v-bind:user='user' 
-			v-bind:token='token' 
+		<router-view
+			v-bind:user='user'
+			v-bind:token='token'
 			v-bind:locale='locale'
 		/>
 	</v-app>

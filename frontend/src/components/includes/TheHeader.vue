@@ -159,13 +159,12 @@
         this.fetchData()
         this.requestUser()
     },
-    
+
     mounted() {
         this.headerUser = this.user
         this.headerToken = this.token
         this.headerLocale = this.locale
     },
-    
     filters: {
         capitalize (value) {
             if (!value) return ''

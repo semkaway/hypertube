@@ -47,9 +47,9 @@
 </template>
 
 <script>
-    import {HTTP} from '../http-common';
-    import axios from 'axios'
-	import setAuthorizationToken from '../utils/setAuthToken'
+      import {HTTP} from '../http-common';
+      import axios from 'axios'
+      import setAuthorizationToken from '../utils/setAuthToken'
 
     export default {
         name: 'Movies',
@@ -87,7 +87,6 @@
 					console.log('e', e)
 				})
           },
-
           	handleScroll () {
             	let d = document.documentElement;
             	let offset = d.scrollTop + window.innerHeight;
@@ -109,7 +108,6 @@
 				this.requestMovies()
 			}
         },
-
         created () {
         	this.requestMovies()
           	window.addEventListener('scroll', this.handleScroll);
@@ -119,6 +117,7 @@
           window.removeEventListener('scroll', this.handleScroll);
         }
     }
+  // }
 </script>
 
 <style scoped>

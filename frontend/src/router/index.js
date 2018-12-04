@@ -17,13 +17,11 @@ let router = new Router({
 		{
 			path: '/',
 			component: Home,
-			props: true,
+			// props: true,
 		},
 		{
 			path: '/movies',
 			component: Movies,
-			props: true,
-	
 		},
 		{
 			path: '/movies/:id',
@@ -60,7 +58,6 @@ let router = new Router({
 			name: 'userSettings',
 			component: UserSettings,
 			props: true,
-			
 		},
 	]
 })
