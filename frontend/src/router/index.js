@@ -7,7 +7,6 @@ import Activation from '@/components/Activation'
 import UserProfile from '@/components/UserProfile'
 import UserSettings from '@/components/UserSettings'
 import oauth from '@/components/Oauth'
-import axios from 'axios'
 
 Vue.use(Router)
 
