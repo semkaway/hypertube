@@ -2,7 +2,7 @@
     <v-toolbar color="grey darken-3" dark fixed height='68'>
         <v-toolbar-items>
             <v-btn flat> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
-            <v-btn flat @click="toggleForm"> <v-icon> exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
+            <v-btn v-if='userLoggedIn === false' flat @click="toggleForm"> <v-icon> exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
         </v-toolbar-items>
         <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:setUser='setUser'/>
         <v-spacer></v-spacer>
@@ -18,6 +18,7 @@
                     </v-list-tile>
                 </v-list>
             </v-menu>
+            <UserMenu v-if='userLoggedIn === true' v-on:userLoggedOut='userLoggedOut'/>
         </v-toolbar-items>
     </v-toolbar>
 </template>
@@ -25,17 +26,20 @@
 <script>
     import axios from 'axios'
     import LogInForm from '../LogInForm'
+    import UserMenu from '../UserMenu'
     import { HTTP } from '../../http-common'
+    import setAuthorizationToken from '../../utils/setAuthToken'
 
     export default {
         name: 'TopHeader',
-        components: { LogInForm },
+        components: { LogInForm, UserMenu },
         props: ['user', 'token', 'locale'],
         data: () => ({
         headerLocale: this.locale,
         headerToken: this.token,
         headerUser: this.user,
         showForm: false,
+        userLoggedIn: false,
         lang: {
             en: {
                 lang: 'English',
@@ -62,7 +66,7 @@
                 'locale': locale
             }).then(result => {
                 if (result.data.success == false) {
-                    localStorage.token = ''
+                    setAuthorizationToken(false)
                     this.$router.push('/')
                 }
             }).catch((err) => {
@@ -85,7 +89,12 @@
 
         setUser(response) { 
             this.$emit('setTokenAndLocale', response)
+        },
+
+        userLoggedOut() {
+             this.userLoggedIn = false
         }
+
     },
     created () {
         this.fetchData()
@@ -96,11 +105,16 @@
             return value.toString().toUpperCase()
         }
     },
-    watch: {
-            locale() {
-                this.$i18n.locale = localStorage.locale;
-            },
-            '$route': 'fetchData'
-        }
+    watch:
+    {
+        user() {
+            this.userLoggedIn = true
+        },
+
+        locale() {
+            this.$i18n.locale = localStorage.locale;
+        },
+        '$route': 'fetchData',
     }
+}
 </script>

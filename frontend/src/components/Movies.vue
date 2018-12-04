@@ -65,22 +65,22 @@
         methods: {
 			requestUser() {
 				HTTP.get('user/data/').then(result => {
-					console.log('result data =>', result)
 					if (result.data.success == true) {
 						this.query = `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
 						+localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
 						'&page='
 					} else if (result.data.success == false) {
-						localStorage.token = ''
+						setAuthorizationToken(false)
 						this.$router.push('/')
 					}
+          		this.$emit('setUser', result.data)
 				}).catch((err) => {
 					console.log(err)
 					setAuthorizationToken(false)
 					this.$router.push('/')
 				})
 			},
-          	requestMovies() {
+        requestMovies() {
             axios.get(this.query + this.page).then(result => {
               for (var i = 0; i < result.data.results.length; i++) {
                 for(var key in result.data.results[i]) {
@@ -123,9 +123,10 @@
         },
 
         created () {
-			this.requestUser()
-			this.requestMovies()
-          	window.addEventListener('scroll', this.handleScroll);
+          console.log('created')
+		      this.requestUser()
+			    this.requestMovies()
+          window.addEventListener('scroll', this.handleScroll);
         },
 
         destroyed () {

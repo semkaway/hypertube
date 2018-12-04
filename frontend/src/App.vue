@@ -9,7 +9,8 @@
 		<router-view 
 			v-bind:user='user' 
 			v-bind:token='token' 
-			v-bind:locale='locale' 
+			v-bind:locale='locale'
+			v-on:setUser='setUser'
 		/>
 	</v-app>
 </template>
@@ -37,6 +38,11 @@ export default {
 			this.token = response.token
 			this.locale = response.locale
 			this.$router.push('/movies')
+		},
+
+		setUser (response) {
+			let { email, first, last, image } = response
+			this.user = {email, first, last, image}
 		}
 	}
 }
