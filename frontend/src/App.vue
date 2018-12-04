@@ -1,15 +1,16 @@
 <template>
 	 <v-app>
-		<app-header 
-			v-bind:user='user' 
-			v-bind:token='token' 
-			v-bind:locale='locale'  
+		<app-header
+			v-bind:user='user'
+			v-bind:token='token'
+			v-bind:locale='locale'
 			v-on:setTokenAndLocale='setTokenAndLocale'
 		/>
-		<router-view 
-			v-bind:user='user' 
-			v-bind:token='token' 
-			v-bind:locale='locale' 
+		<router-view
+			v-bind:user='user'
+			v-bind:token='token'
+			v-bind:locale='locale'
+			v-on:setUser='setUser'
 		/>
 	</v-app>
 </template>
@@ -28,8 +29,8 @@ export default {
 	data: () => {
 		return {
 			user: {},
-			token: localStorage.getItem('token'),
-			locale: localStorage.getItem('locale'),
+			token: localStorage.token,
+			locale: localStorage.locale ? localStorage.locale : 'en',
 		}
 	},
 	methods: {
@@ -37,6 +38,11 @@ export default {
 			this.token = response.token
 			this.locale = response.locale
 			this.$router.push('/movies')
+		},
+
+		setUser (response) {
+			let { email, first, last, image } = response
+			this.user = { email, first, last, image }
 		}
 	}
 }

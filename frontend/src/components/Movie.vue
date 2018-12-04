@@ -11,7 +11,7 @@
       </v-dialog>
     </v-layout>
   </v-container>
-  <v-container v-else fluid grid-list-md class="mt-3">
+  <v-container fluid grid-list-md class="mt-3">
     <v-layout row wrap>
       <v-flex d-flex xs12 sm6 md3>
         <v-card color="grey lighten-4" light>
@@ -76,10 +76,11 @@
         <h1>{{movie.title}}</h1>
         <p class="subheading">{{movie.tagline}}</p>
         <v-card-text>{{movie.overview}}</v-card-text>
-        <vue-plyr @click='streamMovie' ref="player">
-            <video :poster="movie.backdrop_path">
-                <source :src="movieSource" type="video/mp4"/>
-                <track kind="captions" label="English" srclang="en" src="captions-en.vtt" default>
+        <vue-plyr ref="player">
+            <video id="moviePlayer" :poster="movie.backdrop_path">
+                <!-- <source v-if="movieSource" :src="movieSource" type="video/mp4"> -->
+                <!-- <source :src="movieSource" type="video/mp4"/> -->
+                <!-- <track kind="captions" label="English" srclang="en" src="captions-en.vtt" default> -->
             </video>
         </vue-plyr>
         <button @click="streamMovie">Play</button>
@@ -207,8 +208,88 @@ export default {
                   }
                 }
             this.movie = movie
-            this.movieSource = "http://iandevlin.github.io/mdn/video-player/video/tears-of-steel-battle-clip-medium.mp4";
-            // this.player.on('play', this.streamMovie)
+            const moviePlayer = document.getElementById('moviePlayer')
+            // console.log(moviePlayer)
+            // console.log(movie.torrent.torrents.en['720p']
+            for(key in movie.torrent.torrents.en) {
+                moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
+                console.log(moviePlayer)
+                console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
+            }
+            this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+720+'&token='+localStorage.token;
+
+            // let playerPromise = this.player.play()
+            //
+            // this.player.on('pause', () => {
+            //   if (playerPromise !== undefined) {
+            //     playerPromise.then(_ => {
+            //       this.player.pause();
+            //     })
+            //     .catch(error => {
+            //       console.log('Can\'t pause, sorry :(')
+            //     })
+            //   }
+            // })
+
+            var onplaying = true;
+            var onpause = false;
+
+            // On video playing toggle values
+            this.player.onplaying = function() {
+              console.log('onplaying')
+                onplaying = true;
+                onpause = false;
+            };
+
+            // On video pause toggle values
+            this.player.onpause = function() {
+              console.log('onpause')
+                onplaying = false;
+                onpause = true;
+            };
+
+            this.player.on('play',() => {
+              console.log('PLAAAAAAY')
+              this.player.onplaying()
+              console.log('buffered ', this.player.buffered)
+              if (this.player.paused && !onplaying) {
+                  this.player.play();
+              }
+            })
+
+            this.player.on('pause',() => {
+              console.log('PAAAAAAUSEEEE')
+              this.player.onpause()
+              console.log('!this.player.paused: ', this.player.paused)
+              console.log('!onpause: ', onpause)
+              console.log('this.player.buffered > 0: ', this.player.buffered > 0)
+              if (!this.player.paused && !onpause && (this.player.buffered > 0)) {
+                console.log('i am here')
+                  this.player.pause();
+                  console.log('> 0')
+              } else {
+                return false
+              }
+              // if (!this.player.paused && !onpause && (this.player.buffered != 0)) {
+              //     console.log('!= 0')
+              // }
+            })
+            // Initializing values
+
+
+            // // Play video function
+            // function playVid() {
+            //     if (this.player.paused && !onplaying) {
+            //         this.player.play();
+            //     }
+            // }
+
+            // Pause video function
+            // function pauseVid() {
+            //     if (!this.player.paused && !onpause) {
+            //         this.player.pause();
+            //     }
+            // }
             this.value = false
             console.log(movie)
             this.genres = this.genres.slice(0, this.genres.length-2)
@@ -220,14 +301,8 @@ export default {
           console.log(err)
         })
     },
-    created () {
-      // this.$refs.movieSource.src = "http://iandevlin.github.io/mdn/video-player/video/tears-of-steel-battle-clip-medium.mp4";
-      // this.player.on('play', this.streamMovie)
-    },
     computed: {
-      player () {
-        return this.$refs.player.player
-      }
+      player () { return this.$refs.player.player }
     },
     methods: {
       streamMovie() {

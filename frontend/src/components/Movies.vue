@@ -47,9 +47,9 @@
 </template>
 
 <script>
-    import {HTTP} from '../http-common';
-    import axios from 'axios'
-	import setAuthorizationToken from '../utils/setAuthToken'
+      import {HTTP} from '../http-common';
+      import axios from 'axios'
+      import setAuthorizationToken from '../utils/setAuthToken'
 
     export default {
         name: 'Movies',
@@ -59,48 +59,34 @@
             movies: [],
             page: 1,
             searchParams: '',
-            query: ''
+            query: `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
+			+localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null&page='
           }
         },
         methods: {
-			requestUser() {
-				HTTP.get('user/data/').then(result => {
-					console.log('result data =>', result)
-					if (result.data.success == true) {
-						this.query = `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
-						+localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null'+
-						'&page='
-					} else if (result.data.success == false) {
-						localStorage.token = ''
-						this.$router.push('/')
+			requestMovies() {
+				console.log('this.query + this.page =>', this.query + this.page)
+				HTTP.get(this.query + this.page).then(result => {
+				for (var i = 0; i < result.data.results.length; i++) {
+					for(var key in result.data.results[i]) {
+						if (key == 'release_date') {
+						var year = result.data.results[i][key].split('-')
+						result.data.results[i][key] = year[0]
+						}
+						if (key == 'poster_path') {
+							if (result.data.results[i][key] == null) {
+								result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+							} else {
+								result.data.results[i][key] = 'http://image.tmdb.org/t/p/w300/'+result.data.results[i][key]
+							}
+						}
 					}
-				}).catch((err) => {
-					console.log(err)
-					setAuthorizationToken(false)
-					this.$router.push('/')
+					this.movies.push(result.data.results[i])
+				}
+				}).catch((e) => {
+					console.log('e', e)
 				})
-			},
-          	requestMovies() {
-            axios.get(this.query + this.page).then(result => {
-              for (var i = 0; i < result.data.results.length; i++) {
-                for(var key in result.data.results[i]) {
-                    if (key == 'release_date') {
-                      var year = result.data.results[i][key].split('-')
-                      result.data.results[i][key] = year[0]
-                    }
-                    if (key == 'poster_path') {
-                      if (result.data.results[i][key] == null) {
-                        result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-                      } else {
-                        result.data.results[i][key] = 'http://image.tmdb.org/t/p/w300/'+result.data.results[i][key]
-                      }
-                    }
-                  }
-                this.movies.push(result.data.results[i])
-              }
-            })
           },
-
           	handleScroll () {
             	let d = document.documentElement;
             	let offset = d.scrollTop + window.innerHeight;
@@ -111,6 +97,7 @@
               		this.requestMovies()
             	}
           	},
+
 			searchMovies() {
 				console.log(this.searchParams)
 				this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
@@ -121,10 +108,8 @@
 				this.requestMovies()
 			}
         },
-
         created () {
-			this.requestUser()
-			this.requestMovies()
+        	this.requestMovies()
           	window.addEventListener('scroll', this.handleScroll);
         },
 
@@ -132,6 +117,7 @@
           window.removeEventListener('scroll', this.handleScroll);
         }
     }
+  // }
 </script>
 
 <style scoped>
