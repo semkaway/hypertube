@@ -124,7 +124,8 @@ const messages = {
 			genres: 'Genres',
 			year: 'Year',
 			crew: 'Crew',
-			cast: 'Cast'
+			cast: 'Cast',
+			comments: 'Comments'
 		}
 	},
 	ru: {
@@ -251,7 +252,8 @@ const messages = {
 			genres: 'Жанры',
 			year: 'Год',
 			crew: 'Команда',
-			cast: 'Актеры'
+			cast: 'Актеры',
+			comments: 'Комментарии'
 		}
 	},
 	uk: {
@@ -378,7 +380,8 @@ const messages = {
 			genres: 'Жанри',
 			year: 'Рік',
 			crew: 'Команда',
-			cast: 'Актори'
+			cast: 'Актори',
+			comments: 'Коментарі'
 		}
 	}
 }
