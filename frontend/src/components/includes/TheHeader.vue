@@ -101,6 +101,7 @@
             this.headerLocale = locale
             this.$i18n.locale = locale
             localStorage.locale = locale
+            this.$emit('setLocale', locale)
             if (localStorage.token != '') {
             HTTP.put('user/change/locale', {
                 'token': localStorage.token,
