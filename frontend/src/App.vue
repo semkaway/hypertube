@@ -5,7 +5,8 @@
 			v-bind:token='token' 
 			v-bind:locale='locale'  
 			v-on:setUser='setUser'
-			v-on:setTokenAndLocale='setTokenAndLocale'
+			v-on:setTokenAndLocale='setToken'
+			v-on:setLocale='setLocale'
 		/>
 		<router-view
 			v-bind:user='user'
@@ -34,10 +35,14 @@ export default {
 		}
 	},
 	methods: {
-		setTokenAndLocale (response) {
+		setToken (response) {
 			this.token = response.token
-			this.locale = response.locale
+			this.setLocale(response.locale)
 			this.$router.push('/movies')
+		},
+
+		setLocale (locale) {
+			this.locale = locale
 		},
 
 		setUser (response) {

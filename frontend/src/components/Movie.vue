@@ -1,16 +1,6 @@
 <template>
  <div class="mt-5">
-   <v-container v-if="value">
-     <v-layout row justify-center>
-      <v-dialog v-model="value" persistent content content-class="centered-dialog">
-        <v-container fill-height>
-          <v-layout column justify-center align-center>
-            <self-building-square-spinner :animation-duration="1500" :size="64" :color="progressColor" />
-          </v-layout>
-        </v-container>
-      </v-dialog>
-    </v-layout>
-  </v-container>
+   <Loader :run='value'/>
   <v-container fluid grid-list-md class="mt-3">
     <v-layout row wrap>
       <v-flex d-flex xs12 sm6 md3>
@@ -148,12 +138,11 @@
 import {HTTP} from '../http-common';
 import axios from 'axios'
 import {SelfBuildingSquareSpinner} from 'epic-spinners'
+import Loader from './Loader'
 
 export default {
   name: 'Movie',
-  components: {
-      SelfBuildingSquareSpinner
-    },
+  components: { SelfBuildingSquareSpinner, Loader },
   data () {
     return {
         token: '',

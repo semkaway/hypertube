@@ -45,39 +45,39 @@
                 ></v-text-field>
 			</form>
           	<form>
-				<v-text-field 
-				@keyup.native="checkIfEmailExists" 
-				name="email" 
-				v-validate="'required|email'" 
-				v-model="email" 
-				:error-messages="arrayOfEmailErrors" 
-				label="Email" 
-				color="grey darken-1"></v-text-field>
-				<v-text-field 
-				v-if='!showForgotPassForm'
-				persistent-hint
-				:hint="$t('validation.passwordHint')"
-				ref="passwordRef"
-				:type="showPassword ? 'text' : 'password'" 
-				@keyup.native='validatePassword' 
-				name="password" 
-				v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" 
-				@click:append="showPassword = !showPassword"  
-				:append-icon="showPassword ? 'visibility_off' : 'visibility'" 
-				v-model="password" 
-				:error-messages="arrayOfPasswordErrors" 
-				:label="$t('registration.password')" 
-				color="grey darken-1"></v-text-field>
 				<v-text-field
-				v-if='showRegisterForm == true' 
-				v-model="repeatPassword" 
-				:type="showPassword ? 'text' : 'password'" 
-				@keyup.native='validateRepeatePassword' 
-				:error-messages="arrayOfRepeatPasswordErrors" 
-				name="repeatPassword" 
-				v-validate="'required|confirmed:passwordRef'"
-				:label="$t('registration.repeat_password')" 
-				color="grey darken-1"></v-text-field>
+					@keyup.native="checkIfEmailExists" 
+					name="email" 
+					v-validate="'required|email'" 
+					v-model="email" 
+					:error-messages="arrayOfEmailErrors" 
+					label="Email" 
+					color="grey darken-1"></v-text-field>
+				<v-text-field 
+					v-if='!showForgotPassForm'
+					persistent-hint
+					:hint="$t('validation.passwordHint')"
+					ref="passwordRef"
+					:type="showPassword ? 'text' : 'password'" 
+					@keyup.native='validatePassword' 
+					name="password" 
+					v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" 
+					@click:append="showPassword = !showPassword"  
+					:append-icon="showPassword ? 'visibility_off' : 'visibility'" 
+					v-model="password" 
+					:error-messages="arrayOfPasswordErrors" 
+					:label="$t('registration.password')" 
+					color="grey darken-1"></v-text-field>
+				<v-text-field
+					v-if='showRegisterForm == true' 
+					v-model="repeatPassword" 
+					:type="showPassword ? 'text' : 'password'" 
+					@keyup.native='validateRepeatePassword' 
+					:error-messages="arrayOfRepeatPasswordErrors" 
+					name="repeatPassword" 
+					v-validate="'required|confirmed:passwordRef'"
+					:label="$t('registration.repeat_password')" 
+					color="grey darken-1"></v-text-field>
           	</form>
            <v-layout justify-start>
             <v-flex>
@@ -264,8 +264,8 @@ export default {
 			this.validateEmail()
 			if (!this.arrayOfEmailErrors.length && this.showRegisterForm && !this.showForgotPassForm && this.email.length) {
 			HTTP.get(`user/check-email/` + this.email)
-			.then(response => { this.arrayOfEmailErrors = response.data.exist == true ? [this.$t('validation.serverError')] : this.arrayOfEmailErrors })
-			.catch((err) => { this.arrayOfEmailErrors = [this.$t('registration.error_alert')] })
+				.then(response => { this.arrayOfEmailErrors = response.data.exist == true ? [this.$t('validation.serverError')] : this.arrayOfEmailErrors })
+				.catch((err) => { this.arrayOfEmailErrors = [this.$t('registration.error_alert')] })
 			}
 		},
 
