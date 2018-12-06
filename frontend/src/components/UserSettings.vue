@@ -1,6 +1,19 @@
 <template>
 	<v-container  class="mt-5">
+
  		<Loader :run='runLoader'/>
+		<Snackbar :show='showSnackbar' :text='snackbarText' :y='snackbarY' :x='snackbarX' v-on:closeSnackbar='showSnackbar = false' :timeout='snackbarTimeout'/>
+
+		<ModalWindow 
+			:show='showModal'
+			:headerText='$t("profile.settings.delete_account_title")' 
+			:text='$t("profile.settings.delete_account_text")'
+			:agreeButtonText='$t("button.delete")'
+			:disagreeButtonText='$t("button.cancel")'
+			v-on:disagree='onDisagree'
+			v-on:agree='onAgree'
+		/>
+
  		<v-expansion-panel  expand class="mt-4">
     		<v-expansion-panel-content v-for="(section, index) in sections" :key="index" expand-icon="keyboard_arrow_down">
 				<v-layout slot="header" align-center>
@@ -51,6 +64,9 @@
 							<v-btn @click='changePassword' large color="grey" class="white--text" flat>{{ $t('button.save') }}</v-btn>
 							<v-btn @click='clearFields(section.name)' large color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
+
+						<v-btn v-if='section.name == "delete"' @click='deleteAccount' large color="red" class="white--text" flat>{{ $t('profile.settings.delete_account_title') }}</v-btn>
+
 					</v-card-text>
 				</v-card>
     		</v-expansion-panel-content>
@@ -62,9 +78,7 @@
 
 <script>
 
-// old_password: 'Старий пароль',
-// 				new_password: 'Новий пароль',
-// 				new_password_repeat: 'Повторіть новий пароль',
+
 
 
 
@@ -316,13 +330,15 @@
 const reader  = new FileReader()
 import { HTTP } from '../http-common'
 import Loader from './Loader'
+import Snackbar from './Snackbar'
+import ModalWindow from './ModalWindow'
 import imageCompression from 'browser-image-compression'
 
 
 export default {
 	name: 'UserSettings',
 	props: ['locale'],
-	components: { Loader },
+	components: { Loader, Snackbar, ModalWindow },
 	data () {
 		return {
 			runLoader: false,
@@ -334,7 +350,13 @@ export default {
 			repeatNewPassword: '',
 			arrayOfPasswordErrors: [],
 			arrayOfNewPasswordErrors: [],
-			arrayOfRepeatPasswordErrors: []
+			arrayOfRepeatPasswordErrors: [],
+			showSnackbar: false,
+			showModal: false,
+			snackbarY: 'bottom',
+			snackbarX: 'right',
+			snackbarText: '',
+			snackbarTimeout: 3000
 		}
 	},
 
@@ -390,15 +412,33 @@ export default {
 							this.arrayOfPasswordErrors = [this.$t('validation.invalidPassword')]
 						}
 					} else {
-						// show loader
-						// show success
+						this.snackbarText = this.$t('forgot_password.restore_pass_success_title')
+						this.showSnackbar = true
+						this.clearFields('password')
 					}
 				}).catch((error) => {
-					console.log('error =>', error.data)
+					this.runLoader = false
+					// show snackbar with server error
 				})
 			}
 		},
+
+		deleteAccount() { this.showModal = true},
+		onDisagree() { this.showModal = false },
+		onAgree() {
+			this.showModal = false
+			// send to the server delete account action 
+		},
+
+	
+
 	},
+
+	computed: {
+			closeSnackbar() {
+				this.showSnackbar = false
+			}
+		},
 
 	watch: {
 		locale () { this.sections = this.getSections() }
