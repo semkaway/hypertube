@@ -12,6 +12,7 @@
 			v-bind:user='user'
 			v-bind:token='token'
 			v-bind:locale='locale'
+			v-on:updateUser='updateUser'
 		/>
 	</v-app>
 </template>
@@ -48,7 +49,9 @@ export default {
 		setUser (response) {
 			let { email, first, last, image } = response
 			this.user = { email, first, last, image }
-		}
+		},
+
+		updateUser(updatedUser) { this.user = Object.assign(this.user, updatedUser) }
 	}
 }
 </script>

@@ -65,6 +65,48 @@
 							<v-btn @click='clearFields(section.name)' large color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
 
+
+
+						<form v-if='section.name == "picture"'>
+							<v-text-field
+								color="grey darken-1"
+								v-model="imgURL"
+								class='ml-3'
+								:label="$t('profile.settings.enter_url')"
+								hint='https://images.pexels.com/photos/1616227/pexels-photo-1616227.jpeg'
+								v-validate="'url:require_protocol'"
+								name='imgURL'
+								:error-messages='arrayOfImageURLerrors'
+								@keyup="onURLPicture">
+							</v-text-field>
+
+							<div class='subheading mt-3  ml-3 grey--text'>{{$t('profile.settings.click')}}</div>
+							<v-hover>
+								<v-card @click="$refs.fileInput[0].click()" slot-scope="{ hover }" :class="`ml-3 mt-3 mb-3 cursor-pointer rounded elevation-${hover ? 12 : 2}`" width="200px" height='200px'>
+									<v-img 
+										class='rounded'
+										:aspect-ratio="16/9" 
+										height='200px' 
+										width='200px' 
+										:src="imgToShow" 
+										alt="User photo"
+										ref='imagePreview'>
+									</v-img>
+								</v-card>
+								
+							</v-hover>
+							 <input ref='fileInput' style='display: none;' type="file" accept="image/png, image/jpeg" @change="onFilePicture"/>
+
+							<v-btn @click='onSaveNewImage' large color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='resetImage' large color="grey" class="white--text ml-3" flat>{{ $t('button.reset') }}</v-btn>
+						</form>
+
+							
+						<v-btn v-if='section.name == "media"' large color="grey" class="white--text" flat>media</v-btn>
+						<v-btn v-if='section.name == "media"' large color="grey" class="white--text" flat>media</v-btn>
+						<v-btn v-if='section.name == "media"' large color="grey" class="white--text" flat>media</v-btn>
+
+
 						<v-btn v-if='section.name == "delete"' @click='deleteAccount' large color="red" class="white--text" flat>{{ $t('profile.settings.delete_account_title') }}</v-btn>
 
 					</v-card-text>
@@ -77,7 +119,6 @@
 
 
 <script>
-
 
 
 
@@ -327,27 +368,32 @@
 //   </div>
 // </template>
 
-const reader  = new FileReader()
 import { HTTP } from '../http-common'
+import isImage from '../utils/isImage'
+import getBase64 from '../utils/getBase64'
 import Loader from './Loader'
 import Snackbar from './Snackbar'
 import ModalWindow from './ModalWindow'
 import imageCompression from 'browser-image-compression'
 
-
 export default {
 	name: 'UserSettings',
-	props: ['locale'],
+	props: ['locale', 'user'],
 	components: { Loader, Snackbar, ModalWindow },
 	data () {
 		return {
 			runLoader: false,
 			showPassword: false,
+			settingsUser: this.user,
 			locale1: this.locale,
 			sections: this.getSections(),
+			originalImg: this.user.image,
+			imgToShow: this.user.image,
+			imgURL: '',
 			password: '',
 			newPassword: '',
 			repeatNewPassword: '',
+			arrayOfImageURLerrors: [],
 			arrayOfPasswordErrors: [],
 			arrayOfNewPasswordErrors: [],
 			arrayOfRepeatPasswordErrors: [],
@@ -418,7 +464,8 @@ export default {
 					}
 				}).catch((error) => {
 					this.runLoader = false
-					// show snackbar with server error
+					this.showSnackbar = true
+					this.snackbarText = this.$t('activation.error_alert')
 				})
 			}
 		},
@@ -430,18 +477,97 @@ export default {
 			// send to the server delete account action 
 		},
 
-	
-
-	},
-
-	computed: {
-			closeSnackbar() {
-				this.showSnackbar = false
+		onURLPicture() {
+			if (this.errors.has('imgURL') && this.imgURL.length) {
+				this.imgToShow = this.originalImg
+				this.arrayOfImageURLerrors = [this.$t('profile.settings.pictureError')]
+			} else if (this.imgURL.length) {
+				this.runLoader = true
+				this.arrayOfImageURLerrors = []
+				isImage(this.imgURL).then((resp) => {
+					this.runLoader = false
+					this.imgToShow = this.imgURL
+				}).catch((e) => {
+					this.runLoader = false
+					this.imgToShow = this.originalImg
+					this.arrayOfImageURLerrors = [this.$t('profile.settings.pictureError')]
+				})
+			} else {
+				this.arrayOfImageURLerrors = []
 			}
 		},
 
+		onFilePicture() {
+			this.runLoader = true
+			const file = this.$refs.fileInput[0].files[0]
+			const mbSize = file.size / 1024 / 1024
+			if (mbSize > 5 || file.size < 100) {
+				this.runLoader = false
+				this.showSnackbar = true
+				this.snackbarText = this.$t('profile.settings.pictureError')
+			} else {
+				const maxSizeMB = 1;
+                const maxWidthOrHeight = 300;
+                imageCompression(file, maxSizeMB, maxWidthOrHeight).then((compressedFile) => {
+					getBase64(compressedFile).then((baseString) => {
+						this.imgToShow = baseString
+						this.runLoader = false
+					}).catch((e) => { 
+						this.runLoader = false 
+						this.showSnackbar = true
+						this.snackbarText = this.$t('profile.settings.pictureError')
+					})
+                }).catch((error) => {
+					this.runLoader = false 
+					this.showSnackbar = true
+					this.snackbarText = this.$t('profile.settings.pictureError')
+				})
+            }
+		},
+
+		onSaveNewImage() {
+			if (this.originalImg === this.imgToShow)
+				return
+			this.originalImg = this.imgToShow
+			this.runLoader = true
+			HTTP.put('user/change/image', { image: this.originalImg }).then((response) => {
+				if (!response.data.success) {
+					setAuthorizationToken(false)
+					this.$router.push('/')
+				}
+				this.showSnackbar = true
+				this.snackbarText = this.$t('profile.success_alert')
+				this.runLoader = false
+				this.resetImage()
+				this.$emit('updateUser', {image: this.originalImg})
+			}).catch((error) => {
+				this.showSnackbar = true
+				this.snackbarText = this.$t('activation.error_alert')
+				this.runLoader = false
+			})
+		},
+
+		resetImage() {
+			this.imgURL = ''
+			this.arrayOfImageURLerrors = []
+			this.imgToShow = this.originalImg
+			this.$refs.fileInput[0].files = null
+		}
+
+	},
+
+
+	computed: {
+			closeSnackbar() { this.showSnackbar = false }
+	},
+
 	watch: {
-		locale () { this.sections = this.getSections() }
+		locale () { this.sections = this.getSections() },
+		user() {
+			this.settingsUser = this.user
+			this.originalImg = this.settingsUser.image
+			this.imgToShow = this.settingsUser.image
+		}
 	}
 }
 
@@ -921,3 +1047,9 @@ export default {
 //   }
 
 </script>
+
+<style scoped>
+.cursor-pointer:hover {
+	cursor: pointer;
+}
+</style>

@@ -22,8 +22,8 @@
         <v-toolbar-items v-if='userLoggedIn === true'>
             <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
             <v-btn flat slot="activator">
-                <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' src="https://scontent.fiev11-1.fna.fbcdn.net/v/t31.0-8/12238251_122765231421877_3608124406558435231_o.jpg?_nc_cat=101&_nc_ht=scontent.fiev11-1.fna&oh=147ba3f1ae17bd4c100214a636a7fddc&oe=5C9BF3BB" alt="User photo"></v-img>
-                <span class='ml-2 header-name'>{{ 'KSENIA' | capitalizeFirstLetter }}</span>
+                <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' :src="headerUser.image == null ? 'http://www.studioclio.com.br/sites/default/files/imagens/evento/pitagoras_0.jpg' : headerUser.image" alt="User photo"></v-img>
+                <span class='ml-2 header-name'>{{ headerUser.first | capitalizeFirstLetter }}</span>
             </v-btn>
             <v-list>
                 <v-list-tile @click="menuClick('profile')">
@@ -185,7 +185,7 @@
         },
 
         locale () {
-            this.$i18n.locale = this.locale;
+            this.$i18n.locale = this.locale
         },
 
         '$route': 'fetchData',
