@@ -38,6 +38,7 @@ export default {
         HTTP
           .get('user/data/')
           .then(result => {
+            console.log(result)
             if (result.data.success == true) {
               this.user.first_name = result.data.first
               this.user.last_name = result.data.last

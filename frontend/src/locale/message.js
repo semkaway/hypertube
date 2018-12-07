@@ -29,7 +29,8 @@ const messages = {
 			language: 'language',
 			save: 'save',
 			delete: 'delete',
-			cancel: 'cancel'
+			cancel: 'cancel',
+			showMore: 'Show more'
 		},
 		home: {
 			title: 'home'
@@ -126,7 +127,7 @@ const messages = {
 			year: 'Year',
 			crew: 'Crew',
 			cast: 'Cast',
-			comments: 'Comments'
+			newComment: 'New comment'
 		}
 	},
 	ru: {
@@ -159,7 +160,8 @@ const messages = {
 			language: 'язык',
 			save: 'сохранить',
 			delete: 'удалить',
-			cancel: 'отмена'
+			cancel: 'отмена',
+			showMore: 'Показать еще'
 		},
 		home: {
 			title: 'Главная'
@@ -255,7 +257,7 @@ const messages = {
 			year: 'Год',
 			crew: 'Команда',
 			cast: 'Актеры',
-			comments: 'Комментарии'
+			newComment: 'Новый комментарий'
 		}
 	},
 	uk: {
@@ -288,7 +290,8 @@ const messages = {
 			language: 'мова',
 			save: 'зберегти',
 			delete: 'видалити',
-			cancel: 'скасувати'
+			cancel: 'скасувати',
+			showMore: 'Показати ще'
 		},
 		home: {
 			title: 'Головна'
@@ -384,7 +387,7 @@ const messages = {
 			year: 'Рік',
 			crew: 'Команда',
 			cast: 'Актори',
-			comments: 'Коментарі'
+			newComment: 'Новий коментар',
 		}
 	}
 }

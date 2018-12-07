@@ -47,8 +47,8 @@ export default {
 		},
 
 		setUser (response) {
-			let { email, first, last, image } = response
-			this.user = { email, first, last, image }
+			let { email, first, last, image, user_id } = response
+			this.user = { email, first, last, image, user_id }
 		},
 
 		updateUser(updatedUser) { this.user = Object.assign(this.user, updatedUser) }

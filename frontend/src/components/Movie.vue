@@ -66,47 +66,22 @@
         <h1>{{movie.title}}</h1>
         <p class="subheading">{{movie.tagline}}</p>
         <v-card-text>{{movie.overview}}</v-card-text>
-        <!-- <vue-plyr ref="player"> -->
-            <!-- <video id="moviePlayer">
-                <source v-if="movieSource" :src="movieSource" type="video/mp4"> -->
+        <vue-plyr ref="player">
+            <video id="moviePlayer" controls data-plyr-config='{"debug": true }'>
+                <source v-if="movieSource" :src="movieSource" type="video/mp4">
                 <!-- <source :src="movieSource" type="video/mp4"/> -->
                 <!-- <track kind="captions" label="English" srclang="en" src="captions-en.vtt" default> -->
-            <!-- </video> -->
-        <!-- </vue-plyr> -->
-        <div width="100%">
+            </video>
+        </vue-plyr>
+        <!-- <div width="100%">
           <video ref="videoRef" width="600" :poster="movie.backdrop_path" controls>
             <source v-if="movieSource" :src="movieSource" type="video/mp4">
           Your browser does not support the video tag.
           </video>
-        </div>
-        <v-list three-line>
-          <v-subheader>
-              {{$t('movie.comments')}}
-            </v-subheader>
-            <v-textarea
-                name="input-7-1"
-                box
-                label="Label"
-                auto-grow
-                v-model="comment"
-                :value="comment"
-              ></v-textarea>
-              <v-btn color="success" @click="leaveComment">Success</v-btn>
-            <template v-for="comment in movie.comments">
-              <v-list-tile>
-                <v-list-tile-avatar v-else
-                                    size="55"
-                                    class="actorPicture mr-2"
-                                    :src="comment.image"
-                </v-list-tile-avatar>
-
-                <v-list-tile-content>
-                  <v-list-tile-title><a :href="'profile/'+comment.user_id" target="_blank">{{comment.first}}</a></v-list-tile-title>
-                    <v-list-tile-sub-title>{{comment.text}}</v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </template>
-        </v-list>
+        </div> -->
+        <comments :allComments="movie.comments"
+                  :totalNumberOfComments="totalNumberOfComments"
+                  @submit-comment="submitComment"></comments>
       </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm6 md3 v-if="this.$i18n.locale === 'en'">
@@ -170,12 +145,13 @@
 
 import {HTTP} from '../http-common';
 import axios from 'axios'
-import {SelfBuildingSquareSpinner} from 'epic-spinners'
 import Loader from './Loader'
+import Comments from './Comments'
 
 export default {
   name: 'Movie',
-  components: { SelfBuildingSquareSpinner, Loader },
+  components: { Loader, Comments },
+  props: ['user'],
   data () {
     return {
         token: '',
@@ -187,10 +163,35 @@ export default {
         crew: [],
         movieSource: '',
         progressColor: '#616161',
-        comment:''
+        totalNumberOfComments: 0
       }
     },
     beforeCreate() {
+      // setTimeout(() => {
+      //   // console.log('than this.$refs.player', this.$refs.player.player)
+      //
+      //   // this.$refs.player.player.config.listeners['pause'] = () => {
+      //   //   console.log('i pause')
+      //   //
+      //   // }
+      //
+      //   this.$refs.player.player.config.listeners['play'] = (e) => {
+      //
+      //     // console.log('playlarge', this.player.config.keyboard)
+      //     // e.preventDefault()
+      //     console.log('waiting: ', this.player.loading)
+      //     if (this.player.paused) {
+      //         this.player.play();
+      //
+      //     } else if (!this.player.loading) {
+      //         this.player.pause()
+      //         // return false
+      //     }
+      //     // return true
+      //     // this.player.play()
+      //   }
+      //
+      // }, 2000)
       HTTP
         .get('movie/one/'+this.$route.params.id)
         .then(result => {
@@ -232,94 +233,20 @@ export default {
                 }
             this.movie = movie
             const moviePlayer = document.getElementById('moviePlayer')
-            // console.log(moviePlayer)
-            // console.log(movie.torrent.torrents.en['720p']
-            for(key in movie.torrent.torrents.en) {
-                // moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
-                // console.log(moviePlayer)
-                console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
-                // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
+            if (movie.torrent.torrents !== undefined) {
+              // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
+              for(key in movie.torrent.torrents.en) {
+                  moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
+                  // console.log(moviePlayer)
+                  // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
+                  // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
+              }
             }
-            console.log(  this.$refs.videoRef)
-            this.$refs.videoRef.src = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+720+'p&token='+localStorage.token;
-            // this.$refs.videoRef.play();
-            // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+720+'&token='+localStorage.token;
-
-            // let playerPromise = this.player.play()
-            //
-            // this.player.on('pause', () => {
-            //   if (playerPromise !== undefined) {
-            //     playerPromise.then(_ => {
-            //       this.player.pause();
-            //     })
-            //     .catch(error => {
-            //       console.log('Can\'t pause, sorry :(')
-            //     })
-            //   }
-            // })
-
-            // var onplaying = true;
-            // var onpause = false;
-
-            // On video playing toggle values
-            // this.player.onplaying = function() {
-            //   console.log('onplaying')
-            //     onplaying = true;
-            //     onpause = false;
-            // };
-
-            // On video pause toggle values
-            // this.player.onpause = function() {
-            //   console.log('onpause')
-            //     onplaying = false;
-            //     onpause = true;
-            // };
-
-            // this.player.on('play',() => {
-            //   console.log('PLAAAAAAY')
-            //   this.player.onplaying()
-            //   console.log('buffered ', this.player.buffered)
-            //   if (this.player.paused && !onplaying) {
-            //       this.player.play();
-            //   }
-            // })
-
-            // this.player.on('pause',() => {
-            //   console.log('PAAAAAAUSEEEE')
-            //   this.player.onpause()
-            //   console.log('!this.player.paused: ', this.player.paused)
-            //   console.log('!onpause: ', onpause)
-            //   console.log('this.player.buffered > 0: ', this.player.buffered > 0)
-            //   if (!this.player.paused && !onpause && (this.player.buffered > 0)) {
-            //     console.log('i am here')
-            //       this.player.pause();
-            //       console.log('> 0')
-            //   } else {
-            //     return false
-            //   }
-              // if (!this.player.paused && !onpause && (this.player.buffered != 0)) {
-              //     console.log('!= 0')
-              // }
-             // })
-            // Initializing values
-
-
-            // // Play video function
-            // function playVid() {
-            //     if (this.player.paused && !onplaying) {
-            //         this.player.play();
-            //     }
-            // }
-
-            // Pause video function
-            // function pauseVid() {
-            //     if (!this.player.paused && !onpause) {
-            //         this.player.pause();
-            //     }
-            // }
+            this.genres = this.genres.slice(0, this.genres.length-2)
+            this.comments = movie.comments
+            this.totalNumberOfComments = movie.comments.length
             this.value = false
             console.log(movie)
-            this.genres = this.genres.slice(0, this.genres.length-2)
           } else if (result.data.success == false) {
 
           }
@@ -328,9 +255,11 @@ export default {
           console.log(err)
         })
     },
-    // computed: {
-    //   player () { return this.$refs.player.player }
-    // },
+    computed: {
+      player () {
+
+        return this.$refs.player.player }
+    },
     methods: {
       streamMovie() {
         let quality = 720
@@ -344,16 +273,32 @@ export default {
         })
         console.log('here')
       },
-      leaveComment() {
-        HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': this.comment})
-        .then(response =>
+      submitComment(newComment) {
+        console.log('user: ', this.user)
+
+        HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment})
+        .then(response => {
           console.log(response)
-        )
+          // console.log(this.movie.comments)
+          this.movie.comments.unshift({
+            date: response.date,
+            first: this.user.first,
+            image: this.user.image,
+            text: newComment,
+            user_id: this.user.user_id
+          })
+          this.totalNumberOfComments = this.movie.comments.length
+          console.log(this.movie.comments)
+        })
         .catch(err => {
           console.log(err)
         })
+      },
+      playVideo(evt) {
+        evt.preventDefault()
+        console.log('yo playing')
       }
-    }
+    },
   }
 </script>
 
