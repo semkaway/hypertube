@@ -25,6 +25,7 @@
     "nodemailer": "^4.6.8",
     "opensubtitles-api": "^4.1.0",
     "password-validator": "^4.1.1",
+    "srt-to-vtt": "^1.1.3",
     "torrent-stream": "^1.1.0"
   },
   "devDependencies": {
