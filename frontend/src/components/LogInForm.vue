@@ -106,7 +106,7 @@
 
 export default {
     name: 'LogInForm',
-    props: ['showForm', 'token'],
+    props: ['showForm', 'token', 'locale'],
     data: function () {
       return {
           showPassword: false,
@@ -244,7 +244,7 @@ export default {
 			"last": this.lastName,
 			"email": this.email,
 			"password": this.password,
-			"locale": localStorage.locale })
+			"locale": this.locale })
 			.then(response => {
 				console.log(response)
 					if (response.data.success == true) {

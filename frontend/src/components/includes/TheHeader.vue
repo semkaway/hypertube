@@ -4,7 +4,7 @@
             <v-btn flat  @click='goToHomePage'> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
             <v-btn v-if='userLoggedIn === false' flat @click="toggleForm"> <v-icon>exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
         </v-toolbar-items>
-        <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:setUser='setUser'/>
+        <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:setUser='setUser' v-bind:locale='headerLocale'/>
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
@@ -22,7 +22,7 @@
         <v-toolbar-items v-if='userLoggedIn === true'>
             <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
             <v-btn flat slot="activator">
-                <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' :src="headerUser.image == null ? 'http://www.studioclio.com.br/sites/default/files/imagens/evento/pitagoras_0.jpg' : headerUser.image" alt="User photo"></v-img>
+                <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' :src="headerUser.image == '' ? 'http://www.studioclio.com.br/sites/default/files/imagens/evento/pitagoras_0.jpg' : headerUser.image" alt="User photo"></v-img>
                 <span class='ml-2 header-name'>{{ headerUser.first | capitalizeFirstLetter }}</span>
             </v-btn>
             <v-list>
@@ -119,7 +119,8 @@
         },
 
         requestUser () {
-			HTTP.get('user/data/').then(result => {
+            if (this.userLoggedIn) {
+                HTTP.get('user/data/').then(result => {
 				if (result.data.success == false) {
 					setAuthorizationToken(false)
 					this.$router.push('/')
@@ -128,6 +129,8 @@
                     this.userLoggedIn = true
 				}
 			}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
+            }
+			
 		},
 
         fetchData () {
@@ -142,8 +145,8 @@
         },
 
         setUser(response) {
-            this.requestUser()
             this.userLoggedIn = true
+            this.requestUser()
             this.$emit('setTokenAndLocale', response)
         },
 

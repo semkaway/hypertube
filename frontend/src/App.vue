@@ -48,6 +48,7 @@ export default {
 
 		setUser (response) {
 			let { email, first, last, image, user_id } = response
+			if (!image) image = ''
 			this.user = { email, first, last, image, user_id }
 		},
 
