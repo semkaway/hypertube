@@ -9,7 +9,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "webpack --colors --progress",
+    "start": "docker-compose up -d && webpack --colors --progress",
     "db": "/usr/local/mongodb/bin/mongod --dbpath database"
   },
   "dependencies": {
