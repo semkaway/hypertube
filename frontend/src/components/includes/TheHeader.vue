@@ -119,7 +119,8 @@
         },
 
         requestUser () {
-			HTTP.get('user/data/').then(result => {
+            if (this.userLoggedIn) {
+                HTTP.get('user/data/').then(result => {
 				if (result.data.success == false) {
 					setAuthorizationToken(false)
 					this.$router.push('/')
@@ -128,6 +129,8 @@
                     this.userLoggedIn = true
 				}
 			}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
+            }
+			
 		},
 
         fetchData () {
@@ -142,8 +145,8 @@
         },
 
         setUser(response) {
-            this.requestUser()
             this.userLoggedIn = true
+            this.requestUser()
             this.$emit('setTokenAndLocale', response)
         },
 
