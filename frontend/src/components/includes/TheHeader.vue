@@ -142,6 +142,7 @@
         },
 
         setUser(response) {
+            this.requestUser()
             this.userLoggedIn = true
             this.$emit('setTokenAndLocale', response)
         },

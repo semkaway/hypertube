@@ -51,7 +51,9 @@ export default {
 			this.user = { email, first, last, image, user_id }
 		},
 
-		updateUser(updatedUser) { this.user = Object.assign(this.user, updatedUser) }
+		updateUser(updatedUser) { 
+			this.user = Object.assign(this.user, updatedUser) 
+		}
 	}
 }
 </script>

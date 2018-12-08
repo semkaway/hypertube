@@ -160,20 +160,23 @@ export default {
     sendEmail() {
 		if (!this.email.length) { this.arrayOfEmailErrors = [this.$t('validation.required')]}
         if (!this.arrayOfEmailErrors.length && this.email.length) {
-			HTTP.get(`user/check-email/` + this.email)
-			.then(response => {
+			HTTP.get(`user/check-email/` + this.email).then(response => {
 				if (response.data.exist == true) {
-				HTTP.post('user/password/token-generate', { email: this.email}).then(response => {
+				HTTP.post('user/password/token-generate', { email: this.email }).then(response => {
             		if (response.data.success == true) {
 						this.showSuccess = true
 						this.successMessage = this.$t('forgot_password.success_alert')
 						setTimeout(() => { this.$emit('toggleForm')}, 1800)
                 	} else if (response.data.success == false && (response.data.message == "User with this email doesn't exist")){
 						this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
-                	}}).catch((err) => { console.log('error: ', err) })
+                	}}).catch((err) => { 
+						this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
+					})
 			} else {
 				this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
-			}}).catch((err) => { this.arrayOfEmailErrors = [this.$t('registration.error_alert')] })
+			}}).catch((err) => { 
+				this.arrayOfEmailErrors = [this.$t('registration.error_alert')] 
+			})
 		}
         console.log('send email', this.email)
     },
