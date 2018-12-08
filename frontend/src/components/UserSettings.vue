@@ -18,23 +18,72 @@
     		<v-expansion-panel-content v-for="(section, index) in sections" :key="index" expand-icon="keyboard_arrow_down">
 				<v-layout slot="header" align-center>
 					<v-icon class='mr-3'>{{section.icon}}</v-icon> 
-					<span>{{section.title}}</span>
+					<span class='subheading dark--text'>{{section.title}}</span>
 				</v-layout>
 				<v-card>
 					<v-card-text>
 
+						<!-- CHANGE EMAIL TODO: vash email in i18n-->
+						<form v-if='section.name == "email"'>
+						<v-layout align-start column fill-height>
+								<v-layout class="grey--text">
+									<v-card class="grey--text">
+										<v-card-text class='subheading'>Ваш текущий e-mail:  <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
+									</v-card>
+								</v-layout>
+								<!-- show it if have pending email -->
+								<v-layout class="grey--text">
+									<v-card class="grey--text">
+										<v-card-text class='subheading'>
+											{{$t('profile.settings.email_pending')}} 
+											<span class='ml-1 subheading'>lala@gmail.com</span>
+											<v-btn color="red" class="white--text" flat>{{ $t('button.cancel') }}</v-btn>
+										</v-card-text>
+									</v-card>
+								</v-layout>
+						</v-layout>
+
+							
+							<v-text-field
+								@keyup.native='validateEmail("newEmail")'
+								name='newEmail'
+								v-model='newEmail'
+								:label="$t('registration.email')"
+								class='ml-3'
+								color="grey darken-1"
+								v-validate="'email'"
+								:error-messages='arrayOfNewEmailErrors'>
+							</v-text-field>
+							<v-btn @click='changeEmail("newEmail")' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='clearNewEmail' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+						</form>
+
 						<!-- CHANGE PERSONAL DATA -->
 						<form v-if='section.name == "names"'>
-								<v-text-field 
+								<v-text-field
+									@keyup.native='validateFirstName'
+									name='newFirstName'
+									v-model='newFirstName'
+									:label="$t('registration.first_name')"
 									class='ml-3'
-									color="grey darken-1">
+									color="grey darken-1"
+									v-validate="'alpha|min:3|max:15'"
+									:error-messages='arrayOfFirstNameErrors' 
+                					:counter='15'>
 								</v-text-field>
-								<v-text-field 
+								<v-text-field
+									@keyup.native='validateLastName'
+									name='newLastName'
+									v-model='newLastName'
+									:error-messages='arrayOfLastNameErrors'
+									:label="$t('registration.last_name')"
 									class='ml-3'
-									color="grey darken-1">
+									color="grey darken-1"
+									v-validate="'alpha|min:3|max:15'"
+                					:counter='15'>
 								</v-text-field>
-								<v-btn color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
-								<v-btn color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+								<v-btn @click='onChangeNames' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+								<v-btn @click='clearNameFields' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
 
 						<!-- CHANGE PASSWORD -->
@@ -138,6 +187,23 @@
 							<v-btn @click='resetAddNewPassword' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
 
+						<!-- ADD EMAIL TODO: show it only if user doesnt have email -->
+
+						<form v-if='section.name == "addEmail"'>
+							<v-text-field
+								@keyup.native='validateEmail("addEmail")'
+								name='addEmail'
+								v-model='addEmail'  
+								color="grey darken-1" 
+								class='ml-3'
+								:error-messages='arrayOfAddEmailErrors'
+								v-validate="'email'"
+								:label="$t('registration.email')">
+							</v-text-field>
+							<v-btn @click='changeEmail("addEmail")' color="grey" class="white--text" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='clearAddEmailSection' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+						</form>
+
 						<!-- DELETE -->
 						<v-btn v-if='section.name == "delete"' @click='deleteAccount' color="red" class="white--text" flat>{{ $t('profile.settings.delete_account_title') }}</v-btn>
 					</v-card-text>
@@ -154,6 +220,7 @@
 import { HTTP } from '../http-common'
 import isImage from '../utils/isImage'
 import getBase64 from '../utils/getBase64'
+import setAuthorizationToken from '../utils/setAuthToken'
 import Loader from './Loader'
 import Snackbar from './Snackbar'
 import ModalWindow from './ModalWindow'
@@ -173,15 +240,23 @@ export default {
 			originalImg: this.user.image,
 			imgToShow: this.user.image,
 			imgURL: '',
+			newEmail: '',
+			addEmail: '',
 			password: '',
 			newPassword: '',
 			repeatNewPassword: '',
 			addNewPassword: '',
+			newFirstName: '',
+			newLastName: '',
+			arrayOfFirstNameErrors: [],
+			arrayOfLastNameErrors: [],
 			arrayOfAddNewPasswordErrors: [],
 			arrayOfImageURLerrors: [],
 			arrayOfPasswordErrors: [],
 			arrayOfNewPasswordErrors: [],
 			arrayOfRepeatPasswordErrors: [],
+			arrayOfNewEmailErrors: [],
+			arrayOfAddEmailErrors: [],
 			showSnackbar: false,
 			showModal: false,
 			snackbarY: 'bottom',
@@ -200,6 +275,7 @@ export default {
 				{ title: this.$t('profile.settings.change_picture'), icon: 'perm_media', name: 'picture'},
 				{ title: this.$t('profile.settings.add_media'), icon: 'person_add', name: 'media'},
 				{ title: this.$t('profile.settings.create_pass'), icon: 'fingerprint', name: 'addPass'},
+				{ title: this.$t('profile.settings.create_email'), icon: 'alternate_email', name: 'addEmail'},
 				{ title: this.$t('profile.settings.delete_account_title'), icon: 'delete', name: 'delete'}
 			]
 		},
@@ -226,6 +302,12 @@ export default {
 				this.arrayOfNewPasswordErrors = []
 				this.arrayOfRepeatPasswordErrors = []
 			}
+		},
+
+		clearAddEmailSection() {
+			this.addEmail = ''
+			this.arrayOfAddEmailErrors = []
+
 		},
 
 		changePassword() {
@@ -342,12 +424,139 @@ export default {
 
 		resetAddNewPassword() {
 			this.addNewPassword = ''
+			this.arrayOfAddNewPasswordErrors = []
 		},
 
 		onSaveAddNewPassword() {
 			if (!this.arrayOfAddNewPasswordErrors.length && this.addNewPassword.length) {
-				// add password to account
-				console.log("add new password =>", this.addNewPassword)
+				this.runLoader = true
+				HTTP.post('user/add/password', { password: this.addNewPassword}).then((response) => {
+					console.log('response')
+					if (response.data.success) {
+						this.showSnackbar = true
+						this.snackbarText = this.$t('profile.success_alert')
+						this.resetAddNewPassword()
+					} else {
+						if (response.data.message === 'Invalid password') {
+							this.arrayOfAddNewPasswordErrors =  [this.$t('validation.wrongFormat')]
+						} else {
+							setAuthorizationToken(false)
+							this.$router.push('/')
+						}
+					}
+					
+					this.runLoader = false
+					
+				}).catch((error) => {
+					this.runLoader = false
+					this.showSnackbar = true
+					this.snackbarText = this.$t('login.error_alert')
+					this.resetAddNewPassword()
+				})
+			}
+		},
+
+		clearNameFields() {
+			this.newFirstName = ''
+			this.newLastName = ''
+			this.arrayOfFirstNameErrors = []
+			this.arrayOfLastNameErrors = []
+		},
+
+		changeEmail(section) {
+			if (section === 'newEmail') {
+				// validate new email field
+			} else if (section === 'addEmail') {
+				// validate add email field
+			}
+		},
+
+		clearNewEmail() {
+			this.newEmail = ''
+			this.arrayOfNewEmailErrors = []
+		},
+
+		validateFirstName() {
+			if (this.errors.has('newFirstName')) {
+				if (this.newFirstName.length > 15) {
+					this.arrayOfFirstNameErrors = [this.$t('validation.firstNameLong')]
+				} else	if (this.newFirstName.length < 3){
+					this.arrayOfFirstNameErrors = [this.$t('validation.firstNameShort')]
+				} else {
+					this.arrayOfFirstNameErrors =  [this.$t('validation.firstNameFormat')]
+				}
+			} else {
+				this.arrayOfFirstNameErrors = []
+			}
+		},
+
+		validateLastName() {
+			if (this.errors.has('newLastName')) {
+				if (this.newLastName.length > 15) {
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameLong')] 
+				} else if (this.newLastName.length < 3){
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameShort')]
+				} else {
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameFormat')]
+				}
+			} else {
+				this.arrayOfLastNameErrors = []
+			}
+		},
+
+		validateEmail(field) {
+			if (field === 'newEmail') {
+				if (this.errors.has('newEmail')) {
+					this.arrayOfNewEmailErrors = [this.$t('validation.email')]
+				} else {
+					this.arrayOfNewEmailErrors = []
+				}
+			} else if (field === 'addEmail') {
+				if (this.errors.has('addEmail')) {
+					this.arrayOfAddEmailErrors = [this.$t('validation.email')]
+				} else {
+					this.arrayOfAddEmailErrors = []
+				}
+			}
+			
+		},
+
+		onChangeNames() {
+			if (!this.arrayOfFirstNameErrors.length && !this.arrayOfLastNameErrors.length && (this.newFirstName.length || this.newLastName.length)) {
+				this.runLoader = true
+				const first = this.newFirstName.length ? this.newFirstName : this.settingsUser.first
+				const last = this.newLastName.length ? this.newLastName : this.settingsUser.last
+				HTTP.put('user/change/data', { first, last }).then((response) => {
+					this.runLoader = false
+					if (response.data.success) {
+						this.clearNameFields()
+						this.showSnackbar = true
+						this.snackbarText = this.$t('profile.success_alert')
+						this.$emit('updateUser', { first, last })
+					} else {
+						switch(response.data.message)
+						{
+							case 'Invalid first':
+								this.arrayOfFirstNameErrors =  [this.$t('validation.firstNameFormat')]
+								break
+							case 'Invalid last':
+								this.arrayOfFirstNameErrors =  [this.$t('validation.lastNameFormat')]
+								break
+							case 'Invalid token':
+								setAuthorizationToken(false)
+								this.$router.push('/')
+								break
+							default: {
+								this.showSnackbar = true
+								this.snackbarText = this.$t('activation.error_alert')
+							}
+						}
+					}
+				}).catch((error) => {
+					this.runLoader = false
+					this.showSnackbar = true
+					this.snackbarText = this.$t('activation.error_alert')
+				})
 			}
 		}
 	},
@@ -367,485 +576,10 @@ export default {
 	}
 }
 
-// export default {
-//   name: 'UserPage',
-//   data () {
-//     return {
-//         settings: {
-//           old_password: '',
-//           new_password: '',
-//           new_password_repeat: '',
-//           email: '',
-//           email_password: '',
-//           first_name: '',
-//           last_name: ''
-//         },
-//         create: {
-//           password: '',
-//           password_repeat: '',
-//           email: ''
-//         },
-//         user: {
-//           first_name: '',
-//           last_name: '',
-//           email: '',
-//           pendingEmail: '',
-//           image: '',
-//           password: '',
-//           intra: '',
-//           github: ''
-//         },
-//         img_url: '',
-//         showSuccessAlert: false,
-//         showErrorAlert: false,
-//         showSuccessPassAlert: false,
-//         showErrorPassAlert: false,
-//         hideEmailExists: true,
-//         showEmailSentSuccess: false,
-//         newEmailSpan: true,
-//         emailError: false,
-//         omniauthHide: true,
-//         createEmailHide: true,
-//         normalHide: false,
-//         socialHide: false,
-//         passwordHide: true,
-//         hideButton: true,
-//         intra: false,
-//         github: false,
-//         headerBgVariant: 'danger',
-//         headerTextVariant: 'light',
-//         imageSelected: null,
-//         maxSize: 1024
-//       }
-//     },
-//     mounted() {
-//         HTTP
-//           .get('user/data/')
-//           .then(result => {
-//             console.log(result)
-//             if (result.data.success == true) {
-//               this.user.first_name = result.data.first
-//               this.user.last_name = result.data.last
-//               this.user.email = result.data.email
-//               this.user.pendingEmail = result.data.pendingEmail
-//               this.user.image = result.data.image
-//               this.user.password = result.data.password
-//               this.user.intra = result.data.intra
-//               this.user.github = result.data.github
-//               console.log("email: "+this.user.email+" pendingEmail: "+this.user.pendingEmail+" intra: "+this.user.intra+" git: "+this.user.github+" pass: "+this.user.password)
-//               if (this.user.email == null) {
-//                 this.normalHide = true
-//                 this.omniauthHide = false
-//               }
-//               if (this.user.intra === true) {
-//                 this.intra = true
-//               }
-//               if (this.user.github === true) {
-//                 this.github = true
-//               }
-//               if (this.user.github === true && this.user.intra === true) {
-//                 this.socialHide = true
-//               }
-//               if (this.user.pendingEmail !== null) {
-//                 this.newEmailSpan = false
-//               }
-//               if (this.user.email === null) {
-//                 this.createEmailHide = false
-//               }
-//               if (this.user.password === false) {
-//                 this.passwordHide = false
-//                 this.normalHide = true
-//               }
-//               if (this.user.image === null) {
-//                 this.user.image = "https://images.pexels.com/photos/248280/pexels-photo-248280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-//               }
-//             } else if (result.data.success == false) {
-//               localStorage.token = ''
-//               this.$router.push('/')
-//             }
-//           })
-//           .catch((err) => {
-//             console.log(err)
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//       },
-//     methods: {
-//       logout() {
-//         localStorage.token = ''
-//         this.$router.push('/')
-//       },
-//       onSubmitPass(evt) {
-//           evt.preventDefault();
-//           this.$validator.validate('old_password', this.settings.old_password)
-//           this.$validator.validate('new_password', this.settings.new_password)
-//           this.$validator.validate('new_password_repeat', this.settings.new_password_repeat)
-
-//           .then(result => {
-//             if(!result) {
-//               console.log('error')
-//               return false
-//             }
-//             else {
-//               HTTP
-//                 .put('user/change/data', {
-//                   // 'token': localStorage.token,
-//                   'oldPassword': this.settings.old_password,
-//                   'newPassword': this.settings.new_password,
-//                 })
-//                 .then (response => {
-//                   if (response.data.success == true) {
-//                     this.showSuccessPassAlert = true
-//                     this.showErrorAlert = false
-//                     this.showSuccessAlert = false
-//                     this.showErrorPassAlert = false
-//                     setTimeout(() => { localStorage.token = ''; this.$router.push('/login')}, 3000)
-//                   } else if (response.data.message === "Invalid oldPassword") {
-//                     console.log(response.data)
-//                     this.showErrorPassAlert = true
-//                     this.showErrorAlert = false
-//                     this.showSuccessAlert = false
-//                     this.showSuccessPassAlert = false
-//                   } else if (response.data.message === "Invalid token") {
-//                     localStorage.token = ''
-//                     this.$router.push('/')
-//                   } else {
-//                     this.showErrorPassAlert = false
-//                     this.showErrorAlert = true
-//                     this.showSuccessAlert = false
-//                     this.showSuccessPassAlert = false
-//                   }
-//                 })
-//                 .catch((err) => {
-//                   console.log(err.response.data.error.message)
-//                   console.log("server error")
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 })
-//             }
-//           })
-//           .catch(() => {
-//             console.log('error')
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//       },
-//       checkIfEmailExists(email) {
-//   			HTTP
-//   			.get(`user/check-email/`+email)
-//   			.then(response => {
-//   				if (response.data.exist == true) {
-//   					  this.hideEmailExists = false
-//               this.emailError = true
-//   				} else if (response.data.exist == false) {
-//               this.hideEmailExists = true
-//               this.emailError = false
-//   				}
-//   				console.log(response.data.exist)
-//   			})
-//   			.catch((err) => {
-//   				console.log(err.response.data.error)
-//   				console.log("server error")
-//           localStorage.token = ''
-//           this.$router.push('/')
-//   			})
-//   		},
-//       onSubmitEmail(evt) {
-//         evt.preventDefault();
-//         if (this.user.email !== null) {
-//           this.$validator.validate('email_password', this.settings.email_password)
-//           this.$validator.validate('email', this.settings.email)
-//           .then(result => {
-//             if(!result) {
-//               console.log('error')
-//               return false
-//             } else {
-//               HTTP
-//                 .put('user/change/email', {
-//                   // 'token': localStorage.token,
-//                   'email': this.settings.email,
-//                   'password': this.settings.email_password
-//                 })
-//                 .then (response => {
-//                   if (response.data.success == true) {
-//                     this.showEmailSentSuccess = true
-//                     this.newEmailSpan = false
-//                     this.showErrorAlert = false
-//                     this.user.pendingEmail = this.settings.email
-//                   } else if (response.data.message === "Invalid token") {
-//                     localStorage.token = ''
-//                     this.$router.push('/')
-//                   } else {
-//                     console.log(response.data)
-//                     this.showErrorAlert = true
-//                     this.showSuccessAlert = false
-//                   }
-//                 })
-//                 .catch((err) => {
-//                   console.log(err.response.data.error.message)
-//                   console.log("server error")
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 })
-//             }
-//           })
-//           .catch(() => {
-//             console.log('error')
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//         } else {
-//           this.$validator.validate('email', this.settings.email)
-//           .then(result => {
-//             if(!result) {
-//               console.log('error')
-//               return false
-//             } else {
-//               HTTP
-//                 .post('user/add/email', {
-//                   // 'token': localStorage.token,
-//                   'email': this.settings.email
-//                 })
-//                 .then (response => {
-//                   if (response.data.success == true) {
-//                     this.showEmailSentSuccess = true
-//                     this.newEmailSpan = false
-//                     this.showErrorAlert = false
-//                     this.user.pendingEmail = this.settings.email
-//                   } else if (response.data.message === "Invalid token") {
-//                     localStorage.token = ''
-//                     this.$router.push('/')
-//                   } else {
-//                     console.log(response.data)
-//                     this.showErrorAlert = true
-//                     this.showSuccessAlert = false
-//                   }
-//                 })
-//                 .catch((err) => {
-//                   console.log(err.response.data.error.message)
-//                   console.log("server error")
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 })
-//             }
-//           })
-//           .catch(() => {
-//             console.log('error')
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//         }
-//       },
-//       deleteEmail() {
-//         HTTP
-//           .delete('user/delete/pending-email')
-//           .then (response => {
-//             if (response.data.success == true) {
-//               this.newEmailSpan = true
-//             } else if (response.data.message === "Invalid token") {
-//               localStorage.token = ''
-//               this.$router.push('/')
-//             } else {
-//               console.log(response.data)
-//               this.showErrorAlert = true
-//               this.showSuccessAlert = false
-//             }
-//           })
-//           .catch((err) => {
-//             console.log(err.response.data.error.message)
-//             console.log("server error")
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//       },
-//       onSubmitCreatePass(evt) {
-//         evt.preventDefault();
-//         this.$validator.validate('create_password', this.create.password)
-//         this.$validator.validate('create_password_repeat', this.create.password_repeat)
-//         .then(result => {
-//           if(!result) {
-//             console.log('error')
-//             return false
-//           }
-//           else {
-//             HTTP
-//               .post('user/add/password', {
-//                 // 'token': localStorage.token,
-//                 'password': this.create.password
-//               })
-//               .then (response => {
-//                 if (response.data.success == true) {
-//                   this.showSuccessAlert = true
-//                   this.showErrorAlert = false
-//                 } else if (response.data.message === "Invalid token") {
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 } else {
-//                   this.showErrorAlert = true
-//                   this.showSuccessAlert = false
-//                 }
-//               })
-//               .catch((err) => {
-//                 console.log(err.response.data.error.message)
-//                 console.log("server error")
-//                 localStorage.token = ''
-//                 this.$router.push('/')
-//               })
-//           }
-//         })
-//         .catch(() => {
-//           console.log('error')
-//           localStorage.token = ''
-//           this.$router.push('/')
-//         })
-//       },
-//       onSubmitPersonal(evt) {
-//         evt.preventDefault();
-//         this.$validator.validate('first_name', this.settings.first_name)
-//         this.$validator.validate('last_name', this.settings.last_name)
-//         .then(result => {
-//           if(!result) {
-//             console.log('error')
-//             return false
-//           }
-//           else {
-//             HTTP
-//               .put('user/change/data', {
-//                 'first': this.settings.first_name,
-//                 'last': this.settings.last_name,
-//               })
-//               .then (response => {
-//                 if (response.data.success == true) {
-//                   this.showSuccessAlert = true
-//                   this.showErrorAlert = false
-//                 } else if (response.data.message === "Invalid token") {
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 } else {
-//                   this.showErrorAlert = true
-//                   this.showSuccessAlert = false
-//                 }
-//               })
-//               .catch((err) => {
-//                 console.log(err.response.data.error.message)
-//                 console.log("server error")
-//                 localStorage.token = ''
-//                 this.$router.push('/')
-//               })
-//           }
-//         })
-//         .catch(() => {
-//           console.log('error')
-//           localStorage.token = ''
-//           this.$router.push('/')
-//         })
-//       },
-//       showModal () {
-//         this.$refs.deleteAccount.show()
-//       },
-//       hideModal () {
-//         this.$refs.deleteAccount.hide()
-//       },
-//       deleteAccount() {
-//         HTTP
-//           .delete('user/delete/self/')
-//           .then (response => {
-//             if (response.data.success == true) {
-//               console.log('account deleted')
-//             }
-//               localStorage.token = ''
-//               window.location.href = '/'
-//           })
-//           .catch((err) => {
-//             console.log(err.response.data.error.message)
-//             console.log("server error")
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//         this.hideModal()
-//       },
-//       Upload() {
-//         if (this.imageSelected === null) {
-//           this.imageSelected = reader.result
-//         }
-//         console.log(this.imageSelected)
-//           HTTP
-//             .put('user/change/image', {
-//               'image': this.imageSelected
-//             })
-//             .then (response => {
-//               if (response.data.success == true) {
-//                 this.showSuccessAlert = true
-//                 this.showErrorAlert = false
-//                 console.log('img uploaded')
-//               } else if (response.data.message === "Invalid token") {
-//                 localStorage.token = ''
-//                 this.$router.push('/')
-//               } else {
-//                 this.showErrorAlert = true
-//                 this.showSuccessAlert = false
-//               }
-//             })
-//             .catch((err) => {
-//               console.log(err.response.data.error.message)
-//               console.log("server error")
-//               localStorage.token = ''
-//               this.$router.push('/')
-//             })
-//       },
-//       onFileSelected(event) {
-//         var preview = document.querySelector('img');
-
-//         if (event.target !== undefined && event.target.files !== null) {
-//           var imageFile = event.target.files[0];
-
-//           if(imageFile.name.length > 0) {
-//                 if (!imageFile.type.match('image.*')) {
-//                   console.log('lol, not an image')
-//                 } else {
-//                   var maxSizeMB = 1;
-//                   var maxWidthOrHeight = 300;
-//                   imageCompression(imageFile, maxSizeMB, maxWidthOrHeight)
-//                     .then(function (compressedFile) {
-//                       reader.readAsDataURL(compressedFile);
-//                       reader.addEventListener("load", function () {
-//                               preview.src = reader.result
-//                             })
-//                     })
-//                     .catch(function (error) {
-//                       console.log(error.message);
-//                       localStorage.token = ''
-//                       this.$router.push('/')
-//                     });
-//                   }
-//                   this.imageSelected = reader.result
-//                   console.log(reader.result)
-//                   this.hideButton = false
-//         } else {
-//           console.log('you fucked up')
-//         }
-//       } else {
-//         this.$validator.validate('img_url', this.img_url)
-//         .then(result => {
-//           if(!result) {
-//             console.log('error')
-//             return false
-//           } else {
-//             preview.src = this.img_url
-//             this.imageSelected = preview.src
-//             this.hideButton = false
-//           }
-//         })
-//       }
-//     }
-//   }
-
-//   }
-
 </script>
 
 <style scoped>
-.cursor-pointer:hover {
-	cursor: pointer;
-}
+	.cursor-pointer:hover {
+		cursor: pointer;
+	}
 </style>

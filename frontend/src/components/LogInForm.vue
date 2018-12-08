@@ -22,26 +22,26 @@
         <v-card-text v-if='showSuccess === false'>
             <form>
                 <v-text-field
-                @keyup.native='validateFirstName'
-                v-if='showRegisterForm == true' 
-                :error-messages="arrayOfFirstNameErrors" 
-                v-model="firstName" 
-                :label="$t('registration.first_name')" 
-                color="grey darken-1"
-                name='firstName'
-                v-validate="'required|alpha|min:3|max:15'"
-                :counter='15'
+					@keyup.native='validateFirstName'
+					v-if='showRegisterForm == true' 
+					:error-messages="arrayOfFirstNameErrors" 
+					v-model="firstName"
+					:label="$t('registration.first_name')" 
+					color="grey darken-1"
+					name='firstName'
+					v-validate="'required|alpha|min:3|max:15'"
+					:counter='15'
                 ></v-text-field>
                 <v-text-field
-                @keyup.native='validateLastName'
-                v-if='showRegisterForm == true' 
-                :error-messages="arrayOfLastNameErrors" 
-                v-model="lastName" 
-                :label="$t('registration.last_name')" 
-                color="grey darken-1"
-                name='lastName'
-                v-validate="'required|alpha|min:3|max:15'"
-                :counter='15'
+					@keyup.native='validateLastName'
+					v-if='showRegisterForm == true' 
+					:error-messages="arrayOfLastNameErrors" 
+					v-model="lastName" 
+					:label="$t('registration.last_name')" 
+					color="grey darken-1"
+					name='lastName'
+					v-validate="'required|alpha|min:3|max:15'"
+					:counter='15'
                 ></v-text-field>
 			</form>
           	<form>
@@ -240,11 +240,11 @@ export default {
 				this.validateRepeatePassword()
 			} else if (!this.arrayOfEmailErrors.length) {
 			HTTP.post(`user/create`, {
-			"first": this.firstName,
-			"last": this.lastName,
-			"email": this.email,
-			"password": this.password,
-			"locale": this.locale })
+				"first": this.firstName,
+				"last": this.lastName,
+				"email": this.email,
+				"password": this.password,
+				"locale": this.locale })
 			.then(response => {
 				console.log(response)
 					if (response.data.success == true) {
