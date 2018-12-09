@@ -1,7 +1,7 @@
 <template>
  <div class="mt-5">
    <Loader :run='value'/>
-  <v-container fluid grid-list-md class="mt-3">
+  <v-container fluid grid-list-md class="mt-3 white">
     <v-layout row wrap>
       <v-flex d-flex xs12 sm6 md3>
         <v-card flat>
@@ -58,11 +58,13 @@
             </v-list-tile-content>
           </v-list-tile>
 
+          <v-divider inset></v-divider>
+
         </v-list>
         </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm6 md6>
-      <v-card light flat class="p-2">
+      <v-card flat class="p-2">
         <h1>{{movie.title}}</h1>
         <p class="subheading">{{movie.tagline}}</p>
         <v-card-text>{{movie.overview}}</v-card-text>
@@ -313,14 +315,6 @@ export default {
 
 a {
   text-decoration: none;
-}
-
-.dialog.centered-dialog {
-  background: #282c2dad;
-  box-shadow: none;
-  border-radius: 6px;
-  width: auto;
-  color: whitesmoke;
 }
 
 </style>
