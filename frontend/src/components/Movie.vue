@@ -69,7 +69,7 @@
         <vue-plyr ref="player">
             <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
                 <source v-if="movieSource" :src="movieSource" type="video/mp4">
-                <source :src="movieSource" type="video/mp4"/>
+                <!-- <source :src="movieSource" type="video/mp4"/> -->
                 <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.vtt" default>
             </video>
         </vue-plyr>
