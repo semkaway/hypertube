@@ -67,15 +67,16 @@
         <p class="subheading">{{movie.tagline}}</p>
         <v-card-text>{{movie.overview}}</v-card-text>
         <vue-plyr ref="player">
-            <video id="moviePlayer" controls data-plyr-config='{"debug": true }'>
+            <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
                 <source v-if="movieSource" :src="movieSource" type="video/mp4">
-                <!-- <source :src="movieSource" type="video/mp4"/> -->
-                <!-- <track kind="captions" label="English" srclang="en" src="captions-en.vtt" default> -->
+                <source :src="movieSource" type="video/mp4"/>
+                <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.vtt" default>
             </video>
         </vue-plyr>
         <!-- <div width="100%">
-          <video ref="videoRef" width="600" :poster="movie.backdrop_path" controls>
+          <video id="moviePlayer" ref="videoRef" width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
             <source v-if="movieSource" :src="movieSource" type="video/mp4">
+            <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.srt" default>
           Your browser does not support the video tag.
           </video>
         </div> -->
