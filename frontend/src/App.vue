@@ -3,16 +3,20 @@
 		<app-header 
 			v-bind:user='user' 
 			v-bind:token='token' 
-			v-bind:locale='locale'  
+			v-bind:locale='locale'
 			v-on:setUser='setUser'
 			v-on:setTokenAndLocale='setToken'
 			v-on:setLocale='setLocale'
+			v-on:setUserStatus='setUserStatus'
+			v-bind:userLoggedIn='userLoggedIn'
 		/>
 		<router-view
 			v-bind:user='user'
 			v-bind:token='token'
+			v-on:setUser='setUser'
 			v-bind:locale='locale'
 			v-on:updateUser='updateUser'
+			v-on:setTokenAndLocale='setToken'
 		/>
 	</v-app>
 </template>
@@ -33,6 +37,7 @@ export default {
 			user: {},
 			token: localStorage.token,
 			locale: localStorage.locale ? localStorage.locale : 'en',
+			userLoggedIn: false
 		}
 	},
 	methods: {
@@ -46,14 +51,25 @@ export default {
 			this.locale = locale
 		},
 
-		setUser (response) {
-			let { email, first, last, image, user_id } = response
-			if (!image) image = ''
-			this.user = { email, first, last, image, user_id }
+		setUserStatus (status) {
+			this.userLoggedIn = status
 		},
 
-		updateUser(updatedUser) { 
-			this.user = Object.assign(this.user, updatedUser) 
+		setUser (response) {
+			let { email, first, last, image, user_id, pendingEmail, password, intra, github } = response
+			if (!image) image = ''
+			this.user = { email, first, last, image, user_id, pendingEmail, password, intra, github }
+		},
+
+		updateUser(updatedUser) {
+			if (!updatedUser) {
+				this.userLoggedIn = false
+				this.user = {}
+			} else {
+				this.userLoggedIn = true
+				this.user = Object.assign(this.user, updatedUser)
+			}
+			console.log('updated user', this.user)
 		}
 	}
 }

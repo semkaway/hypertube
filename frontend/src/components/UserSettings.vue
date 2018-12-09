@@ -17,7 +17,7 @@
  		<v-expansion-panel  expand class="mt-4">
     		<v-expansion-panel-content v-for="(section, index) in sections" :key="index" expand-icon="keyboard_arrow_down">
 				<v-layout slot="header" align-center>
-					<v-icon class='mr-3'>{{section.icon}}</v-icon> 
+					<v-icon class='mr-3'>{{section.icon}}</v-icon>
 					<span class='subheading dark--text'>{{section.title}}</span>
 				</v-layout>
 				<v-card>
@@ -26,25 +26,25 @@
 						<!-- CHANGE EMAIL TODO: vash email in i18n-->
 						<form v-if='section.name == "email"'>
 						<v-layout align-start column fill-height>
-								<v-layout class="grey--text">
+								<v-layout v-if='user.email' class="grey--text">
 									<v-card class="grey--text">
 										<v-card-text class='subheading'>Ваш текущий e-mail:  <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
 									</v-card>
 								</v-layout>
-								<!-- show it if have pending email -->
-								<v-layout class="grey--text">
+								<!-- show only if have pending email -->
+								<v-layout class="grey--text" v-if='settingsUser.pendingEmail != null'>
 									<v-card class="grey--text">
 										<v-card-text class='subheading'>
 											{{$t('profile.settings.email_pending')}} 
-											<span class='ml-1 subheading'>lala@gmail.com</span>
-											<v-btn color="red" class="white--text" flat>{{ $t('button.cancel') }}</v-btn>
+											<span class='ml-1 subheading'>{{ settingsUser.pendingEmail }}</span>
+											<v-btn @click='cancelPendingEmail' color="red" class="white--text" flat>{{ $t('button.cancel') }}</v-btn>
 										</v-card-text>
 									</v-card>
 								</v-layout>
 						</v-layout>
 
-							
 							<v-text-field
+								v-if='user.email'
 								@keyup.native='validateEmail("newEmail")'
 								name='newEmail'
 								v-model='newEmail'
@@ -54,8 +54,22 @@
 								v-validate="'email'"
 								:error-messages='arrayOfNewEmailErrors'>
 							</v-text-field>
-							<v-btn @click='changeEmail("newEmail")' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn @click='clearNewEmail' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+							<v-text-field
+								v-if='user.email'
+								name='passwordForNewEmail'
+								@keyup.native='validatePassword'
+								v-model='passwordForNewEmail' 
+								:error-messages='arrayOfPasswordForNewEmailErrors' 
+								color="grey darken-1" 
+								class='ml-3'
+								:label="$t('registration.password')" 
+								@click:append="showPassword = !showPassword" 
+								:type="showPassword ? 'text' : 'password'" 
+								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
+								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
+							</v-text-field>
+							<v-btn v-if='user.email' @click='changeEmail("newEmail")' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn v-if='user.email' @click='clearNewEmail' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
 
 						<!-- CHANGE PERSONAL DATA -->
@@ -163,11 +177,18 @@
 						</form>
 
 						<!-- ADD MEDIA -->
-						<v-btn v-if='section.name == "media"' color="grey darken-1" class="white--text" flat>42 Intra</v-btn>
-						<v-btn v-if='section.name == "media"' color="grey darken-1" class="white--text" flat>github</v-btn>
+
+						<v-layout v-if='section.name == "media"' class="grey--text">
+									<v-card class="grey--text">
+										<v-card-text class='subheading'>Ваши соц сети: intra: {{user.intra}} git: {{user.github}} </v-card-text>
+									</v-card>
+								</v-layout>
+
+						<v-btn @click='addIntraMedia' v-if='section.name == "media" && !settingsUser.intra' color="grey darken-1" class="white--text" flat>42 Intra</v-btn>
+						<v-btn @click='addGitMedia' v-if='section.name == "media" && !settingsUser.github' color="grey darken-1" class="white--text" flat>github</v-btn>
 
 
-						<!-- ADD PASSWORD  TODO: show it only if user doesnt have password -->
+						<!-- ADD PASSWORD -->
 						<form v-if='section.name == "addPass"'>
 							<v-text-field
 								name='addNewPassword'
@@ -187,7 +208,7 @@
 							<v-btn @click='resetAddNewPassword' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
 
-						<!-- ADD EMAIL TODO: show it only if user doesnt have email -->
+						<!-- ADD EMAIL -->
 
 						<form v-if='section.name == "addEmail"'>
 							<v-text-field
@@ -236,9 +257,9 @@ export default {
 			showPassword: false,
 			settingsUser: this.user,
 			locale1: this.locale,
-			sections: this.getSections(),
 			originalImg: this.user.image,
 			imgToShow: this.user.image,
+			sections: this.getSections(),
 			imgURL: '',
 			newEmail: '',
 			addEmail: '',
@@ -248,6 +269,8 @@ export default {
 			addNewPassword: '',
 			newFirstName: '',
 			newLastName: '',
+			passwordForNewEmail: '',
+			arrayOfPasswordForNewEmailErrors: [],
 			arrayOfFirstNameErrors: [],
 			arrayOfLastNameErrors: [],
 			arrayOfAddNewPasswordErrors: [],
@@ -267,8 +290,17 @@ export default {
 	},
 
 	methods: {
-		getSections() {
-			return [
+
+		addIntraMedia() {
+			console.log('intra click')
+		},
+
+		addGitMedia() {
+			console.log('git click')
+		},
+
+		getSections(password, email, pendingEmail) {
+			const sections = [
 				{ title: this.$t('profile.settings.change_email'), icon: 'email', name: 'email'},
 				{ title: this.$t('profile.settings.change_password'), icon: 'lock', name: 'password'},
 				{ title: this.$t('profile.settings.change_info'), icon: 'person', name: 'names'},
@@ -278,6 +310,30 @@ export default {
 				{ title: this.$t('profile.settings.create_email'), icon: 'alternate_email', name: 'addEmail'},
 				{ title: this.$t('profile.settings.delete_account_title'), icon: 'delete', name: 'delete'}
 			]
+ 
+			// I hate my life ...
+			if (password && email) {
+				sections.splice(5, 1)
+				sections.splice(5, 1)
+			} else if (email || pendingEmail) {
+				sections.splice(6, 1)
+			}
+
+			if (password) {
+				if (sections[5].name !== 'delete')
+					sections.splice(5, 1)
+			}
+
+			// I can't believe how much I hate ...
+			if (!password && !email && !pendingEmail) {
+				sections.splice(0, 1)
+				sections.splice(0, 1)
+			} else if (!email && !pendingEmail) {
+				sections.splice(0, 1)
+			} else if (!password) {
+				sections.splice(1, 1)
+			}
+			return sections
 		},
 
 		validatePassword(e) {
@@ -290,6 +346,8 @@ export default {
 				this.arrayOfRepeatPasswordErrors = this.errors.has('repeatNewPassword') ? this.repeatNewPassword.length ? [this.$t('validation.repeatPassword')] : [this.$t('validation.required')] : []
 			} else if (fieldName === 'addNewPassword') {
 				this.arrayOfAddNewPasswordErrors = this.errors.has('addNewPassword') ? this.addNewPassword.length ? [this.$t('validation.wrongFormat')] : [this.$t('validation.required')] : []
+			} else if (fieldName === 'passwordForNewEmail') {
+				this.arrayOfPasswordForNewEmailErrors =  this.errors.has('passwordForNewEmail') ? this.passwordForNewEmail.length ? [this.$t('validation.wrongFormat')] : [this.$t('validation.required')] : []
 			}
 		},
 
@@ -307,7 +365,6 @@ export default {
 		clearAddEmailSection() {
 			this.addEmail = ''
 			this.arrayOfAddEmailErrors = []
-
 		},
 
 		changePassword() {
@@ -342,7 +399,17 @@ export default {
 		onDisagree() { this.showModal = false },
 		onAgree() {
 			this.showModal = false
-			// send to the server delete account action 
+			this.runLoader = true
+			HTTP.delete('user/delete/self').then((response) => {
+				setAuthorizationToken(false)
+				this.$router.push('/')
+				this.runLoader = false
+				this.$emit('updateUser', false)
+			}).catch((error) => {
+				this.runLoader = false
+				this.showSnackbar = true
+				this.snackbarText = this.$t('activation.error_alert')
+			})
 		},
 
 		onURLPicture() {
@@ -435,18 +502,18 @@ export default {
 					if (response.data.success) {
 						this.showSnackbar = true
 						this.snackbarText = this.$t('profile.success_alert')
+						this.$emit('updateUser', {password: true})
+						this.sections = this.getSections(true, this.settingsUser.email, this.settingsUser.pendingEmail)
 						this.resetAddNewPassword()
 					} else {
 						if (response.data.message === 'Invalid password') {
-							this.arrayOfAddNewPasswordErrors =  [this.$t('validation.wrongFormat')]
+							this.arrayOfAddNewPasswordErrors =  [this.$t('validation.invalidPassword')]
 						} else {
 							setAuthorizationToken(false)
 							this.$router.push('/')
 						}
 					}
-					
 					this.runLoader = false
-					
 				}).catch((error) => {
 					this.runLoader = false
 					this.showSnackbar = true
@@ -464,16 +531,98 @@ export default {
 		},
 
 		changeEmail(section) {
+			// console.log(this.settingsUser)
 			if (section === 'newEmail') {
-				// validate new email field
+				if (!this.arrayOfNewEmailErrors.length && this.newEmail.length && !this.arrayOfPasswordForNewEmailErrors.length && this.passwordForNewEmail.length) {
+					this.runLoader = true
+					HTTP.put('user/change/email', { email: this.newEmail, password: this.passwordForNewEmail }).then((response) => {
+						if (response.data.success) {
+							this.$emit('updateUser', { pendingEmail: this.newEmail })
+							this.showSnackbar = true
+							this.snackbarText = this.$t('registration.success_alert')
+							this.clearNewEmail()
+						} else {
+							if (response.data.message === 'Invalid token') {
+								setAuthorizationToken(false)
+								this.$router.push('/')
+							} else if (response.data.message === 'Invalid email') {
+								this.arrayOfNewEmailErrors = [this.$t('validation.email')]
+							} else if (response.data.message === 'Invalid password') {
+								this.arrayOfPasswordForNewEmailErrors = [this.$t('validation.invalidPassword')]
+							} else {
+								this.arrayOfNewEmailErrors = [this.$t('login.error_alert')]
+								this.arrayOfPasswordForNewEmailErrors = [this.$t('login.error_alert')]
+							}
+						}
+						this.runLoader = false
+					}).catch((error) => {
+						this.showSnackbar = true
+						this.snackbarText = this.$t('login.error_alert')
+						this.runLoader = false
+					})
+				}
 			} else if (section === 'addEmail') {
-				// validate add email field
+				if (!this.arrayOfAddEmailErrors.length && this.addEmail.length) {
+					this.runLoader = true
+					HTTP.post('user/add/email', { email: this.addEmail }).then((response) => {
+						console.log('response =>', response)
+						if (response.data.success) {
+							this.showSnackbar = true
+							this.snackbarText = this.$t('registration.success_alert')
+							this.sections = this.getSections(this.settingsUser.password, false, true)
+							this.$emit('updateUser', { pendingEmail: this.addEmail })
+							this.clearAddEmailSection()
+						} else {
+							if (response.data.message === 'Invalid token') {
+								setAuthorizationToken(false)
+								this.$router.push('/')
+							} else if (response.data.message === 'Invalid email') {
+								this.arrayOfAddEmailErrors = [this.$t('validation.email')] 
+							} else {
+								this.arrayOfAddEmailErrors = [this.$t('login.error_alert')]
+							}
+						}
+						this.runLoader = false
+					}).catch((error) => {
+						console.log('errors', error)
+						this.showSnackbar = true
+						this.snackbarText = this.$t('login.error_alert')
+						this.runLoader = false
+					})
+				}
 			}
+			
+		},
+
+		cancelPendingEmail() {
+			this.runLoader = true
+			HTTP.delete('user/delete/pending-email').then((response) => {
+				if (!response.data.success) {
+					if (response.data.message === 'Invalid token') {
+						setAuthorizationToken(false)
+						this.$router.push('/')
+					} else {
+						this.showSnackbar = true
+						this.snackbarText = this.$t('login.error_alert')
+					}
+				} else {
+					this.sections = this.getSections(this.settingsUser.password, this.settingsUser.email, false)
+					this.$emit('updateUser', { pendingEmail: null })
+				}
+				this.runLoader = false
+			}).catch((error) => {
+				this.showSnackbar = true
+				this.snackbarText = this.$t('login.error_alert')
+				this.runLoader = false
+			})
 		},
 
 		clearNewEmail() {
+			console.log('this.user ->', this.user)
 			this.newEmail = ''
+			this.passwordForNewEmail = ''
 			this.arrayOfNewEmailErrors = []
+			this.arrayOfPasswordForNewEmailErrors = []
 		},
 
 		validateFirstName() {
@@ -504,18 +653,22 @@ export default {
 			}
 		},
 
-		validateEmail(field) {
-			if (field === 'newEmail') {
+		validateEmail(section) {
+			if (section === 'newEmail') {
 				if (this.errors.has('newEmail')) {
 					this.arrayOfNewEmailErrors = [this.$t('validation.email')]
-				} else {
-					this.arrayOfNewEmailErrors = []
+				} else if (this.newEmail.length) {
+					HTTP.get(`user/check-email/` + this.newEmail)
+					.then(response => { this.arrayOfNewEmailErrors = response.data.exist == true ? [this.$t('validation.serverError')] : [] })
+					.catch((err) => { this.arrayOfNewEmailErrors = [this.$t('registration.error_alert')] })
 				}
-			} else if (field === 'addEmail') {
+			} else if (section === 'addEmail') {
 				if (this.errors.has('addEmail')) {
 					this.arrayOfAddEmailErrors = [this.$t('validation.email')]
-				} else {
-					this.arrayOfAddEmailErrors = []
+				} else if (this.addEmail.length) {
+					HTTP.get(`user/check-email/` + this.addEmail)
+					.then(response => { this.arrayOfAddEmailErrors = response.data.exist == true ? [this.$t('validation.serverError')] : []})
+					.catch((err) => { this.arrayOfAddEmailErrors = [this.$t('registration.error_alert')] })
 				}
 			}
 			
@@ -561,14 +714,27 @@ export default {
 		}
 	},
 
+	created() {
+        HTTP.get('user/data/').then(result => {
+            if (result.data.success == false) {
+                setAuthorizationToken(false)
+                this.$router.push('/')
+            } else {
+                this.$emit('setUser', result.data)
+            }
+		}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
+	},
+
 
 	computed: {
-			closeSnackbar() { this.showSnackbar = false }
+		closeSnackbar() { this.showSnackbar = false }
 	},
 
 	watch: {
 		locale () { this.sections = this.getSections() },
 		user() {
+			// console.log('user changed', this.user)
+			this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail)
 			this.settingsUser = this.user
 			this.originalImg = this.settingsUser.image
 			this.imgToShow = this.settingsUser.image

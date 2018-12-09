@@ -62,13 +62,13 @@
     export default {
         name: 'TopHeader',
         components: { LogInForm },
-        props: ['user', 'token', 'locale'],
+        props: ['user', 'token', 'locale', 'userLoggedIn'],
         data: () => ({
         headerLocale: this.locale,
         headerToken: this.token,
         headerUser: this.user,
         showForm: false,
-        userLoggedIn: false,
+        headerUserLoggedIn: this.userLoggedIn,
         lang: {
             en: {
                 lang: 'English',
@@ -89,7 +89,8 @@
             if (target === 'logout') {
                 setAuthorizationToken(false)
                 this.$router.push('/')
-                this.userLoggedIn = false
+                // this.userLoggedIn = false
+                this.$emit('setUserStatus', false)
             } else if (target === 'settings') {
                 this.$router.push('/user/settings')
             } else if (target === 'profile') {
@@ -121,12 +122,14 @@
         requestUser () {
             HTTP.get('user/data/').then(result => {
                 if (result.data.success == false) {
-                    this.userLoggedIn = false
+                    // this.userLoggedIn = false
+                    this.$emit('setUserStatus', false)
                     setAuthorizationToken(false)
                     this.$router.push('/')
                 } else {
                     this.$emit('setUser', result.data)
-                    this.userLoggedIn = true
+                    // this.userLoggedIn = true
+                    this.$emit('setUserStatus', true)
                 }
 		    }).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
 		},
@@ -143,13 +146,15 @@
         },
 
         setUser(response) {
-            this.userLoggedIn = true
+            // this.userLoggedIn = true
+               this.$emit('setUserStatus', true)
             this.requestUser()
             this.$emit('setTokenAndLocale', response)
         },
 
         userLoggedOut() {
-             this.userLoggedIn = false
+               this.$emit('setUserStatus', false)
+            //  this.userLoggedIn = false
         },
 
         goToHomePage() {
@@ -160,7 +165,9 @@
 
     created () {
         this.fetchData()
-        this.requestUser()
+        if (this.token) {
+            this.requestUser() 
+        }
     },
 
     mounted() {
@@ -188,6 +195,15 @@
 
         locale () {
             this.$i18n.locale = this.locale
+        },
+
+        token () {
+            this.headerToken = this.token
+        },
+
+        userLoggedIn () {
+            console.log('update user logged in')
+            this.headerUserLoggedIn = this.userLoggedIn
         },
 
         '$route': 'fetchData',

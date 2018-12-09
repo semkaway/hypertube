@@ -5,10 +5,8 @@
 </template>
 
 <script>
-
 import {HTTP} from '../http-common';
 import setAuthorizationToken from '../utils/setAuthToken'
-
 
 export default {
   name: 'UserPage',
@@ -22,7 +20,7 @@ export default {
       const currUrl = window.location.pathname
       const myCode = urlParams.get('code');
       const accessDenied = urlParams.get('error');
-      console.log("token: "+localStorage.token)
+      console.log("token: "+ localStorage.token)
 
       if(myCode == null && accessDenied == null) {
         console.log('invalid data')
@@ -31,13 +29,11 @@ export default {
       } else if (myCode != null && accessDenied == null) {
         console.log('not null')
         if (localStorage.token !== '') {
-          console.log('adding')
-          HTTP
-            .post(`user/add`+currUrl, {
-              "code": myCode
-              // "token": localStorage.token
-            })
+          // add user
+		  // need TO DO IT !!!!
+          HTTP.post(`user/add`+currUrl, { "code": myCode })
             .then(response => {
+              // emit to app vue intra user
               if (response.data.success == true) {
                 console.log('all good')
                 this.$router.push('/user/settings')
@@ -56,46 +52,33 @@ export default {
             })
         }
         else {
-          HTTP
-            .post(`user/oauth`+currUrl, {
-              "code": myCode,
-              "locale": this.$i18n.locale
-            })
-            .then(response => {
+          // login
+          HTTP.post(`user/oauth`+currUrl, { "code": myCode, "locale": this.$i18n.locale }).then(response => {
               if (response.data.success == true) {
                 this.$i18n.locale = response.data.locale
                 localStorage.locale = response.data.locale
-                localStorage.token = response.data.token
                 setAuthorizationToken(response.data.token)
-                this.$router.push('/')
-              } else {
-                console.log('code not recieved')
-                this.$router.push('login?fail=true')
-              }
+                // set user
+				 HTTP.get('user/data/').then(result => {
+					if (result.data.success == false) {
+						setAuthorizationToken(false)
+						this.$router.push('/')
+					} else {
+						this.$emit('setTokenAndLocale', {token: response.data.token, locale: response.data.locale })
+						this.$emit('updateUser', result.data)
+					}
+				}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
+              } else { this.$router.push('login?fail=true') }
             })
-            .catch((err) => {
-              console.log("server error")
-              console.log(err.response.data.error.message)
-              this.$router.push('/')
-            })
+            .catch((err) => { setAuthorizationToken(false);  this.$router.push('/') })
         }
       } else if (myCode == null && accessDenied != null) {
-        console.log('access denied')
         if (localStorage.token === '') {
           this.$router.push('login?fail=true')
         } else {
           this.$router.push('user/settings')
         }
-      } else {
-          console.log('something weird just happened')
-          localStorage.token = ''
-          this.$router.push('/')
-      }
+      } else { setAuthorizationToken(false);  this.$router.push('/') }
     },
   }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
