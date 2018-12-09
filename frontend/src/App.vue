@@ -6,7 +6,6 @@
 			v-bind:locale='locale'
 			v-on:setUser='setUser'
 			v-on:setTokenAndLocale='setToken'
-			v-on:setLocale='setLocale'
 			v-on:setUserStatus='setUserStatus'
 			v-bind:userLoggedIn='userLoggedIn'
 		/>
@@ -15,6 +14,7 @@
 			v-bind:token='token'
 			v-on:setUser='setUser'
 			v-bind:locale='locale'
+			v-on:setLocale='setLocale'
 			v-on:updateUser='updateUser'
 			v-on:setTokenAndLocale='setToken'
 		/>
@@ -25,6 +25,7 @@
 
 import AppHeader from './components/includes/TheHeader'
 import AppFooter from './components/includes/TheFooter'
+
 
 export default {
 	name: 'App',

@@ -14,6 +14,23 @@
 			v-on:agree='onAgree'
 		/>
 
+		<v-dialog v-model="showLangRadio" max-width="300px">
+			<v-card>
+				<v-card-title class='pb-0 mb-0 pl-4'> <h3 class="headline mb-0">{{ $t('button.language') }}</h3> </v-card-title>
+				<v-container justify-center class='pt-0 mt-0 pb-0 mb-0'>
+					<v-radio-group v-model="settingsLocale" >
+						<v-radio color='grey' label="English" value="en"></v-radio>
+						<v-radio color='grey' label="Русский" value="ru"></v-radio>
+						<v-radio color='grey' label="Українська" value="uk"></v-radio>
+					</v-radio-group>
+				</v-container>
+				<v-card-actions class='pl-4'>
+				<v-btn color="grey" class="white--text" flat @click="changeLanguage">{{$t('button.save')}}</v-btn>
+				<v-btn color="grey" class="white--text" flat @click="showLangRadio = false; settingsLocale = locale">{{$t('button.cancel')}}</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+
  		<v-expansion-panel  expand class="mt-4">
     		<v-expansion-panel-content v-for="(section, index) in sections" :key="index" expand-icon="keyboard_arrow_down">
 				<v-layout slot="header" align-center>
@@ -23,12 +40,12 @@
 				<v-card>
 					<v-card-text>
 
-						<!-- CHANGE EMAIL TODO: vash email in i18n-->
+						<!-- CHANGE EMAIL -->
 						<form v-if='section.name == "email"'>
 						<v-layout align-start column fill-height>
 								<v-layout v-if='user.email' class="grey--text">
 									<v-card class="grey--text">
-										<v-card-text class='subheading'>Ваш текущий e-mail:  <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
+										<v-card-text class='subheading'>{{$t('profile.settings.active_email')}}: <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
 									</v-card>
 								</v-layout>
 								<!-- show only if have pending email -->
@@ -179,10 +196,13 @@
 						<!-- ADD MEDIA -->
 
 						<v-layout v-if='section.name == "media"' class="grey--text">
+							<v-card class="grey--text"><v-card-text class='subheading'> {{ $t('profile.settings.added_media') }}:</v-card-text></v-card>
+
 									<v-card class="grey--text">
-										<v-card-text class='subheading'>Ваши соц сети: intra: {{user.intra}} git: {{user.github}} </v-card-text>
+										<v-card-text class='subheading'> intra: {{user.intra}} git: {{user.github}} </v-card-text>
 									</v-card>
-								</v-layout>
+
+						</v-layout>
 
 						<v-btn @click='addIntraMedia' v-if='section.name == "media" && !settingsUser.intra' color="grey darken-1" class="white--text" flat>42 Intra</v-btn>
 						<v-btn @click='addGitMedia' v-if='section.name == "media" && !settingsUser.github' color="grey darken-1" class="white--text" flat>github</v-btn>
@@ -227,6 +247,10 @@
 
 						<!-- DELETE -->
 						<v-btn v-if='section.name == "delete"' @click='deleteAccount' color="red" class="white--text" flat>{{ $t('profile.settings.delete_account_title') }}</v-btn>
+
+						<!-- CHANGE LANGUAGE -->
+						<v-btn v-if='section.name == "lang"' @click='showLangRadio = true'  color="grey" class="white--text" flat>{{ $t('profile.settings.change_language') }}</v-btn>
+
 					</v-card-text>
 				</v-card>
     		</v-expansion-panel-content>
@@ -256,10 +280,11 @@ export default {
 			runLoader: false,
 			showPassword: false,
 			settingsUser: this.user,
-			locale1: this.locale,
+			settingsLocale: this.locale,
 			originalImg: this.user.image,
 			imgToShow: this.user.image,
 			sections: this.getSections(),
+			showLangRadio: false,
 			imgURL: '',
 			newEmail: '',
 			addEmail: '',
@@ -291,6 +316,28 @@ export default {
 
 	methods: {
 
+		changeLanguage() {
+			this.showLangRadio = false
+			this.settingsLocale = this.settingsLocale
+            this.$i18n.locale = this.settingsLocale
+            localStorage.locale = this.settingsLocale
+            this.$emit('setLocale', this.settingsLocale)
+            if (localStorage.token != '') {
+				HTTP.put('user/change/locale', { 'locale': this.settingsLocale }).then(result => {
+					if (result.data.success == false) {
+						setAuthorizationToken(false)
+						this.$router.push('/')
+					} else {
+						this.showSnackbar = true
+						this.snackbarText = this.$t('profile.success_alert')
+					}
+				}).catch((err) => {
+					console.log("server error")
+					console.log(err.response.data.error.message)
+				})
+            }
+		},
+
 		addIntraMedia() {
 			console.log('intra click')
 		},
@@ -308,7 +355,8 @@ export default {
 				{ title: this.$t('profile.settings.add_media'), icon: 'person_add', name: 'media'},
 				{ title: this.$t('profile.settings.create_pass'), icon: 'fingerprint', name: 'addPass'},
 				{ title: this.$t('profile.settings.create_email'), icon: 'alternate_email', name: 'addEmail'},
-				{ title: this.$t('profile.settings.delete_account_title'), icon: 'delete', name: 'delete'}
+				{ title: this.$t('profile.settings.delete_account_title'), icon: 'delete', name: 'delete'},
+				{ title: this.$t('button.language'), icon: 'language', name: 'lang'}
 			]
  
 			// I hate my life ...
@@ -745,7 +793,10 @@ export default {
 </script>
 
 <style scoped>
+
 	.cursor-pointer:hover {
 		cursor: pointer;
 	}
+	
+
 </style>

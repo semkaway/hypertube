@@ -71,7 +71,7 @@ Vue.use(Image);
 Vue.use(VuePlyr)
 
 Vue.use(Vuetify, {
-  iconfont: 'mdi' // 'md' || 'mdi' || 'fa' || 'fa4'
+  iconfont: 'md', // 'md' || 'mdi' || 'fa' || 'fa4'
 })
 
 // Vue.use(VueAxios, axios);

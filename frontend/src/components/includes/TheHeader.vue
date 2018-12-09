@@ -6,19 +6,6 @@
         </v-toolbar-items>
         <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:setUser='setUser' v-bind:locale='headerLocale'/>
         <v-spacer></v-spacer>
-        <v-toolbar-items>
-            <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
-                <v-btn flat slot="activator">
-                    <v-icon>language</v-icon>
-                    <span class='ml-2'>{{ headerLocale }}</span>
-                </v-btn>
-                <v-list>
-                    <v-list-tile v-for="(item, i) in lang" :key="i" @click="changeLanguage(item.short)">
-                        <v-list-tile-title>{{ item.short | capitalize }}</v-list-tile-title>
-                    </v-list-tile>
-                </v-list>
-            </v-menu>
-        </v-toolbar-items>
         <v-toolbar-items v-if='userLoggedIn === true'>
             <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
             <v-btn flat slot="activator">
@@ -175,6 +162,7 @@
         this.headerToken = this.token
         this.headerLocale = this.locale
     },
+    
     filters: {
         capitalize (value) {
             if (!value) return ''
@@ -187,6 +175,7 @@
             return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
         }
     },
+    
     watch:
     {
         user () {
