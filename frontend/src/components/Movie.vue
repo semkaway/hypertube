@@ -1,7 +1,7 @@
 <template>
  <div class="mt-5">
    <Loader :run='value'/>
-  <v-container fluid grid-list-md class="mt-3">
+  <v-container fluid grid-list-md class="mt-3 white">
     <v-layout row wrap>
       <v-flex d-flex xs12 sm6 md3>
         <v-card flat>
@@ -58,24 +58,27 @@
             </v-list-tile-content>
           </v-list-tile>
 
+          <v-divider inset></v-divider>
+
         </v-list>
         </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm6 md6>
-      <v-card light flat class="p-2">
+      <v-card flat class="p-2">
         <h1>{{movie.title}}</h1>
         <p class="subheading">{{movie.tagline}}</p>
         <v-card-text>{{movie.overview}}</v-card-text>
         <vue-plyr ref="player">
-            <video id="moviePlayer" controls data-plyr-config='{"debug": true }'>
+            <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
                 <source v-if="movieSource" :src="movieSource" type="video/mp4">
                 <!-- <source :src="movieSource" type="video/mp4"/> -->
-                <!-- <track kind="captions" label="English" srclang="en" src="captions-en.vtt" default> -->
+                <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.vtt" default>
             </video>
         </vue-plyr>
         <!-- <div width="100%">
-          <video ref="videoRef" width="600" :poster="movie.backdrop_path" controls>
+          <video id="moviePlayer" ref="videoRef" width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
             <source v-if="movieSource" :src="movieSource" type="video/mp4">
+            <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.srt" default>
           Your browser does not support the video tag.
           </video>
         </div> -->
@@ -313,14 +316,6 @@ export default {
 
 a {
   text-decoration: none;
-}
-
-.dialog.centered-dialog {
-  background: #282c2dad;
-  box-shadow: none;
-  border-radius: 6px;
-  width: auto;
-  color: whitesmoke;
 }
 
 </style>

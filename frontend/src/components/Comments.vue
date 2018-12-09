@@ -1,47 +1,62 @@
 <template>
-  <v-list three-line>
-    <v-text-field
-            v-model="newComment"
-            :label="$t('movie.newComment')"
-            type="text"
-            append-outer-icon="send"
-            @click:append-outer="submitComment"
-            @keyup.native.enter="submitComment"
-          >
+  <v-flex xs12>
+    <v-text-field class="mt-4"
+                v-model.trim="newComment"
+                :label="$t('movie.newComment')"
+                type="text"
+                append-outer-icon="send"
+                @click:append-outer="submitComment"
+                @keyup.native.enter="submitComment">
         </v-text-field>
-        <template v-for="(comment,index) in allComments" v-if="index <= numComments">
-          <v-list-tile>
-            <v-list-tile-avatar size="55"
-                                class="actorPicture mr-2"
-                                :style="{ 'background-image':'url('+comment.image + ')'}">
-            </v-list-tile-avatar>
-
-            <v-list-tile-content>
-              <v-list-tile-title><a :href="'profile/'+comment.user_id" target="_blank">{{comment.first}}</a></v-list-tile-title>
-                <v-list-tile-sub-title>{{comment.text}}</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-        <v-btn v-if="numComments + 1 < totalNumberOfComments" @click.prevent="showMore" color="grey" class="white--text">{{$t('button.showMore')}}</v-btn>
-  </v-list>
+    <v-card v-for="(comment,index) in allComments"
+            v-if="index <= numComments"
+            :key="index"
+            class="mt-3 p-2 pl-3"
+            flat>
+      <v-layout>
+        <v-flex xs1 class="mr-3">
+          <v-img  class='rounded round-img'
+                  :aspect-ratio="16/9"
+                  height='65px'
+                  width='65px'
+                  :src="comment.image">
+          </v-img>
+        </v-flex>
+        <v-flex xs11>
+          <div>
+            <a :href="'profile/'+comment.user_id" target="_blank" class="mr-2 font-weight-black">{{comment.first}}</a>
+            <span class="caption">{{comment.date | date}}</span>
+            <div>{{comment.text}}</div>
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-card>
+    <v-btn  v-if="numComments + 1 < totalNumberOfComments"
+            @click.prevent="showMore"
+            color="grey"
+            class="white--text mt-3">{{$t('button.showMore')}}</v-btn>
+  </v-flex>
 </template>
 
 <script>
 
+import formatDate from '../utils/formatDate'
 
 export default {
     name: 'Comments',
+    filters: {
+      date: formatDate
+    },
     data () {
       return {
         newComment: '',
         numComments: 4,
-        moreComments: false,
-        total: ''
+        moreComments: false
       }
     },
     methods: {
       submitComment() {
-        if(this.newComment != '') {
+        if(this.newComment !== '') {
               this.$emit('submit-comment', this.newComment);
               this.newComment = '';
           }
@@ -49,7 +64,9 @@ export default {
           console.log('totalNumberOfComments: ', this.totalNumberOfComments)
         },
         showMore() {
-          if (this.numComments + 5 < this.totalNumberOfComments) {
+          console.log('this.numComments: ', this.numComments)
+          console.log('this.totalNumberOfComments: ', this.totalNumberOfComments)
+          if (this.numComments + 5 <= this.totalNumberOfComments) {
             this.numComments += 5
           } else if (this.numComments + 5 > this.totalNumberOfComments) {
             this.numComments = this.totalNumberOfComments
@@ -63,13 +80,6 @@ export default {
 </script>
 
 <style scoped>
-
-.actorPicture {
-  border-radius: 50%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 
 a {
   text-decoration: none;
