@@ -1,5 +1,5 @@
 <<template>
-    <v-snackbar v-model="active" :bottom="y === 'bottom'" :left="x === 'left'" :right="x === 'right'" :top="y === 'top'" :timeout='timeout'>
+    <v-snackbar v-model="active" :bottom="y === 'bottom'" :left="x === 'left'" :right="x === 'right'" :top="y === 'top'">
 		{{text}}
     	<v-btn color="pink" flat @click="closeSnackBar">Close</v-btn>
     </v-snackbar>
@@ -22,8 +22,9 @@
         },
 
         watch: {
-            show( newValue) {
-                this.active = newValue 
+            show (newValue) {
+                this.active = newValue
+                setTimeout(() => { this.$emit('closeSnackbar') }, this.timeout)
             }
         }
     }

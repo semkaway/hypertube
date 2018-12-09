@@ -18,13 +18,78 @@
     		<v-expansion-panel-content v-for="(section, index) in sections" :key="index" expand-icon="keyboard_arrow_down">
 				<v-layout slot="header" align-center>
 					<v-icon class='mr-3'>{{section.icon}}</v-icon> 
-					<span>{{section.title}}</span>
+					<span class='subheading dark--text'>{{section.title}}</span>
 				</v-layout>
 				<v-card>
 					<v-card-text>
-						<form v-if='section.name == "password"'>
 
-							<v-text-field 
+						<!-- CHANGE EMAIL TODO: vash email in i18n-->
+						<form v-if='section.name == "email"'>
+						<v-layout align-start column fill-height>
+								<v-layout class="grey--text">
+									<v-card class="grey--text">
+										<v-card-text class='subheading'>Ваш текущий e-mail:  <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
+									</v-card>
+								</v-layout>
+								<!-- show it if have pending email -->
+								<v-layout class="grey--text">
+									<v-card class="grey--text">
+										<v-card-text class='subheading'>
+											{{$t('profile.settings.email_pending')}} 
+											<span class='ml-1 subheading'>lala@gmail.com</span>
+											<v-btn color="red" class="white--text" flat>{{ $t('button.cancel') }}</v-btn>
+										</v-card-text>
+									</v-card>
+								</v-layout>
+						</v-layout>
+
+							
+							<v-text-field
+								@keyup.native='validateEmail("newEmail")'
+								name='newEmail'
+								v-model='newEmail'
+								:label="$t('registration.email')"
+								class='ml-3'
+								color="grey darken-1"
+								v-validate="'email'"
+								:error-messages='arrayOfNewEmailErrors'>
+							</v-text-field>
+							<v-btn @click='changeEmail("newEmail")' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='clearNewEmail' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+						</form>
+
+						<!-- CHANGE PERSONAL DATA -->
+						<form v-if='section.name == "names"'>
+								<v-text-field
+									@keyup.native='validateFirstName'
+									name='newFirstName'
+									v-model='newFirstName'
+									:label="$t('registration.first_name')"
+									class='ml-3'
+									color="grey darken-1"
+									v-validate="'alpha|min:3|max:15'"
+									:error-messages='arrayOfFirstNameErrors' 
+                					:counter='15'>
+								</v-text-field>
+								<v-text-field
+									@keyup.native='validateLastName'
+									name='newLastName'
+									v-model='newLastName'
+									:error-messages='arrayOfLastNameErrors'
+									:label="$t('registration.last_name')"
+									class='ml-3'
+									color="grey darken-1"
+									v-validate="'alpha|min:3|max:15'"
+                					:counter='15'>
+								</v-text-field>
+								<v-btn @click='onChangeNames' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+								<v-btn @click='clearNameFields' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+						</form>
+
+						<!-- CHANGE PASSWORD -->
+						<form v-if='section.name == "password"'>
+							<v-text-field
+								class='ml-3'
 								:label="$t('profile.settings.old_password')"
 								@keyup.native='validatePassword'
 								:error-messages="arrayOfPasswordErrors" 
@@ -36,8 +101,8 @@
 								@click:append="showPassword = !showPassword"
 								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
 							</v-text-field>
-
 							<v-text-field
+								class='ml-3'
 								:hint="$t('validation.passwordHint')"
 								:label="$t('profile.settings.new_password')"
 								@keyup.native='validatePassword'
@@ -49,8 +114,8 @@
 								name='newPassword'
 								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
 							</v-text-field>
-
 							<v-text-field
+								class='ml-3'
 								:label="$t('profile.settings.new_password_repeat')"
 								@keyup.native='validatePassword'
 								:error-messages="arrayOfRepeatPasswordErrors" 
@@ -60,13 +125,12 @@
 								name='repeatNewPassword'
 								v-validate="'required|confirmed:newPasswordRef'">
 							</v-text-field>
-
-							<v-btn @click='changePassword' large color="grey" class="white--text" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn @click='clearFields(section.name)' large color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+							<v-btn @click='changePassword' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='clearFields(section.name)' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
 
 
-
+						<!-- CHANGE IMAGE -->
 						<form v-if='section.name == "picture"'>
 							<v-text-field
 								color="grey darken-1"
@@ -79,7 +143,6 @@
 								:error-messages='arrayOfImageURLerrors'
 								@keyup="onURLPicture">
 							</v-text-field>
-
 							<div class='subheading mt-3  ml-3 grey--text'>{{$t('profile.settings.click')}}</div>
 							<v-hover>
 								<v-card @click="$refs.fileInput[0].click()" slot-scope="{ hover }" :class="`ml-3 mt-3 mb-3 cursor-pointer rounded elevation-${hover ? 12 : 2}`" width="200px" height='200px'>
@@ -93,22 +156,56 @@
 										ref='imagePreview'>
 									</v-img>
 								</v-card>
-								
 							</v-hover>
-							 <input ref='fileInput' style='display: none;' type="file" accept="image/png, image/jpeg" @change="onFilePicture"/>
-
-							<v-btn @click='onSaveNewImage' large color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn @click='resetImage' large color="grey" class="white--text ml-3" flat>{{ $t('button.reset') }}</v-btn>
+							<input ref='fileInput' style='display: none;' type="file" accept="image/png, image/jpeg" @change="onFilePicture"/>
+							<v-btn @click='onSaveNewImage' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='resetImage' color="grey" class="white--text ml-3" flat>{{ $t('button.reset') }}</v-btn>
 						</form>
 
-							
-						<v-btn v-if='section.name == "media"' large color="grey" class="white--text" flat>media</v-btn>
-						<v-btn v-if='section.name == "media"' large color="grey" class="white--text" flat>media</v-btn>
-						<v-btn v-if='section.name == "media"' large color="grey" class="white--text" flat>media</v-btn>
+						<!-- ADD MEDIA -->
+						<v-btn v-if='section.name == "media"' color="grey darken-1" class="white--text" flat>42 Intra</v-btn>
+						<v-btn v-if='section.name == "media"' color="grey darken-1" class="white--text" flat>github</v-btn>
 
 
-						<v-btn v-if='section.name == "delete"' @click='deleteAccount' large color="red" class="white--text" flat>{{ $t('profile.settings.delete_account_title') }}</v-btn>
+						<!-- ADD PASSWORD  TODO: show it only if user doesnt have password -->
+						<form v-if='section.name == "addPass"'>
+							<v-text-field
+								name='addNewPassword'
+								@keyup.native='validatePassword'
+								:hint="$t('validation.passwordHint')"
+								v-model='addNewPassword' 
+								:error-messages='arrayOfAddNewPasswordErrors' 
+								color="grey darken-1" 
+								class='ml-3'
+								:label="$t('profile.settings.new_password')" 
+								@click:append="showPassword = !showPassword" 
+								:type="showPassword ? 'text' : 'password'" 
+								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
+								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
+							</v-text-field>
+							<v-btn @click='onSaveAddNewPassword' color="grey" class="white--text" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='resetAddNewPassword' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+						</form>
 
+						<!-- ADD EMAIL TODO: show it only if user doesnt have email -->
+
+						<form v-if='section.name == "addEmail"'>
+							<v-text-field
+								@keyup.native='validateEmail("addEmail")'
+								name='addEmail'
+								v-model='addEmail'  
+								color="grey darken-1" 
+								class='ml-3'
+								:error-messages='arrayOfAddEmailErrors'
+								v-validate="'email'"
+								:label="$t('registration.email')">
+							</v-text-field>
+							<v-btn @click='changeEmail("addEmail")' color="grey" class="white--text" flat>{{ $t('button.save') }}</v-btn>
+							<v-btn @click='clearAddEmailSection' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+						</form>
+
+						<!-- DELETE -->
+						<v-btn v-if='section.name == "delete"' @click='deleteAccount' color="red" class="white--text" flat>{{ $t('profile.settings.delete_account_title') }}</v-btn>
 					</v-card-text>
 				</v-card>
     		</v-expansion-panel-content>
@@ -120,257 +217,10 @@
 
 <script>
 
-
-
-
-// <template>
-//   <div>
-//     <b-row>
-// 			<b-col sm="3" lg="4"></b-col>
-// 			<b-col sm="5" lg="4">
-// 				<b-alert 	variant="success"
-// 									dismissible
-// 									:show="showSuccessAlert"
-//                   @dismissed="showSuccessAlert=false"
-// 									class="mt-3">{{$t('profile.success_alert')}}
-// 				</b-alert>
-//         <b-alert 	variant="success"
-// 									dismissible
-// 									:show="showSuccessPassAlert"
-//                   @dismissed="showSuccessPassAlert=false"
-// 									class="mt-3">{{$t('forgot_password.restore_pass_success_title')}} {{$t('forgot_password.restore_pass_success_alert')}}
-// 				</b-alert>
-// 				<b-alert 	variant="danger"
-// 									dismissible
-// 									:show="showErrorPassAlert"
-//                   @dismissed="showErrorPassAlert=false"
-// 									class="mt-3">{{$t('profile.error_pass_alert')}}
-// 				</b-alert>
-//         <b-alert 	variant="danger"
-// 									dismissible
-// 									:show="showErrorAlert"
-//                   @dismissed="showErrorAlert=false"
-// 									class="mt-3">{{$t('login.error_alert')}}
-// 				</b-alert>
-//         <b-alert 	variant="success"
-// 									dismissible
-// 									:show="showEmailSentSuccess"
-// 									@dismissed="showEmailSentSuccess=false"
-// 									class="mt-3">{{$t('registration.success_alert')}}
-// 				</b-alert>
-// 			</b-col>
-// 			<b-col sm="3" lg="4"></b-col>
-// 		</b-row>
-//     <b-row >
-//       <b-col sm="3" lg="3" >
-//         <div class="text-left mt-5 ml-5 d-none d-lg-block" id="scrollspy">
-//           <h3 href="#">{{ $t('profile.settings_title') }}</h3>
-//           <b-list-group>
-//             <b-list-group-item class="hover-items" href="#password" :class="{'normalHide': normalHide}">{{ $t('profile.settings.change_password') }}</b-list-group-item>
-//             <b-list-group-item class="hover-items" href="#email" :class="{'normalHide': !createEmailHide}">{{ $t('profile.settings.change_email') }}</b-list-group-item>
-//             <b-list-group-item class="hover-items" href="#create-email" :class="{'omniauthHide': createEmailHide}">{{ $t('profile.settings.create_email') }}</b-list-group-item>
-//             <b-list-group-item class="hover-items" href="#create-pass" :class="{'omniauthHide': passwordHide}">{{ $t('profile.settings.create_pass') }}</b-list-group-item>
-//             <b-list-group-item class="hover-items" href="#personal">{{ $t('profile.settings.change_info') }}</b-list-group-item>
-//             <b-list-group-item class="hover-items" href="#picture">{{ $t('profile.settings.change_picture') }}</b-list-group-item>
-//             <b-list-group-item class="hover-items" href="#social-media" :class="{'socialHide': socialHide}">{{ $t('profile.settings.add_media') }}</b-list-group-item>
-//             <b-list-group-item class="hover-items" href="#delete-account">{{ $t('profile.settings.delete_account_title') }}</b-list-group-item>
-//           </b-list-group>
-//         </div>
-//       </b-col>
-//       <b-col sm="5" lg="5" class="mt-4 mb-4" >
-//         <!-- <div :class="{'normalHide': normalHide}"> -->
-//           <b-form @submit="onSubmitPass" class="mt-4 p-3" id="password" :class="{'normalHide': normalHide}">
-//             <h1 class="text-left mb-3">{{ $t('profile.settings.change_password') }}</h1>
-//             <b-form-group :label="$t('profile.settings.old_password')"
-//   												:error="errors.first('password')"
-//   												class="font-weight-bold">
-//   						<b-form-input name="old_password"
-//   													type="password"
-//   													v-model="settings.old_password"
-//   													v-bind:placeholder="$t('profile.settings.old_password')"
-//   													data-vv-as=" "
-//   													v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
-//   													:class="{'form-control': true, 'error': errors.has('old_password') }">
-//   						</b-form-input>
-//               <span>{{ errors.first('old_password') }}</span>
-//             </b-form-group>
-//   					<b-form-group :label="$t('profile.settings.new_password')"
-//   												:error="errors.first('password')"
-//   												:description="$t('registration.password_hint')"
-//   												class="font-weight-bold">
-//   						<b-form-input name="new_password"
-//   													ref="passwordRef"
-//   													type="password"
-//   													v-model="settings.new_password"
-//   													v-bind:placeholder="$t('profile.settings.new_password')"
-//   													data-vv-as=" "
-//   													v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
-//   													:class="{'form-control': true, 'error': errors.has('new_password') }">
-//   						</b-form-input>
-//   						<span>{{ errors.first('new_password') }}</span>
-//   					</b-form-group>
-//             <b-form-group :label="$t('profile.settings.new_password_repeat')"
-//   												class="font-weight-bold">
-//   							<b-form-input name="new_password_repeat"
-//   												type="password"
-//   												v-model="settings.new_password_repeat"
-//   												v-bind:placeholder="$t('profile.settings.new_password_repeat')"
-//   												data-vv-as=" "
-//   												v-validate="'required|confirmed:passwordRef'"
-//   												:class="{'form-control': true, 'error': errors.has('new_password_repeat') }">
-//   							</b-form-input>
-//   							<span>{{ errors.first('new_password_repeat') }}</span>
-//   					</b-form-group>
-//             <b-button type="submit" variant="outline-success" class="mt-2 t">{{$t('button.save')}}</b-button>
-//             <hr>
-//           </b-form>
-//           <b-form @submit="onSubmitEmail" class="mt-4 p-3" id="email">
-//             <h1 class="text-left mb-3" :class="{'normalHide': !createEmailHide}">{{ $t('profile.settings.change_email') }} </h1>
-//             <h1 class="text-left mb-3" :class="{'createEmailHide': createEmailHide}">{{ $t('profile.settings.create_email') }}</h1>
-//             <b-form-group :label="$t('registration.email')"
-//   												class="font-weight-bold">
-//   							<b-form-input name="email"
-//   												v-model="settings.email"
-//   												v-bind:placeholder="$t('registration.email')"
-//   												data-vv-as=" "
-//                           :value="user.email"
-//   												v-validate="'required|email'"
-//   												:class="{'form-control': true, 'error': errors.has('email'), 'email-error': emailError }"
-//   												@keyup.native="checkIfEmailExists(settings.email)">
-//   							</b-form-input>
-//   							<span>{{ errors.first('email') }}</span>
-//   							<span :class="{ 'hideEmailExists': hideEmailExists }">{{$t('registration.emailExists')}}</span>
-//               </b-form-group>
-//               <b-form-group :label="$t('login.password')"
-//     												class="font-weight-bold"
-//                             :class="{'createEmailHide': !createEmailHide}">
-//     						<b-form-input name="email_password"
-//     													type="password"
-//     													v-model="settings.email_password"
-//     													v-bind:placeholder="$t('login.password')"
-//     													data-vv-as=" "
-//     													v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
-//     													:class="{'form-control': true, 'error': errors.has('email_password')}">
-//     						</b-form-input>
-//                 <span>{{ errors.first('email_password') }}</span>
-//               </b-form-group>
-//               <span class="text-muted" :class="{'newEmailSpan': newEmailSpan}">{{ $t('profile.settings.email_pending') }}</span>
-//               <span class="text-info" :class="{'newEmailSpan': newEmailSpan}">{{user.pendingEmail}}</span>
-//               <span class="text-danger" :class="{'newEmailSpan': newEmailSpan}" @click="deleteEmail">{{$t('button.delete')}}</span><br>
-//               <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
-//               <hr>
-//           </b-form>
-//           <b-form @submit="onSubmitCreatePass" class="mt-4 p-3" id="create-pass" :class="{'passwordHide': passwordHide}">
-//             <h1 class="text-left mb-3">{{ $t('profile.settings.create_pass') }}</h1>
-//             <b-form-group :label="$t('registration.password')"
-//   												:error="errors.first('create_password')"
-//   												:description="$t('registration.password_hint')"
-//   												class="font-weight-bold">
-//   						<b-form-input name="create_password"
-//   													ref="password_create"
-//   													type="password"
-//   													v-model="create.password"
-//   													v-bind:placeholder="$t('registration.password')"
-//   													data-vv-as=" "
-//   													v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
-//   													:class="{'form-control': true, 'error': errors.has('create_password') }">
-//   						</b-form-input>
-//   						<span>{{ errors.first('create_password') }}</span>
-//   					</b-form-group>
-//             <b-form-group :label="$t('registration.repeat_password')"
-//   												class="font-weight-bold">
-//   							<b-form-input name="create_password_repeat"
-//   												type="password"
-//   												v-model="create.password_repeat"
-//   												v-bind:placeholder="$t('registration.repeat_password')"
-//   												data-vv-as=" "
-//   												v-validate="'required|confirmed:password_create'"
-//   												:class="{'form-control': true, 'error': errors.has('create_password_repeat') }">
-//   							</b-form-input>
-//   							<span>{{ errors.first('create_password_repeat') }}</span>
-//   					</b-form-group>
-//             <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
-//             <hr>
-//         </b-form>
-//         <b-form @submit="onSubmitPersonal" class="mt-4 p-3" id="personal">
-//           <h1 class="text-left mb-3">{{ $t('profile.settings.change_info') }}</h1>
-//           <b-form-group :label="$t('registration.first_name')"
-// 												class="font-weight-bold">
-// 							<b-form-input name="first_name"
-// 												v-model="settings.first_name"
-// 												v-bind:placeholder="$t('registration.first_name')"
-// 												data-vv-as=" "
-//                         :value="user.first_name"
-// 												v-validate="'alpha|min:3|max:15'"
-// 												:class="{'form-control': true, 'error': errors.has('first_name') }">
-// 							</b-form-input>
-// 							<span>{{ errors.first('first_name') }}</span>
-// 					</b-form-group>
-// 					<b-form-group :label="$t('registration.last_name')"
-// 												class="font-weight-bold">
-// 							<b-form-input name="last_name"
-// 												v-model="settings.last_name"
-// 												v-bind:placeholder="$t('registration.last_name')"
-// 												data-vv-as=" "
-//                         :value="user.last_name"
-// 												v-validate="'alpha|min:3|max:15'"
-// 												:class="{'form-control': true, 'error': errors.has('last_name') }">
-// 							</b-form-input>
-// 							<span>{{ errors.first('last_name') }}</span>
-// 					</b-form-group>
-//           <b-button type="submit" variant="outline-success" class="mt-2">{{$t('button.save')}}</b-button>
-//         </b-form>
-//         <hr>
-//         <div id="picture" class="mt-4 p-3">
-//           <h1 class="text-left mb-3">{{ $t('profile.settings.change_picture') }}</h1>
-//           <p>{{$t('profile.settings.enter_url')}}</p>
-//           <b-form-input
-//                   type="text"
-//                   name="img_url"
-//                   v-model="img_url"
-//                   placeholder='https://images.pexels.com/photos/1616227/pexels-photo-1616227.jpeg'
-//                   data-vv-as=" "
-//                   v-validate="'url:require_protocol'"
-//                   @change="onFileSelected"></b-form-input><br>
-//           <span>{{ errors.first('img_url') }}</span>
-//           <p>{{$t('profile.settings.click')}}</p>
-//           <label class="file-select">
-//             <img :src="user.image" height="200" alt="Image preview..."><br>
-//             <input type="file" @change="onFileSelected"/><br>
-//           </label><br>
-//           <b-button variant="success" @click="Upload" :class="{'hideButton': hideButton}">Change picture</b-button>
-//         </div>
-//         <hr>
-//         <div id="social-media" class="mt-4 p-3" :class="{'socialHide': socialHide}">
-//           <h1 class="text-left mb-3">{{ $t('profile.settings.add_media') }}</h1>
-//           <b-btn class="mt-3 button" :class="{'intra': intra}" variant="dark" href='https://api.intra.42.fr/oauth/authorize?client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7&redirect_uri=http://localhost:8084/intra&response_type=code'>42 Intra</b-btn>
-//           <b-btn class="mt-3 button" :class="{'github': github}" variant="dark" href='https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'>Github</b-btn>
-//           <hr>
-//         </div>
-//         <div class="mt-4 p-3" id="delete-account">
-//           <h1 class="text-left mb-3">{{ $t('profile.settings.delete_account_title') }}</h1>
-//           <b-button variant="danger" size="lg" @click="showModal" class="mt-2">{{$t('button.delete')}}</b-button>
-//           <b-modal  ref="deleteAccount"
-//                     centered
-//                     hide-footer
-//                     :title="$t('profile.settings.delete_account_title')"
-//                     :header-bg-variant="headerBgVariant"
-//                     :header-text-variant="headerTextVariant">
-//             <p class="my-4">{{ $t('profile.settings.delete_account_text') }}</p>
-//             <b-btn class="mt-3" variant="outline-danger" @click="deleteAccount">{{$t('button.delete')}}</b-btn>
-//             <b-btn class="mt-3" variant="outline-secondary" @click="hideModal">{{$t('button.cancel')}}</b-btn>
-//           </b-modal>
-//         </div>
-//       </b-col>
-
-//       <b-col sm="3" lg="4"></b-col>
-//     </b-row>
-//   </div>
-// </template>
-
 import { HTTP } from '../http-common'
 import isImage from '../utils/isImage'
 import getBase64 from '../utils/getBase64'
+import setAuthorizationToken from '../utils/setAuthToken'
 import Loader from './Loader'
 import Snackbar from './Snackbar'
 import ModalWindow from './ModalWindow'
@@ -390,13 +240,23 @@ export default {
 			originalImg: this.user.image,
 			imgToShow: this.user.image,
 			imgURL: '',
+			newEmail: '',
+			addEmail: '',
 			password: '',
 			newPassword: '',
 			repeatNewPassword: '',
+			addNewPassword: '',
+			newFirstName: '',
+			newLastName: '',
+			arrayOfFirstNameErrors: [],
+			arrayOfLastNameErrors: [],
+			arrayOfAddNewPasswordErrors: [],
 			arrayOfImageURLerrors: [],
 			arrayOfPasswordErrors: [],
 			arrayOfNewPasswordErrors: [],
 			arrayOfRepeatPasswordErrors: [],
+			arrayOfNewEmailErrors: [],
+			arrayOfAddEmailErrors: [],
 			showSnackbar: false,
 			showModal: false,
 			snackbarY: 'bottom',
@@ -414,6 +274,8 @@ export default {
 				{ title: this.$t('profile.settings.change_info'), icon: 'person', name: 'names'},
 				{ title: this.$t('profile.settings.change_picture'), icon: 'perm_media', name: 'picture'},
 				{ title: this.$t('profile.settings.add_media'), icon: 'person_add', name: 'media'},
+				{ title: this.$t('profile.settings.create_pass'), icon: 'fingerprint', name: 'addPass'},
+				{ title: this.$t('profile.settings.create_email'), icon: 'alternate_email', name: 'addEmail'},
 				{ title: this.$t('profile.settings.delete_account_title'), icon: 'delete', name: 'delete'}
 			]
 		},
@@ -426,9 +288,9 @@ export default {
 				this.arrayOfNewPasswordErrors = this.errors.has('newPassword') ? this.newPassword.length ? [this.$t('validation.wrongFormat')] : [this.$t('validation.required')] : []
 			} else if (fieldName === 'repeatNewPassword') {
 				this.arrayOfRepeatPasswordErrors = this.errors.has('repeatNewPassword') ? this.repeatNewPassword.length ? [this.$t('validation.repeatPassword')] : [this.$t('validation.required')] : []
+			} else if (fieldName === 'addNewPassword') {
+				this.arrayOfAddNewPasswordErrors = this.errors.has('addNewPassword') ? this.addNewPassword.length ? [this.$t('validation.wrongFormat')] : [this.$t('validation.required')] : []
 			}
-
-		
 		},
 
 		clearFields(section) {
@@ -440,6 +302,12 @@ export default {
 				this.arrayOfNewPasswordErrors = []
 				this.arrayOfRepeatPasswordErrors = []
 			}
+		},
+
+		clearAddEmailSection() {
+			this.addEmail = ''
+			this.arrayOfAddEmailErrors = []
+
 		},
 
 		changePassword() {
@@ -552,8 +420,145 @@ export default {
 			this.arrayOfImageURLerrors = []
 			this.imgToShow = this.originalImg
 			this.$refs.fileInput[0].files = null
-		}
+		},
 
+		resetAddNewPassword() {
+			this.addNewPassword = ''
+			this.arrayOfAddNewPasswordErrors = []
+		},
+
+		onSaveAddNewPassword() {
+			if (!this.arrayOfAddNewPasswordErrors.length && this.addNewPassword.length) {
+				this.runLoader = true
+				HTTP.post('user/add/password', { password: this.addNewPassword}).then((response) => {
+					console.log('response')
+					if (response.data.success) {
+						this.showSnackbar = true
+						this.snackbarText = this.$t('profile.success_alert')
+						this.resetAddNewPassword()
+					} else {
+						if (response.data.message === 'Invalid password') {
+							this.arrayOfAddNewPasswordErrors =  [this.$t('validation.wrongFormat')]
+						} else {
+							setAuthorizationToken(false)
+							this.$router.push('/')
+						}
+					}
+					
+					this.runLoader = false
+					
+				}).catch((error) => {
+					this.runLoader = false
+					this.showSnackbar = true
+					this.snackbarText = this.$t('login.error_alert')
+					this.resetAddNewPassword()
+				})
+			}
+		},
+
+		clearNameFields() {
+			this.newFirstName = ''
+			this.newLastName = ''
+			this.arrayOfFirstNameErrors = []
+			this.arrayOfLastNameErrors = []
+		},
+
+		changeEmail(section) {
+			if (section === 'newEmail') {
+				// validate new email field
+			} else if (section === 'addEmail') {
+				// validate add email field
+			}
+		},
+
+		clearNewEmail() {
+			this.newEmail = ''
+			this.arrayOfNewEmailErrors = []
+		},
+
+		validateFirstName() {
+			if (this.errors.has('newFirstName')) {
+				if (this.newFirstName.length > 15) {
+					this.arrayOfFirstNameErrors = [this.$t('validation.firstNameLong')]
+				} else	if (this.newFirstName.length < 3){
+					this.arrayOfFirstNameErrors = [this.$t('validation.firstNameShort')]
+				} else {
+					this.arrayOfFirstNameErrors =  [this.$t('validation.firstNameFormat')]
+				}
+			} else {
+				this.arrayOfFirstNameErrors = []
+			}
+		},
+
+		validateLastName() {
+			if (this.errors.has('newLastName')) {
+				if (this.newLastName.length > 15) {
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameLong')] 
+				} else if (this.newLastName.length < 3){
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameShort')]
+				} else {
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameFormat')]
+				}
+			} else {
+				this.arrayOfLastNameErrors = []
+			}
+		},
+
+		validateEmail(field) {
+			if (field === 'newEmail') {
+				if (this.errors.has('newEmail')) {
+					this.arrayOfNewEmailErrors = [this.$t('validation.email')]
+				} else {
+					this.arrayOfNewEmailErrors = []
+				}
+			} else if (field === 'addEmail') {
+				if (this.errors.has('addEmail')) {
+					this.arrayOfAddEmailErrors = [this.$t('validation.email')]
+				} else {
+					this.arrayOfAddEmailErrors = []
+				}
+			}
+			
+		},
+
+		onChangeNames() {
+			if (!this.arrayOfFirstNameErrors.length && !this.arrayOfLastNameErrors.length && (this.newFirstName.length || this.newLastName.length)) {
+				this.runLoader = true
+				const first = this.newFirstName.length ? this.newFirstName : this.settingsUser.first
+				const last = this.newLastName.length ? this.newLastName : this.settingsUser.last
+				HTTP.put('user/change/data', { first, last }).then((response) => {
+					this.runLoader = false
+					if (response.data.success) {
+						this.clearNameFields()
+						this.showSnackbar = true
+						this.snackbarText = this.$t('profile.success_alert')
+						this.$emit('updateUser', { first, last })
+					} else {
+						switch(response.data.message)
+						{
+							case 'Invalid first':
+								this.arrayOfFirstNameErrors =  [this.$t('validation.firstNameFormat')]
+								break
+							case 'Invalid last':
+								this.arrayOfFirstNameErrors =  [this.$t('validation.lastNameFormat')]
+								break
+							case 'Invalid token':
+								setAuthorizationToken(false)
+								this.$router.push('/')
+								break
+							default: {
+								this.showSnackbar = true
+								this.snackbarText = this.$t('activation.error_alert')
+							}
+						}
+					}
+				}).catch((error) => {
+					this.runLoader = false
+					this.showSnackbar = true
+					this.snackbarText = this.$t('activation.error_alert')
+				})
+			}
+		}
 	},
 
 
@@ -571,485 +576,10 @@ export default {
 	}
 }
 
-// export default {
-//   name: 'UserPage',
-//   data () {
-//     return {
-//         settings: {
-//           old_password: '',
-//           new_password: '',
-//           new_password_repeat: '',
-//           email: '',
-//           email_password: '',
-//           first_name: '',
-//           last_name: ''
-//         },
-//         create: {
-//           password: '',
-//           password_repeat: '',
-//           email: ''
-//         },
-//         user: {
-//           first_name: '',
-//           last_name: '',
-//           email: '',
-//           pendingEmail: '',
-//           image: '',
-//           password: '',
-//           intra: '',
-//           github: ''
-//         },
-//         img_url: '',
-//         showSuccessAlert: false,
-//         showErrorAlert: false,
-//         showSuccessPassAlert: false,
-//         showErrorPassAlert: false,
-//         hideEmailExists: true,
-//         showEmailSentSuccess: false,
-//         newEmailSpan: true,
-//         emailError: false,
-//         omniauthHide: true,
-//         createEmailHide: true,
-//         normalHide: false,
-//         socialHide: false,
-//         passwordHide: true,
-//         hideButton: true,
-//         intra: false,
-//         github: false,
-//         headerBgVariant: 'danger',
-//         headerTextVariant: 'light',
-//         imageSelected: null,
-//         maxSize: 1024
-//       }
-//     },
-//     mounted() {
-//         HTTP
-//           .get('user/data/')
-//           .then(result => {
-//             console.log(result)
-//             if (result.data.success == true) {
-//               this.user.first_name = result.data.first
-//               this.user.last_name = result.data.last
-//               this.user.email = result.data.email
-//               this.user.pendingEmail = result.data.pendingEmail
-//               this.user.image = result.data.image
-//               this.user.password = result.data.password
-//               this.user.intra = result.data.intra
-//               this.user.github = result.data.github
-//               console.log("email: "+this.user.email+" pendingEmail: "+this.user.pendingEmail+" intra: "+this.user.intra+" git: "+this.user.github+" pass: "+this.user.password)
-//               if (this.user.email == null) {
-//                 this.normalHide = true
-//                 this.omniauthHide = false
-//               }
-//               if (this.user.intra === true) {
-//                 this.intra = true
-//               }
-//               if (this.user.github === true) {
-//                 this.github = true
-//               }
-//               if (this.user.github === true && this.user.intra === true) {
-//                 this.socialHide = true
-//               }
-//               if (this.user.pendingEmail !== null) {
-//                 this.newEmailSpan = false
-//               }
-//               if (this.user.email === null) {
-//                 this.createEmailHide = false
-//               }
-//               if (this.user.password === false) {
-//                 this.passwordHide = false
-//                 this.normalHide = true
-//               }
-//               if (this.user.image === null) {
-//                 this.user.image = "https://images.pexels.com/photos/248280/pexels-photo-248280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-//               }
-//             } else if (result.data.success == false) {
-//               localStorage.token = ''
-//               this.$router.push('/')
-//             }
-//           })
-//           .catch((err) => {
-//             console.log(err)
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//       },
-//     methods: {
-//       logout() {
-//         localStorage.token = ''
-//         this.$router.push('/')
-//       },
-//       onSubmitPass(evt) {
-//           evt.preventDefault();
-//           this.$validator.validate('old_password', this.settings.old_password)
-//           this.$validator.validate('new_password', this.settings.new_password)
-//           this.$validator.validate('new_password_repeat', this.settings.new_password_repeat)
-
-//           .then(result => {
-//             if(!result) {
-//               console.log('error')
-//               return false
-//             }
-//             else {
-//               HTTP
-//                 .put('user/change/data', {
-//                   // 'token': localStorage.token,
-//                   'oldPassword': this.settings.old_password,
-//                   'newPassword': this.settings.new_password,
-//                 })
-//                 .then (response => {
-//                   if (response.data.success == true) {
-//                     this.showSuccessPassAlert = true
-//                     this.showErrorAlert = false
-//                     this.showSuccessAlert = false
-//                     this.showErrorPassAlert = false
-//                     setTimeout(() => { localStorage.token = ''; this.$router.push('/login')}, 3000)
-//                   } else if (response.data.message === "Invalid oldPassword") {
-//                     console.log(response.data)
-//                     this.showErrorPassAlert = true
-//                     this.showErrorAlert = false
-//                     this.showSuccessAlert = false
-//                     this.showSuccessPassAlert = false
-//                   } else if (response.data.message === "Invalid token") {
-//                     localStorage.token = ''
-//                     this.$router.push('/')
-//                   } else {
-//                     this.showErrorPassAlert = false
-//                     this.showErrorAlert = true
-//                     this.showSuccessAlert = false
-//                     this.showSuccessPassAlert = false
-//                   }
-//                 })
-//                 .catch((err) => {
-//                   console.log(err.response.data.error.message)
-//                   console.log("server error")
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 })
-//             }
-//           })
-//           .catch(() => {
-//             console.log('error')
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//       },
-//       checkIfEmailExists(email) {
-//   			HTTP
-//   			.get(`user/check-email/`+email)
-//   			.then(response => {
-//   				if (response.data.exist == true) {
-//   					  this.hideEmailExists = false
-//               this.emailError = true
-//   				} else if (response.data.exist == false) {
-//               this.hideEmailExists = true
-//               this.emailError = false
-//   				}
-//   				console.log(response.data.exist)
-//   			})
-//   			.catch((err) => {
-//   				console.log(err.response.data.error)
-//   				console.log("server error")
-//           localStorage.token = ''
-//           this.$router.push('/')
-//   			})
-//   		},
-//       onSubmitEmail(evt) {
-//         evt.preventDefault();
-//         if (this.user.email !== null) {
-//           this.$validator.validate('email_password', this.settings.email_password)
-//           this.$validator.validate('email', this.settings.email)
-//           .then(result => {
-//             if(!result) {
-//               console.log('error')
-//               return false
-//             } else {
-//               HTTP
-//                 .put('user/change/email', {
-//                   // 'token': localStorage.token,
-//                   'email': this.settings.email,
-//                   'password': this.settings.email_password
-//                 })
-//                 .then (response => {
-//                   if (response.data.success == true) {
-//                     this.showEmailSentSuccess = true
-//                     this.newEmailSpan = false
-//                     this.showErrorAlert = false
-//                     this.user.pendingEmail = this.settings.email
-//                   } else if (response.data.message === "Invalid token") {
-//                     localStorage.token = ''
-//                     this.$router.push('/')
-//                   } else {
-//                     console.log(response.data)
-//                     this.showErrorAlert = true
-//                     this.showSuccessAlert = false
-//                   }
-//                 })
-//                 .catch((err) => {
-//                   console.log(err.response.data.error.message)
-//                   console.log("server error")
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 })
-//             }
-//           })
-//           .catch(() => {
-//             console.log('error')
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//         } else {
-//           this.$validator.validate('email', this.settings.email)
-//           .then(result => {
-//             if(!result) {
-//               console.log('error')
-//               return false
-//             } else {
-//               HTTP
-//                 .post('user/add/email', {
-//                   // 'token': localStorage.token,
-//                   'email': this.settings.email
-//                 })
-//                 .then (response => {
-//                   if (response.data.success == true) {
-//                     this.showEmailSentSuccess = true
-//                     this.newEmailSpan = false
-//                     this.showErrorAlert = false
-//                     this.user.pendingEmail = this.settings.email
-//                   } else if (response.data.message === "Invalid token") {
-//                     localStorage.token = ''
-//                     this.$router.push('/')
-//                   } else {
-//                     console.log(response.data)
-//                     this.showErrorAlert = true
-//                     this.showSuccessAlert = false
-//                   }
-//                 })
-//                 .catch((err) => {
-//                   console.log(err.response.data.error.message)
-//                   console.log("server error")
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 })
-//             }
-//           })
-//           .catch(() => {
-//             console.log('error')
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//         }
-//       },
-//       deleteEmail() {
-//         HTTP
-//           .delete('user/delete/pending-email')
-//           .then (response => {
-//             if (response.data.success == true) {
-//               this.newEmailSpan = true
-//             } else if (response.data.message === "Invalid token") {
-//               localStorage.token = ''
-//               this.$router.push('/')
-//             } else {
-//               console.log(response.data)
-//               this.showErrorAlert = true
-//               this.showSuccessAlert = false
-//             }
-//           })
-//           .catch((err) => {
-//             console.log(err.response.data.error.message)
-//             console.log("server error")
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//       },
-//       onSubmitCreatePass(evt) {
-//         evt.preventDefault();
-//         this.$validator.validate('create_password', this.create.password)
-//         this.$validator.validate('create_password_repeat', this.create.password_repeat)
-//         .then(result => {
-//           if(!result) {
-//             console.log('error')
-//             return false
-//           }
-//           else {
-//             HTTP
-//               .post('user/add/password', {
-//                 // 'token': localStorage.token,
-//                 'password': this.create.password
-//               })
-//               .then (response => {
-//                 if (response.data.success == true) {
-//                   this.showSuccessAlert = true
-//                   this.showErrorAlert = false
-//                 } else if (response.data.message === "Invalid token") {
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 } else {
-//                   this.showErrorAlert = true
-//                   this.showSuccessAlert = false
-//                 }
-//               })
-//               .catch((err) => {
-//                 console.log(err.response.data.error.message)
-//                 console.log("server error")
-//                 localStorage.token = ''
-//                 this.$router.push('/')
-//               })
-//           }
-//         })
-//         .catch(() => {
-//           console.log('error')
-//           localStorage.token = ''
-//           this.$router.push('/')
-//         })
-//       },
-//       onSubmitPersonal(evt) {
-//         evt.preventDefault();
-//         this.$validator.validate('first_name', this.settings.first_name)
-//         this.$validator.validate('last_name', this.settings.last_name)
-//         .then(result => {
-//           if(!result) {
-//             console.log('error')
-//             return false
-//           }
-//           else {
-//             HTTP
-//               .put('user/change/data', {
-//                 'first': this.settings.first_name,
-//                 'last': this.settings.last_name,
-//               })
-//               .then (response => {
-//                 if (response.data.success == true) {
-//                   this.showSuccessAlert = true
-//                   this.showErrorAlert = false
-//                 } else if (response.data.message === "Invalid token") {
-//                   localStorage.token = ''
-//                   this.$router.push('/')
-//                 } else {
-//                   this.showErrorAlert = true
-//                   this.showSuccessAlert = false
-//                 }
-//               })
-//               .catch((err) => {
-//                 console.log(err.response.data.error.message)
-//                 console.log("server error")
-//                 localStorage.token = ''
-//                 this.$router.push('/')
-//               })
-//           }
-//         })
-//         .catch(() => {
-//           console.log('error')
-//           localStorage.token = ''
-//           this.$router.push('/')
-//         })
-//       },
-//       showModal () {
-//         this.$refs.deleteAccount.show()
-//       },
-//       hideModal () {
-//         this.$refs.deleteAccount.hide()
-//       },
-//       deleteAccount() {
-//         HTTP
-//           .delete('user/delete/self/')
-//           .then (response => {
-//             if (response.data.success == true) {
-//               console.log('account deleted')
-//             }
-//               localStorage.token = ''
-//               window.location.href = '/'
-//           })
-//           .catch((err) => {
-//             console.log(err.response.data.error.message)
-//             console.log("server error")
-//             localStorage.token = ''
-//             this.$router.push('/')
-//           })
-//         this.hideModal()
-//       },
-//       Upload() {
-//         if (this.imageSelected === null) {
-//           this.imageSelected = reader.result
-//         }
-//         console.log(this.imageSelected)
-//           HTTP
-//             .put('user/change/image', {
-//               'image': this.imageSelected
-//             })
-//             .then (response => {
-//               if (response.data.success == true) {
-//                 this.showSuccessAlert = true
-//                 this.showErrorAlert = false
-//                 console.log('img uploaded')
-//               } else if (response.data.message === "Invalid token") {
-//                 localStorage.token = ''
-//                 this.$router.push('/')
-//               } else {
-//                 this.showErrorAlert = true
-//                 this.showSuccessAlert = false
-//               }
-//             })
-//             .catch((err) => {
-//               console.log(err.response.data.error.message)
-//               console.log("server error")
-//               localStorage.token = ''
-//               this.$router.push('/')
-//             })
-//       },
-//       onFileSelected(event) {
-//         var preview = document.querySelector('img');
-
-//         if (event.target !== undefined && event.target.files !== null) {
-//           var imageFile = event.target.files[0];
-
-//           if(imageFile.name.length > 0) {
-//                 if (!imageFile.type.match('image.*')) {
-//                   console.log('lol, not an image')
-//                 } else {
-//                   var maxSizeMB = 1;
-//                   var maxWidthOrHeight = 300;
-//                   imageCompression(imageFile, maxSizeMB, maxWidthOrHeight)
-//                     .then(function (compressedFile) {
-//                       reader.readAsDataURL(compressedFile);
-//                       reader.addEventListener("load", function () {
-//                               preview.src = reader.result
-//                             })
-//                     })
-//                     .catch(function (error) {
-//                       console.log(error.message);
-//                       localStorage.token = ''
-//                       this.$router.push('/')
-//                     });
-//                   }
-//                   this.imageSelected = reader.result
-//                   console.log(reader.result)
-//                   this.hideButton = false
-//         } else {
-//           console.log('you fucked up')
-//         }
-//       } else {
-//         this.$validator.validate('img_url', this.img_url)
-//         .then(result => {
-//           if(!result) {
-//             console.log('error')
-//             return false
-//           } else {
-//             preview.src = this.img_url
-//             this.imageSelected = preview.src
-//             this.hideButton = false
-//           }
-//         })
-//       }
-//     }
-//   }
-
-//   }
-
 </script>
 
 <style scoped>
-.cursor-pointer:hover {
-	cursor: pointer;
-}
+	.cursor-pointer:hover {
+		cursor: pointer;
+	}
 </style>

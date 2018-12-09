@@ -119,18 +119,16 @@
         },
 
         requestUser () {
-            if (this.userLoggedIn) {
-                HTTP.get('user/data/').then(result => {
-				if (result.data.success == false) {
-					setAuthorizationToken(false)
-					this.$router.push('/')
-				} else {
+            HTTP.get('user/data/').then(result => {
+                if (result.data.success == false) {
+                    this.userLoggedIn = false
+                    setAuthorizationToken(false)
+                    this.$router.push('/')
+                } else {
                     this.$emit('setUser', result.data)
                     this.userLoggedIn = true
-				}
-			}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
-            }
-			
+                }
+		    }).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
 		},
 
         fetchData () {
