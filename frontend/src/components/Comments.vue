@@ -11,30 +11,32 @@
     <v-card v-for="(comment,index) in allComments"
             v-if="index <= numComments"
             :key="index"
-            class="mt-3 p-2 pl-3"
+            class="mt-3"
             flat>
       <v-layout>
-        <v-flex xs1 class="mr-3">
-          <v-img  class='rounded round-img'
-                  :aspect-ratio="16/9"
-                  height='65px'
-                  width='65px'
-                  :src="comment.image">
-          </v-img>
+        <v-flex xs2 sm1 md1 lg1 text-xs-center>
+          <v-avatar size="55">
+            <img class='rounded round-img'
+                    :aspect-ratio="16/9"
+                    :src="comment.image">
+        </v-avatar>
         </v-flex>
-        <v-flex xs11>
+        <v-flex xs8 sm11 md11 lg11>
           <div>
-            <a :href="'profile/'+comment.user_id" target="_blank" class="mr-2 font-weight-black">{{comment.first}}</a>
+            <router-link :to="'/profile/'+comment.user_id" class="mr-2 font-weight-black">{{comment.first}}</router-link>
             <span class="caption">{{comment.date | date}}</span>
             <div>{{comment.text}}</div>
           </div>
         </v-flex>
       </v-layout>
     </v-card>
+    <div class="text-xs-center">
     <v-btn  v-if="numComments + 1 < totalNumberOfComments"
             @click.prevent="showMore"
+            depressed
             color="grey"
             class="white--text mt-3">{{$t('button.showMore')}}</v-btn>
+    </div>
   </v-flex>
 </template>
 

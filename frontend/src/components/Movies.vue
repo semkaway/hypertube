@@ -27,7 +27,7 @@
 						style="height: 100%; opacity: 0.9;">
                      <v-layout row wrap>
                         <v-flex xs12>
-                        	<p><v-icon v-html="'$vuetify.icons.calendar_today'"></v-icon>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
+                        	<p><v-icon>calendar_today</v-icon>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
                         </v-flex>
                         <v-flex class="mx-2" xs12>
                         	<p style="width:100%;overflow:hidden;height:150px;line-height:20px;">{{movie.overview}}</p>
@@ -48,7 +48,6 @@
 
 <script>
       import {HTTP} from '../http-common';
-      import axios from 'axios'
       import setAuthorizationToken from '../utils/setAuthToken'
 
     export default {

@@ -46,7 +46,7 @@ let router = new Router({
 			component: oauth
 		},
 		{
-			path: '/user',
+			path: '/profile/:id',
 			name: 'userProfile',
 			props: true,
 			component: UserProfile,
