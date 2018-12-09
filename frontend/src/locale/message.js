@@ -116,6 +116,7 @@ const messages = {
 				new_password_repeat: 'Repeat new password',
 				create_email: 'Create email',
 				create_pass: 'Create password',
+				change_language: 'Change language',
 				delete_account_title: 'Delete account',
 				delete_account_text: `Are you sure you want to delete your account?
 															This action is irreversible and you will lose all your data.`
@@ -249,6 +250,7 @@ const messages = {
 				new_password_repeat: 'Повторите новый пароль',
 				create_email: 'Создать email',
 				create_pass: 'Создать пароль',
+				change_language: 'Изменить язык',
 				delete_account_title: 'Удалить аккаунт',
 				delete_account_text: 'Вы уверены? Вы не сможете отменить это действие. Все Ваши данные будут утеряны.'
 			}
@@ -381,6 +383,7 @@ const messages = {
 				new_password_repeat: 'Повторіть новий пароль',
 				create_email: 'Створити email',
 				create_pass: 'Створити пароль',
+				change_language: 'Змінити мову',
 				delete_account_title: 'Видалити акаунт',
 				delete_account_text: 'Ви впевнені? Ви не зможете відмінити цю дію. Всі Ваші дані будуть втрачені.'
 			}
