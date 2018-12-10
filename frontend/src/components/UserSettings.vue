@@ -196,10 +196,13 @@
 						<!-- ADD MEDIA -->
 
 						<v-layout v-if='section.name == "media"' class="grey--text">
-							<v-card class="grey--text"><v-card-text class='subheading'> {{ $t('profile.settings.added_media') }}:</v-card-text></v-card>
+							<v-card v-if='user.intra || user.github' class="grey--text"><v-card-text class='subheading'> {{ $t('profile.settings.added_media') }}:</v-card-text></v-card>
 
-									<v-card class="grey--text">
-										<v-card-text class='subheading'> intra: {{user.intra}} git: {{user.github}} </v-card-text>
+									<v-card v-if='user.intra' class="grey--text">
+										<v-card-text class='subheading'> 42 INTRA </v-card-text>
+									</v-card>
+									<v-card v-if='user.github' class="grey--text">
+										<v-card-text class='subheading'> GITHUB </v-card-text>
 									</v-card>
 
 						</v-layout>
@@ -310,7 +313,7 @@ export default {
 			snackbarY: 'bottom',
 			snackbarX: 'right',
 			snackbarText: '',
-			snackbarTimeout: 3000
+			snackbarTimeout: 2500
 		}
 	},
 
@@ -779,7 +782,7 @@ export default {
 	},
 
 	watch: {
-		locale () { this.sections = this.getSections() },
+		locale () { this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail) },
 		user() {
 			// console.log('user changed', this.user)
 			this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail)
