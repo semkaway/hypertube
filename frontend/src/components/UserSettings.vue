@@ -41,25 +41,25 @@
 					<v-card-text>
 
 						<!-- CHANGE EMAIL -->
-						<form v-if='section.name == "email"'>
-						<v-layout align-start column fill-height>
-								<v-layout v-if='user.email' class="grey--text">
-									<v-card class="grey--text">
-										<v-card-text class='subheading'>{{$t('profile.settings.active_email')}}: <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
-									</v-card>
-								</v-layout>
-								<!-- show only if have pending email -->
-								<v-layout class="grey--text" v-if='settingsUser.pendingEmail != null'>
-									<v-card class="grey--text">
-										<v-card-text class='subheading'>
-											{{$t('profile.settings.email_pending')}} 
-											<span class='ml-1 subheading'>{{ settingsUser.pendingEmail }}</span>
-											<v-btn @click='cancelPendingEmail' color="red" class="white--text" flat>{{ $t('button.cancel') }}</v-btn>
-										</v-card-text>
-									</v-card>
-								</v-layout>
-						</v-layout>
-
+						<div v-if='section.name == "email"'>
+							<v-layout align-start column fill-height>
+									<v-layout v-if='user.email' class="grey--text">
+										<v-card class="grey--text">
+											<v-card-text class='subheading'>{{$t('profile.settings.active_email')}}: <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
+										</v-card>
+									</v-layout>
+									<!-- show only if have pending email -->
+									<v-layout class="grey--text" v-if='settingsUser.pendingEmail != null'>
+										<v-card class="grey--text">
+											<v-card-text class='subheading'>
+												{{$t('profile.settings.email_pending')}} 
+												<span class='ml-1 subheading'>{{ settingsUser.pendingEmail }}</span>
+												<v-btn @click='cancelPendingEmail' color="red" class="white--text" flat>{{ $t('button.cancel') }}</v-btn>
+											</v-card-text>
+										</v-card>
+									</v-layout>
+							</v-layout>
+							<form>
 							<v-text-field
 								v-if='user.email'
 								@keyup.native='validateEmail("newEmail")'
@@ -85,9 +85,10 @@
 								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
 								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
 							</v-text-field>
+							</form>
 							<v-btn v-if='user.email' @click='changeEmail("newEmail")' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
 							<v-btn v-if='user.email' @click='clearNewEmail' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
-						</form>
+						</div>
 
 						<!-- CHANGE PERSONAL DATA -->
 						<form v-if='section.name == "names"'>
