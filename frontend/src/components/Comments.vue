@@ -26,7 +26,7 @@
           <div>
             <router-link :to="'/user/'+comment.user_id" class="mr-2 font-weight-black">{{comment.first}}</router-link>
             <span class="caption">{{comment.date | date}}</span>
-            <div>{{comment.text}}</div>
+            <div style="word-break: break-all;">{{comment.text}}</div>
           </div>
         </v-flex>
       </v-layout>

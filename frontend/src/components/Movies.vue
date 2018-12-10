@@ -5,11 +5,12 @@
           class="mx-3 mt-5"
           v-model="searchParams"
           flat
-          label="Search"
+          :label="$t('movies.search')"
           append-outer-icon="search"
           @keyup.native.enter="searchMovies"
           @click:append-outer="searchMovies"
         ></v-text-field>
+        <div v-if="notFound">{{ $t('movies.notFound') }}</div>
         <v-container grid-list-md>
           <v-layout row wrap class="mt-3">
             <v-flex v-for="(movie, index) in movies" :key='index' class="movie" xs12 md4 lg3>
@@ -79,7 +80,8 @@
         searchParams: '',
         query: `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
         +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null&page=',
-        totalPages: 1
+        totalPages: 1,
+        notFound: false
       }
     },
     methods: {
@@ -87,6 +89,11 @@
         console.log('this.query + this.page =>', this.query + this.page)
         HTTP.get(this.query + this.page).then(result => {
           console.log(result)
+          if (result.data.total_results == 0) {
+            this.notFound = true
+            this.totalPages = 1
+            return false
+          }
           for (var i = 0; i < result.data.results.length; i++) {
             for(var key in result.data.results[i]) {
               if (key == 'release_date') {
@@ -116,13 +123,15 @@
         this.requestMovies()
       },
       searchMovies() {
-        console.log(this.searchParams)
-        this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
-        + localStorage.locale + '&query='+this.searchParams + '&images&include_image_language=' + localStorage.locale + ',null' +
-        '&page='
-        this.movies = []
-        this.page = 1
-        this.requestMovies()
+      console.log(this.searchParams)
+        if (this.searchParams !== '') {
+          this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
+          + localStorage.locale + '&query='+this.searchParams + '&images&include_image_language=' + localStorage.locale + ',null' +
+          '&page='
+          this.movies = []
+          this.page = 1
+          this.requestMovies()
+        }
       }
     },
     mounted () {
