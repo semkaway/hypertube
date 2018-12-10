@@ -1,6 +1,7 @@
 <template>
-  <div><Loader :run='runLoader'/></div>
-  
+  	<div>
+		<Loader :run='runLoader'/>
+	</div>
 </template>
 
 <script>
@@ -19,24 +20,26 @@ export default {
 		const currUrl = window.location.pathname
 		const myCode = urlParams.get('code')
 		const accessDenied = urlParams.get('error')
-
+		
 		this.runLoader = true
       	if (myCode == null && accessDenied == null) {
 		    this.runLoader = false
           	setAuthorizationToken(false)
           	this.$router.push('/')
+			console.log('all bad')
       	} else if (myCode != null && accessDenied == null) {
 			if (localStorage.token !== '') { // add user
 				HTTP.post(`user/add` + currUrl, { "code": myCode }).then(response => {
 					if (response.data.success == true) {
 						console.log('all good')
-						this.$router.push('/user/settings')
+						this.$emit('userAdded')
+						this.$router.push('/settings')
 					} else if (response.data.message == "Invalid token") {
 						setAuthorizationToken(false)
 						this.$router.push('/')
 					} else if (response.data.message == "User exist") {
-						this.$router.push('/user/settings')
-						console.log('this user already exists')
+						this.$router.push('/settings')
+						this.$emit('userAlreadyExists')
 					}
 					this.runLoader = false
 				})
@@ -56,9 +59,8 @@ export default {
 								setAuthorizationToken(false)
 								this.$router.push('/')
 							} else {
-								window.userLoggedIn = true
-								this.$emit('setTokenAndLocale', {token: response.data.token, locale: response.data.locale })
 								this.$emit('updateUser', result.data)
+								this.$router.push('/movies')
 							}
 							this.runLoader = false
 						}).catch((err) => { 
@@ -80,7 +82,7 @@ export default {
 			if (localStorage.token === '') {
 				this.$router.push('login?fail=true')
 			} else {
-				this.$router.push('user/settings')
+				this.$router.push('/settings')
 			}
 			this.runLoader = false
       } else {

@@ -66,8 +66,8 @@
 </template>
 
 <script>
-  import {HTTP} from '../http-common';
-  import setAuthorizationToken from '../utils/setAuthToken'
+      import {HTTP} from '../http-common'
+      import setAuthorizationToken from '../utils/setAuthToken'
 
   export default {
     name: 'Movies',

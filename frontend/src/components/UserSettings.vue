@@ -347,10 +347,12 @@ export default {
 		},
 
 		addIntraMedia() {
+			this.runLoader = true
 			window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7&redirect_uri=http://localhost:8084/intra&response_type=code'
 		},
 
 		addGitMedia() {
+			this.runLoader = true
 			window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'
 		},
 
@@ -770,14 +772,15 @@ export default {
 	},
 
 	created() {
-        HTTP.get('user/data/').then(result => {
-            if (result.data.success == false) {
-                setAuthorizationToken(false)
-                this.$router.push('/')
-            } else {
-                this.$emit('setUser', result.data)
-            }
-		}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
+			HTTP.get('user/data/').then(result => {
+				if (result.data.success == false) {
+					setAuthorizationToken(false)
+					this.$router.push('/')
+				} else {
+					this.$emit('userLoggedIn', true)
+					this.$emit('setUser', result.data)
+				}
+			}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
 	},
 
 
@@ -788,7 +791,6 @@ export default {
 	watch: {
 		locale () { this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail) },
 		user() {
-			// console.log('user changed', this.user)
 			this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail)
 			this.settingsUser = this.user
 			this.originalImg = this.settingsUser.image

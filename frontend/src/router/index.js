@@ -7,7 +7,7 @@ import Activation from '@/components/Activation'
 import UserProfile from '@/components/UserProfile'
 import UserSettings from '@/components/UserSettings'
 import NotFound from '@/components/NotFound'
-import oauth from '@/components/Oauth'
+import Oauth from '@/components/Oauth'
 
 Vue.use(Router)
 
@@ -24,13 +24,13 @@ let router = new Router({
 			path: '/movies',
 			component: Movies,
 			props: true,
-			meta: {requiresAuth: true}
+			// meta: {requiresAuth: true}
 		},
 		{
 			path: '/movies/:id',
 			component: Movie,
 			props: true,
-			meta: {requiresAuth: true}
+			// meta: {requiresAuth: true}
 		},
 		{
 			path: '/activate',
@@ -41,26 +41,26 @@ let router = new Router({
 		{
 			path: '/intra',
 			name: 'oauth42',
-			component: oauth
+			component: Oauth
 		},
 		{
 			path: '/github',
 			name: 'oauthGit',
-			component: oauth
+			component: Oauth
 		},
 		{
 			path: '/user/:id',
 			name: 'userProfile',
 			props: true,
 			component: UserProfile,
-			meta: {requiresAuth: true}
+			// meta: {requiresAuth: true}
 		},
 		{
 			path: '/settings',
 			name: 'userSettings',
 			component: UserSettings,
 			props: true,
-			meta: {requiresAuth: true}
+			// meta: {requiresAuth: true}
 		},
 		{
 			path: '/404',
@@ -68,26 +68,30 @@ let router = new Router({
 			component: NotFound,
 			props: true
 		},
+<<<<<<< HEAD
 		{ 	path: '*',
 			redirect: '/404'
 		},
+=======
+		// {
+		// 	path: '*',
+		// 	redirect: '/404' 
+		// }, 
+>>>>>>> c41bff1c56bb848e536a9f1d1e3c7a91a74ee58f
 	]
 })
 
-router.beforeEach((to, fromRoute, next) => {
-	if (to.matched.some(record => record.meta.requiresAuth)) {
-	  if (!window.userLoggedIn) {
-		  if (to.path === '/movies' || to.path.slice(0, 8) === '/movies/' || to.path === '/activate/' ||  to.path.slice(0, 9) === '/profile/' || to.path === '/user/settings') {
-				next({ path: '/404' })
-		  } else {
-				next()
-		  }
-	  } else {
-		next()
-	  }
-	} else {
-	  next()
-	}
-  })
+// router.afterEach((to, fromRoute, next) => {
+// 	if (to.matched.some(record => record.meta.requiresAuth)) {
+// 		console.log('window.userLoggedIn', window.userLoggedIn)
+// 	  if (!window.userLoggedIn) {
+// 		  if (to.path === '/movies' || to.path.slice(0, 8) === '/movies/' || to.path === '/activate/' ||  to.path.slice(0, 9) === '/profile/' || to.path === '/settings') {
+// 				// next({ path: '/404' })
+// 				// this.router.push('/404')
+// 				console.log('redirect to 404 because user.loggedin ? ', window.userLoggedIn)
+// 		  } 
+// 	  }
+// 	}
+//   })
 
 export default router
