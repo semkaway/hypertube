@@ -49,7 +49,7 @@ let router = new Router({
 			component: Oauth
 		},
 		{
-			path: '/profile/:id',
+			path: '/user/:id',
 			name: 'userProfile',
 			props: true,
 			component: UserProfile,

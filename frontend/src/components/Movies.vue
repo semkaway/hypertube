@@ -1,124 +1,137 @@
 <template>
-    <div>
-    <v-container grid-list-md text-xs-center class="mt-5">
-      <v-text-field
-        class="mx-3 mt-5"
-        v-model="searchParams"
-        flat
-        label="Search"
-        append-icon="search"
-        @keyup.native.enter="searchMovies"
-      ></v-text-field>
-      <v-layout row wrap class="mt-3">
-        <v-flex v-for="movie in movies" :key='movie.id' class="movie" lg3>
-            <router-link :to="'/movies/'+movie.id">
-              <v-hover>
-               <v-card
-                 slot-scope="{ hover }"
-                 class="mx-auto"
-                 color="grey lighten-4"
-                 max-width="250"
-               >
-                 <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
-                   <v-expand-transition>
-                    <div
-						v-if="hover"
-						class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
-						style="height: 100%; opacity: 0.9;">
-                     <v-layout row wrap>
-                        <v-flex xs12>
-                        	<p><v-icon>calendar_today</v-icon>{{movie.release_date}} IMDB {{movie.vote_average}}</p>
-                        </v-flex>
-                        <v-flex class="mx-2" xs12>
-                        	<p style="width:100%;overflow:hidden;height:150px;line-height:20px;">{{movie.overview}}</p>
-                        </v-flex>
-                    </v-layout>
-                    </div>
-                   </v-expand-transition>
-                 </v-img>
-               </v-card>
-             </v-hover>
-             <p class="mt-2 subheading">{{movie.title}}</p>
-            </router-link>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    </div>
+  <v-container grid-list-md text-xs-center class="mt-5">
+      <v-flex lg12>
+        <v-text-field
+          class="mx-3 mt-5"
+          v-model="searchParams"
+          flat
+          label="Search"
+          append-outer-icon="search"
+          @keyup.native.enter="searchMovies"
+          @click:append-outer="searchMovies"
+        ></v-text-field>
+        <v-container grid-list-md>
+          <v-layout row wrap class="mt-3">
+            <v-flex v-for="(movie, index) in movies" :key='index' class="movie" xs12 md4 lg3>
+                <router-link :to="'/movies/'+movie.id">
+                  <v-hover>
+                   <v-card
+                     slot-scope="{ hover }"
+                     class="mx-auto"
+                     color="grey lighten-5"
+                     flat
+                     max-width="250"
+                   >
+                     <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
+                       <v-layout slot="placeholder"
+                                 fill-height
+                                 align-center
+                                 justify-center
+                                 ma-0
+                                 >
+                         <v-progress-circular indeterminate color="grey lighten-2"></v-progress-circular>
+                       </v-layout>
+                       <v-expand-transition>
+                        <div  v-if="hover"
+      					              class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
+      					              style="height: 100%; opacity: 0.9;">
+                         <v-layout row wrap>
+                            <v-flex xs12>
+                            	<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date}}</p>
+                            </v-flex>
+                            <v-flex xs12>
+                            	<p>IMDB {{movie.vote_average}}</p>
+                            </v-flex>
+                        </v-layout>
+                        </div>
+                       </v-expand-transition>
+                     </v-img>
+                   </v-card>
+                 </v-hover>
+                 <p class="mt-2 subheading">{{movie.title}}</p>
+                </router-link>
+            </v-flex>
+            <v-flex class="text-xs-center">
+            <v-btn  v-if="page < totalPages"
+                    depressed
+                    color="grey"
+                    class="white--text mt-3"
+                    @click="showMore">{{$t('button.showMore')}}
+                  </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-flex>
+  </v-container>
 </template>
 
 <script>
       import {HTTP} from '../http-common'
       import setAuthorizationToken from '../utils/setAuthToken'
 
-    export default {
-        name: 'Movies',
-        props: ['user', 'userLoggedIn', 'locale', 'token'],
-        data () {
-          return {
-            movies: [],
-            page: 1,
-            searchParams: '',
-            query: `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
-			+localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null&page='
+  export default {
+    name: 'Movies',
+    props: ['user', 'userLoggedIn', 'locale', 'token'],
+    data () {
+      return {
+        movies: [],
+        page: 1,
+        searchParams: '',
+        query: `https://api.themoviedb.org/3/movie/popular?api_key=09665afd54623c9413c3f9336484b01c&language=`
+        +localStorage.locale+'&append_to_response=images&include_image_language='+localStorage.locale+',null&page=',
+        totalPages: 1
+      }
+    },
+    methods: {
+      requestMovies() {
+        console.log('this.query + this.page =>', this.query + this.page)
+        HTTP.get(this.query + this.page).then(result => {
+          console.log(result)
+          for (var i = 0; i < result.data.results.length; i++) {
+            for(var key in result.data.results[i]) {
+              if (key == 'release_date') {
+                var year = result.data.results[i][key].split('-')
+                result.data.results[i][key] = year[0]
+              }
+              if (key == 'poster_path') {
+                if (result.data.results[i][key] == null) {
+                  result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                } else {
+                  result.data.results[i][key] = 'http://image.tmdb.org/t/p/w500'+result.data.results[i][key]
+                }
+              }
+            }
+            this.movies.push(result.data.results[i])
           }
-        },
-        methods: {
-          
-			requestMovies() {
-				console.log('this.query + this.page =>', this.query + this.page)
-				HTTP.get(this.query + this.page).then(result => {
-				for (var i = 0; i < result.data.results.length; i++) {
-					for(var key in result.data.results[i]) {
-						if (key == 'release_date') {
-						var year = result.data.results[i][key].split('-')
-						result.data.results[i][key] = year[0]
-						}
-						if (key == 'poster_path') {
-							if (result.data.results[i][key] == null) {
-								result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-							} else {
-								result.data.results[i][key] = 'http://image.tmdb.org/t/p/w300/'+result.data.results[i][key]
-							}
-						}
-					}
-					this.movies.push(result.data.results[i])
-				}
-				}).catch((e) => {
-					console.log('e', e)
-				})
-          },
-          	handleScroll () {
-            	let d = document.documentElement;
-            	let offset = d.scrollTop + window.innerHeight;
-            	let height = d.scrollHeight;
+          this.totalPages = result.data.total_pages
+        }).catch((e) => {
+          console.log('e', e)
+        })
+      },
+      showMore () {
+        console.log(this.totalPages)
+        if (this.page + 1 < this.totalPages) {
+          this.page = this.page + 1;
+        } else {
+          this.page = this.totalPages;
+        }
 
-            	if (offset === height) {
-              		this.page = this.page + 1;
-              		this.requestMovies()
-            	}
-          	},
-
-			searchMovies() {
-				console.log(this.searchParams)
-				this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
-							+ localStorage.locale + '&query='+this.searchParams + '&images&include_image_language=' + localStorage.locale + ',null' +
-							'&page='
-				this.movies = []
-				this.page = 1
-				this.requestMovies()
-			}
-        },
-
-        mounted () {
-			      this.requestMovies()
-          	window.addEventListener('scroll', this.handleScroll)
-        },
-
-        destroyed () {
-          window.removeEventListener('scroll', this.handleScroll);
-        },
-		
-    }
+        this.requestMovies()
+      },
+      searchMovies() {
+        console.log(this.searchParams)
+        this.query = `https://api.themoviedb.org/3/search/movie?api_key=09665afd54623c9413c3f9336484b01c&language=`
+        + localStorage.locale + '&query='+this.searchParams + '&images&include_image_language=' + localStorage.locale + ',null' +
+        '&page='
+        this.movies = []
+        this.page = 1
+        this.requestMovies()
+      }
+    },
+    mounted () {
+      this.requestMovies()
+    },
+  }
 </script>
 
 <style scoped>

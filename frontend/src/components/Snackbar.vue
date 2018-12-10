@@ -1,7 +1,7 @@
 <<template>
     <v-snackbar v-model="active" :bottom="y === 'bottom'" :left="x === 'left'" :right="x === 'right'" :top="y === 'top'">
 		{{text}}
-    	<v-btn color="pink" flat @click="closeSnackBar">Close</v-btn>
+    	<v-btn color="pink" flat @click="closeSnackBar">{{$t('button.close')}}</v-btn>
     </v-snackbar>
 </template>
 
