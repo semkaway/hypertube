@@ -16,9 +16,10 @@
       <v-layout>
         <v-flex xs2 sm1 md1 lg1 text-xs-center>
           <v-avatar size="55">
-            <img class='rounded round-img'
+            <v-img  class='rounded round-img'
                     :aspect-ratio="16/9"
                     :src="comment.image">
+            </v-img>
         </v-avatar>
         </v-flex>
         <v-flex xs8 sm11 md11 lg11>

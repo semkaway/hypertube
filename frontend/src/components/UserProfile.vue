@@ -113,7 +113,7 @@ export default {
               this.commentedMovies = result.data.movies
               this.totalNumberOfCommentedMovies = this.commentedMovies.length
               if (this.myUser.image === null) {
-                this.myUser.image = "https://images.pexels.com/photos/248280/pexels-photo-248280.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                this.myUser.image = this.user.image
               }
             } else if (result.data.success == false) {
               setAuthorizationToken(false)
@@ -123,15 +123,6 @@ export default {
           .catch((err) => {
             console.log(err)
           })
-      },
-      methods: {
-
       }
-
   }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>

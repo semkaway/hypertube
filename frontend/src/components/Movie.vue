@@ -233,6 +233,13 @@ export default {
                       }
                     }
                   }
+                  if (key == 'comments') {
+                    for (var j = 0; j < movie[key].length; j++) {
+                      if (movie[key][j].image === null) {
+                        movie[key][j].image = this.user.image
+                      }
+                    }
+                  }
                 }
             this.movie = movie
             const moviePlayer = document.getElementById('moviePlayer')
