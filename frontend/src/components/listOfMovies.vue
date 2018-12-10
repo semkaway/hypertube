@@ -24,7 +24,8 @@
               <router-link :to="'/movies/'+movie.id">
                 <v-img  :aspect-ratio="1/1.5"
                         max-width="100%"
-                        :src="movie.poster_path">
+                        :src="movie.poster_path"
+                        >
                           <v-layout slot="placeholder"
                                     fill-height
                                     align-center
@@ -69,34 +70,30 @@ export default {
     data () {
       return {
         startMoviesToShow: 0,
+        showMoviesOnPage: 4,
         endMoviesToShow: 4
       }
     },
     methods: {
         showPrevious() {
-          if (this.endMoviesToShow == this.totalNumberOfMovies) {
-            this.startMoviesToShow -= 4
-            this.endMoviesToShow -= this.totalNumberOfMovies % 4
-          } else {
-            this.startMoviesToShow -= 4
-            this.endMoviesToShow -= 4
-          }
+          if (this.endMoviesToShow == this.totalNumberOfMovies)
+            this.endMoviesToShow -= this.totalNumberOfMovies % this.showMoviesOnPage
+          else
+            this.endMoviesToShow -= this.showMoviesOnPage
+          this.startMoviesToShow -= this.showMoviesOnPage
         },
         showNext() {
-          if (this.endMoviesToShow + 4 > this.totalNumberOfMovies) {
-            this.startMoviesToShow += 4
+          if (this.endMoviesToShow + this.showMoviesOnPage > this.totalNumberOfMovies)
             this.endMoviesToShow = this.totalNumberOfMovies
-          } else {
-            this.startMoviesToShow += 4
-            this.endMoviesToShow += 4
-          }
+          else
+            this.endMoviesToShow += this.showMoviesOnPage
+          this.startMoviesToShow += this.showMoviesOnPage
         },
         addMore() {
-          if (this.endMoviesToShow + 4 > this.totalNumberOfMovies) {
+          if (this.endMoviesToShow + this.showMoviesOnPage > this.totalNumberOfMovies)
             this.endMoviesToShow = this.totalNumberOfMovies
-          } else {
-            this.endMoviesToShow += 4
-          }
+          else
+            this.endMoviesToShow += this.showMoviesOnPage
         }
     },
     props: ['movies', 'totalNumberOfMovies', 'title']
