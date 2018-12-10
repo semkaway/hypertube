@@ -1,5 +1,6 @@
 <template>
 	 <v-app>
+	 	<app-snackbar :show='showSnackbar' :text='snackbarText' y='bottom' x='right' v-on:closeSnackbar='showSnackbar = false' timeout='2500' />
 		<app-header 
 			v-bind:user='user' 
 			v-bind:token='token' 
@@ -17,6 +18,7 @@
 			v-on:setLocale='setLocale'
 			v-on:updateUser='updateUser'
 			v-on:setTokenAndLocale='setToken'
+			v-on:userAlreadyExists='showWarning'
 		/>
 	</v-app>
 </template>
@@ -25,6 +27,7 @@
 
 import AppHeader from './components/includes/TheHeader'
 import AppFooter from './components/includes/TheFooter'
+import Snackbar from './components/Snackbar'
 const defaultImage = 'http://www.studioclio.com.br/sites/default/files/imagens/evento/pitagoras_0.jpg'
 
 
@@ -33,13 +36,16 @@ export default {
 	components: {
 		'app-header': AppHeader,
 		'app-footer': AppFooter,
+		'app-snackbar': Snackbar,
 	},
 	data: () => {
 		return {
 			user: {},
 			token: localStorage.token,
 			locale: localStorage.locale ? localStorage.locale : 'en',
-			userLoggedIn: false
+			userLoggedIn: false,
+			showSnackbar: false,
+			snackbarText: ''
 		}
 	},
 	methods: {
@@ -74,7 +80,11 @@ export default {
 				window.userLoggedIn = true
 				this.user = Object.assign(this.user, updatedUser)
 			}
-			console.log('updated user', this.user)
+		},
+
+		showWarning() {
+			this.showSnackbar = true
+			this.snackbarText = this.$t('validation.serverError')
 		}
 	}
 }
