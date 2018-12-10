@@ -1,6 +1,8 @@
 <template>
-  <v-container grid-list-md text-xs-center class="mt-5">
+  <v-container v-if='userLoggedIn == true' grid-list-md text-xs-center class="mt-5">
       <v-flex lg12>
+
+	  
         <v-text-field
           class="mx-3 mt-5"
           v-model="searchParams"
@@ -10,6 +12,8 @@
           @keyup.native.enter="searchMovies"
           @click:append-outer="searchMovies"
         ></v-text-field>
+
+
         <v-container grid-list-md>
           <v-layout row wrap class="mt-3">
             <v-flex v-for="(movie, index) in movies" :key='index' class="movie" xs12 md4 lg3>
@@ -63,14 +67,17 @@
         </v-container>
       </v-flex>
   </v-container>
+	<NotFound v-else />
 </template>
 
 <script>
-      import {HTTP} from '../http-common'
-      import setAuthorizationToken from '../utils/setAuthToken'
+    import {HTTP} from '../http-common'
+    import setAuthorizationToken from '../utils/setAuthToken'
+	import NotFound from './NotFound'
 
   export default {
     name: 'Movies',
+	components: { NotFound },
     props: ['user', 'userLoggedIn', 'locale', 'token'],
     data () {
       return {
@@ -129,7 +136,7 @@
       }
     },
     mounted () {
-      this.requestMovies()
+        this.requestMovies()
     },
   }
 </script>

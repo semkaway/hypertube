@@ -1,5 +1,5 @@
 <template>
-	<v-container  class="mt-5">
+	<v-container v-if='userLoggedIn == true' class="mt-5">
 
  		<Loader :run='runLoader'/>
 		<Snackbar :show='showSnackbar' :text='snackbarText' :y='snackbarY' :x='snackbarX' v-on:closeSnackbar='showSnackbar = false' :timeout='snackbarTimeout'/>
@@ -264,6 +264,7 @@
     		</v-expansion-panel-content>
   		</v-expansion-panel>
 	</v-container>
+	<NotFound v-else />
 </template>
 
 
@@ -278,11 +279,12 @@ import Loader from './Loader'
 import Snackbar from './Snackbar'
 import ModalWindow from './ModalWindow'
 import imageCompression from 'browser-image-compression'
+import NotFound from './NotFound'
 
 export default {
 	name: 'UserSettings',
-	props: ['locale', 'user'],
-	components: { Loader, Snackbar, ModalWindow },
+	props: ['locale', 'user', 'userLoggedIn'],
+	components: { Loader, Snackbar, ModalWindow, NotFound },
 	data () {
 		return {
 			runLoader: false,
@@ -780,7 +782,7 @@ export default {
 					this.$emit('userLoggedIn', true)
 					this.$emit('setUser', result.data)
 				}
-			}).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
+			}).catch((err) => { setAuthorizationToken(false);})
 	},
 
 

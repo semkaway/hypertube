@@ -1,5 +1,5 @@
 <template>
- <div class="mt-5">
+ <div v-if='userLoggedIn == true' class="mt-5">
    <Loader :run='value'/>
   <v-container fluid grid-list-md class="mt-3 white">
     <v-layout row wrap>
@@ -141,7 +141,7 @@
     </v-layout>
   </v-container>
   </div>
-
+  <NotFound v-else />
 </template>
 
 <script>
@@ -150,11 +150,12 @@ import {HTTP} from '../http-common';
 import axios from 'axios'
 import Loader from './Loader'
 import Comments from './Comments'
+import NotFound from './NotFound'
 
 export default {
   name: 'Movie',
-  components: { Loader, Comments },
-  props: ['user'],
+  components: { Loader, Comments, NotFound },
+  props: ['user', 'userLoggedIn'],
   data () {
     return {
         token: '',
