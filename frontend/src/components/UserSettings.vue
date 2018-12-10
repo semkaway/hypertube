@@ -587,7 +587,6 @@ export default {
 		},
 
 		changeEmail(section) {
-			// console.log(this.settingsUser)
 			if (section === 'newEmail') {
 				if (!this.arrayOfNewEmailErrors.length && this.newEmail.length && !this.arrayOfPasswordForNewEmailErrors.length && this.passwordForNewEmail.length) {
 					this.runLoader = true

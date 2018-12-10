@@ -6,6 +6,7 @@ import Movie from '@/components/Movie'
 import Activation from '@/components/Activation'
 import UserProfile from '@/components/UserProfile'
 import UserSettings from '@/components/UserSettings'
+import NotFound from '@/components/NotFound'
 import oauth from '@/components/Oauth'
 
 Vue.use(Router)
@@ -23,11 +24,13 @@ let router = new Router({
 			path: '/movies',
 			component: Movies,
 			props: true,
+			meta: {requiresAuth: true}
 		},
 		{
 			path: '/movies/:id',
 			component: Movie,
 			props: true,
+			meta: {requiresAuth: true}
 		},
 		{
 			path: '/activate',
@@ -50,14 +53,41 @@ let router = new Router({
 			name: 'userProfile',
 			props: true,
 			component: UserProfile,
+			meta: {requiresAuth: true}
 		},
 		{
 			path: '/user/settings',
 			name: 'userSettings',
 			component: UserSettings,
 			props: true,
+			meta: {requiresAuth: true}
 		},
+		{
+			path: '/404',
+			name: 'NotFound',
+			component: NotFound,
+			props: true
+		},
+		{ 	path: '*', 
+			redirect: '/404' 
+		}, 
 	]
 })
+
+router.beforeEach((to, fromRoute, next) => {
+	if (to.matched.some(record => record.meta.requiresAuth)) {
+	  if (!window.userLoggedIn) {
+		  if (to.path === '/movies' || to.path.slice(0, 8) === '/movies/' || to.path === '/activate/' ||  to.path.slice(0, 9) === '/profile/' || to.path === '/user/settings') {
+				next({ path: '/404' })
+		  } else {
+				next()
+		  }
+	  } else {
+		next()
+	  }
+	} else {
+	  next()
+	}
+  })
 
 export default router

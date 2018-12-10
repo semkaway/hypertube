@@ -56,6 +56,7 @@ export default {
 								setAuthorizationToken(false)
 								this.$router.push('/')
 							} else {
+								window.userLoggedIn = true
 								this.$emit('setTokenAndLocale', {token: response.data.token, locale: response.data.locale })
 								this.$emit('updateUser', result.data)
 							}

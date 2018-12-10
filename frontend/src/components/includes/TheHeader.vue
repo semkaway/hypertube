@@ -76,7 +76,6 @@
             if (target === 'logout') {
                 setAuthorizationToken(false)
                 this.$router.push('/')
-                // this.userLoggedIn = false
                 this.$emit('setUserStatus', false)
             } else if (target === 'settings') {
                 this.$router.push('/user/settings')
@@ -109,13 +108,11 @@
         requestUser () {
             HTTP.get('user/data/').then(result => {
                 if (result.data.success == false) {
-                    // this.userLoggedIn = false
                     this.$emit('setUserStatus', false)
                     setAuthorizationToken(false)
                     this.$router.push('/')
                 } else {
                     this.$emit('setUser', result.data)
-                    // this.userLoggedIn = true
                     this.$emit('setUserStatus', true)
                 }
 		    }).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
@@ -133,19 +130,21 @@
         },
 
         setUser(response) {
-            // this.userLoggedIn = true
-               this.$emit('setUserStatus', true)
+            this.$emit('setUserStatus', true)
             this.requestUser()
             this.$emit('setTokenAndLocale', response)
         },
 
         userLoggedOut() {
                this.$emit('setUserStatus', false)
-            //  this.userLoggedIn = false
         },
 
         goToHomePage() {
-            this.$router.push('/movies')
+            if (this.userLoggedIn) {
+                this.$router.push('/movies')
+            } else {
+                this.$router.push('/')
+            }
         }
 
     },
@@ -191,7 +190,6 @@
         },
 
         userLoggedIn () {
-            console.log('update user logged in')
             this.headerUserLoggedIn = this.userLoggedIn
         },
 

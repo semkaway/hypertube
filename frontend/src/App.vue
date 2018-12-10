@@ -55,6 +55,7 @@ export default {
 
 		setUserStatus (status) {
 			this.userLoggedIn = status
+			window.userLoggedIn = status
 		},
 
 		setUser (response) {
@@ -65,10 +66,12 @@ export default {
 
 		updateUser(updatedUser) {
 			if (!updatedUser) {
+				window.userLoggedIn = false
 				this.userLoggedIn = false
 				this.user = {}
 			} else {
 				this.userLoggedIn = true
+				window.userLoggedIn = true
 				this.user = Object.assign(this.user, updatedUser)
 			}
 			console.log('updated user', this.user)

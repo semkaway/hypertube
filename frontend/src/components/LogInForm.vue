@@ -174,11 +174,10 @@ export default {
 					})
 			} else {
 				this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
-			}}).catch((err) => { 
+			}}).catch((err) => {
 				this.arrayOfEmailErrors = [this.$t('registration.error_alert')] 
 			})
 		}
-        console.log('send email', this.email)
     },
 
     loginViaIntra() {
@@ -208,6 +207,7 @@ export default {
 					localStorage.locale = response.data.locale
 					localStorage.token = response.data.token
 					setAuthorizationToken(response.data.token)
+					window.userLoggedIn = true
 					this.$emit('setUser', {token: response.data.token, locale: response.data.locale})
 				} else {
 					if (response.data.message == "Invalid email") {

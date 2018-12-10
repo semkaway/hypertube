@@ -107,16 +107,16 @@
 				this.requestMovies()
 			}
         },
-        created () {
-        	this.requestMovies()
-          	window.addEventListener('scroll', this.handleScroll);
+        mounted () {
+			this.requestMovies()
+          	window.addEventListener('scroll', this.handleScroll)
         },
 
         destroyed () {
           window.removeEventListener('scroll', this.handleScroll);
-        }
+        },
+		
     }
-  // }
 </script>
 
 <style scoped>
