@@ -118,47 +118,51 @@
 						</form>
 
 						<!-- CHANGE PASSWORD -->
-						<form v-if='section.name == "password"'>
-							<v-text-field
-								class='ml-3'
-								:label="$t('profile.settings.old_password')"
-								@keyup.native='validatePassword'
-								:error-messages="arrayOfPasswordErrors" 
-								name='password'
-								v-model="password" 
-								color="grey darken-1"
-								:type="showPassword ? 'text' : 'password'" 
-								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
-								@click:append="showPassword = !showPassword"
-								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
-							</v-text-field>
-							<v-text-field
-								class='ml-3'
-								:hint="$t('validation.passwordHint')"
-								:label="$t('profile.settings.new_password')"
-								@keyup.native='validatePassword'
-								:error-messages="arrayOfNewPasswordErrors" 
-								v-model="newPassword"
-								ref="newPasswordRef"
-								:type="showPassword ? 'text' : 'password'" 
-								color="grey darken-1"
-								name='newPassword'
-								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
-							</v-text-field>
-							<v-text-field
-								class='ml-3'
-								:label="$t('profile.settings.new_password_repeat')"
-								@keyup.native='validatePassword'
-								:error-messages="arrayOfRepeatPasswordErrors" 
-								v-model="repeatNewPassword"
-								:type="showPassword ? 'text' : 'password'" 
-								color="grey darken-1"
-								name='repeatNewPassword'
-								v-validate="'required|confirmed:newPasswordRef'">
-							</v-text-field>
+						<div v-if='section.name == "password"'>
+							<form>
+								<v-text-field
+									class='ml-3'
+									:label="$t('profile.settings.old_password')"
+									@keyup.native='validatePassword'
+									:error-messages="arrayOfPasswordErrors" 
+									name='password'
+									v-model="password" 
+									color="grey darken-1"
+									:type="showPassword ? 'text' : 'password'" 
+									:append-icon="showPassword ? 'visibility_off' : 'visibility'"
+									@click:append="showPassword = !showPassword"
+									v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
+								</v-text-field>
+							</form>
+							<form>
+								<v-text-field
+									class='ml-3'
+									:hint="$t('validation.passwordHint')"
+									:label="$t('profile.settings.new_password')"
+									@keyup.native='validatePassword'
+									:error-messages="arrayOfNewPasswordErrors" 
+									v-model="newPassword"
+									ref="newPasswordRef"
+									:type="showPassword ? 'text' : 'password'" 
+									color="grey darken-1"
+									name='newPassword'
+									v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
+								</v-text-field>
+								<v-text-field
+									class='ml-3'
+									:label="$t('profile.settings.new_password_repeat')"
+									@keyup.native='validatePassword'
+									:error-messages="arrayOfRepeatPasswordErrors" 
+									v-model="repeatNewPassword"
+									:type="showPassword ? 'text' : 'password'" 
+									color="grey darken-1"
+									name='repeatNewPassword'
+									v-validate="'required|confirmed:newPasswordRef'">
+								</v-text-field>
+							</form>
 							<v-btn @click='changePassword' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
 							<v-btn @click='clearFields(section.name)' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
-						</form>
+						</div>
 
 
 						<!-- CHANGE IMAGE -->
@@ -342,11 +346,11 @@ export default {
 		},
 
 		addIntraMedia() {
-			console.log('intra click')
+			window.location.href = 'https://api.intra.42.fr/oauth/authorize?client_id=5b2ec6bcbe8d7d9fa32d6129854aa36ea010afa550ec096b3733bc8cf388d0a7&redirect_uri=http://localhost:8084/intra&response_type=code'
 		},
 
 		addGitMedia() {
-			console.log('git click')
+			window.location.href = 'https://github.com/login/oauth/authorize?client_id=1dfde4107005f390f4ff'
 		},
 
 		getSections(password, email, pendingEmail) {
@@ -388,7 +392,7 @@ export default {
 		},
 
 		validatePassword(e) {
-			const fieldName =  e.target.attributes.name.nodeValue
+			const fieldName = e.target.attributes.name.nodeValue
 			if (fieldName === 'password') {
 				this.arrayOfPasswordErrors = this.errors.has('password') ? this.password.length ? [this.$t('validation.wrongFormat')] : [this.$t('validation.required')] : []
 			} else if (fieldName === 'newPassword') {
