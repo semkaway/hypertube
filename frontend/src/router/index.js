@@ -56,7 +56,7 @@ let router = new Router({
 			meta: {requiresAuth: true}
 		},
 		{
-			path: '/user/settings',
+			path: '/settings',
 			name: 'userSettings',
 			component: UserSettings,
 			props: true,
@@ -68,9 +68,9 @@ let router = new Router({
 			component: NotFound,
 			props: true
 		},
-		{ 	path: '*', 
-			redirect: '/404' 
-		}, 
+		{ 	path: '*',
+			redirect: '/404'
+		},
 	]
 })
 
