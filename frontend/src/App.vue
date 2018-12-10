@@ -25,6 +25,7 @@
 
 import AppHeader from './components/includes/TheHeader'
 import AppFooter from './components/includes/TheFooter'
+const defaultImage = 'http://www.studioclio.com.br/sites/default/files/imagens/evento/pitagoras_0.jpg'
 
 
 export default {
@@ -58,7 +59,7 @@ export default {
 
 		setUser (response) {
 			let { email, first, last, image, user_id, pendingEmail, password, intra, github } = response
-			if (!image) image = ''
+			if (!image) image = defaultImage
 			this.user = { email, first, last, image, user_id, pendingEmail, password, intra, github }
 		},
 
