@@ -68,16 +68,10 @@ let router = new Router({
 			component: NotFound,
 			props: true
 		},
-<<<<<<< HEAD
-		{ 	path: '*',
-			redirect: '/404'
-		},
-=======
 		// {
 		// 	path: '*',
-		// 	redirect: '/404' 
-		// }, 
->>>>>>> c41bff1c56bb848e536a9f1d1e3c7a91a74ee58f
+		// 	redirect: '/404'
+		// },
 	]
 })
 
@@ -89,7 +83,7 @@ let router = new Router({
 // 				// next({ path: '/404' })
 // 				// this.router.push('/404')
 // 				console.log('redirect to 404 because user.loggedin ? ', window.userLoggedIn)
-// 		  } 
+// 		  }
 // 	  }
 // 	}
 //   })

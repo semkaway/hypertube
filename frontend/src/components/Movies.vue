@@ -51,23 +51,23 @@
                  <p class="mt-2 subheading">{{movie.title}}</p>
                 </router-link>
             </v-flex>
-            <v-flex class="text-xs-center">
-            <v-btn  v-if="page < totalPages"
-                    depressed
-                    color="grey"
-                    class="white--text mt-3"
-                    @click="showMore">{{$t('button.showMore')}}
-                  </v-btn>
-            </v-flex>
           </v-layout>
         </v-container>
+        <v-flex class="text-xs-center">
+        <v-btn  v-if="page < totalPages"
+                depressed
+                color="grey"
+                class="white--text mt-3"
+                @click="showMore">{{$t('button.showMore')}}
+              </v-btn>
+        </v-flex>
       </v-flex>
   </v-container>
 </template>
 
 <script>
-      import {HTTP} from '../http-common'
-      import setAuthorizationToken from '../utils/setAuthToken'
+  import {HTTP} from '../http-common';
+  import setAuthorizationToken from '../utils/setAuthToken'
 
   export default {
     name: 'Movies',
@@ -109,13 +109,10 @@
         })
       },
       showMore () {
-        console.log(this.totalPages)
-        if (this.page + 1 < this.totalPages) {
+        if (this.page + 1 < this.totalPages)
           this.page = this.page + 1;
-        } else {
+        else
           this.page = this.totalPages;
-        }
-
         this.requestMovies()
       },
       searchMovies() {
