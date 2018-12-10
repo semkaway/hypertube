@@ -26,7 +26,7 @@ export const change = model => (req, res, next) => {
             user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
             user.resetPasswordToken = null;
             user.save().then(() => res.status(201).json({"success": true}))
-                .catch(error => next(error));
+                .catch(next);
         })
-        .catch(error => next(error));
+        .catch(next);
 };

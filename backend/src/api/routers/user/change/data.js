@@ -48,5 +48,5 @@ export const data = (req, res, next) => {
     req.user.last  = last !== undefined ? last : req.user.last;
     req.user.save()
         .then(() => res.status(200).json({"success": true}))
-        .catch(error => next(error));
+        .catch(next);
 };

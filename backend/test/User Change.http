@@ -42,7 +42,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDEx
 
 PUT http://localhost:3000/api/user/change/data
 Content-Type: application/json
-Authorization:totototo
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDExZDA4MjhiYzE3NyIsImlhdCI6MTU0MzI0NjUwMX0.EwyKIdcBCLAbmSgLdjMeeN8WOXUrqBGah4f1oPQC_dU
 
 {
   "first": "John",

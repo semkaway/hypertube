@@ -10,13 +10,13 @@
 ###
 
 GET http://localhost:3000/api/user/data
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmE5ODFhZTc3NDExZDA4MjhiYzE3NyIsImlhdCI6MTU0MzI0NjUwMX0.EwyKIdcBCLAbmSgLdjMeeN8WOXUrqBGah4f1oPQC_dU
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMGUzYzYwN2ZmNGE1MDFlMzljNTNlNyIsImlhdCI6MTU0NDQzNzM5MX0.AKwnh5_7Ql38px2NqITRbE4xrGrXHeSvIlCUspUM90U
 Accept: application/json
 
 ###
 
-GET http://localhost:3000/api/user/commented-movies/5bfd6fde396acc32f1e9d92d
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmQ2ZmRlMzk2YWNjMzJmMWU5ZDkyZCIsImlhdCI6MTU0MzMzNTkwMn0.VLqB_hoLqYR8X7MIm8xnv5zX-hi6tzVLJYtJ7TXWrI4
+GET http://localhost:3000/api/user/commented-movies/5c0e3c607ff4a501e39c53e7
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMGUzYzYwN2ZmNGE1MDFlMzljNTNlNyIsImlhdCI6MTU0NDQzNzM5MX0.AKwnh5_7Ql38px2NqITRbE4xrGrXHeSvIlCUspUM90U
 Accept: application/json
 
 ###

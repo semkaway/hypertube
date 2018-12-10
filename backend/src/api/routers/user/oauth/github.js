@@ -48,8 +48,8 @@ export const github = model => (req, res, next) => {
                             'image': response.data.avatar_url,
                         })
                             .then(user => generateToken(res, secret, user))
-                            .catch(error => next(error));
-                    }).catch(error => next(error)))
-                .catch(error => next(error))
-        }).catch(error => next(error));
+                            .catch(next);
+                    }).catch(next))
+                .catch(next)
+        }).catch(next);
 };

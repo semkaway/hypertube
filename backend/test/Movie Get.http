@@ -10,7 +10,7 @@
 ###
 
 GET http://localhost:3000/api/movie/watched
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmVkMjVjNjY5OTdjMmVjMzU0NTBjYyIsImlhdCI6MTU0MzQyNjY1Mn0.niSvY99vpQYXzNCiI_r0OtyIZ0LIXcltzEQz6QohitE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMGUzYzYwN2ZmNGE1MDFlMzljNTNlNyIsImlhdCI6MTU0NDQzNzM5MX0.AKwnh5_7Ql38px2NqITRbE4xrGrXHeSvIlCUspUM90U
 Accept: application/json
 
 ###
@@ -21,7 +21,7 @@ Accept: application/json
 
 ###
 
-GET http://localhost:3000/api/movie/stream/143?quality=720p&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViZmVkMjVjNjY5OTdjMmVjMzU0NTBjYyIsImlhdCI6MTU0MzQyNjY1Mn0.niSvY99vpQYXzNCiI_r0OtyIZ0LIXcltzEQz6QohitE
+GET http://localhost:3000/api/movie/stream/123?quality=720p&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMGUzYzYwN2ZmNGE1MDFlMzljNTNlNyIsImlhdCI6MTU0NDQzNzM5MX0.AKwnh5_7Ql38px2NqITRbE4xrGrXHeSvIlCUspUM90U
 Accept: application/json
 
 ###

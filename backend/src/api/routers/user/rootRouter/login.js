@@ -33,5 +33,5 @@ export const login = model => (req, res, next) => {
                 "locale": user.locale
             });
         })
-        .catch(error => next(error));
+        .catch(next);
 };

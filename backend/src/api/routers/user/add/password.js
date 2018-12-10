@@ -19,5 +19,5 @@ export const password = (req, res, next) => {
     req.user.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     req.user.save()
         .then(() => res.status(201).json({"success": true}))
-        .catch(error => next(error));
+        .catch(next);
 };

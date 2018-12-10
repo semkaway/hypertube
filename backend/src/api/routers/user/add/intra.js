@@ -31,9 +31,9 @@ export const intra = model => (req, res, next) => {
                     req.user.intraId = response.data.id;
                     req.user.save()
                         .then(() => res.status(201).json({"success": true}))
-                        .catch(error => next(error));
+                        .catch(next);
                 })
-                .catch(error => next(error)))
-            .catch(error => next(error)))
-        .catch(error => next(error));
+                .catch(next))
+            .catch(next))
+        .catch(next);
 };

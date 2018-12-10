@@ -17,8 +17,8 @@ const saveUser = (model, req, res, next) => {
                         "success": true,
                         "message": "Activation was sent to your email"
                     }))
-                .catch(error => next(error)))
-        .catch(error => next(error));
+                .catch(next))
+        .catch(next);
 };
 
 export const createUser = model => (req, res, next) => {
@@ -37,5 +37,5 @@ export const createUser = model => (req, res, next) => {
                 "message": "User with this email already exist"
             });
         })
-        .catch(error => next(error));
+        .catch(next);
 };

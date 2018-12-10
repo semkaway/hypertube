@@ -6,5 +6,5 @@ export const checkEmail = model => (req, res, next) => {
         ]
     })
         .then(user => res.status(200).json({"exist": user !== null}))
-        .catch(error => next(error));
+        .catch(next);
 };

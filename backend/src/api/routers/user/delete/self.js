@@ -10,5 +10,5 @@ export const self = (req, res, next) => {
     req.user.comments           = null;
     req.user.save()
         .then(() => res.status(201).json({"success": true}))
-        .catch(error => next(error));
+        .catch(next);
 };

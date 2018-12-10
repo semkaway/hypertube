@@ -24,8 +24,8 @@ export const tokenGenerate = model => (req, res, next) => {
                         "success": true,
                         "message": "To reset password check your mail"
                     }))
-                    .catch(error => next(error)))
-                .catch(error => next(error))
+                    .catch(next))
+                .catch(next)
         })
-        .catch(error => next(error));
+        .catch(next);
 };

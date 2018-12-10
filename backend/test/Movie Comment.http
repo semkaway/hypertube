@@ -11,10 +11,10 @@
 
 POST http://localhost:3000/api/movie/comment
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMDAwNTdjNmVjYzMwMzRjOGUyZDNhMyIsImlhdCI6MTU0MzU4NzkzNX0.40wO2VgEzUTEd2eJM-NuqNFiMmzPJFM4-K-W0Tgu-tE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjMGUzYzYwN2ZmNGE1MDFlMzljNTNlNyIsImlhdCI6MTU0NDQzNzM5MX0.AKwnh5_7Ql38px2NqITRbE4xrGrXHeSvIlCUspUM90U
 
 {
-  "movieId": "123",
+  "movieId": "125",
   "text": "I like this film"
 }
 

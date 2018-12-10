@@ -59,12 +59,12 @@ export const stream = model => (req, res, next) => {
                                 user.markModified('watchedMovies');
                                 user.save()
                                     .then(() => startStreaming(req, res, magnet))
-                                    .catch(error => next(error));
+                                    .catch(next);
                             })
-                            .catch(error => next(error))
+                            .catch(next)
                     )
-                    .catch(error => next(error));
+                    .catch(next);
             })
-            .catch(error => next(error));
+            .catch(next);
     });
 };
