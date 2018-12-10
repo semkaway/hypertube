@@ -78,7 +78,7 @@
                 this.$router.push('/')
                 this.$emit('setUserStatus', false)
             } else if (target === 'settings') {
-                this.$router.push('/user/settings')
+                this.$router.push('/settings')
             } else if (target === 'profile') {
                 this.$router.push('/user')
             }

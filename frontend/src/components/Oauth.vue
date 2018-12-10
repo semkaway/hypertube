@@ -33,12 +33,12 @@ export default {
 					if (response.data.success == true) {
 						console.log('all good')
 						this.$emit('userAdded')
-						this.$router.push('/user/settings')
+						this.$router.push('/settings')
 					} else if (response.data.message == "Invalid token") {
 						setAuthorizationToken(false)
 						this.$router.push('/')
 					} else if (response.data.message == "User exist") {
-						this.$router.push('/user/settings')
+						this.$router.push('/settings')
 						this.$emit('userAlreadyExists')
 					}
 					this.runLoader = false
@@ -82,7 +82,7 @@ export default {
 			if (localStorage.token === '') {
 				this.$router.push('login?fail=true')
 			} else {
-				this.$router.push('user/settings')
+				this.$router.push('/settings')
 			}
 			this.runLoader = false
       } else {

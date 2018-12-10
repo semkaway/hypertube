@@ -33,7 +33,7 @@
                     this.$emit('userLoggedOut')
                 } else if (target === 'settings') {
                     console.log('push settings =>')
-                    this.$router.push('/user/settings')
+                    this.$router.push('/settings')
                 } else if (target === 'profile') {
                     this.$router.push('/user')
                 }

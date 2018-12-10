@@ -56,7 +56,7 @@ let router = new Router({
 			// meta: {requiresAuth: true}
 		},
 		{
-			path: '/user/settings',
+			path: '/settings',
 			name: 'userSettings',
 			component: UserSettings,
 			props: true,
@@ -79,7 +79,7 @@ let router = new Router({
 // 	if (to.matched.some(record => record.meta.requiresAuth)) {
 // 		console.log('window.userLoggedIn', window.userLoggedIn)
 // 	  if (!window.userLoggedIn) {
-// 		  if (to.path === '/movies' || to.path.slice(0, 8) === '/movies/' || to.path === '/activate/' ||  to.path.slice(0, 9) === '/profile/' || to.path === '/user/settings') {
+// 		  if (to.path === '/movies' || to.path.slice(0, 8) === '/movies/' || to.path === '/activate/' ||  to.path.slice(0, 9) === '/profile/' || to.path === '/settings') {
 // 				// next({ path: '/404' })
 // 				// this.router.push('/404')
 // 				console.log('redirect to 404 because user.loggedin ? ', window.userLoggedIn)
