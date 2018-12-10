@@ -23,7 +23,7 @@
         </v-flex>
         <v-flex xs8 sm11 md11 lg11>
           <div>
-            <router-link :to="'/profile/'+comment.user_id" class="mr-2 font-weight-black">{{comment.first}}</router-link>
+            <router-link :to="'/user/'+comment.user_id" class="mr-2 font-weight-black">{{comment.first}}</router-link>
             <span class="caption">{{comment.date | date}}</span>
             <div>{{comment.text}}</div>
           </div>

@@ -11,10 +11,19 @@
               <v-layout shrink>
                 <v-flex shrink>
                   <v-avatar size="90" tile style="border: 8px solid white; border-radius: 50%;" class="p-5 mb-3 ml-3">
-                    <img  class='rounded round-img'
+                    <v-img  class='rounded round-img'
                           style="position: absolute;"
                           :aspect-ratio="16/9"
                           :src="myUser.image">
+                          <v-layout slot="placeholder"
+                                    fill-height
+                                    align-center
+                                    justify-center
+                                    ma-0
+                                    >
+                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                          </v-layout>
+                    </v-img>
                   </v-avatar>
                 </v-flex>
                 <v-flex shrink>
@@ -81,7 +90,7 @@ export default {
         							}
             				}
                     this.watchedMovies = result.data.movies
-                    this.totalNumberOfwatchedMovies = this.watchedMovies.length
+                    this.totalNumberOfWatchedMovies = this.watchedMovies.length
                   } else if (result.data.success == false) {
                     setAuthorizationToken(false)
                     this.$router.push('/')

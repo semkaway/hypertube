@@ -75,14 +75,12 @@ export default {
     methods: {
         showPrevious() {
           if (this.endMoviesToShow == this.totalNumberOfMovies) {
-            console.log('yo,here')
             this.startMoviesToShow -= 4
             this.endMoviesToShow -= this.totalNumberOfMovies % 4
           } else {
             this.startMoviesToShow -= 4
             this.endMoviesToShow -= 4
           }
-          console.log('mod: ', this.totalNumberOfMovies % 4)
         },
         showNext() {
           if (this.endMoviesToShow + 4 > this.totalNumberOfMovies) {
@@ -92,8 +90,6 @@ export default {
             this.startMoviesToShow += 4
             this.endMoviesToShow += 4
           }
-          console.log('this.totalNumberOfMovies: ', this.totalNumberOfMovies)
-          console.log('showing next')
         },
         addMore() {
           if (this.endMoviesToShow + 4 > this.totalNumberOfMovies) {
