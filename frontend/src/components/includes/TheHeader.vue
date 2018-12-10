@@ -4,7 +4,7 @@
             <v-btn flat  @click='goToHomePage'> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
             <v-btn v-if='userLoggedIn === false' flat @click="toggleForm"> <v-icon>exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
         </v-toolbar-items>
-        <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:setUser='setUser' v-bind:locale='headerLocale'/>
+        <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:runLoader='runLoader = true' v-on:setUser='setUser' v-bind:locale='headerLocale'/>
         <v-spacer></v-spacer>
         <v-toolbar-items v-if='userLoggedIn === true'>
             <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
@@ -90,25 +90,25 @@
             localStorage.locale = locale
             this.$emit('setLocale', locale)
             if (localStorage.token != '') {
-            HTTP.put('user/change/locale', {
-                'token': localStorage.token,
-                'locale': locale
-            }).then(result => {
-                if (result.data.success == false) {
-                    setAuthorizationToken(false)
-                    this.$router.push('/')
-                }
-            }).catch((err) => {
-                console.log("server error")
-                console.log(err.response.data.error.message)
-            })
+                HTTP.put('user/change/locale', {
+                    'token': localStorage.token,
+                    'locale': locale
+                }).then(result => {
+                    if (result.data.success == false) {
+                        setAuthorizationToken(false)
+                        this.$router.push('/')
+                    }
+                }).catch((err) => {
+                    console.log("server error")
+                    console.log(err.response.data.error.message)
+                })
             }
         },
 
         requestUser () {
+            console.log('request !')
             HTTP.get('user/data/').then(result => {
                 if (result.data.success == false) {
-                    this.$emit('setUserStatus', false)
                     setAuthorizationToken(false)
                     this.$router.push('/')
                 } else {
@@ -130,7 +130,6 @@
         },
 
         setUser(response) {
-            this.$emit('setUserStatus', true)
             this.requestUser()
             this.$emit('setTokenAndLocale', response)
         },
@@ -152,7 +151,7 @@
     created () {
         this.fetchData()
         if (this.token) {
-            this.requestUser() 
+           this.requestUser() 
         }
     },
 

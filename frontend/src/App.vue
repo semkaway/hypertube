@@ -18,6 +18,8 @@
 			v-on:setLocale='setLocale'
 			v-on:updateUser='updateUser'
 			v-on:setTokenAndLocale='setToken'
+			v-bind:userLoggedIn='userLoggedIn'
+			v-on:userAdded='userAdded'
 			v-on:userAlreadyExists='showWarning'
 		/>
 	</v-app>
@@ -29,7 +31,6 @@ import AppHeader from './components/includes/TheHeader'
 import AppFooter from './components/includes/TheFooter'
 import Snackbar from './components/Snackbar'
 const defaultImage = 'http://www.studioclio.com.br/sites/default/files/imagens/evento/pitagoras_0.jpg'
-
 
 export default {
 	name: 'App',
@@ -61,7 +62,6 @@ export default {
 
 		setUserStatus (status) {
 			this.userLoggedIn = status
-			window.userLoggedIn = status
 		},
 
 		setUser (response) {
@@ -72,14 +72,17 @@ export default {
 
 		updateUser(updatedUser) {
 			if (!updatedUser) {
-				window.userLoggedIn = false
 				this.userLoggedIn = false
 				this.user = {}
 			} else {
 				this.userLoggedIn = true
-				window.userLoggedIn = true
 				this.user = Object.assign(this.user, updatedUser)
 			}
+		},
+
+		userAdded() {
+			this.showSnackbar = true
+			this.snackbarText = this.$t('profile.success_alert')
 		},
 
 		showWarning() {

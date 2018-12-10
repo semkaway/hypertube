@@ -47,7 +47,7 @@
 </template>
 
 <script>
-      import {HTTP} from '../http-common';
+      import {HTTP} from '../http-common'
       import setAuthorizationToken from '../utils/setAuthToken'
 
     export default {
@@ -63,6 +63,7 @@
           }
         },
         methods: {
+          
 			requestMovies() {
 				console.log('this.query + this.page =>', this.query + this.page)
 				HTTP.get(this.query + this.page).then(result => {
@@ -107,8 +108,9 @@
 				this.requestMovies()
 			}
         },
+
         mounted () {
-			this.requestMovies()
+			      this.requestMovies()
           	window.addEventListener('scroll', this.handleScroll)
         },
 
