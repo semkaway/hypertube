@@ -30,6 +30,7 @@ const messages = {
 			save: 'save',
 			delete: 'delete',
 			cancel: 'cancel',
+			close: 'close',
 			showMore: 'Show more'
 		},
 		home: {
@@ -97,7 +98,8 @@ const messages = {
 			success_alert: 'All good, your data was saved.',
 			error_pass_alert: 'Looks like your old password is incorrect.',
 			profile: {
-
+				commented: 'Commented movies',
+				watched: 'Watched movies'
 			},
 			settings: {
 				change_password: 'Change password',
@@ -164,6 +166,7 @@ const messages = {
 			save: 'сохранить',
 			delete: 'удалить',
 			cancel: 'отмена',
+			close: 'закрыть',
 			showMore: 'Показать еще'
 		},
 		home: {
@@ -231,7 +234,8 @@ const messages = {
 			success_alert: 'Ваши данные были сохранены.',
 			error_pass_alert: 'Похоже, Вы неверно ввели старый пароль.',
 			profile: {
-
+				commented: 'Прокомментированные фильмы',
+				watched: 'Просмотренные фильмы'
 			},
 			settings: {
 				change_password: 'Изменить пароль',
@@ -297,6 +301,7 @@ const messages = {
 			save: 'зберегти',
 			delete: 'видалити',
 			cancel: 'скасувати',
+			close: 'закрити',
 			showMore: 'Показати ще'
 		},
 		home: {
@@ -364,7 +369,8 @@ const messages = {
 			success_alert: 'Ваші дані було збережено.',
 			error_pass_alert: 'Здається, Ви неправильно ввели старий пароль.',
 			profile: {
-
+				commented: 'Прокоментовані фільми',
+				watched: 'Переглянуті фільми'
 			},
 			settings: {
 				change_password: 'Змінити пароль',
