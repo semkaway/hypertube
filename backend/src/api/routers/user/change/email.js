@@ -44,8 +44,8 @@ export const email = model => (req, res, next) => {
                         "success": true,
                         "message": "Activation was sent to your new email"
                     }))
-                    .catch(error => next(error)))
-                .catch(error => next(error));
+                    .catch(next))
+                .catch(next);
         })
-        .catch(error => next(error));
+        .catch(next);
 };

@@ -9,5 +9,5 @@ export const commentedMovies = model => (req, res, next) => {
                 "movieIds": user.commentedIds
             })
         })
-        .catch(error => next(error));
+        .catch(next);
 };

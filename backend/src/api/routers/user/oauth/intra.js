@@ -45,9 +45,9 @@ export const intra = model => (req, res, next) => {
                         'image': response.data.image_url,
                     })
                         .then(user => generateToken(res, secret, user))
-                        .catch(error => next(error))
+                        .catch(next)
                 })
-                .catch(error => next(error)))
-            .catch(error => next(error)))
-        .catch(error => next(error));
+                .catch(next))
+            .catch(next))
+        .catch(next);
 };

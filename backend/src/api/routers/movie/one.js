@@ -43,7 +43,7 @@ export const one = model => (req, res, next) => {
                                 }
                             });
                         })
-                        .catch(error => next(error)))
-                .catch(error => next(error)))
-        .catch(error => next(error));
+                        .catch(next))
+                .catch(next))
+        .catch(next);
 };

@@ -28,6 +28,6 @@ export const email = (req, res, next) => {
                 "success": true,
                 "message": "Activation was sent to your email"
             }))
-            .catch(error => next(error)))
-        .catch(error => next(error));
+            .catch(next))
+        .catch(next);
 };

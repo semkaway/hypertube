@@ -32,7 +32,7 @@ export const activateUser = model => (req, res, next) => {
                     "success": true,
                     "message": "User activated"
                 }))
-                .catch(error => next(error));
+                .catch(next);
         })
-        .catch(error => next(error));
+        .catch(next);
 };

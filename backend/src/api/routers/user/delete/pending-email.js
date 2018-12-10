@@ -6,5 +6,5 @@ export const pendingEmail = (req, res, next) => {
     req.user.activationToken = null;
     req.user.save()
         .then(() => res.status(201).json({"success": true}))
-        .catch(error => next(error));
+        .catch(next);
 };

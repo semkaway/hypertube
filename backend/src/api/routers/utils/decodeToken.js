@@ -22,6 +22,6 @@ export const decodeToken = (req, res, next) => {
                 req.id = decoded.id;
                 next();
             })
-            .catch(error => next(error));
+            .catch(next);
     });
 };
