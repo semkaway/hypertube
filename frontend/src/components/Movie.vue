@@ -68,20 +68,19 @@
         <h1>{{movie.title}}</h1>
         <p class="subheading">{{movie.tagline}}</p>
         <v-card-text>{{movie.overview}}</v-card-text>
-        <vue-plyr ref="player">
+        <!-- <vue-plyr ref="player">
             <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
                 <source v-if="movieSource" :src="movieSource" type="video/mp4">
                 <!-- <source :src="movieSource" type="video/mp4"/> -->
-                <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.vtt" default>
-            </video>
-        </vue-plyr>
-        <!-- <div width="100%">
+                <!-- <track kind="captions" label="English" srclang="en" :src="movie.subtitle" default> -->
+            <!-- </video> -->
+        <!-- </vue-plyr> -->
+        <div width="100%">
           <video id="moviePlayer" ref="videoRef" width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
             <source v-if="movieSource" :src="movieSource" type="video/mp4">
-            <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.srt" default>
           Your browser does not support the video tag.
           </video>
-        </div> -->
+        </div>
         <comments :allComments="movie.comments"
                   :totalNumberOfComments="totalNumberOfComments"
                   @submit-comment="submitComment"></comments>
@@ -232,6 +231,7 @@ export default {
       HTTP
         .get('movie/one/'+this.$route.params.id)
         .then(result => {
+          console.log('result', result)
           if (result.data.success == true) {
             let movie = result.data.data
               for(var key in movie) {
@@ -286,6 +286,7 @@ export default {
               // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
               for(key in movie.torrent.torrents.en) {
                   moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
+                  moviePlayer.innerHTML += `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
                   // console.log(moviePlayer)
                   // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
                   // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
@@ -295,7 +296,6 @@ export default {
             this.comments = movie.comments
             this.totalNumberOfComments = movie.comments.length
             this.value = false
-            console.log(movie)
           } else if (result.data.success == false) {
 
           }
