@@ -36,6 +36,10 @@ const messages = {
 		home: {
 			title: 'home'
 		},
+		movies: {
+			notFound: 'Sorry, nothing was found :(',
+			search: 'Search'
+		},
 		registration: {
 			title: 'Registration',
 			first_name: 'First name',
@@ -172,6 +176,10 @@ const messages = {
 		home: {
 			title: 'Главная'
 		},
+		movies: {
+			notFound: 'Извините, мы ничего не нашли по Вашему запросу :(',
+			search: 'Поиск'
+		},
 		registration: {
 			title: "Регистрация",
 			first_name: 'Имя',
@@ -306,6 +314,10 @@ const messages = {
 		},
 		home: {
 			title: 'Головна'
+		},
+		movies: {
+			notFound: 'Вибачте, за Вашим запитом нічого не знайдено :(',
+			search: 'Пошук'
 		},
 		registration: {
 			title: "Реєстрація",
