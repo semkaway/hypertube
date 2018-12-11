@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { subtitle } from './subtitle'
 
 const getComments = (model, movieId) =>
     model.aggregate({$unwind: "$comments"},
@@ -27,22 +28,26 @@ const getMovieData = (locale, movieId) =>
 
 const getTorrents = imdb_id => axios.get('https://tv-v2.api-fetch.website/movie/' + imdb_id);
 
-export const one = model => (req, res, next) => {
+export const one = model => async (req, res, next) => {
     getComments(model, req.params.id)
         .then(comments =>
             getMovieData(req.user.locale, req.params.id)
                 .then(movie =>
                     getTorrents(movie.data.imdb_id)
-                        .then(torrent => {
-                            res.status(200).json({
-                                "success": true,
-                                "data": {
-                                    ...movie.data,
-                                    'torrent': torrent.data,
-                                    'comments': comments,
-                                }
-                            });
-                        })
+                        .then(torrent => 
+                            subtitle(movie.data.imdb_id, req.user.locale)
+                                .then(subtitle_file => {
+                                    res.status(200).json({
+                                        "success": true,
+                                        "data": {
+                                             ...movie.data,
+                                              'torrent': torrent.data,
+                                              'comments': comments,
+                                             'subtitle': subtitle_file,
+                                        }
+                                    });
+                                })
+                                .catch(next))
                         .catch(next))
                 .catch(next))
         .catch(next);

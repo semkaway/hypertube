@@ -68,36 +68,89 @@
         <h1>{{movie.title}}</h1>
         <p class="subheading">{{movie.tagline}}</p>
         <v-card-text>{{movie.overview}}</v-card-text>
-        <vue-plyr ref="player">
+        <!-- <vue-plyr ref="player">
             <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
                 <source v-if="movieSource" :src="movieSource" type="video/mp4">
                 <!-- <source :src="movieSource" type="video/mp4"/> -->
-                <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.vtt" default>
-            </video>
-        </vue-plyr>
-        <!-- <div width="100%">
+                <!-- <track kind="captions" label="English" srclang="en" :src="movie.subtitle" default> -->
+            <!-- </video> -->
+        <!-- </vue-plyr> -->
+        <div width="100%">
           <video id="moviePlayer" ref="videoRef" width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
             <source v-if="movieSource" :src="movieSource" type="video/mp4">
-            <track kind="captions" label="English" srclang="en" src="http://localhost:8013/tmp/hypertube/subtitle/Spider-Man.2002.720p.BluRay.DTS.x264-ESiR.ENG.srt" default>
           Your browser does not support the video tag.
           </video>
-        </div> -->
+        </div>
         <comments :allComments="movie.comments"
                   :totalNumberOfComments="totalNumberOfComments"
                   @submit-comment="submitComment"></comments>
       </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm6 md3 v-if="this.$i18n.locale === 'en'">
-        <v-list two-line>
-          <v-subheader>
-              {{$t('movie.crew')}}
-            </v-subheader>
-            <template v-for="crew in this.crew">
+        <v-card flat>
+          <v-list two-line>
+            <v-subheader>
+                {{$t('movie.crew')}}
+              </v-subheader>
+              <template v-for="crew in this.crew">
+                <v-list-tile>
+                  <v-list-tile-avatar v-if="crew.profile_path !== null"
+                                      size="55"
+                                      class="actorPicture mr-2"
+                                      :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+crew.profile_path + ')'}">
+                  </v-list-tile-avatar>
+
+                  <v-list-tile-avatar v-else
+                                      size="55"
+                                      class="actorPicture mr-2"
+                                      :style="{ 'background-image':`url('https://images.pexels.com/photos/1468389/pexels-photo-1468389.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+                  </v-list-tile-avatar>
+
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{crew.job}}</v-list-tile-title>
+                    <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+crew.name" target="_blank">{{crew.name}}</a></v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </template>
+            <v-divider inset></v-divider>
+            <v-subheader>
+                {{$t('movie.cast')}}
+              </v-subheader>
+            <template v-for="actor in this.actors">
               <v-list-tile>
-                <v-list-tile-avatar v-if="crew.profile_path !== null"
+                <v-list-tile-avatar v-if="actor.profile_path !== null"
                                     size="55"
                                     class="actorPicture mr-2"
-                                    :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+crew.profile_path + ')'}">
+                                    :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+actor.profile_path + ')'}">
+                </v-list-tile-avatar>
+
+                <v-list-tile-avatar v-else
+                                    size="55"
+                                    class="actorPicture mr-2"
+                                    :style="{ 'background-image':`url('https://images.pexels.com/photos/134/light-creative-abstract-colorful.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+                </v-list-tile-avatar>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{actor.character}}</v-list-tile-title>
+                  <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+actor.name" target="_blank">{{actor.name}}</a></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
+        </v-card>
+      </v-flex>
+      <v-flex d-flex xs12 sm6 md3 v-else>
+        <v-card flat>
+          <v-list two-line>
+            <v-subheader>
+              {{$t('movie.similar')}}
+            </v-subheader>
+            <template v-for="(similar,index) in this.similar">
+              <v-list-tile class="mt-2">
+                <v-list-tile-avatar v-if="similar.poster_path !== null"
+                                    size="55"
+                                    class="actorPicture mr-2"
+                                    :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+similar.poster_path + ')'}">
                 </v-list-tile-avatar>
 
                 <v-list-tile-avatar v-else
@@ -107,36 +160,14 @@
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>
-                  <v-list-tile-title>{{crew.job}}</v-list-tile-title>
-                  <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+crew.name" target="_blank">{{crew.name}}</a></v-list-tile-sub-title>
+                  <v-list-tile-title><router-link :to="'/movies/'+similar.id">{{similar.title}}</router-link></v-list-tile-title>
+                  <v-list-tile-sub-title>2018</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{similar.vote_average}}</v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
-          <v-divider inset></v-divider>
-          <v-subheader>
-              {{$t('movie.cast')}}
-            </v-subheader>
-          <template v-for="actor in this.actors">
-            <v-list-tile>
-              <v-list-tile-avatar v-if="actor.profile_path !== null"
-                                  size="55"
-                                  class="actorPicture mr-2"
-                                  :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+actor.profile_path + ')'}">
-              </v-list-tile-avatar>
-
-              <v-list-tile-avatar v-else
-                                  size="55"
-                                  class="actorPicture mr-2"
-                                  :style="{ 'background-image':`url('https://images.pexels.com/photos/134/light-creative-abstract-colorful.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
-              </v-list-tile-avatar>
-
-              <v-list-tile-content>
-                <v-list-tile-title>{{actor.character}}</v-list-tile-title>
-                <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+actor.name" target="_blank">{{actor.name}}</a></v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
+          </v-list>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -165,6 +196,7 @@ export default {
         genres: '',
         actors: [],
         crew: [],
+        similar: [],
         movieSource: '',
         progressColor: '#616161',
         totalNumberOfComments: 0
@@ -199,6 +231,7 @@ export default {
       HTTP
         .get('movie/one/'+this.$route.params.id)
         .then(result => {
+          console.log('result', result)
           if (result.data.success == true) {
             let movie = result.data.data
               for(var key in movie) {
@@ -241,6 +274,11 @@ export default {
                       }
                     }
                   }
+                  if (key == 'similar') {
+                    for (var j = 0; j < 10; j++) {
+                      this.similar.push(movie[key].results[j])
+                    }
+                  }
                 }
             this.movie = movie
             const moviePlayer = document.getElementById('moviePlayer')
@@ -248,6 +286,7 @@ export default {
               // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
               for(key in movie.torrent.torrents.en) {
                   moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
+                  moviePlayer.innerHTML += `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
                   // console.log(moviePlayer)
                   // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
                   // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
@@ -257,7 +296,6 @@ export default {
             this.comments = movie.comments
             this.totalNumberOfComments = movie.comments.length
             this.value = false
-            console.log(movie)
           } else if (result.data.success == false) {
 
           }

@@ -157,6 +157,7 @@ const messages = {
 			year: 'Year',
 			crew: 'Crew',
 			cast: 'Cast',
+			similar: 'Similar movies',
 			newComment: 'New comment'
 		}
 	},
@@ -317,6 +318,7 @@ const messages = {
 			year: 'Год',
 			crew: 'Команда',
 			cast: 'Актеры',
+			similar: 'Похожие фильмы',
 			newComment: 'Новый комментарий'
 		}
 	},
@@ -477,6 +479,7 @@ const messages = {
 			year: 'Рік',
 			crew: 'Команда',
 			cast: 'Актори',
+			similar: 'Схожі фільми',
 			newComment: 'Новий коментар',
 		}
 	}

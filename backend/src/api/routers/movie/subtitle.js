@@ -19,10 +19,8 @@ const OpenSubtitles = new OS({
 //     return response.token
 // }
 
-export const subtitle = async (req, res, next) => {
+export const subtitle = async (imdbid, locale) => {
     // const token = await getToken()
-    var imdbid = req.body.imdbid
-
     const SUBTITLE_STORAGE = '/tmp/hypertube/subtitle/'
     await mkdirp(SUBTITLE_STORAGE, function (err) {
         if (err) console.error(err)
@@ -50,19 +48,14 @@ export const subtitle = async (req, res, next) => {
     localFileWriteStream.on("open", () => {
         pump(response.data, srt2vtt(), localFileWriteStream, (err) => {
             if (err) {
-                console.log(`${file.name} pipe closed with error:`);
-                console.error(err);
-                res.sendStatus(500);
+                return 'error'
             }
         });
     });
 
-    // console.log("resp => ", resp)
-    // console.log("en => ", resp.en)
-
     const NGINX = "http://localhost:8013"
-    res.status(200).json({
-        "success": true,
-        "file": NGINX+subtitleFile
-    });
+    const file = NGINX+subtitleFile
+
+    console.log('subtitle file returning:', file)
+    return file
 }
