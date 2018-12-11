@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Movies from '@/components/Movies'
 import Movie from '@/components/Movie'
 import Activation from '@/components/Activation'
+import ResetPassword from '@/components/ResetPassword'
 import UserProfile from '@/components/UserProfile'
 import UserSettings from '@/components/UserSettings'
 import NotFound from '@/components/NotFound'
@@ -37,6 +38,12 @@ let router = new Router({
 			component: Activation
 		},
 		{
+			path: '/reset-password',
+			name: 'resetPass',
+			props: true,
+			component: ResetPassword
+		},
+		{
 			path: '/intra',
 			name: 'oauth42',
 			component: Oauth
@@ -66,8 +73,8 @@ let router = new Router({
 		},
 		{
 			path: '*',
-			redirect: '/404' 
-		}, 
+			redirect: '/404'
+		},
 	]
 })
 
