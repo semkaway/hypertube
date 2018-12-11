@@ -28,8 +28,9 @@ export default {
         }
       })
       .catch((err) => {
-        console.log(err.response.data.error.message)
-        console.log("server error")
+        console.log(err)
+        this.$router.push('/')
+        this.$emit('userActivate', 'activation.error_alert')
       })
     }
   }
