@@ -41,8 +41,9 @@
 <style scoped>
 
     .date-wrapper {
-        width: 80px;
-		min-width: 80px;
+        width: 50px;
+		min-width: 50px;
+        margin-top: 32px;
     }
 
 	.input-wrapper {

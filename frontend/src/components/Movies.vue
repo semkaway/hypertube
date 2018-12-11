@@ -1,21 +1,7 @@
 <template>
   <v-container v-if='userLoggedIn == true' grid-list-md text-xs-center class="mt-5">
       <v-flex lg12>
-
-	  <SearchBar v-on:test='test'/>
-        <v-text-field
-          class="mx-3 mt-5"
-          v-model="searchParams"
-          flat
-          :label="$t('movies.search')"
-          append-outer-icon="search"
-          @keyup.native.enter="searchMovies"
-          @click:append-outer="searchMovies"
-        ></v-text-field>
-
-		
-		
-
+	  <SearchBar v-on:searchMovies='searchMovies'/>
         <div v-if="notFound">{{ $t('movies.notFound') }}</div>
         <v-container grid-list-md>
           <v-layout row wrap class="mt-3">
@@ -81,25 +67,52 @@
 	import * as constants from '../utils/constants'
     import setAuthorizationToken from '../utils/setAuthToken'
 
-  export default {
-    name: 'Movies',
-	components: { NotFound, SearchBar },
-    props: ['user', 'userLoggedIn', 'locale', 'token'],
-    data () {
-      return {
-        movies: [],
-        page: 1,
-        searchParams: '',
-        query: `https://api.themoviedb.org/3/movie/popular?api_key=${constants.API_KEY}&language=${this.locale}&append_to_response=images&include_image_language=${this.locale},null&page=`,
-        totalPages: 1,
-        notFound: false,
-		
-      }
-    },
+	export default {
+		name: 'Movies',
+		components: { NotFound, SearchBar },
+		props: ['user', 'userLoggedIn', 'locale', 'token'],
+		data () {
+			return {
+				movies: [],
+				page: 1,
+				query: `https://api.themoviedb.org/3/discover/movie`,
+				totalPages: 1,
+				defaultParams: {
+					api_key: constants.API_KEY,
+					language: this.locale,
+					include_image_language: this.locale,
+					page: 1,
+					include_adult: false,
+				},
+				searchText: '',
+				userParams: {},
+				notFound: false,
+			}
+		},
+
     methods: {
-      	requestMovies() {
-			HTTP.get(this.query + this.page).then(result => {
-			console.log(result)
+      	requestMovies(filters) {
+			let query = this.query
+			let searchParams = {}
+
+			if (filters && !this.searchText.length) {
+				searchParams = Object.assign({}, this.userParams)
+			} else {
+				searchParams = Object.assign({}, this.defaultParams)
+				if (this.searchText.length)  {
+					searchParams.query = this.searchText
+					query = 'https://api.themoviedb.org/3/search/movie'
+				}
+			}
+			
+			searchParams.page = this.page
+
+			console.log("query =>", query)
+			console.log('params =>', searchParams)
+
+			delete axios.defaults.headers.common['Authorization']
+			HTTP.get(query, { params: searchParams } ).then(result => {
+				console.log(result)
 				if (result.data.total_results == 0) {
 					this.notFound = true
 					this.totalPages = 1
@@ -107,58 +120,65 @@
 				}
 				for (var i = 0; i < result.data.results.length; i++) {
 					for(var key in result.data.results[i]) {
-					if (key == 'release_date') {
-						var year = result.data.results[i][key].split('-')
-						result.data.results[i][key] = year[0]
-					}
-					if (key == 'poster_path') {
-						if (result.data.results[i][key] == null) {
-							result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-						} else {
-							result.data.results[i][key] = 'http://image.tmdb.org/t/p/w500' + result.data.results[i][key]
+						if (key == 'release_date') {
+							var year = result.data.results[i][key].split('-')
+							result.data.results[i][key] = year[0]
 						}
-					}
+						if (key == 'poster_path') {
+							if (result.data.results[i][key] == null) {
+								result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+							} else {
+								result.data.results[i][key] = 'http://image.tmdb.org/t/p/w500' + result.data.results[i][key]
+							}
+						}
 					}
 					this.movies.push(result.data.results[i])
 				}
 				this.totalPages = result.data.total_pages
 			}).catch((e) => { console.log('e', e) })
+			setAuthorizationToken(this.token)
       	},
 
       	showMore () {
 			if (this.page + 1 < this.totalPages)
-			this.page = this.page + 1;
+				this.page = this.page + 1;
 			else
-			this.page = this.totalPages;
-			this.requestMovies()
+				this.page = this.totalPages;
+			this.requestMovies(Object.keys(this.userParams).length)
       	},
 
-		searchMovies() {
-			console.log(this.searchParams)
-			if (this.searchParams !== '') {
-				this.query = `https://api.themoviedb.org/3/search/movie?api_key=${constants.API_KEY}&language=${this.locale}&query=${this.searchParams}&images&include_image_language=${this.locale},null&page=`
-				this.movies = []
-				this.page = 1
-				this.requestMovies()
+		searchMovies(searchConditions) {
+			const { fromDate, toDate, searchText, sort, genre } = searchConditions
+			let searchParams = {
+				"release_date.gte": fromDate,
+				"release_date.lte": toDate,
 			}
+			if (genre)
+				searchParams.with_genres = genre
+			if (sort)
+				searchParams.sort_by = sort 
+			this.searchText = searchText.length ? searchText : ''
+			this.movies = []
+			this.page = 1
+			this.userParams = Object.assign({}, this.defaultParams)
+			this.userParams = Object.assign(this.userParams, searchParams)
+			this.requestMovies(true)
 		},
 
-		test() {
-			delete axios.defaults.headers.common['Authorization']
-
-			HTTP.get(`https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=${constants.API_KEY}`).then(response => {
-				console.log('response =>', response)
-			}).catch(error => {
-				console.log('error =>', error)
-			})
-
-			setAuthorizationToken(this.token)
-		}
+		// test() {
+		// 	
+		// 	HTTP.get(`https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=${constants.API_KEY}`).then(response => {
+		// 		console.log('response =>', response)
+		// 	}).catch(error => {
+		// 		console.log('error =>', error)
+		// 	})
+		// 	setAuthorizationToken(this.token)
+		// }
 
 
     },
     mounted () {
-        this.requestMovies()
+        this.requestMovies(false)
     },
   }
 </script>
