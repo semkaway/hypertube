@@ -88,16 +88,70 @@
       </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm6 md3 v-if="this.$i18n.locale === 'en'">
-        <v-list two-line>
-          <v-subheader>
-              {{$t('movie.crew')}}
-            </v-subheader>
-            <template v-for="crew in this.crew">
+        <v-card flat>
+          <v-list two-line>
+            <v-subheader>
+                {{$t('movie.crew')}}
+              </v-subheader>
+              <template v-for="crew in this.crew">
+                <v-list-tile>
+                  <v-list-tile-avatar v-if="crew.profile_path !== null"
+                                      size="55"
+                                      class="actorPicture mr-2"
+                                      :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+crew.profile_path + ')'}">
+                  </v-list-tile-avatar>
+
+                  <v-list-tile-avatar v-else
+                                      size="55"
+                                      class="actorPicture mr-2"
+                                      :style="{ 'background-image':`url('https://images.pexels.com/photos/1468389/pexels-photo-1468389.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+                  </v-list-tile-avatar>
+
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{crew.job}}</v-list-tile-title>
+                    <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+crew.name" target="_blank">{{crew.name}}</a></v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </template>
+            <v-divider inset></v-divider>
+            <v-subheader>
+                {{$t('movie.cast')}}
+              </v-subheader>
+            <template v-for="actor in this.actors">
               <v-list-tile>
-                <v-list-tile-avatar v-if="crew.profile_path !== null"
+                <v-list-tile-avatar v-if="actor.profile_path !== null"
                                     size="55"
                                     class="actorPicture mr-2"
-                                    :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+crew.profile_path + ')'}">
+                                    :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+actor.profile_path + ')'}">
+                </v-list-tile-avatar>
+
+                <v-list-tile-avatar v-else
+                                    size="55"
+                                    class="actorPicture mr-2"
+                                    :style="{ 'background-image':`url('https://images.pexels.com/photos/134/light-creative-abstract-colorful.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+                </v-list-tile-avatar>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{actor.character}}</v-list-tile-title>
+                  <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+actor.name" target="_blank">{{actor.name}}</a></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
+        </v-card>
+      </v-flex>
+      <v-flex d-flex xs12 sm6 md3 v-else>
+        <v-card flat>
+          <v-list two-line>
+            <v-subheader>
+              {{$t('movie.similar')}}
+            </v-subheader>
+            <template v-for="(similar,index) in this.similar">
+              <v-list-tile class="mt-2">
+                <v-list-tile-avatar v-if="similar.poster_path !== null"
+                                    size="55"
+                                    class="actorPicture mr-2"
+                                    :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+similar.poster_path + ')'}">
                 </v-list-tile-avatar>
 
                 <v-list-tile-avatar v-else
@@ -107,36 +161,14 @@
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>
-                  <v-list-tile-title>{{crew.job}}</v-list-tile-title>
-                  <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+crew.name" target="_blank">{{crew.name}}</a></v-list-tile-sub-title>
+                  <v-list-tile-title><router-link :to="'/movies/'+similar.id">{{similar.title}}</router-link></v-list-tile-title>
+                  <v-list-tile-sub-title>2018</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{similar.vote_average}}</v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
-          <v-divider inset></v-divider>
-          <v-subheader>
-              {{$t('movie.cast')}}
-            </v-subheader>
-          <template v-for="actor in this.actors">
-            <v-list-tile>
-              <v-list-tile-avatar v-if="actor.profile_path !== null"
-                                  size="55"
-                                  class="actorPicture mr-2"
-                                  :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+actor.profile_path + ')'}">
-              </v-list-tile-avatar>
-
-              <v-list-tile-avatar v-else
-                                  size="55"
-                                  class="actorPicture mr-2"
-                                  :style="{ 'background-image':`url('https://images.pexels.com/photos/134/light-creative-abstract-colorful.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
-              </v-list-tile-avatar>
-
-              <v-list-tile-content>
-                <v-list-tile-title>{{actor.character}}</v-list-tile-title>
-                <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+actor.name" target="_blank">{{actor.name}}</a></v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
+          </v-list>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -165,6 +197,7 @@ export default {
         genres: '',
         actors: [],
         crew: [],
+        similar: [],
         movieSource: '',
         progressColor: '#616161',
         totalNumberOfComments: 0
@@ -239,6 +272,11 @@ export default {
                       if (movie[key][j].image === null) {
                         movie[key][j].image = this.user.image
                       }
+                    }
+                  }
+                  if (key == 'similar') {
+                    for (var j = 0; j < 10; j++) {
+                      this.similar.push(movie[key].results[j])
                     }
                   }
                 }
