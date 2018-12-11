@@ -370,8 +370,9 @@ export default {
 				{ title: this.$t('profile.settings.delete_account_title'), icon: 'delete', name: 'delete'},
 				{ title: this.$t('button.language'), icon: 'language', name: 'lang'}
 			]
- 
+
 			// I hate my life ...
+			// Please, don't. This messy project will be over soon. -K
 			if (password && email) {
 				sections.splice(5, 1)
 				sections.splice(5, 1)

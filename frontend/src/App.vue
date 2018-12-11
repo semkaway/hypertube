@@ -1,9 +1,9 @@
 <template>
 	 <v-app>
 	 	<app-snackbar :show='showSnackbar' :text='snackbarText' y='bottom' x='right' v-on:closeSnackbar='showSnackbar = false' timeout='2500' />
-		<app-header 
-			v-bind:user='user' 
-			v-bind:token='token' 
+		<app-header
+			v-bind:user='user'
+			v-bind:token='token'
 			v-bind:locale='locale'
 			v-on:setUser='setUser'
 			v-on:setTokenAndLocale='setToken'
@@ -21,6 +21,7 @@
 			v-bind:userLoggedIn='userLoggedIn'
 			v-on:userAdded='userAdded'
 			v-on:userAlreadyExists='showWarning'
+			v-on:userActivate='userActivate'
 		/>
 	</v-app>
 </template>
@@ -88,6 +89,11 @@ export default {
 		showWarning() {
 			this.showSnackbar = true
 			this.snackbarText = this.$t('validation.serverError')
+		},
+
+		userActivate(message) {
+			this.showSnackbar = true
+			this.snackbarText = this.$t(message)
 		}
 	}
 }
