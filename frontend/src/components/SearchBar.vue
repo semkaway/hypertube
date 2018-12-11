@@ -1,5 +1,5 @@
 <template>
-  <v-layout row wrap align-center>
+  <v-layout row wrap align-center justify-center>
 
 	<div class='item-wrapper'>
 		<v-overflow-btn v-model='genre' :items=" dropdown_genres" hide-details class="pa-0">
@@ -16,12 +16,18 @@
 		<DatePicker v-on:changeDate='handleChangeToDate' label='до' startDate='2018'/>
 	</div>
 
-	<div class='item-wrapper'>
-		<v-text-field v-model='searchText' class="mx-3 mt-5 pa-0" flat :label="$t('movies.search')" append-outer-icon="search">
+	<div class='search-input-wrapper'>
+		<v-text-field v-model='searchText' 
+			flat
+		 	@keyup.native.enter="searchMovies"
+			@click:append-outer="searchMovies"
+			:label="$t('movies.search')">
 		</v-text-field>
   	</div>
 
-	 <v-btn @click='test'>search</v-btn>
+	<div class='search-button-wrapper'>
+		<v-btn @click='searchMovies'>{{$t('movies.search')}}</v-btn>
+	</div>
   
   </v-layout>
 </template>
@@ -63,10 +69,10 @@
           { text: this.$t('genres.western'), 		id: GENRES[18].id}
         ],
 		dropdown_sorts: [
-			{text: 'Популярность'},
-			{text: 'Дата выхода'},
-			{text: 'Количество голосов'},
-			{text: 'Оценка'},
+			{text: 'Популярность', param: 'popularity.desc'},
+			{text: 'Дата выхода', param: 'release_date.desc'},
+			{text: 'Количество голосов', param: 'vote_count.desc'},
+			{text: 'Оценка', param: 'vote_average.desc'},
 		],
         toggle_exclusive: 2,
         toggle_multiple: [1, 2, 3]
@@ -74,16 +80,12 @@
     },
 
 	methods: {
-		test() {
-			const genre = this.dropdown_genres.find(o => o.text === this.genre)
-			const sort = this.dropdown_sorts.find(o => o.text === this.sortBy)
-			
-
-			console.log('genre ->', genre ? genre.text : 'all')
-			console.log('sort ->', sort ? sort.text : 'all')
-			console.log('from date ->', this.fromDate)
-			console.log('to date ->', this.toDate)
-			console.log('searchText ->', this.searchText)
+		searchMovies() {
+			let genre = this.dropdown_genres.find(o => o.text === this.genre)
+			let sort = this.dropdown_sorts.find(o => o.text === this.sortBy)
+			genre = genre ? genre.id : ''
+			sort = sort ? sort.param : ''
+			this.$emit('searchMovies', { genre, sort, fromDate: this.fromDate, toDate: this.toDate, searchText: this.searchText } )
 		},
 
 		handleChangeFromDate(date) {
@@ -95,8 +97,6 @@
 		}
 
 	},
-
-
   }
 </script>
 
@@ -113,11 +113,25 @@
 		flex-flow: row;
 		justify-content: flex-start;
 		align-items: center;
+		margin-right: 15px;
+		margin-left: 15px;
 	}
 
     .item-wrapper {
         width: 265px;
 		min-width: 260px;
     }
+
+	.search-input-wrapper {
+		width: 265px;
+		min-width: 260px;
+		margin-top: 32px;
+	}
+
+	.search-button-wrapper {
+		margin-top: 26px;
+		margin-left: 15px;
+	}
+
 
 </style>

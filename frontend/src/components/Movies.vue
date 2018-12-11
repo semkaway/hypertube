@@ -165,15 +165,6 @@
 			this.requestMovies(true)
 		},
 
-		// test() {
-		// 	
-		// 	HTTP.get(`https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=${constants.API_KEY}`).then(response => {
-		// 		console.log('response =>', response)
-		// 	}).catch(error => {
-		// 		console.log('error =>', error)
-		// 	})
-		// 	setAuthorizationToken(this.token)
-		// }
 
 
     },
