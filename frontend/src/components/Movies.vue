@@ -2,7 +2,7 @@
   <v-container v-if='userLoggedIn == true' grid-list-md text-xs-center class="mt-5">
       <v-flex lg12>
 
-	  
+	  <SearchBar v-on:test='test'/>
         <v-text-field
           class="mx-3 mt-5"
           v-model="searchParams"
@@ -12,7 +12,9 @@
           @keyup.native.enter="searchMovies"
           @click:append-outer="searchMovies"
         ></v-text-field>
-		<v-btn @click='test'>search</v-btn>
+
+		
+		
 
         <div v-if="notFound">{{ $t('movies.notFound') }}</div>
         <v-container grid-list-md>
@@ -74,13 +76,14 @@
 <script>
 	import axios from 'axios'
 	import NotFound from './NotFound'
+	import SearchBar from './SearchBar'
 	import { HTTP } from '../http-common'
 	import * as constants from '../utils/constants'
     import setAuthorizationToken from '../utils/setAuthToken'
 
   export default {
     name: 'Movies',
-	components: { NotFound },
+	components: { NotFound, SearchBar },
     props: ['user', 'userLoggedIn', 'locale', 'token'],
     data () {
       return {
