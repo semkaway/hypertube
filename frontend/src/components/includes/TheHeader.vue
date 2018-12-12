@@ -1,14 +1,14 @@
 <template>
     <v-toolbar color="grey darken-3" dark fixed height='68'>
         <v-toolbar-items>
-            <v-btn v-if='userLoggedIn === true' flat  @click='goToHomePage'> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
-            <v-btn v-if='userLoggedIn === false' flat @click="toggleForm"> <v-icon>exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
+            <v-btn v-if='userLoggedIn === true' flat  @click='goToHomePage' style="outline: none;"> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
+            <v-btn v-if='userLoggedIn === false' flat @click="toggleForm" style="outline: none;"> <v-icon>exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>
         </v-toolbar-items>
         <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:runLoader='runLoader = true' v-on:setUser='setUser' v-bind:locale='headerLocale'/>
         <v-spacer></v-spacer>
         <v-toolbar-items v-if='userLoggedIn === true'>
             <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
-            <v-btn flat slot="activator">
+            <v-btn flat slot="activator" style="outline: none;">
                 <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' :src="headerUser.image" alt="User photo"></v-img>
                 <span class='ml-2 header-name'>{{ headerUser.first | capitalizeFirstLetter }}</span>
             </v-btn>
@@ -164,7 +164,7 @@
     created () {
         this.fetchData()
         if (this.token) {
-           this.requestUser() 
+           this.requestUser()
         }
     },
 
@@ -173,7 +173,7 @@
         this.headerToken = this.token
         this.headerLocale = this.locale
     },
-    
+
     filters: {
         capitalize (value) {
             if (!value) return ''
@@ -186,7 +186,7 @@
             return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
         }
     },
-    
+
     watch:
     {
         user () {

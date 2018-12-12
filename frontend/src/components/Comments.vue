@@ -33,7 +33,8 @@
             @click.prevent="showMore"
             depressed
             color="grey"
-            class="white--text mt-3">{{$t('button.showMore')}}</v-btn>
+            class="white--text mt-3"
+            style="outline: none;">{{$t('button.showMore')}}</v-btn>
     </div>
   </v-flex>
 </template>
