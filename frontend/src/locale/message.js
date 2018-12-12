@@ -52,7 +52,8 @@ const messages = {
 			delete: 'delete',
 			cancel: 'cancel',
 			close: 'close',
-			showMore: 'Show more'
+			showMore: 'Show more',
+			comingSoon: 'Coming soon'
 		},
 		home: {
 			title: 'home'
@@ -214,7 +215,8 @@ const messages = {
 			delete: 'удалить',
 			cancel: 'отмена',
 			close: 'закрыть',
-			showMore: 'Показать еще'
+			showMore: 'Показать еще',
+			comingSoon: 'Скоро в кино'
 		},
 		home: {
 			title: 'Главная'
@@ -375,7 +377,8 @@ const messages = {
 			delete: 'видалити',
 			cancel: 'скасувати',
 			close: 'закрити',
-			showMore: 'Показати ще'
+			showMore: 'Показати ще',
+			comingSoon: 'Скоро в кіно'
 		},
 		home: {
 			title: 'Головна'
