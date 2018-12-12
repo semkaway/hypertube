@@ -81,6 +81,8 @@
             Your browser does not support the video tag.
             </video>
           </div>
+
+
           <comments :allComments="movie.comments"
                     :totalNumberOfComments="totalNumberOfComments"
                     @submit-comment="submitComment"></comments>
@@ -326,7 +328,7 @@ export default {
 
         HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment})
         .then(response => {
-          console.log(response)
+          console.log('response ->', response)
           // console.log(this.movie.comments)
           this.movie.comments.unshift({
             date: response.date,
@@ -353,10 +355,10 @@ export default {
 <style scoped>
 
 .actorPicture {
-  border-radius: 50%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    border-radius: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 a {
