@@ -68,19 +68,16 @@
           <h1>{{movie.title}}</h1>
           <p class="subheading">{{movie.tagline}}</p>
           <v-card-text class="p-1 pb-3">{{movie.overview}}</v-card-text>
-          <!-- <vue-plyr ref="player">
-              <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
-                  <source v-if="movieSource" :src="movieSource" type="video/mp4">
-                  <!-- <source :src="movieSource" type="video/mp4"/> -->
-                  <!-- <track kind="captions" label="English" srclang="en" :src="movie.subtitle" default> -->
-              <!-- </video> -->
-          <!-- </vue-plyr> -->
+			
+
           <div width="100%">
-            <video id="moviePlayer" ref="videoRef" width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
-              <source v-if="movieSource" :src="movieSource" type="video/mp4">
-            Your browser does not support the video tag.
+            <video id="moviePlayer"  width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
+              <source :src='sources[0] ? sources[0].src : ""' type="video/mp4">
+            		Your browser does not support the video tag.
             </video>
           </div>
+
+		  <!-- http://vjs.zencdn.net/v/oceans.mp4 -->
 
 
           <comments :allComments="movie.comments"
@@ -196,10 +193,9 @@ export default {
   name: 'Movie',
   components: { Loader, Comments, NotFound },
   filters: { date: showYear },
-  props: ['user', 'userLoggedIn'],
+  props: ['user', 'userLoggedIn', 'token'],
   data () {
     return {
-        token: '',
         runLoader: true,
         movie: [],
         movieYear: 'movie.release_date',
@@ -209,56 +205,26 @@ export default {
         similar: [],
         movieSource: '',
         progressColor: '#616161',
-        totalNumberOfComments: 0
+        totalNumberOfComments: 0,
+		sources: []
       }
     },
     mounted () {
-      this.rerender()
-      // setTimeout(() => {
-      //   // console.log('than this.$refs.player', this.$refs.player.player)
-      //
-      //   // this.$refs.player.player.config.listeners['pause'] = () => {
-      //   //   console.log('i pause')
-      //   //
-      //   // }
-      //
-      //   this.$refs.player.player.config.listeners['play'] = (e) => {
-      //
-      //     // console.log('playlarge', this.player.config.keyboard)
-      //     // e.preventDefault()
-      //     console.log('waiting: ', this.player.loading)
-      //     if (this.player.paused) {
-      //         this.player.play();
-      //
-      //     } else if (!this.player.loading) {
-      //         this.player.pause()
-      //         // return false
-      //     }
-      //     // return true
-      //     // this.player.play()
-      //   }
-      //
-      // }, 2000)
+		this.rerender()
+	},
 
-    },
-    computed: {
-      player () {
-
-        return this.$refs.player.player }
-    },
     methods: {
-      rerender() {
+
+      rerender() {		 
         this.runLoader = true
-        HTTP
-          .get('movie/one/'+this.$route.params.id)
-          .then(result => {
-            console.log('result', result)
+        HTTP.get('movie/one/'+this.$route.params.id).then(result => {
+			console.log('result ->', result)
             if (result.data.success == true) {
               let movie = result.data.data
                 for(var key in movie) {
                     if (key == 'genres') {
                       for (var i = 0; i < movie[key].length; i++) {
-                        this.genres += movie[key][i].name.charAt(0).toUpperCase() + movie[key][i].name.slice(1)+', ';
+                        this.genres += movie[key][i].name.charAt(0).toUpperCase() + movie[key][i].name.slice(1) + ', '
                       }
                     }
                     if (key == 'poster_path') {
@@ -286,41 +252,40 @@ export default {
                       }
                     }
                     if (key == 'comments') {
-                      for (var j = 0; j < movie[key].length; j++) {
+                      for (let j = 0; j < movie[key].length; j++) {
                         if (movie[key][j].image === null) {
-                          movie[key][j].image = this.user.image
+                          	movie[key][j].image = this.user.image
                         }
                       }
                     }
                     if (key == 'similar') {
-                      for (var j = 0; j < 10; j++) {
+                      for (let j = 0; j < 10; j++) {
                         this.similar.push(movie[key].results[j])
                       }
                     }
-                  }
-              this.movie = movie
-              const moviePlayer = document.getElementById('moviePlayer')
-              if (movie.torrent.torrents !== undefined) {
-                // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
-                for(key in movie.torrent.torrents.en) {
-                    moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
-                    moviePlayer.innerHTML += `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
-                    // console.log(moviePlayer)
-                    // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
-                    // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
                 }
-              }
-              this.genres = this.genres.slice(0, this.genres.length-2)
-              this.comments = movie.comments
-              this.totalNumberOfComments = movie.comments.length
-
+				this.movie = movie
+				this.genres = this.genres.slice(0, this.genres.length - 2)
+				this.comments = movie.comments
+				this.totalNumberOfComments = movie.comments.length
+				console.log('movie! ->', movie)
+				if (movie.torrent.torrents !== undefined) {
+					for(key in movie.torrent.torrents.en) {
+						this.sources.push({src: `http://localhost:3000/api/movie/stream/${this.$route.params.id}?quality=${key}&token=${localStorage.token}`})
+						// this.sources[i].track = `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
+						i++
+					}
+					console.log('this.sources =>', this.sources)
+				} else {
+					// dont show player
+				}
             } else if (result.data.success == false) {
-
+				// show error
             }
             this.runLoader = false
           })
           .catch((err) => {
-            console.log(err)
+            console.log('error =>', err)
             this.runLoader = false
           })
       },
@@ -371,24 +336,25 @@ export default {
     },
 
     watch: {
-      '$route.params.id': function (id) {
-        this.rerender()
-   }
+      	'$route.params.id': function (id) {
+       	 this.rerender()
+   		}
  },
 }
+
 </script>
 
 <style scoped>
 
-.actorPicture {
-    border-radius: 50%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+	.actorPicture {
+		border-radius: 50%;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 
-a {
-  text-decoration: none;
-}
+	a {
+  		text-decoration: none;
+	}
 
 </style>

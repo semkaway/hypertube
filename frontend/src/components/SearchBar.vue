@@ -12,7 +12,7 @@
 	</div>
 
 	<div class='dates-wrapper'>
-		<DatePicker v-on:changeDate='handleChangeFromDate' label='от' startDate='1900'/>
+		<DatePicker v-on:changeDate='handleChangeFromDate' label='от' startDate='2000'/>
 		<DatePicker v-on:changeDate='handleChangeToDate' label='до' startDate='2018'/>
 	</div>
 
