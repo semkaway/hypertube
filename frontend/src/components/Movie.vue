@@ -68,17 +68,20 @@
           <h1>{{movie.title}}</h1>
           <p class="subheading">{{movie.tagline}}</p>
           <v-card-text class="p-1 pb-3">{{movie.overview}}</v-card-text>
-			
-
-          <div width="100%">
-            <video id="moviePlayer"  width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
-              <source :src='sources[0] ? sources[0].src : ""' type="video/mp4">
-            		Your browser does not support the video tag.
+          <div v-if="!qualitySelected" class="text-xs-center">
+            <v-img :src="movie.backdrop_path">
+            </v-img>
+            <div class="mt-3">
+              <v-btn @click="selectQuality" depressed color="grey" class="white--text">720p</v-btn>
+              <v-btn @click="selectQuality" depressed color="grey" class="white--text">1080p</v-btn>
+            </div>
+          </div>
+          <div v-else class="text-xs-center">
+            <video id="moviePlayer" ref="videoRef" width="100%" controls crossorigin="anonymous">
+              <source v-if="movieSource" :src="movieSource" type="video/mp4">
+            Your browser does not support the video tag.
             </video>
           </div>
-
-		  <!-- http://vjs.zencdn.net/v/oceans.mp4 -->
-
 
           <comments :allComments="movie.comments"
                     :totalNumberOfComments="totalNumberOfComments"
@@ -204,6 +207,7 @@ export default {
         crew: [],
         similar: [],
         movieSource: '',
+        qualitySelected: false,
         progressColor: '#616161',
         totalNumberOfComments: 0,
 		sources: []
@@ -329,9 +333,8 @@ export default {
         evt.preventDefault()
         console.log('yo playing')
       },
-      showNewMovie(id) {
-        console.log('id: ', id)
-        this.$router.replace(`/movies/${id}`)
+      selectQuality() {
+        this.qualitySelected = true
       }
     },
 
