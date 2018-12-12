@@ -2,8 +2,8 @@
   <v-layout row wrap align-center justify-center>
 
 	<div class='item-wrapper'>
-		<v-overflow-btn v-model='genre' :items=" dropdown_genres" hide-details class="pa-0">
-		</v-overflow-btn>
+			<v-overflow-btn v-model='genre' :items=" dropdown_genres" hide-details class="pa-0" >
+			</v-overflow-btn>
 	</div>
 
 	<div class='item-wrapper'>
@@ -95,8 +95,8 @@
 		handleChangeToDate(date) {
 			this.toDate = date
 		}
-
 	},
+
   }
 </script>
 
@@ -132,6 +132,5 @@
 		margin-top: 26px;
 		margin-left: 15px;
 	}
-
 
 </style>

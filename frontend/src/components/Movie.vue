@@ -1,11 +1,11 @@
 <template>
- <div v-if='userLoggedIn == true' class="mt-5">
+ <div v-if='userLoggedIn == true' class="mt-5" style='height: 100%;'>
    <Loader :run='runLoader'/>
-  <v-container fluid grid-list-md class="mt-3 white">
+  <v-container v-if='loaded' fluid grid-list-md class="mt-3 white" style='height: 100%;'>
     <v-layout row wrap>
       <v-flex d-flex xs12 sm6 md3>
         <v-card flat>
-          <v-img :src="movie.poster_path"></v-img>
+          <v-img v-if='movie' :src="movie.poster_path"></v-img>
           <v-list one-line>
 
             <v-list-tile>
@@ -146,13 +146,14 @@
           </v-list>
         </v-card>
       </v-flex>
-      <v-flex d-flex xs12 sm6 md3 v-else>
-        <v-card flat>
+      <v-flex v-if='showSimilar' d-flex xs12 sm6 md3 v-else>
+        <v-card flat >
           <v-list two-line>
-            <v-subheader>
-              {{$t('movie.similar')}}
-            </v-subheader>
-            <template v-for="(similar,index) in this.similar">
+            <template >
+
+			<v-subheader>{{ $t('movie.similar')}} </v-subheader>
+
+			<div v-for="(similar,index) in this.similar">
               <v-list-tile class="mt-2">
                 <v-list-tile-avatar v-if="similar.poster_path !== null"
                                     size="55"
@@ -172,12 +173,13 @@
                     <v-icon size="10" style="display: inline-block; vertical-align: middle;">date_range</v-icon>
                     {{similar.release_date | date}}
                   </v-list-tile-sub-title>
-                  <v-list-tile-sub-title>
+                  <v-list-tile-sub-title  >
                     <v-icon size="10" style="display: inline-block; vertical-align: middle;">star</v-icon>
                     {{similar.vote_average}}
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
+			  </div>
             </template>
           </v-list>
         </v-card>
@@ -217,6 +219,8 @@ export default {
         progressColor: '#616161',
         totalNumberOfComments: 0,
 		quality: [],
+		loaded: false,
+		showSimilar: false,
       }
     },
 
@@ -225,11 +229,12 @@ export default {
     },
 
     methods: {
-
       rerender() {
+		this.loaded = false
         this.runLoader = true
         HTTP.get('movie/one/'+this.$route.params.id).then(result => {
             console.log('result', result)
+			this.loaded = true
 			this.similar = []
 			this.actors = []
 			this.genres = []
@@ -277,7 +282,10 @@ export default {
                       }
                     }
                     if (key == 'similar') {
-                      for (var j = 0; j < 10; j++) {
+                      for (let j = 0; j < 10; j++) {
+						  if (!movie[key].results[j]) {
+							  break
+						  }
                         this.similar.push(movie[key].results[j])
                       }
                     }
@@ -297,10 +305,12 @@ export default {
 				// show error
             }
             this.runLoader = false
+			this.showSimilar = this.similar.length > 0
           })
           .catch((err) => {
             console.log(err)
             this.runLoader = false
+			this.showSimilar = this.similar.length > 0
           })
       },
 
@@ -312,11 +322,11 @@ export default {
 				console.log(response)
 				if (response.data.success) {
 					this.movie.comments.unshift({
-					date: response.date,
-					first: this.user.first,
-					image: this.user.image,
-					text: newComment,
-					user_id: this.user.user_id
+						date: response.date,
+						first: this.user.first,
+						image: this.user.image,
+						text: newComment,
+						user_id: this.user.user_id
 					})
 					this.totalNumberOfComments = this.movie.comments.length
 				} else {
