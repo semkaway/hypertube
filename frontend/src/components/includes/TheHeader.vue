@@ -80,7 +80,7 @@
             } else if (target === 'settings') {
                 this.$router.push('/settings')
             } else if (target === 'profile') {
-                this.$router.push('/user')
+                this.$router.push(`/user/${this.user.user_id}`)
             }
         },
 
