@@ -36,14 +36,15 @@ export const one = model => async (req, res, next) => {
                     getTorrents(movie.data.imdb_id)
                         .then(torrent => 
                             subtitle(movie.data.imdb_id, req.user.locale)
-                                .then(subtitle_file => {
+                                .then(subtitle_array => {
+                                    console.log('subtitle array => ', subtitle_array)
                                     res.status(200).json({
                                         "success": true,
                                         "data": {
                                              ...movie.data,
                                               'torrent': torrent.data,
                                               'comments': comments,
-                                             'subtitle': subtitle_file,
+                                              subtitle_array,
                                         }
                                     });
                                 })

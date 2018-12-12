@@ -13,44 +13,18 @@ const OpenSubtitles = new OS({
     ssl: true
 });
 
-// const getToken = async () => {
-//     const response = await OpenSubtitles.login();
+const NGINX = "http://localhost:8013"
+const SUBTITLE_STORAGE = '/tmp/hypertube/subtitle/'
 
-//     return response.token
-// }
-
-export const subtitle = async (imdbid, locale) => {
-    // const token = await getToken()
-    const SUBTITLE_STORAGE = '/tmp/hypertube/subtitle/'
-    await mkdirp(SUBTITLE_STORAGE, function (err) {
-        if (err) console.error(err)
-        else console.log(SUBTITLE_STORAGE, 'folder created')
-    });
-
-    const resp = await OpenSubtitles.search({
-        // "limit":"all", 
-        imdbid
-    })
-    // TODO => change resp.en to resp[locale] from USER setting. Get from JWT token
-
-
-
-     // sometimes resp.en is undefined
-     // u need to handle it 
-     // because frontend is crying ...
-
-    let srtDownloadUrl = ''
-    if (resp.en)
-        srtDownloadUrl = resp.en.url
-    
-
+const getFile = async (srtDownloadUrl, filename) => {
+    // download srt and convert it into vtt file
     const response = await axios({
         method: 'GET',
         url: srtDownloadUrl,
         responseType: 'stream'
     })
 
-    var subtitleFile = SUBTITLE_STORAGE + resp.en.filename
+    var subtitleFile = SUBTITLE_STORAGE + filename
     subtitleFile = subtitleFile.replace('.srt', '.vtt')
 
     const localFileWriteStream = fs.createWriteStream(subtitleFile);
@@ -63,9 +37,36 @@ export const subtitle = async (imdbid, locale) => {
         });
     });
 
-    const NGINX = "http://localhost:8013"
-    const file = NGINX+subtitleFile
+    let file = NGINX+subtitleFile
 
-    console.log('subtitle file returning:', file)
     return file
+}
+
+export const subtitle = async (imdbid, locale) => {
+    await mkdirp(SUBTITLE_STORAGE, function (err) {
+        if (err) console.error(err)
+        else console.log(SUBTITLE_STORAGE, 'folder created')
+    });
+
+    const resp = await OpenSubtitles.search({
+        // "limit":"all", 
+        imdbid
+    })
+
+    var subsArray = []
+
+    if (resp.en) {
+        subsArray.en = await {
+            srtDownloadUrl: resp.en.url,
+            file: await getFile(resp.en.url, resp.en.filename)
+        }
+    }
+
+    if (resp.ru) {
+        subsArray.ru = await {
+            srtDownloadUrl: resp.ru.url,
+            file: await getFile(resp.ru.url, resp.ru.filename)
+        }
+    }
+    return subsArray
 }
