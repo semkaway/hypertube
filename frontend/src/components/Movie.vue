@@ -77,7 +77,7 @@
             </div>
           </div>
           <div v-else class="text-xs-center">
-            <video id="moviePlayer" ref="videoRef" width="100%" controls crossorigin="anonymous">
+            <video id="moviePlayer" ref="videoRef" width="100%" :poster="movie.backdrop_path" controls crossorigin="anonymous">
               <source v-if="movieSource" :src="movieSource" type="video/mp4">
             Your browser does not support the video tag.
             </video>
@@ -196,9 +196,10 @@ export default {
   name: 'Movie',
   components: { Loader, Comments, NotFound },
   filters: { date: showYear },
-  props: ['user', 'userLoggedIn', 'token'],
+  props: ['user', 'userLoggedIn'],
   data () {
     return {
+        token: '',
         runLoader: true,
         movie: [],
         movieYear: 'movie.release_date',
@@ -209,26 +210,56 @@ export default {
         movieSource: '',
         qualitySelected: false,
         progressColor: '#616161',
-        totalNumberOfComments: 0,
-		sources: []
+        totalNumberOfComments: 0
       }
     },
     mounted () {
-		this.rerender()
-	},
+      this.rerender()
+      // setTimeout(() => {
+      //   // console.log('than this.$refs.player', this.$refs.player.player)
+      //
+      //   // this.$refs.player.player.config.listeners['pause'] = () => {
+      //   //   console.log('i pause')
+      //   //
+      //   // }
+      //
+      //   this.$refs.player.player.config.listeners['play'] = (e) => {
+      //
+      //     // console.log('playlarge', this.player.config.keyboard)
+      //     // e.preventDefault()
+      //     console.log('waiting: ', this.player.loading)
+      //     if (this.player.paused) {
+      //         this.player.play();
+      //
+      //     } else if (!this.player.loading) {
+      //         this.player.pause()
+      //         // return false
+      //     }
+      //     // return true
+      //     // this.player.play()
+      //   }
+      //
+      // }, 2000)
 
+    },
+    computed: {
+      player () {
+
+        return this.$refs.player.player }
+    },
     methods: {
-
-      rerender() {		 
+      rerender() {
         this.runLoader = true
-        HTTP.get('movie/one/'+this.$route.params.id).then(result => {
-			console.log('result ->', result)
+        HTTP
+          .get('movie/one/'+this.$route.params.id)
+          .then(result => {
+            console.log('result', result)
             if (result.data.success == true) {
               let movie = result.data.data
                 for(var key in movie) {
                     if (key == 'genres') {
                       for (var i = 0; i < movie[key].length; i++) {
-                        this.genres += movie[key][i].name.charAt(0).toUpperCase() + movie[key][i].name.slice(1) + ', '
+                        this.genres += movie[key][i].name.charAt(0).toUpperCase() + movie[key][i].name.slice(1)+', ';
                       }
                     }
                     if (key == 'poster_path') {
@@ -256,40 +287,41 @@ export default {
                       }
                     }
                     if (key == 'comments') {
-                      for (let j = 0; j < movie[key].length; j++) {
+                      for (var j = 0; j < movie[key].length; j++) {
                         if (movie[key][j].image === null) {
-                          	movie[key][j].image = this.user.image
+                          movie[key][j].image = this.user.image
                         }
                       }
                     }
                     if (key == 'similar') {
-                      for (let j = 0; j < 10; j++) {
+                      for (var j = 0; j < 10; j++) {
                         this.similar.push(movie[key].results[j])
                       }
                     }
+                  }
+              this.movie = movie
+              const moviePlayer = document.getElementById('moviePlayer')
+              if (movie.torrent.torrents !== undefined) {
+                // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
+                for(key in movie.torrent.torrents.en) {
+                    moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
+                    moviePlayer.innerHTML += `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
+                    // console.log(moviePlayer)
+                    // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
+                    // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
                 }
-				this.movie = movie
-				this.genres = this.genres.slice(0, this.genres.length - 2)
-				this.comments = movie.comments
-				this.totalNumberOfComments = movie.comments.length
-				console.log('movie! ->', movie)
-				if (movie.torrent.torrents !== undefined) {
-					for(key in movie.torrent.torrents.en) {
-						this.sources.push({src: `http://localhost:3000/api/movie/stream/${this.$route.params.id}?quality=${key}&token=${localStorage.token}`})
-						// this.sources[i].track = `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
-						i++
-					}
-					console.log('this.sources =>', this.sources)
-				} else {
-					// dont show player
-				}
+              }
+              this.genres = this.genres.slice(0, this.genres.length-2)
+              this.comments = movie.comments
+              this.totalNumberOfComments = movie.comments.length
+
             } else if (result.data.success == false) {
-				// show error
+
             }
             this.runLoader = false
           })
           .catch((err) => {
-            console.log('error =>', err)
+            console.log(err)
             this.runLoader = false
           })
       },
@@ -339,25 +371,24 @@ export default {
     },
 
     watch: {
-      	'$route.params.id': function (id) {
-       	 this.rerender()
-   		}
+      '$route.params.id': function (id) {
+        this.rerender()
+   }
  },
 }
-
 </script>
 
 <style scoped>
 
-	.actorPicture {
-		border-radius: 50%;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
+.actorPicture {
+    border-radius: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
-	a {
-  		text-decoration: none;
-	}
+a {
+  text-decoration: none;
+}
 
 </style>
