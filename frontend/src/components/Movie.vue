@@ -1,6 +1,6 @@
 <template>
  <div v-if='userLoggedIn == true' class="mt-5">
-   <Loader :run='value'/>
+   <Loader :run='runLoader'/>
   <v-container fluid grid-list-md class="mt-3 white">
     <v-layout row wrap>
       <v-flex d-flex xs12 sm6 md3>
@@ -64,10 +64,10 @@
         </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm6 md6 class="p-3">
-        <v-card flat class="p-2">
+        <v-card flat class="p-2" style="word-break: break-all;">
           <h1>{{movie.title}}</h1>
           <p class="subheading">{{movie.tagline}}</p>
-          <v-card-text>{{movie.overview}}</v-card-text>
+          <v-card-text class="p-1 pb-3">{{movie.overview}}</v-card-text>
           <!-- <vue-plyr ref="player">
               <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
                   <source v-if="movieSource" :src="movieSource" type="video/mp4">
@@ -162,9 +162,15 @@
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>
-                  <v-list-tile-title><router-link :to="'/movies/'+similar.id">{{similar.title}}</router-link></v-list-tile-title>
-                  <v-list-tile-sub-title>{{similar.release_date | date}}</v-list-tile-sub-title>
-                  <v-list-tile-sub-title>{{similar.vote_average}}</v-list-tile-sub-title>
+                <v-list-tile-title> <router-link :key="$route.fullPath" :to="'/movies/' + similar.id" exact>{{similar.title}} </router-link></v-list-tile-title>
+                  <v-list-tile-sub-title>
+                    <v-icon size="10" style="display: inline-block; vertical-align: middle;">calendar_today</v-icon>
+                    {{similar.release_date | date}}
+                  </v-list-tile-sub-title>
+                  <v-list-tile-sub-title>
+                    <v-icon size="10" style="display: inline-block; vertical-align: middle;">star</v-icon>
+                    {{similar.vote_average}}
+                  </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
@@ -194,7 +200,7 @@ export default {
   data () {
     return {
         token: '',
-        value: true,
+        runLoader: true,
         movie: [],
         movieYear: 'movie.release_date',
         genres: '',
@@ -206,7 +212,8 @@ export default {
         totalNumberOfComments: 0
       }
     },
-    beforeCreate() {
+    mounted () {
+      this.rerender()
       // setTimeout(() => {
       //   // console.log('than this.$refs.player', this.$refs.player.player)
       //
@@ -232,78 +239,7 @@ export default {
       //   }
       //
       // }, 2000)
-      HTTP
-        .get('movie/one/'+this.$route.params.id)
-        .then(result => {
-          console.log('result', result)
-          if (result.data.success == true) {
-            let movie = result.data.data
-              for(var key in movie) {
-                  if (key == 'genres') {
-                    for (var i = 0; i < movie[key].length; i++) {
-                      this.genres += movie[key][i].name.charAt(0).toUpperCase() + movie[key][i].name.slice(1)+', ';
-                    }
-                  }
-                  if (key == 'poster_path') {
-                    if (movie[key] == null) {
-                      movie[key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-                    } else {
-                      movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
-                    }
-                  }
-                  if (key == 'backdrop_path') {
-                    if (movie[key] == null) {
-                      movie[key] = 'https://images.pexels.com/photos/243757/pexels-photo-243757.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-                    } else {
-                      movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
-                    }
-                  }
-                  if (key == 'credits') {
-                    for (var j = 0; j != 5; j++) {
-                      this.actors.push(movie[key].cast[j])
-                    }
-                    for (var k = 0; k < movie[key].crew.length; k++) {
-                      if (movie[key].crew[k].job === 'Director' || movie[key].crew[k].job === 'Producer') {
-                        this.crew.push(movie[key].crew[k])
-                      }
-                    }
-                  }
-                  if (key == 'comments') {
-                    for (var j = 0; j < movie[key].length; j++) {
-                      if (movie[key][j].image === null) {
-                        movie[key][j].image = this.user.image
-                      }
-                    }
-                  }
-                  if (key == 'similar') {
-                    for (var j = 0; j < 10; j++) {
-                      this.similar.push(movie[key].results[j])
-                    }
-                  }
-                }
-            this.movie = movie
-            const moviePlayer = document.getElementById('moviePlayer')
-            if (movie.torrent.torrents !== undefined) {
-              // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
-              for(key in movie.torrent.torrents.en) {
-                  moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
-                  moviePlayer.innerHTML += `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
-                  // console.log(moviePlayer)
-                  // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
-                  // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
-              }
-            }
-            this.genres = this.genres.slice(0, this.genres.length-2)
-            this.comments = movie.comments
-            this.totalNumberOfComments = movie.comments.length
-            this.value = false
-          } else if (result.data.success == false) {
 
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
     },
     computed: {
       player () {
@@ -311,6 +247,84 @@ export default {
         return this.$refs.player.player }
     },
     methods: {
+      rerender() {
+        this.runLoader = true
+        HTTP
+          .get('movie/one/'+this.$route.params.id)
+          .then(result => {
+            console.log('result', result)
+            if (result.data.success == true) {
+              let movie = result.data.data
+                for(var key in movie) {
+                    if (key == 'genres') {
+                      for (var i = 0; i < movie[key].length; i++) {
+                        this.genres += movie[key][i].name.charAt(0).toUpperCase() + movie[key][i].name.slice(1)+', ';
+                      }
+                    }
+                    if (key == 'poster_path') {
+                      if (movie[key] == null) {
+                        movie[key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                      } else {
+                        movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
+                      }
+                    }
+                    if (key == 'backdrop_path') {
+                      if (movie[key] == null) {
+                        movie[key] = 'https://images.pexels.com/photos/243757/pexels-photo-243757.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                      } else {
+                        movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
+                      }
+                    }
+                    if (key == 'credits') {
+                      for (var j = 0; j != 5; j++) {
+                        this.actors.push(movie[key].cast[j])
+                      }
+                      for (var k = 0; k < movie[key].crew.length; k++) {
+                        if (movie[key].crew[k].job === 'Director' || movie[key].crew[k].job === 'Producer') {
+                          this.crew.push(movie[key].crew[k])
+                        }
+                      }
+                    }
+                    if (key == 'comments') {
+                      for (var j = 0; j < movie[key].length; j++) {
+                        if (movie[key][j].image === null) {
+                          movie[key][j].image = this.user.image
+                        }
+                      }
+                    }
+                    if (key == 'similar') {
+                      for (var j = 0; j < 10; j++) {
+                        this.similar.push(movie[key].results[j])
+                      }
+                    }
+                  }
+              this.movie = movie
+              const moviePlayer = document.getElementById('moviePlayer')
+              if (movie.torrent.torrents !== undefined) {
+                // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
+                for(key in movie.torrent.torrents.en) {
+                    moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
+                    moviePlayer.innerHTML += `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
+                    // console.log(moviePlayer)
+                    // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
+                    // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
+                }
+              }
+              this.genres = this.genres.slice(0, this.genres.length-2)
+              this.comments = movie.comments
+              this.totalNumberOfComments = movie.comments.length
+
+            } else if (result.data.success == false) {
+
+            }
+            this.runLoader = false
+          })
+          .catch((err) => {
+            console.log(err)
+            this.runLoader = false
+          })
+      },
+
       streamMovie() {
         let quality = 720
         console.log('stream')
@@ -328,17 +342,19 @@ export default {
 
         HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment})
         .then(response => {
-          console.log('response ->', response)
-          // console.log(this.movie.comments)
-          this.movie.comments.unshift({
-            date: response.date,
-            first: this.user.first,
-            image: this.user.image,
-            text: newComment,
-            user_id: this.user.user_id
-          })
-          this.totalNumberOfComments = this.movie.comments.length
-          console.log(this.movie.comments)
+          console.log(response)
+          if (response.data.success) {
+            this.movie.comments.unshift({
+              date: response.date,
+              first: this.user.first,
+              image: this.user.image,
+              text: newComment,
+              user_id: this.user.user_id
+            })
+            this.totalNumberOfComments = this.movie.comments.length
+          } else {
+            this.$emit('userActivate', 'activation.error_alert')
+          }
         })
         .catch(err => {
           console.log(err)
@@ -347,9 +363,19 @@ export default {
       playVideo(evt) {
         evt.preventDefault()
         console.log('yo playing')
+      },
+      showNewMovie(id) {
+        console.log('id: ', id)
+        this.$router.replace(`/movies/${id}`)
       }
     },
-  }
+
+    watch: {
+      '$route.params.id': function (id) {
+        this.rerender()
+   }
+ },
+}
 </script>
 
 <style scoped>

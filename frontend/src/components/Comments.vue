@@ -5,6 +5,7 @@
                 :label="$t('movie.newComment')"
                 type="text"
                 append-outer-icon="send"
+                :counter="1000"
                 @click:append-outer="submitComment"
                 @keyup.native.enter="submitComment">
         </v-text-field>
@@ -55,7 +56,7 @@ export default {
     },
     methods: {
       submitComment() {
-        if(this.newComment !== '') {
+        if(this.newComment !== '' && this.newComment.length <= 1000) {
               this.$emit('submit-comment', this.newComment);
               this.newComment = '';
           }
