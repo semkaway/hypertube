@@ -32,7 +32,17 @@ export const subtitle = async (imdbid, locale) => {
         imdbid
     })
     // TODO => change resp.en to resp[locale] from USER setting. Get from JWT token
-    let srtDownloadUrl = resp.en.url
+
+
+
+     // sometimes resp.en is undefined
+     // u need to handle it 
+     // because frontend is crying ...
+
+    let srtDownloadUrl = ''
+    if (resp.en)
+        srtDownloadUrl = resp.en.url
+    
 
     const response = await axios({
         method: 'GET',
