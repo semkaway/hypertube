@@ -51,6 +51,7 @@
                 depressed
                 color="grey"
                 class="white--text mt-3"
+                style="outline: none;"
                 @click="showMore">{{$t('button.showMore')}}
               </v-btn>
         </v-flex>

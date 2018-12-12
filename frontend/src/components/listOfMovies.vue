@@ -12,7 +12,7 @@
                     depressed
                     left
                     color="grey lighten-2"
-                    style="top: 45%; opacity: 0.8;"
+                    style="top: 45%; opacity: 0.8; outline: none;"
                     @click.prevent="showPrevious"
                 >
                   <v-icon color="black">keyboard_arrow_left</v-icon>
@@ -20,7 +20,7 @@
             <v-flex v-for="(movie,index) in movies"
                     v-if="index >= startMoviesToShow && index < endMoviesToShow"
                     :key="index"
-                    xs12 md4 lg3>
+                    xs12 sm6 md3 lg3>
               <router-link :to="'/movies/'+movie.id">
                 <v-img  :aspect-ratio="1/1.5"
                         max-width="100%"
@@ -45,7 +45,7 @@
                     depressed
                     right
                     color="grey lighten-2"
-                    style="top: 45%; opacity: 0.8;"
+                    style="top: 45%; opacity: 0.8; outline: none;"
                     @click.prevent="showNext"
                 >
                   <v-icon color="black">keyboard_arrow_right</v-icon>
@@ -57,6 +57,7 @@
                 @click.prevent="addMore"
                 depressed
                 color="grey"
+                style="outline: none;"
                 class="white--text mt-3">{{$t('button.showMore')}}</v-btn>
         </div>
       </div>
@@ -76,7 +77,7 @@ export default {
     },
     methods: {
         showPrevious() {
-          if (this.endMoviesToShow == this.totalNumberOfMovies)
+          if (this.endMoviesToShow == this.totalNumberOfMovies && this.totalNumberOfMovies % this.showMoviesOnPage !== 0)
             this.endMoviesToShow -= this.totalNumberOfMovies % this.showMoviesOnPage
           else
             this.endMoviesToShow -= this.showMoviesOnPage

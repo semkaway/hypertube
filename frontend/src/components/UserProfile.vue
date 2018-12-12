@@ -1,9 +1,9 @@
 <template>
   <v-container fluid grid-list-md class="mt-3 white">
     <v-layout row wrap>
-      <v-flex d-flex xs12 sm6 md2>
+      <v-flex d-flex md2 sm3 lg2>
       </v-flex>
-      <v-flex xs12 sm6 md8 class="mt-5">
+      <v-flex xs12 md8 sm6 lg8 class="mt-5">
         <div flat>
           <v-img :aspect-ratio="13/6" :src="bgImg | image">
             <v-layout pa-2 column fill-height class="lightbox white--text">
@@ -27,7 +27,8 @@
                   </v-avatar>
                 </v-flex>
                 <v-flex shrink>
-                  <p class="display-3">{{myUser.first}} {{myUser.last}}</p>
+                  <div style="word-break: break-all; font-size: 2.5rem;">{{myUser.first}}</div>
+                  <div style="word-break: break-all; font-size: 2.5rem;">{{myUser.last}}</div>
                 </v-flex>
               </v-layout>
             </v-layout>
@@ -41,7 +42,7 @@
                           :movies='watchedMovies'
                           :totalNumberOfMovies="totalNumberOfWatchedMovies"></list-of-movies>
       </v-flex>
-      <v-flex d-flex xs12 sm6 md2>
+      <v-flex d-flex md2 sm3 lg2>
       </v-flex>
     </v-layout>
   </v-container>

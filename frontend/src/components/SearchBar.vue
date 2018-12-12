@@ -17,7 +17,7 @@
 	</div>
 
 	<div class='search-input-wrapper'>
-		<v-text-field v-model='searchText' 
+		<v-text-field v-model='searchText'
 			flat
 		 	@keyup.native.enter="searchMovies"
 			@click:append-outer="searchMovies"
@@ -26,9 +26,9 @@
   	</div>
 
 	<div class='search-button-wrapper'>
-		<v-btn @click='searchMovies'>{{$t('movies.search')}}</v-btn>
+		<v-btn style="outline: none;" @click='searchMovies'>{{$t('movies.search')}}</v-btn>
 	</div>
-  
+
   </v-layout>
 </template>
 
