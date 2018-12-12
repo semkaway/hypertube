@@ -6,44 +6,43 @@
         <v-container grid-list-md>
           <v-layout row wrap class="mt-3">
             <v-flex v-for="(movie, index) in movies" :key='index' class="movie" xs12 md4 lg3>
-                <router-link :to="'/movies/'+movie.id">
-                  <v-hover>
-                   <v-card
-                     slot-scope="{ hover }"
-                     class="mx-auto"
-                     color="grey lighten-5"
-                     flat
-                     max-width="250"
-                   >
-                     <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
-                       <v-layout slot="placeholder"
-                                 fill-height
-                                 align-center
-                                 justify-center
-                                 ma-0
-                                 >
-                         <v-progress-circular indeterminate color="grey lighten-2"></v-progress-circular>
-                       </v-layout>
-                       <v-expand-transition>
-                        <div  v-if="hover"
-      					              class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
-      					              style="height: 13%; opacity: 0.9;">
-							<div class='mt-3' style='display: flex; align-items: flex-end; justify-content: space-around;'>
-								<div>
-									<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date | date}}</p>
-								</div>
-								<div>
-									<p><v-icon color="white">star</v-icon> {{movie.vote_average}}</p>
-								</div>
-							</div>
-
-                        </div>
-                       </v-expand-transition>
-                     </v-img>
-                   </v-card>
-                 </v-hover>
-                 <p class="mt-2 subheading">{{movie.title}}</p>
-                </router-link>
+              <v-hover>
+                 <v-card
+                   slot-scope="{ hover }"
+                   class="mx-auto"
+                   color="grey lighten-5"
+                   flat
+                   max-width="250"
+                 >
+                 <router-link :to="'/movies/'+movie.id">
+                   <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
+                     <v-layout slot="placeholder"
+                               fill-height
+                               align-center
+                               justify-center
+                               ma-0
+                               >
+                       <v-progress-circular indeterminate color="grey lighten-2"></v-progress-circular>
+                     </v-layout>
+                     <v-expand-transition>
+                      <div  v-if="hover"
+    					              class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
+    					              style="height: 13%; opacity: 0.9;">
+            						<div class='mt-3' style='display: flex; align-items: flex-end; justify-content: space-around;'>
+            							<div>
+            								<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date | date}}</p>
+            							</div>
+            							<div>
+            								<p><v-icon color="white">star</v-icon> {{movie.vote_average}}</p>
+            							</div>
+            						</div>
+                      </div>
+                     </v-expand-transition>
+                   </v-img>
+                   </router-link>
+                 </v-card>
+               </v-hover>
+              <p class="mt-2 subheading">{{movie.title}}</p>
             </v-flex>
           </v-layout>
         </v-container>
