@@ -27,15 +27,16 @@
                        <v-expand-transition>
                         <div  v-if="hover"
       					              class="d-flex transition-fast-in-fast-out grey darken-4 v-card--reveal subheading white--text"
-      					              style="height: 100%; opacity: 0.9;">
-                         <v-layout row wrap>
-                            <v-flex xs12>
-                            	<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date | date}}</p>
-                            </v-flex>
-                            <v-flex xs12>
-                            	<p><v-icon color="white">star</v-icon> {{movie.vote_average}}</p>
-                            </v-flex>
-                        </v-layout>
+      					              style="height: 13%; opacity: 0.9;">
+							<div class='mt-3' style='display: flex; align-items: flex-end; justify-content: space-around;'>
+								<div>
+									<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date | date}}</p>
+								</div>
+								<div>
+									<p><v-icon color="white">star</v-icon> {{movie.vote_average}}</p>
+								</div>
+							</div>
+
                         </div>
                        </v-expand-transition>
                      </v-img>

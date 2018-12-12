@@ -72,14 +72,16 @@
             <v-img :src="movie.backdrop_path">
             </v-img>
             <div class="mt-3">
-              <v-btn @click="selectQuality" depressed color="grey" class="white--text">720p</v-btn>
-              <v-btn @click="selectQuality" depressed color="grey" class="white--text">1080p</v-btn>
+              <v-btn v-if="quality.includes('720p')" @click="selectQuality('720p')" depressed color="grey" class="white--text">720p</v-btn>
+              <v-btn v-if="quality.includes('1080p')" @click="selectQuality('1080p')" depressed color="grey" class="white--text">1080p</v-btn>
             </div>
           </div>
           <div v-else class="text-xs-center">
+
             <video id="moviePlayer" ref="videoRef" width="100%" :poster="movie.backdrop_path" controls crossorigin="anonymous">
-              <source v-if="movieSource" :src="movieSource" type="video/mp4">
-            Your browser does not support the video tag.
+              <source v-if="movieSource" :src="movieSource" type="video/mp4"/>
+			  <track v-if='movie.subtitle' :src='movie.subtitle' kind="captions" srclang='en'/>
+            		Your browser does not support the video tag.
             </video>
           </div>
 
@@ -164,7 +166,7 @@
                 <v-list-tile-content>
                 <v-list-tile-title> <router-link :key="$route.fullPath" :to="'/movies/' + similar.id" exact>{{similar.title}} </router-link></v-list-tile-title>
                   <v-list-tile-sub-title>
-                    <v-icon size="10" style="display: inline-block; vertical-align: middle;">calendar_today</v-icon>
+                    <v-icon size="10" style="display: inline-block; vertical-align: middle;">date_range</v-icon>
                     {{similar.release_date | date}}
                   </v-list-tile-sub-title>
                   <v-list-tile-sub-title>
@@ -185,7 +187,7 @@
 
 <script>
 
-import {HTTP} from '../http-common';
+import { HTTP } from '../http-common'
 import axios from 'axios'
 import Loader from './Loader'
 import Comments from './Comments'
@@ -210,50 +212,22 @@ export default {
         movieSource: '',
         qualitySelected: false,
         progressColor: '#616161',
-        totalNumberOfComments: 0
+        totalNumberOfComments: 0,
+		quality: [],
       }
     },
+
     mounted () {
       this.rerender()
-      // setTimeout(() => {
-      //   // console.log('than this.$refs.player', this.$refs.player.player)
-      //
-      //   // this.$refs.player.player.config.listeners['pause'] = () => {
-      //   //   console.log('i pause')
-      //   //
-      //   // }
-      //
-      //   this.$refs.player.player.config.listeners['play'] = (e) => {
-      //
-      //     // console.log('playlarge', this.player.config.keyboard)
-      //     // e.preventDefault()
-      //     console.log('waiting: ', this.player.loading)
-      //     if (this.player.paused) {
-      //         this.player.play();
-      //
-      //     } else if (!this.player.loading) {
-      //         this.player.pause()
-      //         // return false
-      //     }
-      //     // return true
-      //     // this.player.play()
-      //   }
-      //
-      // }, 2000)
-
     },
-    computed: {
-      player () {
 
-        return this.$refs.player.player }
-    },
     methods: {
+
       rerender() {
         this.runLoader = true
-        HTTP
-          .get('movie/one/'+this.$route.params.id)
-          .then(result => {
+        HTTP.get('movie/one/'+this.$route.params.id).then(result => {
             console.log('result', result)
+			this.similar = []
             if (result.data.success == true) {
               let movie = result.data.data
                 for(var key in movie) {
@@ -299,24 +273,19 @@ export default {
                       }
                     }
                   }
-              this.movie = movie
-              const moviePlayer = document.getElementById('moviePlayer')
-              if (movie.torrent.torrents !== undefined) {
-                // console.log('movie.torrent.torrents: ', movie.torrent.torrents)
-                for(key in movie.torrent.torrents.en) {
-                    moviePlayer.innerHTML += '<source src="http://localhost:3000/api/movie/stream/'+this.$route.params.id+'?quality='+key+'&token='+localStorage.token+'" type="video/mp4" size="'+key+'">'
-                    moviePlayer.innerHTML += `<track kind="captions" label="English" srclang="en" src="${movie.subtitle}" default>`
-                    // console.log(moviePlayer)
-                    // console.log(encodeURIComponent(movie.torrent.torrents.en[key].url))
-                    // this.movieSource = "http://localhost:3000/api/movie/stream/"+this.$route.params.id+'?quality='+key+'&token='+localStorage.token;
-                }
-              }
-              this.genres = this.genres.slice(0, this.genres.length-2)
-              this.comments = movie.comments
-              this.totalNumberOfComments = movie.comments.length
-
+              	this.movie = movie
+				if (movie.torrent.torrents !== undefined) {
+					for(key in movie.torrent.torrents.en) {
+						this.quality.push(key)
+					}
+				} else {
+					// not to show buttons
+				}
+				this.genres = this.genres.slice(0, this.genres.length - 2)
+				this.comments = movie.comments
+				this.totalNumberOfComments = movie.comments.length
             } else if (result.data.success == false) {
-
+				// show error
             }
             this.runLoader = false
           })
@@ -325,54 +294,48 @@ export default {
             this.runLoader = false
           })
       },
-
-      streamMovie() {
-        let quality = 720
-        console.log('stream')
-        HTTP.get('movie/stream/'+this.$route.params.id+'?quality='+quality+'p&token='+localStorage.token)
-        .then(response =>
-          console.log(response)
-        )
-        .catch(err => {
-          console.log(err)
-        })
-        console.log('here')
-      },
+	  
       submitComment(newComment) {
         console.log('user: ', this.user)
 
-        HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment})
-        .then(response => {
-          console.log(response)
-          if (response.data.success) {
-            this.movie.comments.unshift({
-              date: response.date,
-              first: this.user.first,
-              image: this.user.image,
-              text: newComment,
-              user_id: this.user.user_id
-            })
-            this.totalNumberOfComments = this.movie.comments.length
-          } else {
-            this.$emit('userActivate', 'activation.error_alert')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      },
-      playVideo(evt) {
-        evt.preventDefault()
-        console.log('yo playing')
-      },
-      selectQuality() {
-        this.qualitySelected = true
-      }
+			HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment})
+			.then(response => {
+				console.log(response)
+				if (response.data.success) {
+					this.movie.comments.unshift({
+					date: response.date,
+					first: this.user.first,
+					image: this.user.image,
+					text: newComment,
+					user_id: this.user.user_id
+					})
+					this.totalNumberOfComments = this.movie.comments.length
+				} else {
+					this.$emit('userActivate', 'activation.error_alert')
+				}
+			})
+			.catch(err => {
+				console.log(err)
+			})
+      	},
+
+      	selectQuality(quality) {
+			if (quality == '720p' || quality == '1080p') {
+				if (this.quality.includes(quality)) {
+					this.movieSource = `http://localhost:3000/api/movie/stream/${this.$route.params.id}?quality=${quality}&token=${localStorage.token}`
+					this.qualitySelected = true
+				} else {
+					// show error
+				}
+			} else {
+				// show error
+			}
+      	}
     },
 
     watch: {
-      '$route.params.id': function (id) {
-        this.rerender()
+      	'$route.params.id': function (id) {
+        	this.rerender()
    }
  },
 }
