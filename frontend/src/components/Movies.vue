@@ -33,7 +33,7 @@
                             	<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date | date}}</p>
                             </v-flex>
                             <v-flex xs12>
-                            	<p><v-icon color="white">calendar_today</v-icon> {{movie.vote_average}}</p>
+                            	<p><v-icon color="white">star</v-icon> {{movie.vote_average}}</p>
                             </v-flex>
                         </v-layout>
                         </div>
