@@ -30,10 +30,10 @@
       					              style="height: 100%; opacity: 0.9;">
                          <v-layout row wrap>
                             <v-flex xs12>
-                            	<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date}}</p>
+                            	<p><v-icon color="white">calendar_today</v-icon> {{movie.release_date | date}}</p>
                             </v-flex>
                             <v-flex xs12>
-                            	<p>IMDB {{movie.vote_average}}</p>
+                            	<p><v-icon color="white">calendar_today</v-icon> {{movie.vote_average}}</p>
                             </v-flex>
                         </v-layout>
                         </div>
@@ -65,11 +65,13 @@
 	import SearchBar from './SearchBar'
 	import { HTTP } from '../http-common'
 	import * as constants from '../utils/constants'
-    import setAuthorizationToken from '../utils/setAuthToken'
+  import setAuthorizationToken from '../utils/setAuthToken'
+  import showYear from '../utils/showYear'
 
 	export default {
 		name: 'Movies',
 		components: { NotFound, SearchBar },
+    filters: { date: showYear },
 		props: ['user', 'userLoggedIn', 'locale', 'token'],
 		data () {
 			return {
@@ -104,7 +106,7 @@
 					query = 'https://api.themoviedb.org/3/search/movie'
 				}
 			}
-			
+
 			searchParams.page = this.page
 
 			console.log("query =>", query)
@@ -121,10 +123,6 @@
 				}
 				for (var i = 0; i < result.data.results.length; i++) {
 					for(var key in result.data.results[i]) {
-						if (key == 'release_date') {
-							var year = result.data.results[i][key].split('-')
-							result.data.results[i][key] = year[0]
-						}
 						if (key == 'poster_path') {
 							if (result.data.results[i][key] == null) {
 								result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
@@ -157,7 +155,7 @@
 			if (genre)
 				searchParams.with_genres = genre
 			if (sort)
-				searchParams.sort_by = sort 
+				searchParams.sort_by = sort
 			this.searchText = searchText.length ? searchText : ''
 			this.movies = []
 			this.page = 1
