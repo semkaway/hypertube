@@ -14,7 +14,7 @@
               </v-list-tile-action>
 
               <v-list-tile-content>
-                <v-list-tile-title>{{movie.release_date}}</v-list-tile-title>
+                <v-list-tile-title>{{movie.release_date | date}}</v-list-tile-title>
                 <v-list-tile-sub-title>{{$t('movie.year')}}</v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -161,7 +161,7 @@
 
                 <v-list-tile-content>
                   <v-list-tile-title><router-link :to="'/movies/'+similar.id">{{similar.title}}</router-link></v-list-tile-title>
-                  <v-list-tile-sub-title>2018</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{similar.release_date | date}}</v-list-tile-sub-title>
                   <v-list-tile-sub-title>{{similar.vote_average}}</v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
@@ -182,10 +182,12 @@ import axios from 'axios'
 import Loader from './Loader'
 import Comments from './Comments'
 import NotFound from './NotFound'
+import showYear from '../utils/showYear'
 
 export default {
   name: 'Movie',
   components: { Loader, Comments, NotFound },
+  filters: { date: showYear },
   props: ['user', 'userLoggedIn'],
   data () {
     return {
@@ -253,9 +255,6 @@ export default {
                     } else {
                       movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
                     }
-                  }
-                  if (key == 'release_date') {
-                    movie[key] = movie[key].split('-')[0]
                   }
                   if (key == 'credits') {
                     for (var j = 0; j != 5; j++) {
