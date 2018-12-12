@@ -23,6 +23,7 @@
 			v-on:userAlreadyExists='showWarning'
 			v-on:userActivate='userActivate'
 		/>
+		<app-footer />
 	</v-app>
 </template>
 
