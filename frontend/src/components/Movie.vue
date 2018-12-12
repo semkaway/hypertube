@@ -341,16 +341,18 @@ export default {
         HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment})
         .then(response => {
           console.log(response)
-          // console.log(this.movie.comments)
-          this.movie.comments.unshift({
-            date: response.date,
-            first: this.user.first,
-            image: this.user.image,
-            text: newComment,
-            user_id: this.user.user_id
-          })
-          this.totalNumberOfComments = this.movie.comments.length
-          console.log(this.movie.comments)
+          if (response.data.success) {
+            this.movie.comments.unshift({
+              date: response.date,
+              first: this.user.first,
+              image: this.user.image,
+              text: newComment,
+              user_id: this.user.user_id
+            })
+            this.totalNumberOfComments = this.movie.comments.length
+          } else {
+            this.$emit('userActivate', 'activation.error_alert')
+          }
         })
         .catch(err => {
           console.log(err)
