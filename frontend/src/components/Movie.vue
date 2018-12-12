@@ -228,6 +228,11 @@ export default {
         HTTP.get('movie/one/'+this.$route.params.id).then(result => {
             console.log('result', result)
 			this.similar = []
+			this.actors = []
+			this.crew = []
+			this.movieSource = ''
+			this.qualitySelected = false
+			this.totalNumberOfComments = 0
             if (result.data.success == true) {
               let movie = result.data.data
                 for(var key in movie) {
