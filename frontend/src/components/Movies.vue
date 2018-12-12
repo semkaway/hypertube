@@ -110,6 +110,7 @@
 			console.log("query =>", query)
 			console.log('params =>', searchParams)
 
+			const token = axios.defaults.headers.common['Authorization']
 			delete axios.defaults.headers.common['Authorization']
 			HTTP.get(query, { params: searchParams } ).then(result => {
 				console.log(result)
@@ -136,7 +137,7 @@
 				}
 				this.totalPages = result.data.total_pages
 			}).catch((e) => { console.log('e', e) })
-			setAuthorizationToken(this.token)
+			setAuthorizationToken(token)
       	},
 
       	showMore () {

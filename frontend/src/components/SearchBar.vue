@@ -44,7 +44,7 @@
       return {
 		genre: this.$t('movie.genres'),
 		sortBy: 'Фильтровать по',
-		fromDate: 1900,
+		fromDate: 2000,
 		toDate: 2018,
 		searchText: '',
         dropdown_genres: [
