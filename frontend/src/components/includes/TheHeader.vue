@@ -37,6 +37,19 @@
             </v-list>
           </v-menu>
         </v-toolbar-items>
+         <v-toolbar-items v-if='userLoggedIn == false'>
+                <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
+                    <v-btn flat slot="activator">
+                        <v-icon>language</v-icon>
+                        <span class='ml-2'>{{ locale }}</span>
+                    </v-btn>
+                    <v-list>
+                        <v-list-tile v-for="(item, i) in lang" :key="i" @click="changeLanguage(item.short)">
+                        <v-list-tile-title>{{ item.short | capitalize }}</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
+            </v-toolbar-items>
     </v-toolbar>
 </template>
 
