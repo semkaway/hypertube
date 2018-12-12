@@ -63,28 +63,28 @@
         </v-list>
         </v-card>
       </v-flex>
-      <v-flex d-flex xs12 sm6 md6>
-      <v-card flat class="p-2">
-        <h1>{{movie.title}}</h1>
-        <p class="subheading">{{movie.tagline}}</p>
-        <v-card-text>{{movie.overview}}</v-card-text>
-        <!-- <vue-plyr ref="player">
-            <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
-                <source v-if="movieSource" :src="movieSource" type="video/mp4">
-                <!-- <source :src="movieSource" type="video/mp4"/> -->
-                <!-- <track kind="captions" label="English" srclang="en" :src="movie.subtitle" default> -->
-            <!-- </video> -->
-        <!-- </vue-plyr> -->
-        <div width="100%">
-          <video id="moviePlayer" ref="videoRef" width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
-            <source v-if="movieSource" :src="movieSource" type="video/mp4">
-          Your browser does not support the video tag.
-          </video>
-        </div>
-        <comments :allComments="movie.comments"
-                  :totalNumberOfComments="totalNumberOfComments"
-                  @submit-comment="submitComment"></comments>
-      </v-card>
+      <v-flex d-flex xs12 sm6 md6 class="p-3">
+        <v-card flat class="p-2">
+          <h1>{{movie.title}}</h1>
+          <p class="subheading">{{movie.tagline}}</p>
+          <v-card-text>{{movie.overview}}</v-card-text>
+          <!-- <vue-plyr ref="player">
+              <video id="moviePlayer" controls crossorigin="anonymous" data-plyr-config='{"debug": true }'>
+                  <source v-if="movieSource" :src="movieSource" type="video/mp4">
+                  <!-- <source :src="movieSource" type="video/mp4"/> -->
+                  <!-- <track kind="captions" label="English" srclang="en" :src="movie.subtitle" default> -->
+              <!-- </video> -->
+          <!-- </vue-plyr> -->
+          <div width="100%">
+            <video id="moviePlayer" ref="videoRef" width="600" :poster="movie.backdrop_path" controls crossorigin="anonymous">
+              <source v-if="movieSource" :src="movieSource" type="video/mp4">
+            Your browser does not support the video tag.
+            </video>
+          </div>
+          <comments :allComments="movie.comments"
+                    :totalNumberOfComments="totalNumberOfComments"
+                    @submit-comment="submitComment"></comments>
+        </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm6 md3 v-if="this.$i18n.locale === 'en'">
         <v-card flat>

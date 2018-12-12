@@ -14,21 +14,17 @@
             class="mt-3"
             flat>
       <v-layout>
-        <v-flex xs2 sm1 md1 lg1 text-xs-center>
-          <v-avatar size="55">
-            <v-img  class='rounded round-img'
-                    :aspect-ratio="16/9"
-                    :src="comment.image">
-            </v-img>
+        <v-avatar size="58" class="mr-2">
+          <v-img  class='rounded round-img'
+                  :aspect-ratio="16/9"
+                  :src="comment.image">
+          </v-img>
         </v-avatar>
-        </v-flex>
-        <v-flex xs8 sm11 md11 lg11>
-          <div>
+        <div>
             <router-link :to="'/user/'+comment.user_id" class="mr-2 font-weight-black">{{comment.first}}</router-link>
             <span class="caption">{{comment.date | date}}</span>
             <div style="word-break: break-all;">{{comment.text}}</div>
-          </div>
-        </v-flex>
+        </div>
       </v-layout>
     </v-card>
     <div class="text-xs-center">
