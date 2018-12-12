@@ -74,13 +74,16 @@
             <div class="mt-3">
               <v-btn v-if="quality.includes('720p')" @click="selectQuality('720p')" depressed color="grey" class="white--text">720p</v-btn>
               <v-btn v-if="quality.includes('1080p')" @click="selectQuality('1080p')" depressed color="grey" class="white--text">1080p</v-btn>
+              <div v-if="!quality.includes('720p') && !quality.includes('1080p')" style="font-size: 1.5rem; letter-spacing: 13px;" class="font-weight-regular text-uppercase">
+                {{$t('button.comingSoon')}}
+              </div>
             </div>
           </div>
           <div v-else class="text-xs-center">
 
             <video id="moviePlayer" ref="videoRef" width="100%" :poster="movie.backdrop_path" controls crossorigin="anonymous">
               <source v-if="movieSource" :src="movieSource" type="video/mp4"/>
-			  <track v-if='movie.subtitle' :src='movie.subtitle' kind="captions" srclang='en'/>
+			        <track v-if='movie.subtitle' :src='movie.subtitle' kind="captions" srclang='en'/>
             		Your browser does not support the video tag.
             </video>
           </div>
@@ -229,6 +232,7 @@ export default {
             console.log('result', result)
 			this.similar = []
 			this.actors = []
+			this.genres = []
 			this.crew = []
 			this.movieSource = ''
 			this.qualitySelected = false
@@ -299,7 +303,7 @@ export default {
             this.runLoader = false
           })
       },
-	  
+
       submitComment(newComment) {
         console.log('user: ', this.user)
 
