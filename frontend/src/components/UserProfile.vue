@@ -77,13 +77,6 @@ export default {
           if (result.data.success == true) {
             this.currentUser = true
             setDefaultPosterPath(result.data.movies)
-            // for (var i = 0; i < result.data.movies.length; i++) {
-            //   if (result.data.movies[i].poster_path == null) {
-            //     result.data.movies[i].poster_path = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-            //   } else {
-            //     result.data.movies[i].poster_path = 'http://image.tmdb.org/t/p/original/'+result.data.movies[i].poster_path
-            //   }
-            // }
             this.watchedMovies = result.data.movies
             this.totalNumberOfWatchedMovies = this.watchedMovies.length
           } else if (result.data.success == false) {
@@ -108,13 +101,6 @@ export default {
               this.myUser.last = result.data.last
               this.myUser.image = result.data.image
               setDefaultPosterPath(result.data.movies)
-              // for (var i = 0; i < result.data.movies.length; i++) {
-  						// 	if (result.data.movies[i].poster_path == null) {
-  						// 		result.data.movies[i].poster_path = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-  						// 	} else {
-  						// 		result.data.movies[i].poster_path = 'http://image.tmdb.org/t/p/original/'+result.data.movies[i].poster_path
-  						// 	}
-      				// }
               this.commentedMovies = result.data.movies
               this.totalNumberOfCommentedMovies = this.commentedMovies.length
               if (this.myUser.image === null) {
