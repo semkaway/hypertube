@@ -1,5 +1,6 @@
 <template>
   <v-container v-if='userLoggedIn == true' grid-list-md text-xs-center class="mt-5">
+    <Loader :run='runLoader'/>
       <v-flex lg12>
 	  <SearchBar v-on:searchMovies='searchMovies'/>
         <div v-if="notFound">{{ $t('movies.notFound') }}</div>
@@ -71,6 +72,7 @@
 	import axios from 'axios'
 	import NotFound from './NotFound'
 	import SearchBar from './SearchBar'
+  import Loader from './Loader'
 	import { HTTP } from '../http-common'
 	import * as constants from '../utils/constants'
   import setAuthorizationToken from '../utils/setAuthToken'
@@ -79,7 +81,7 @@
 
 	export default {
 		name: 'Movies',
-		components: { NotFound, SearchBar },
+		components: { NotFound, SearchBar, Loader },
     filters: { date: showYear },
 		props: ['user', 'userLoggedIn', 'locale', 'token'],
 		data () {
@@ -98,13 +100,15 @@
 				searchText: '',
 				userParams: {},
 				notFound: false,
-        watchedMovies: []
+        watchedMovies: [],
+        runLoader: true
 			}
 		},
 
     methods: {
       	requestMovies(filters) {
           this.notFound = false
+          this.runLoader = true
 			let query = this.query
 			let searchParams = {}
 
@@ -138,6 +142,7 @@
 					this.movies.push(result.data.results[i])
 				}
 				this.totalPages = result.data.total_pages
+        this.runLoader = false
 			}).catch((e) => { console.log('e', e) })
 			setAuthorizationToken(token)
       	},
