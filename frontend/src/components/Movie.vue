@@ -88,7 +88,8 @@
 
             <video id="moviePlayer" ref="videoRef" width="100%" :poster="movie.backdrop_path" controls crossorigin="anonymous">
               <source v-if="movieSource" :src="movieSource" type="video/mp4"/>
-			        <track v-if='movie.subtitle' :src='movie.subtitle' kind="captions" srclang='en'/>
+						<track v-if='subtitles.enSubs' :src='subtitles.enSubs.file' kind="captions" srclang='en'/>
+						<track v-if='subtitles.ruSubs' :src='subtitles.ruSubs.file' kind="captions" srclang='ru'/>
             		Your browser does not support the video tag.
             </video>
           </div>
@@ -228,11 +229,12 @@ export default {
         qualitySelected: false,
         progressColor: '#616161',
         totalNumberOfComments: 0,
-		    quality: [],
-		    loaded: false,
-		    showSimilar: false,
+		quality: [],
+		loaded: false,
+		showSimilar: false,
         showCrew: false,
-        showActors: false
+        showActors: false,
+		subtitles: {}
       }
     },
 
@@ -309,7 +311,12 @@ export default {
                       }
                     }
                   }
-              	this.movie = movie
+              		this.movie = movie
+					if (this.movie.subtitle_array) {
+						this.subtitles = this.movie.subtitle_array
+					} else {
+						this.subtitles = {}
+					}
 				if (movie.torrent.torrents !== undefined) {
 					for(key in movie.torrent.torrents.en) {
 						this.quality.push(key)

@@ -102,8 +102,13 @@ export default {
 
 <style>
  html, body, #app {
-      height: 100%;
       min-height: 100%;
       font-family: Roboto;
     }
+
+	body {
+		position: relative;
+		 min-height: 100%;
+		 box-sizing: border-box;
+	}
 </style>
