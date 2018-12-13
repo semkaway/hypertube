@@ -72,8 +72,8 @@
             <v-img :src="movie.backdrop_path">
             </v-img>
             <div class="mt-3">
-              <v-btn v-if="quality.includes('720p')" @click="selectQuality('720p')" depressed color="grey" class="white--text">720p</v-btn>
-              <v-btn v-if="quality.includes('1080p')" @click="selectQuality('1080p')" depressed color="grey" class="white--text">1080p</v-btn>
+              <v-btn v-if="quality.includes('720p')" @click="selectQuality('720p')" depressed color="grey" class="white--text" >720p</v-btn>
+              <v-btn v-if="quality.includes('1080p')" @click="selectQuality('1080p')" depressed color="grey" class="white--text" >1080p</v-btn>
               <div v-if="!quality.includes('720p') && !quality.includes('1080p')" style="font-size: 1.5rem; letter-spacing: 13px;" class="font-weight-regular text-uppercase">
                 {{$t('button.comingSoon')}}
               </div>
@@ -146,8 +146,8 @@
           </v-list>
         </v-card>
       </v-flex>
-      <v-flex v-if='showSimilar' d-flex xs12 sm6 md3 v-else>
-        <v-card flat >
+      <v-flex d-flex xs12 sm6 md3 v-else>
+        <v-card flat v-if='showSimilar'>
           <v-list two-line>
             <template >
 
