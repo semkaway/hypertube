@@ -95,6 +95,7 @@
 
     methods: {
       	requestMovies(filters) {
+          this.notFound = false
 			let query = this.query
 			let searchParams = {}
 
