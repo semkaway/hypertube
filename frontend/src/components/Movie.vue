@@ -207,6 +207,7 @@ import Loader from './Loader'
 import Comments from './Comments'
 import NotFound from './NotFound'
 import showYear from '../utils/showYear'
+import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 
 export default {
   name: 'Movie',
@@ -262,11 +263,12 @@ export default {
                       }
                     }
                     if (key == 'poster_path') {
-                      if (movie[key] == null) {
-                        movie[key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-                      } else {
-                        movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
-                      }
+                      setDefaultPosterPath(movie)
+                      // if (movie[key] == null) {
+                      //   movie[key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                      // } else {
+                      //   movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
+                      // }
                     }
                     if (key == 'backdrop_path') {
                       if (movie[key] == null) {
