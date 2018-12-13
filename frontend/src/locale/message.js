@@ -53,14 +53,22 @@ const messages = {
 			cancel: 'cancel',
 			close: 'close',
 			showMore: 'Show more',
-			comingSoon: 'Coming soon'
+			comingSoon: 'Coming soon',
+			notComing: 'Sorry, this video is not available'
 		},
 		home: {
 			title: 'home'
 		},
 		movies: {
 			notFound: 'Sorry, nothing was found :(',
-			search: 'Search'
+			search: 'Search',
+			filter: 'Filter by',
+			popularity: 'Popularity',
+			releaseDate: 'Release date',
+			voteNumber: 'Number of votes',
+			rating: 'Rating',
+			since: 'since',
+			to: 'to'
 		},
 		registration: {
 			title: 'Registration',
@@ -216,14 +224,22 @@ const messages = {
 			cancel: 'отмена',
 			close: 'закрыть',
 			showMore: 'Показать еще',
-			comingSoon: 'Скоро в кино'
+			comingSoon: 'Скоро в кино',
+			notComing: 'К сожалению, это видео недоступно'
 		},
 		home: {
 			title: 'Главная'
 		},
 		movies: {
 			notFound: 'Извините, мы ничего не нашли по Вашему запросу :(',
-			search: 'Поиск'
+			search: 'Поиск',
+			filter: 'Фильтровать по',
+			popularity: 'Популярность',
+			releaseDate: 'Дата выхода',
+			voteNumber: 'Количество голосов',
+			rating: 'Оценка',
+			since: 'от',
+			to: 'до'
 		},
 		registration: {
 			title: "Регистрация",
@@ -378,14 +394,22 @@ const messages = {
 			cancel: 'скасувати',
 			close: 'закрити',
 			showMore: 'Показати ще',
-			comingSoon: 'Скоро в кіно'
+			comingSoon: 'Скоро в кіно',
+			notComing: 'Нажаль, це відео недоступне'
 		},
 		home: {
 			title: 'Головна'
 		},
 		movies: {
 			notFound: 'Вибачте, за Вашим запитом нічого не знайдено :(',
-			search: 'Пошук'
+			search: 'Пошук',
+			filter: 'Фільтрувати за',
+			popularity: 'Популярність',
+			releaseDate: 'Дата виходу',
+			voteNumber: 'Кількість голосів',
+			rating: 'Оцінка',
+			since: 'від',
+			to: 'до'
 		},
 		registration: {
 			title: "Реєстрація",

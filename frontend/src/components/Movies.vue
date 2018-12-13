@@ -68,6 +68,7 @@
 	import * as constants from '../utils/constants'
   import setAuthorizationToken from '../utils/setAuthToken'
   import showYear from '../utils/showYear'
+  import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 
 	export default {
 		name: 'Movies',
@@ -95,6 +96,7 @@
 
     methods: {
       	requestMovies(filters) {
+          this.notFound = false
 			let query = this.query
 			let searchParams = {}
 
@@ -110,28 +112,20 @@
 
 			searchParams.page = this.page
 
-			console.log("query =>", query)
-			console.log('params =>', searchParams)
+			// console.log("query =>", query)
+			// console.log('params =>', searchParams)
 
 			const token = axios.defaults.headers.common['Authorization']
 			delete axios.defaults.headers.common['Authorization']
 			HTTP.get(query, { params: searchParams } ).then(result => {
-				console.log(result)
+				// console.log(result)
 				if (result.data.total_results == 0) {
 					this.notFound = true
 					this.totalPages = 1
 					return false
 				}
+        setDefaultPosterPath(result.data.results)
 				for (var i = 0; i < result.data.results.length; i++) {
-					for(var key in result.data.results[i]) {
-						if (key == 'poster_path') {
-							if (result.data.results[i][key] == null) {
-								result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-							} else {
-								result.data.results[i][key] = 'http://image.tmdb.org/t/p/w500' + result.data.results[i][key]
-							}
-						}
-					}
 					this.movies.push(result.data.results[i])
 				}
 				this.totalPages = result.data.total_pages

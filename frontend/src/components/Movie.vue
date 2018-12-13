@@ -34,7 +34,7 @@
 
             <v-divider inset></v-divider>
 
-          <v-list-tile>
+          <v-list-tile v-if="movie.runtime > 0">
             <v-list-tile-action>
               <v-icon>access_time</v-icon>
             </v-list-tile-action>
@@ -45,9 +45,9 @@
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-divider inset></v-divider>
+          <v-divider inset v-if="movie.runtime > 0"></v-divider>
 
-          <v-list-tile>
+          <v-list-tile v-if="genres.length != 0">
             <v-list-tile-action>
               <v-icon>drag_indicator</v-icon>
             </v-list-tile-action>
@@ -58,7 +58,7 @@
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-divider inset></v-divider>
+          <v-divider inset v-if="genres.length > 0"></v-divider>
 
         </v-list>
         </v-card>
@@ -72,10 +72,15 @@
             <v-img :src="movie.backdrop_path">
             </v-img>
             <div class="mt-3">
-              <v-btn v-if="quality.includes('720p')" @click="selectQuality('720p')" depressed color="grey" class="white--text">720p</v-btn>
-              <v-btn v-if="quality.includes('1080p')" @click="selectQuality('1080p')" depressed color="grey" class="white--text">1080p</v-btn>
-              <div v-if="!quality.includes('720p') && !quality.includes('1080p')" style="font-size: 1.5rem; letter-spacing: 13px;" class="font-weight-regular text-uppercase">
-                {{$t('button.comingSoon')}}
+              <v-btn v-if="quality.includes('720p')" @click="selectQuality('720p')" depressed color="grey" class="white--text" style="outline: none;">720p</v-btn>
+              <v-btn v-if="quality.includes('1080p')" @click="selectQuality('1080p')" depressed color="grey" class="white--text" style="outline: none;">1080p</v-btn>
+              <div v-if="!quality.includes('720p') && !quality.includes('1080p')">
+                <div v-if="movie.release_date && movie.release_date < '2017'" style="font-size: 1.5rem; letter-spacing: 13px;" class="font-weight-regular text-uppercase">
+                  {{$t('button.notComing')}}
+                </div>
+                <div v-else style="font-size: 1.5rem; letter-spacing: 13px;" class="font-weight-regular text-uppercase">
+                  {{$t('button.comingSoon')}}
+                </div>
               </div>
             </div>
           </div>
@@ -96,58 +101,62 @@
       <v-flex d-flex xs12 sm6 md3 v-if="this.$i18n.locale === 'en'">
         <v-card flat>
           <v-list two-line>
-            <v-subheader>
-                {{$t('movie.crew')}}
-              </v-subheader>
-              <template v-for="crew in this.crew">
-                <v-list-tile>
-                  <v-list-tile-avatar v-if="crew.profile_path !== null"
+            <div v-if='showCrew'>
+              <v-subheader>
+                  {{$t('movie.crew')}}
+                </v-subheader>
+                <template v-for="crew in this.crew">
+                  <v-list-tile>
+                    <v-list-tile-avatar v-if="crew.profile_path !== null"
+                                        size="55"
+                                        class="actorPicture mr-2"
+                                        :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+crew.profile_path + ')'}">
+                    </v-list-tile-avatar>
+
+                    <v-list-tile-avatar v-else
+                                        size="55"
+                                        class="actorPicture mr-2"
+                                        :style="{ 'background-image':`url('https://images.pexels.com/photos/1468389/pexels-photo-1468389.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+                    </v-list-tile-avatar>
+
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{crew.job}}</v-list-tile-title>
+                      <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+crew.name" target="_blank">{{crew.name}}</a></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </template>
+              <v-divider inset></v-divider>
+            </div>
+            <div v-if='showActors'>
+              <v-subheader>
+                  {{$t('movie.cast')}}
+                </v-subheader>
+              <template v-for="actor in this.actors">
+                <v-list-tile v-if="actors">
+                  <v-list-tile-avatar v-if="actor.profile_path !== null"
                                       size="55"
                                       class="actorPicture mr-2"
-                                      :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+crew.profile_path + ')'}">
+                                      :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+actor.profile_path + ')'}">
                   </v-list-tile-avatar>
 
                   <v-list-tile-avatar v-else
                                       size="55"
                                       class="actorPicture mr-2"
-                                      :style="{ 'background-image':`url('https://images.pexels.com/photos/1468389/pexels-photo-1468389.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
+                                      :style="{ 'background-image':`url('https://images.pexels.com/photos/134/light-creative-abstract-colorful.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
                   </v-list-tile-avatar>
 
                   <v-list-tile-content>
-                    <v-list-tile-title>{{crew.job}}</v-list-tile-title>
-                    <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+crew.name" target="_blank">{{crew.name}}</a></v-list-tile-sub-title>
+                    <v-list-tile-title>{{actor.character}}</v-list-tile-title>
+                    <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+actor.name" target="_blank">{{actor.name}}</a></v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
               </template>
-            <v-divider inset></v-divider>
-            <v-subheader>
-                {{$t('movie.cast')}}
-              </v-subheader>
-            <template v-for="actor in this.actors">
-              <v-list-tile>
-                <v-list-tile-avatar v-if="actor.profile_path !== null"
-                                    size="55"
-                                    class="actorPicture mr-2"
-                                    :style="{ 'background-image':'url(' + `http://image.tmdb.org/t/p/w300`+actor.profile_path + ')'}">
-                </v-list-tile-avatar>
-
-                <v-list-tile-avatar v-else
-                                    size="55"
-                                    class="actorPicture mr-2"
-                                    :style="{ 'background-image':`url('https://images.pexels.com/photos/134/light-creative-abstract-colorful.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350')`}">
-                </v-list-tile-avatar>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{actor.character}}</v-list-tile-title>
-                  <v-list-tile-sub-title><a :href="'https://www.google.com.ua/search?q='+actor.name" target="_blank">{{actor.name}}</a></v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </template>
+            </div>
           </v-list>
         </v-card>
       </v-flex>
-      <v-flex v-if='showSimilar' d-flex xs12 sm6 md3 v-else>
-        <v-card flat >
+      <v-flex d-flex xs12 sm6 md3 v-else>
+        <v-card flat v-if='showSimilar'>
           <v-list two-line>
             <template >
 
@@ -198,6 +207,7 @@ import Loader from './Loader'
 import Comments from './Comments'
 import NotFound from './NotFound'
 import showYear from '../utils/showYear'
+import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 
 export default {
   name: 'Movie',
@@ -218,9 +228,11 @@ export default {
         qualitySelected: false,
         progressColor: '#616161',
         totalNumberOfComments: 0,
-		quality: [],
-		loaded: false,
-		showSimilar: false,
+		    quality: [],
+		    loaded: false,
+		    showSimilar: false,
+        showCrew: false,
+        showActors: false
       }
     },
 
@@ -246,16 +258,17 @@ export default {
               let movie = result.data.data
                 for(var key in movie) {
                     if (key == 'genres') {
-                      for (var i = 0; i < movie[key].length; i++) {
+                      for (let i = 0; i < movie[key].length; i++) {
                         this.genres += movie[key][i].name.charAt(0).toUpperCase() + movie[key][i].name.slice(1)+', ';
                       }
                     }
                     if (key == 'poster_path') {
-                      if (movie[key] == null) {
-                        movie[key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-                      } else {
-                        movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
-                      }
+                      setDefaultPosterPath(movie)
+                      // if (movie[key] == null) {
+                      //   movie[key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+                      // } else {
+                      //   movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
+                      // }
                     }
                     if (key == 'backdrop_path') {
                       if (movie[key] == null) {
@@ -265,17 +278,23 @@ export default {
                       }
                     }
                     if (key == 'credits') {
-                      for (var j = 0; j != 5; j++) {
+                      for (let j = 0; j != 5; j++) {
+                        if (!movie[key].cast[j]) {
+          							  break
+          						  }
                         this.actors.push(movie[key].cast[j])
                       }
-                      for (var k = 0; k < movie[key].crew.length; k++) {
+                      for (let k = 0; k < movie[key].crew.length; k++) {
+                        if (!movie[key].crew[k]) {
+          							  break
+          						  }
                         if (movie[key].crew[k].job === 'Director' || movie[key].crew[k].job === 'Producer') {
                           this.crew.push(movie[key].crew[k])
                         }
                       }
                     }
                     if (key == 'comments') {
-                      for (var j = 0; j < movie[key].length; j++) {
+                      for (let j = 0; j < movie[key].length; j++) {
                         if (movie[key][j].image === null) {
                           movie[key][j].image = this.user.image
                         }
@@ -283,9 +302,9 @@ export default {
                     }
                     if (key == 'similar') {
                       for (let j = 0; j < 10; j++) {
-						  if (!movie[key].results[j]) {
-							  break
-						  }
+          						  if (!movie[key].results[j]) {
+          							  break
+          						  }
                         this.similar.push(movie[key].results[j])
                       }
                     }
@@ -306,11 +325,15 @@ export default {
             }
             this.runLoader = false
 			this.showSimilar = this.similar.length > 0
+      this.showCrew = this.crew.length > 0
+      this.showActors = this.actors.length > 0
           })
           .catch((err) => {
             console.log(err)
             this.runLoader = false
 			this.showSimilar = this.similar.length > 0
+      this.showCrew = this.crew.length > 0
+      this.showActors = this.actors.length > 0
           })
       },
 
