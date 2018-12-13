@@ -54,7 +54,7 @@ const messages = {
 			close: 'close',
 			showMore: 'Show more',
 			comingSoon: 'Coming soon',
-			notComing: 'Sorry, this video is not available'
+			notComing: 'Sorry, this movie is not available'
 		},
 		home: {
 			title: 'home'
@@ -225,7 +225,7 @@ const messages = {
 			close: 'закрыть',
 			showMore: 'Показать еще',
 			comingSoon: 'Скоро в кино',
-			notComing: 'К сожалению, это видео недоступно'
+			notComing: 'К сожалению, этот фильм недоступен'
 		},
 		home: {
 			title: 'Главная'
@@ -395,7 +395,7 @@ const messages = {
 			close: 'закрити',
 			showMore: 'Показати ще',
 			comingSoon: 'Скоро в кіно',
-			notComing: 'Нажаль, це відео недоступне'
+			notComing: 'Нажаль, цей фільм недоступний'
 		},
 		home: {
 			title: 'Головна'
