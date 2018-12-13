@@ -12,8 +12,8 @@
 	</div>
 
 	<div class='dates-wrapper'>
-		<DatePicker v-on:changeDate='handleChangeFromDate' label='от' startDate='2000'/>
-		<DatePicker v-on:changeDate='handleChangeToDate' label='до' startDate='2018'/>
+		<DatePicker v-on:changeDate='handleChangeFromDate' :label="this.$t('movies.since')" startDate='2000'/>
+		<DatePicker v-on:changeDate='handleChangeToDate' :label="this.$t('movies.to')" startDate='2018'/>
 	</div>
 
 	<div class='search-input-wrapper'>
@@ -43,7 +43,7 @@
     data () {
       return {
 		genre: this.$t('movie.genres'),
-		sortBy: 'Фильтровать по',
+		sortBy: this.$t('movies.filter'),
 		fromDate: 2000,
 		toDate: 2018,
 		searchText: '',
@@ -69,10 +69,10 @@
           { text: this.$t('genres.western'), 		id: GENRES[18].id}
         ],
 		dropdown_sorts: [
-			{text: 'Популярность', param: 'popularity.desc'},
-			{text: 'Дата выхода', param: 'release_date.desc'},
-			{text: 'Количество голосов', param: 'vote_count.desc'},
-			{text: 'Оценка', param: 'vote_average.desc'},
+			{text: this.$t('movies.popularity'), param: 'popularity.desc'},
+			{text: this.$t('movies.releaseDate'), param: 'release_date.desc'},
+			{text: this.$t('movies.voteNumber'), param: 'vote_count.desc'},
+			{text: this.$t('movies.rating'), param: 'vote_average.desc'},
 		],
         toggle_exclusive: 2,
         toggle_multiple: [1, 2, 3]
