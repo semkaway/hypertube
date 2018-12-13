@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { subtitle } from './subtitle'
+import { getSubtitle } from './subtitle'
 
 const getComments = (model, movieId) =>
     model.aggregate({$unwind: "$comments"},
@@ -29,27 +29,27 @@ const getMovieData = (locale, movieId) =>
 const getTorrents = imdb_id => axios.get('https://tv-v2.api-fetch.website/movie/' + imdb_id);
 
 export const one = model => async (req, res, next) => {
-    getComments(model, req.params.id)
-        .then(comments =>
-            getMovieData(req.user.locale, req.params.id)
-                .then(movie =>
-                    getTorrents(movie.data.imdb_id)
-                        .then(torrent => 
-                            subtitle(movie.data.imdb_id, req.user.locale)
-                                .then(subtitle_array => {
-                                    console.log('subtitle array => ', subtitle_array)
-                                    res.status(200).json({
-                                        "success": true,
-                                        "data": {
-                                             ...movie.data,
-                                              'torrent': torrent.data,
-                                              'comments': comments,
-                                              subtitle_array,
-                                        }
-                                    });
-                                })
-                                .catch(next))
-                        .catch(next))
-                .catch(next))
-        .catch(next);
+    try {
+        let comments = await getComments(model, req.params.id)
+
+        let movie = await getMovieData(req.user.locale, req.params.id)
+
+        let torrent = await getTorrents(movie.data.imdb_id)
+
+        let subtitle_array = await getSubtitle(movie.data.imdb_id, req.user.locale)
+
+        res.status(200).json({
+            "success": true,
+            "data": {
+                 ...movie.data,
+                  'torrent': torrent.data,
+                  'comments': comments,
+                  subtitle_array,
+            }
+        });
+    } catch (e) {
+        console.log('error in /movie/one =>', e)
+        next()
+    } 
+    
 };

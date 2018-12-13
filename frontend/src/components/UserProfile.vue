@@ -53,6 +53,7 @@
 import {HTTP} from '../http-common';
 import randomImage from '../utils/randomImage'
 import listOfMovies from './listOfMovies'
+import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 
 export default {
   name: 'UserPage',
@@ -75,13 +76,7 @@ export default {
         HTTP.get('/movie/watched').then(result => {
           if (result.data.success == true) {
             this.currentUser = true
-            for (var i = 0; i < result.data.movies.length; i++) {
-              if (result.data.movies[i].poster_path == null) {
-                result.data.movies[i].poster_path = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-              } else {
-                result.data.movies[i].poster_path = 'http://image.tmdb.org/t/p/original/'+result.data.movies[i].poster_path
-              }
-            }
+            setDefaultPosterPath(result.data.movies)
             this.watchedMovies = result.data.movies
             this.totalNumberOfWatchedMovies = this.watchedMovies.length
           } else if (result.data.success == false) {
@@ -105,13 +100,7 @@ export default {
               this.myUser.first = result.data.first
               this.myUser.last = result.data.last
               this.myUser.image = result.data.image
-              for (var i = 0; i < result.data.movies.length; i++) {
-  							if (result.data.movies[i].poster_path == null) {
-  								result.data.movies[i].poster_path = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-  							} else {
-  								result.data.movies[i].poster_path = 'http://image.tmdb.org/t/p/original/'+result.data.movies[i].poster_path
-  							}
-      				}
+              setDefaultPosterPath(result.data.movies)
               this.commentedMovies = result.data.movies
               this.totalNumberOfCommentedMovies = this.commentedMovies.length
               if (this.myUser.image === null) {

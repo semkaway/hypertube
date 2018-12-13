@@ -16,6 +16,13 @@
                  >
                  <router-link :to="'/movies/'+movie.id">
                    <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
+                    <v-icon v-for="(watched, index) in watchedMovies"
+                            :key='index'
+                            v-if="watched.id === movie.id"
+                            color="white"
+                            size="40"
+                            style="position: absolute; right: 0;"
+                            class="mr-4 mt-3">remove_red_eye</v-icon>
                      <v-layout slot="placeholder"
                                fill-height
                                align-center
@@ -68,6 +75,7 @@
 	import * as constants from '../utils/constants'
   import setAuthorizationToken from '../utils/setAuthToken'
   import showYear from '../utils/showYear'
+  import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 
 	export default {
 		name: 'Movies',
@@ -90,11 +98,13 @@
 				searchText: '',
 				userParams: {},
 				notFound: false,
+        watchedMovies: []
 			}
 		},
 
     methods: {
       	requestMovies(filters) {
+          this.notFound = false
 			let query = this.query
 			let searchParams = {}
 
@@ -110,34 +120,45 @@
 
 			searchParams.page = this.page
 
-			console.log("query =>", query)
-			console.log('params =>', searchParams)
+			// console.log("query =>", query)
+			// console.log('params =>', searchParams)
 
 			const token = axios.defaults.headers.common['Authorization']
 			delete axios.defaults.headers.common['Authorization']
 			HTTP.get(query, { params: searchParams } ).then(result => {
-				console.log(result)
+				// console.log(result)
 				if (result.data.total_results == 0) {
 					this.notFound = true
 					this.totalPages = 1
 					return false
 				}
+        setDefaultPosterPath(result.data.results)
+        console.log('watched: ', this.watchedMovies)
 				for (var i = 0; i < result.data.results.length; i++) {
-					for(var key in result.data.results[i]) {
-						if (key == 'poster_path') {
-							if (result.data.results[i][key] == null) {
-								result.data.results[i][key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-							} else {
-								result.data.results[i][key] = 'http://image.tmdb.org/t/p/w500' + result.data.results[i][key]
-							}
-						}
-					}
 					this.movies.push(result.data.results[i])
 				}
 				this.totalPages = result.data.total_pages
 			}).catch((e) => { console.log('e', e) })
 			setAuthorizationToken(token)
       	},
+
+        getUserWatchedMovies() {
+          HTTP.get('/movie/watched').then(result => {
+            console.log('watched result: ', result)
+            if (result.data.success == true) {
+              this.currentUser = true
+              setDefaultPosterPath(result.data.movies)
+              this.watchedMovies = result.data.movies
+              this.requestMovies(false)
+            } else if (result.data.success == false) {
+              setAuthorizationToken(false)
+              this.$router.push('/')
+            }
+          })
+          .catch((err) => {
+            console.log('error', err.data)
+          })
+        },
 
       	showMore () {
 			if (this.page + 1 < this.totalPages)
@@ -169,7 +190,9 @@
 
     },
     mounted () {
-        this.requestMovies(false)
+        this.getUserWatchedMovies()
+        // this.requestMovies(false)
+
     },
   }
 </script>
