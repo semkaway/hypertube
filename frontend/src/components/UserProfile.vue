@@ -5,7 +5,7 @@
       </v-flex>
       <v-flex xs12 md8 sm6 lg8 class="mt-5">
         <div flat>
-          <v-img :aspect-ratio="13/6" :src="bgImg | image">
+          <v-img :aspect-ratio="13/6" :src="bgImg">
             <v-layout pa-2 column fill-height class="lightbox white--text">
               <v-spacer></v-spacer>
               <v-layout shrink>
@@ -56,50 +56,51 @@ import listOfMovies from './listOfMovies'
 
 export default {
   name: 'UserPage',
-  filters: {
-    image: randomImage
-  },
-  props: ['user'],
+  props: ['user', 'userLoggedIn'],
   components: {'list-of-movies': listOfMovies},
   data () {
     return {
       myUser: {},
       commentedMovies: [],
       watchedMovies: [],
-      bgImg: '',
+      bgImg:  randomImage(),
       totalNumberOfCommentedMovies: 0,
       totalNumberOfWatchedMovies: 0,
-      currentUser: false
+      currentUser: false,
       }
     },
-      mounted() {
+    methods: {
+
+      getUserWatchedMovies() {
+        HTTP.get('/movie/watched').then(result => {
+          if (result.data.success == true) {
+            this.currentUser = true
+            for (var i = 0; i < result.data.movies.length; i++) {
+              if (result.data.movies[i].poster_path == null) {
+                result.data.movies[i].poster_path = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+              } else {
+                result.data.movies[i].poster_path = 'http://image.tmdb.org/t/p/original/'+result.data.movies[i].poster_path
+              }
+            }
+            this.watchedMovies = result.data.movies
+            this.totalNumberOfWatchedMovies = this.watchedMovies.length
+          } else if (result.data.success == false) {
+            setAuthorizationToken(false)
+            this.$router.push('/')
+          }
+        })
+        .catch((err) => {
+          console.log('error', err.data)
+        })
+      },
+
+      getData() {
         let user_id = window.location.pathname.split('/')[2]
-        HTTP
-          .get('user/commented-movies/'+user_id)
-          .then(result => {
+        HTTP.get('user/commented-movies/' + user_id).then(result => {
             console.log(result)
             if (result.data.success == true) {
               if (user_id === this.user.user_id) {
-                HTTP.get('/movie/watched').then(result => {
-                  if (result.data.success == true) {
-                    this.currentUser = true
-                    for (var i = 0; i < result.data.movies.length; i++) {
-        							if (result.data.movies[i].poster_path == null) {
-        								result.data.movies[i].poster_path = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-        							} else {
-        								result.data.movies[i].poster_path = 'http://image.tmdb.org/t/p/original/'+result.data.movies[i].poster_path
-        							}
-            				}
-                    this.watchedMovies = result.data.movies
-                    this.totalNumberOfWatchedMovies = this.watchedMovies.length
-                  } else if (result.data.success == false) {
-                    setAuthorizationToken(false)
-                    this.$router.push('/')
-                  }
-                })
-                .catch((err) => {
-                  console.log(err)
-                })
+                this.getUserWatchedMovies()
               }
               this.myUser.first = result.data.first
               this.myUser.last = result.data.last
@@ -124,6 +125,12 @@ export default {
           .catch((err) => {
             console.log(err)
           })
-      }
+      },
+    },
+
+    mounted() {
+        this.getData()
+    }
+
   }
 </script>
