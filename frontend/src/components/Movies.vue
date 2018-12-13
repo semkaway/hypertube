@@ -16,6 +16,13 @@
                  >
                  <router-link :to="'/movies/'+movie.id">
                    <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
+                    <v-icon v-for="(watched, index) in watchedMovies"
+                            :key='index'
+                            v-if="watched.id === movie.id"
+                            color="white"
+                            size="40"
+                            style="position: absolute; right: 0;"
+                            class="mr-4 mt-3">remove_red_eye</v-icon>
                      <v-layout slot="placeholder"
                                fill-height
                                align-center
@@ -91,6 +98,7 @@
 				searchText: '',
 				userParams: {},
 				notFound: false,
+        watchedMovies: []
 			}
 		},
 
@@ -125,6 +133,7 @@
 					return false
 				}
         setDefaultPosterPath(result.data.results)
+        console.log('watched: ', this.watchedMovies)
 				for (var i = 0; i < result.data.results.length; i++) {
 					this.movies.push(result.data.results[i])
 				}
@@ -132,6 +141,24 @@
 			}).catch((e) => { console.log('e', e) })
 			setAuthorizationToken(token)
       	},
+
+        getUserWatchedMovies() {
+          HTTP.get('/movie/watched').then(result => {
+            console.log('watched result: ', result)
+            if (result.data.success == true) {
+              this.currentUser = true
+              setDefaultPosterPath(result.data.movies)
+              this.watchedMovies = result.data.movies
+              this.requestMovies(false)
+            } else if (result.data.success == false) {
+              setAuthorizationToken(false)
+              this.$router.push('/')
+            }
+          })
+          .catch((err) => {
+            console.log('error', err.data)
+          })
+        },
 
       	showMore () {
 			if (this.page + 1 < this.totalPages)
@@ -163,7 +190,9 @@
 
     },
     mounted () {
-        this.requestMovies(false)
+        this.getUserWatchedMovies()
+        // this.requestMovies(false)
+
     },
   }
 </script>
