@@ -25,8 +25,8 @@
 					</v-radio-group>
 				</v-container>
 				<v-card-actions class='pl-4'>
-				<v-btn color="grey" class="white--text" flat @click="changeLanguage">{{$t('button.save')}}</v-btn>
-				<v-btn color="grey" class="white--text" flat @click="showLangRadio = false; settingsLocale = locale">{{$t('button.cancel')}}</v-btn>
+					<v-btn color="grey" class="white--text" flat @click="changeLanguage">{{$t('button.save')}}</v-btn>
+					<v-btn color="grey" class="white--text" flat @click="showLangRadio = false; settingsLocale = locale">{{$t('button.cancel')}}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -457,7 +457,9 @@ export default {
 		},
 
 		deleteAccount() { this.showModal = true},
+
 		onDisagree() { this.showModal = false },
+
 		onAgree() {
 			this.showModal = false
 			this.runLoader = true
