@@ -7,9 +7,9 @@
 					<div class="head-wrapper headline text-xs-center font-weight-medium text-uppercase">Watch your favorite movies online!</div>
 				</v-card-title>
 				<div class='center font-weight-light headline mt-2'>
-					<div class='card-text-wrapper'>Different quality - 720p/1080p</div>
-					<div class='card-text-wrapper'>3 languages</div>
-					<div class='card-text-wrapper'>English and Russian subtitles</div>
+					<div class='content-wrapper'>Different quality - 720p/1080p</div>
+					<div class='content-wrapper'>3 languages</div>
+					<div class='content-wrapper'>English and Russian subtitles</div>
 				</div>
 			</v-card>
 		</div>
@@ -25,19 +25,19 @@
 				
 				<div class='center'>
 					<div class='start font-weight-light headline'>
-					<div class='card-text-wrapper mt-3'>
+					<div class='content-wrapper mt-3'>
 						<v-icon  medium class="black--text text--lighten-2 mr-3">fab fa-vuejs</v-icon>
 						<span>VUE.js</span>
 					</div>
-					<div class='card-text-wrapper mt-3'>
+					<div class='content-wrapper mt-3'>
 						<v-icon medium class="black--text text--lighten-2 mr-3">color_lens</v-icon>
 						<span>Material Design</span>
 					</div>
-					<div class='card-text-wrapper mt-3'>
+					<div class='content-wrapper mt-3'>
 						<v-icon medium class="black--text text--lighten-2 mr-3">fab fa-node-js</v-icon>
 						<span>Node.js</span>
 					</div>
-					<div class='card-text-wrapper mt-3'>
+					<div class='content-wrapper mt-3'>
 						<v-icon medium class="black--text text--lighten-2 mr-3">fas fa-database</v-icon>
 						<span>MongoDB</span>
 					</div>
@@ -56,11 +56,11 @@
 				</v-card-title>
 				<div class='center mt-4'>
 					<div class='start font-weight-light headline'>
-						<div class='card-text-wrapper'>Github link -&MediumSpace;<a href='https://github.com/semkaway/hypertube' target="_blank">hypertube</a></div>
-						<div class='card-text-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/semkaway' target="_blank">Kvilna</a></div>
-						<div class='card-text-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/vliubko' target="_blank">Vliubko</a></div>
-						<div class='card-text-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/pkolomiy' target="_blank">Pkolomiy</a></div>
-						<div class='card-text-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/vtolochk' target="_blank">Vtolochk</a></div>
+						<div class='content-wrapper'>Github link -&MediumSpace;<a href='https://github.com/semkaway/hypertube' target="_blank">hypertube</a></div>
+						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/semkaway' target="_blank">Kvilna</a></div>
+						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/vliubko' target="_blank">Vliubko</a></div>
+						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/pkolomiy' target="_blank">Pkolomiy</a></div>
+						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/vtolochk' target="_blank">Vtolochk</a></div>
 					</div>
 				</div>
 			</v-card>
@@ -82,9 +82,6 @@ export default {
   }
 }
 
-// background-image: url('/static/nice1.jpg');
-		// background-size: cover;
-    	// background-repeat: no-repeat;
 </script>
 
 <style scoped>
@@ -93,18 +90,17 @@ export default {
 		margin-top: 50px;
 	}
 
-	.card-text-wrapper {
+	.content-wrapper {
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
 		padding: 1%;
 		letter-spacing: 1.5px;
-		min-width: fit-content;
 	}
 
 	.section {
 		width: 100%;
-		height: 33.33%;
+		height: 30.7vh;
 		box-sizing: border-box;
 		box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.1), 0 1px 15px 0 rgba(0, 0, 0, 0.19);
 	}
@@ -141,10 +137,10 @@ export default {
 		}
 
 		.head-wrapper {
-			font-size: 16px !important;
+			font-size: 13px !important;
 		}
 
-		.card-text-wrapper, .center {
+		.content-wrapper, .center {
 			margin-top: 0px !important;
 			padding: 0 !important;
 		}
