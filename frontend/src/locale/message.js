@@ -53,7 +53,8 @@ const messages = {
 			cancel: 'cancel',
 			close: 'close',
 			showMore: 'Show more',
-			comingSoon: 'Coming soon'
+			comingSoon: 'Coming soon',
+			notComing: 'Sorry, this video is not available'
 		},
 		home: {
 			title: 'home'
@@ -216,7 +217,8 @@ const messages = {
 			cancel: 'отмена',
 			close: 'закрыть',
 			showMore: 'Показать еще',
-			comingSoon: 'Скоро в кино'
+			comingSoon: 'Скоро в кино',
+			notComing: 'К сожалению, это видео недоступно'
 		},
 		home: {
 			title: 'Главная'
@@ -378,7 +380,8 @@ const messages = {
 			cancel: 'скасувати',
 			close: 'закрити',
 			showMore: 'Показати ще',
-			comingSoon: 'Скоро в кіно'
+			comingSoon: 'Скоро в кіно',
+			notComing: 'Нажаль, це відео недоступне'
 		},
 		home: {
 			title: 'Головна'
