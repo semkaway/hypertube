@@ -60,7 +60,7 @@ export default {
 
     HTTP.get(`user/password/token-check/${myToken}`)
       .then(response => {
-        console.log(response)
+        // console.log(response)
         if (response.data.success == true) {
           this.setPassword = true
         } else if (response.data.success == false && (response.data.message != "Invalid token")) {
@@ -89,13 +89,12 @@ export default {
       changePassword() {
         const urlParams = new URLSearchParams(window.location.search);
         const myToken = urlParams.get('token');
-  			if (!this.arrayOfNewPasswordErrors.length && !this.arrayOfRepeatPasswordErrors.length) {
+  			if (!this.arrayOfNewPasswordErrors.length && !this.arrayOfRepeatPasswordErrors.length && this.newPassword) {
           HTTP.post('user/password/change', {
             'password': this.newPassword,
             'token': myToken
           })
           .then(response => {
-            console.log(response)
             if (response.data.success) {
               this.$router.push('/')
               this.$emit('userActivate', 'forgot_password.restore_pass_success_title')
@@ -108,7 +107,9 @@ export default {
             this.$router.push('/')
             this.$emit('userActivate', 'activation.error_alert')
           })
-  			}
+  			} else {
+          this.arrayOfNewPasswordErrors = [this.$t('registration.error_alert')]
+        }
   		}
     }
   }
