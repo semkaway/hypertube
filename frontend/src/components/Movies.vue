@@ -143,7 +143,7 @@
 				}
 				this.totalPages = result.data.total_pages
        			this.runLoader = false
-			}).catch((e) => { console.log('e', e);	this.runLoader = false })
+			}).catch((e) => { console.log('Error:', e);	this.runLoader = false })
 			setAuthorizationToken(token)
       	},
 
@@ -161,8 +161,8 @@
 				}
 				this.runLoader = false
 			})
-			.catch((err) => {
-				console.log('error', err.data)
+			.catch((error) => {
+				console.log('Error:', error)
 				this.runLoader = false
 			})
         },
@@ -218,18 +218,18 @@
 
 <style scoped>
 
-.v-card--reveal {
-  align-items: center;
-  bottom: 0;
-  justify-content: center;
-  opacity: .5;
-  position: absolute;
-  width: 100%;
-}
+	.v-card--reveal {
+		align-items: center;
+		bottom: 0;
+		justify-content: center;
+		opacity: .5;
+		position: absolute;
+		width: 100%;
+	}
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
 
 </style>

@@ -54,31 +54,32 @@ export default {
       arrayOfRepeatPasswordErrors: []
     }
   },
+
   mounted() {
     const urlParams = new URLSearchParams(window.location.search);
     const myToken = urlParams.get('token');
 
-    HTTP.get(`user/password/token-check/${myToken}`)
-      .then(response => {
-        // console.log(response)
+    HTTP.get(`user/password/token-check/${myToken}`).then(response => {
         if (response.data.success == true) {
-          this.setPassword = true
+          	this.setPassword = true
         } else if (response.data.success == false && (response.data.message != "Invalid token")) {
-          this.$router.push('/')
-          this.$emit('userActivate', 'activation.error_alert')
+			this.$router.push('/')
+			this.$emit('userActivate', 'activation.error_alert')
         } else {
-          this.$router.push('/')
-          this.$emit('userActivate', 'activation.invalid_alert')
+			this.$router.push('/')
+			this.$emit('userActivate', 'activation.invalid_alert')
         }
       })
-      .catch((err) => {
-        console.log(err)
+      .catch((error) => {
+        console.log('Error:', error)
         this.$router.push('/')
         this.$emit('userActivate', 'activation.error_alert')
       })
     },
+
     methods: {
-      validatePassword(e) {
+
+      	validatePassword(e) {
   			const fieldName = e.target.attributes.name.nodeValue
   			if (fieldName === 'newPassword') {
   				this.arrayOfNewPasswordErrors = this.errors.has('newPassword') ? this.newPassword.length ? [this.$t('validation.wrongFormat')] : [this.$t('validation.required')] : []
@@ -86,30 +87,30 @@ export default {
   				this.arrayOfRepeatPasswordErrors = this.errors.has('repeatNewPassword') ? this.repeatNewPassword.length ? [this.$t('validation.repeatPassword')] : [this.$t('validation.required')] : []
   			}
   		},
-      changePassword() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const myToken = urlParams.get('token');
-  			if (!this.arrayOfNewPasswordErrors.length && !this.arrayOfRepeatPasswordErrors.length && this.newPassword) {
-          HTTP.post('user/password/change', {
-            'password': this.newPassword,
-            'token': myToken
-          })
-          .then(response => {
-            if (response.data.success) {
-              this.$router.push('/')
-              this.$emit('userActivate', 'forgot_password.restore_pass_success_title')
-            } else {
-              this.arrayOfNewPasswordErrors = [this.$t('registration.error_alert')]
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-            this.$router.push('/')
-            this.$emit('userActivate', 'activation.error_alert')
-          })
-  			} else {
-          this.arrayOfNewPasswordErrors = [this.$t('registration.error_alert')]
-        }
+
+      	changePassword() {
+			const urlParams = new URLSearchParams(window.location.search);
+			const myToken = urlParams.get('token');
+			if (!this.arrayOfNewPasswordErrors.length && !this.arrayOfRepeatPasswordErrors.length && this.newPassword) {
+				HTTP.post('user/password/change', {
+					'password': this.newPassword,
+					'token': myToken
+				}).then(response => {
+					if (response.data.success) {
+						this.$router.push('/')
+						this.$emit('userActivate', 'forgot_password.restore_pass_success_title')
+					} else {
+						this.arrayOfNewPasswordErrors = [this.$t('registration.error_alert')]
+					}
+				})
+				.catch((error) => {
+					console.log('Error:', error)
+					this.$router.push('/')
+					this.$emit('userActivate', 'activation.error_alert')
+				})
+			} else {
+				this.arrayOfNewPasswordErrors = [this.$t('registration.error_alert')]
+			}
   		}
     }
   }

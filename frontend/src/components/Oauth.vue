@@ -10,11 +10,12 @@ import setAuthorizationToken from '../utils/setAuthToken'
 import Loader from './Loader'
 
 export default {
-  name: 'UserPage',
-	 components: { Loader },
-  data () {
-    return { runLoader: false}
-    },
+	name: 'UserPage',
+	components: { Loader },
+	data () {
+		return { runLoader: false}
+		},
+
     mounted() {
 		const urlParams = new URLSearchParams(window.location.search)
 		const currUrl = window.location.pathname
@@ -26,7 +27,6 @@ export default {
 		    this.runLoader = false
           	setAuthorizationToken(false)
           	this.$router.push('/')
-			console.log('all bad')
       	} else if (myCode != null && accessDenied == null) {
 			if (localStorage.token !== '') { // add user
 				HTTP.post(`user/add` + currUrl, { "code": myCode }).then(response => {
@@ -45,6 +45,7 @@ export default {
 				})
 				.catch((err) => {
 					this.runLoader = false
+					setAuthorizationToken(false)
 					this.$router.push('/')
 				})
         	} // login user
@@ -86,9 +87,9 @@ export default {
 			}
 			this.runLoader = false
       } else {
-		  setAuthorizationToken(false)
-		  this.runLoader = false
-		  this.$router.push('/') 
+			setAuthorizationToken(false)
+			this.runLoader = false
+			this.$router.push('/') 
 		}
     },
   }
