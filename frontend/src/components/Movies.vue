@@ -88,7 +88,7 @@
 		name: 'Movies',
 		components: { NotFound, SearchBar, Loader },
     	filters: { date: showYear },
-		props: ['user', 'userLoggedIn', 'locale', 'token', 'searchAppText', 'searchAppParams'],
+		props: ['user', 'userLoggedIn', 'locale', 'token', 'searchAppText', 'searchAppParams', 'userAppSetDate'],
 		data () {
 			return {
 				movies: [],
@@ -106,7 +106,8 @@
 				userParams: {},
 				notFound: false,
         		watchedMovies: [],
-        		runLoader: true
+        		runLoader: true,
+				userSetDate: false,
 			}
 		},
 
@@ -116,7 +117,7 @@
           	this.runLoader = true
 			let query = this.query
 			let searchParams = {}
-
+			
 			if (filters && !this.searchText.length) {
 				searchParams = Object.assign({}, this.userParams)
 			} else {
@@ -127,6 +128,7 @@
 				}
 			}
 			searchParams.page = this.page
+			searchParams.api_key = constants.API_KEY
 			const token = axios.defaults.headers.common['Authorization']
 			delete axios.defaults.headers.common['Authorization']
 			HTTP.get(query, { params: searchParams } ).then(result => {
@@ -153,7 +155,7 @@
 					this.currentUser = true
 					setDefaultPosterPath(result.data.movies)
 					this.watchedMovies = result.data.movies
-					this.requestMovies(this.searchAppParams.with_genres || this.searchAppParams.sort_by)
+					this.requestMovies(this.searchAppParams.with_genres || this.searchAppParams.sort_by || this.userAppSetDate)
 				} else if (result.data.success == false) {
 					setAuthorizationToken(false)
 					this.$router.push('/')
@@ -171,7 +173,7 @@
 				this.page = this.page + 1;
 			else
 				this.page = this.totalPages;
-			this.requestMovies(Object.keys(this.userParams).length)
+			this.requestMovies(this.searchAppParams.with_genres || this.searchAppParams.sort_by || this.userAppSetDate)
       	},
 
 		searchMovies(searchConditions) {
@@ -187,16 +189,16 @@
 			this.page = 1
 			this.userParams = Object.assign({}, this.defaultParams)
 			this.userParams = Object.assign(this.userParams, searchParams)
-			this.$emit('setSearchParams', this.userParams, this.searchText)
+			this.$emit('setSearchParams', this.userParams, this.searchText, this.userSetDate)
 			this.requestMovies(true)
 		},
 
 		handleChangeFromDate(date) {
-			this.$emit('setSearchParams', Object.assign(this.searchAppParams, {'release_date.gte': parseInt(date)}), this.searchAppText)
+			this.$emit('setSearchParams', Object.assign(this.searchAppParams, {'release_date.gte': parseInt(date)}), this.searchAppText, true)
 		},
 
 		handleChangeToDate(date) {
-			this.$emit('setSearchParams', Object.assign(this.searchAppParams, {'release_date.lte': parseInt(date)}), this.searchAppText)
+			this.$emit('setSearchParams', Object.assign(this.searchAppParams, {'release_date.lte': parseInt(date)}), this.searchAppText, true)
 		}
 
     },
@@ -204,8 +206,13 @@
     mounted () {
 		this.userParams = this.searchAppParams
 		this.searchText = this.searchAppText
+		this.userSetDate = this.userAppSetDate
         this.getUserWatchedMovies()
     },
+
+	watch: {
+		userAppSetDate(newValue) { this.userSetDate = newValue }
+	}
 
   }
 </script>

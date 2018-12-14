@@ -13,11 +13,9 @@
 		<router-view
 			v-bind:user='user'
 			v-bind:token='token'
-
 			v-bind:searchAppText='searchAppText'
 			v-bind:searchAppParams='searchAppParams'
 			v-on:setSearchParams='setSearchParams'
-
 			v-on:setUser='setUser'
 			v-bind:locale='locale'
 			v-on:setLocale='setLocale'
@@ -27,6 +25,7 @@
 			v-on:userAdded='userAdded'
 			v-on:userAlreadyExists='showWarning'
 			v-on:userActivate='userActivate'
+			v-bind:userAppSetDate='userAppSetDate'
 		/>
 		<app-footer />
 	</v-app>
@@ -60,14 +59,17 @@ export default {
 				'with_genres': '',
 				'sort_by': ''
 			},
-			searchAppText: ''
+			searchAppText: '',
+			userAppSetDate: false
 		}
 	},
 	methods: {
 
-		setSearchParams(params, text) {
+		setSearchParams(params, text, dateChanged) {
 			this.searchAppParams = Object.assign(this.searchAppParams, params)
 			this.searchAppText = text
+			if (dateChanged)
+				this.userAppSetDate = dateChanged
 		},
 
 		setToken (response) {
