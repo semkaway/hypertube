@@ -123,7 +123,7 @@ export default {
 <style>
  html, body, #app {
       min-height: 100%;
-      font-family: Roboto;
+			font-family: 'Maven Pro', sans-serif;
     }
 
 	body {

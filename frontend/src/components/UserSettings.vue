@@ -19,9 +19,9 @@
 				<v-card-title class='pb-0 mb-0 pl-4'> <h3 class="headline mb-0">{{ $t('button.language') }}</h3> </v-card-title>
 				<v-container justify-center class='pt-0 mt-0 pb-0 mb-0'>
 					<v-radio-group v-model="settingsLocale" >
-						<v-radio color='grey' label="English" value="en"></v-radio>
-						<v-radio color='grey' label="Русский" value="ru"></v-radio>
-						<v-radio color='grey' label="Українська" value="uk"></v-radio>
+						<v-radio color='blue-grey darken-1' label="English" value="en"></v-radio>
+						<v-radio color='blue-grey darken-1' label="Русский" value="ru"></v-radio>
+						<v-radio color='blue-grey darken-1' label="Українська" value="uk"></v-radio>
 					</v-radio-group>
 				</v-container>
 				<v-card-actions class='pl-4'>
@@ -34,7 +34,7 @@
  		<v-expansion-panel  expand class="mt-4">
     		<v-expansion-panel-content v-for="(section, index) in sections" :key="index" expand-icon="keyboard_arrow_down">
 				<v-layout slot="header" align-center>
-					<v-icon class='mr-3'>{{section.icon}}</v-icon>
+					<v-icon color="blue-grey darken-1" class='mr-3'>{{section.icon}}</v-icon>
 					<span class='subheading dark--text'>{{section.title}}</span>
 				</v-layout>
 				<v-card>
@@ -67,7 +67,7 @@
 								v-model='newEmail'
 								:label="$t('registration.email')"
 								class='ml-3'
-								color="grey darken-1"
+								color="blue-grey darken-1"
 								v-validate="'email'"
 								:error-messages='arrayOfNewEmailErrors'>
 							</v-text-field>
@@ -77,7 +77,7 @@
 								@keyup.native='validatePassword'
 								v-model='passwordForNewEmail'
 								:error-messages='arrayOfPasswordForNewEmailErrors'
-								color="grey darken-1"
+								color="blue-grey darken-1"
 								class='ml-3'
 								:label="$t('registration.password')"
 								@click:append="showPassword = !showPassword"
@@ -98,7 +98,7 @@
 									v-model='newFirstName'
 									:label="$t('registration.first_name')"
 									class='ml-3'
-									color="grey darken-1"
+									color="blue-grey darken-1"
 									v-validate="'alpha|min:3|max:15'"
 									:error-messages='arrayOfFirstNameErrors'
                 					:counter='15'>
@@ -110,7 +110,7 @@
 									:error-messages='arrayOfLastNameErrors'
 									:label="$t('registration.last_name')"
 									class='ml-3'
-									color="grey darken-1"
+									color="blue-grey darken-1"
 									v-validate="'alpha|min:3|max:15'"
                 					:counter='15'>
 								</v-text-field>
@@ -128,7 +128,7 @@
 									:error-messages="arrayOfPasswordErrors"
 									name='password'
 									v-model="password"
-									color="grey darken-1"
+									color="blue-grey darken-1"
 									:type="showPassword ? 'text' : 'password'"
 									:append-icon="showPassword ? 'visibility_off' : 'visibility'"
 									@click:append="showPassword = !showPassword"
@@ -145,7 +145,7 @@
 									v-model="newPassword"
 									ref="newPasswordRef"
 									:type="showPassword ? 'text' : 'password'"
-									color="grey darken-1"
+									color="blue-grey darken-1"
 									name='newPassword'
 									v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
 								</v-text-field>
@@ -156,7 +156,7 @@
 									:error-messages="arrayOfRepeatPasswordErrors"
 									v-model="repeatNewPassword"
 									:type="showPassword ? 'text' : 'password'"
-									color="grey darken-1"
+									color="blue-grey darken-1"
 									name='repeatNewPassword'
 									v-validate="'required|confirmed:newPasswordRef'">
 								</v-text-field>
@@ -169,7 +169,7 @@
 						<!-- CHANGE IMAGE -->
 						<form v-if='section.name == "picture"'>
 							<v-text-field
-								color="grey darken-1"
+								color="blue-grey darken-1"
 								v-model="imgURL"
 								class='ml-3'
 								:label="$t('profile.settings.enter_url')"
@@ -224,7 +224,7 @@
 								:hint="$t('validation.passwordHint')"
 								v-model='addNewPassword'
 								:error-messages='arrayOfAddNewPasswordErrors'
-								color="grey darken-1"
+								color="blue-grey darken-1"
 								class='ml-3'
 								:label="$t('profile.settings.new_password')"
 								@click:append="showPassword = !showPassword"
@@ -243,7 +243,7 @@
 								@keyup.native='validateEmail("addEmail")'
 								name='addEmail'
 								v-model='addEmail'
-								color="grey darken-1"
+								color="blue-grey darken-1"
 								class='ml-3'
 								:error-messages='arrayOfAddEmailErrors'
 								v-validate="'email'"

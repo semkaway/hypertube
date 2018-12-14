@@ -18,5 +18,5 @@
         components: { SelfBuildingSquareSpinner },
         props: ['run']
     }
-    
+
   </script>

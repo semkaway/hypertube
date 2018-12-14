@@ -15,7 +15,7 @@
             :append-icon="showPassword ? 'visibility_off' : 'visibility'"
             @click:append="showPassword = !showPassword"
             :type="showPassword ? 'text' : 'password'"
-            color="grey darken-1"
+            color="blue-grey darken-1"
             name='newPassword'
             v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
           </v-text-field>
@@ -26,12 +26,12 @@
             :error-messages="arrayOfRepeatPasswordErrors"
             v-model="repeatNewPassword"
             :type="showPassword ? 'text' : 'password'"
-            color="grey darken-1"
+            color="blue-grey darken-1"
             name='repeatNewPassword'
             v-validate="'required|confirmed:newPasswordRef'">
           </v-text-field>
         </form>
-        <v-btn @click='changePassword' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
+        <v-btn style="outline: none;" @click='changePassword' color="blue-grey lighten-1" dark>{{ $t('button.save') }}</v-btn>
       </v-flex>
       <v-flex lg4></v-flex>
     </v-layout>

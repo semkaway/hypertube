@@ -8,9 +8,7 @@
             <img style="-webkit-transform: scaleX(-1);  transform: scaleX(-1);" height="180vw" src="https://derpicdn.net/img/2016/11/27/1304535/full.png">
           </v-flex>
           <v-flex xs12 class="mr-4 mt-4 ml-4 text-xs-center">
-            <div style="font-size: 1.3rem;">Well, this is unpleasant. Let's just pretend you didn't see it.</div>
-            <!-- <div style="font-size: 1.3rem;">Хм, вот это неприятность. Давайте сделаем вид, что Вы этого не видели.</div> -->
-            <!-- <div style="font-size: 1.3rem;">Оце так неприємність. Давайте зробимо вигляд, що Ви цього не бачили.</div> -->
+            <div style="font-size: 1.3rem;">{{$t('notFound.text')}}</div>
             <v-btn  color="blue-grey lighten-1"
                     class="white--text mt-4 ma-0">
                     <router-link to="/">{{$t('button.home')}}</router-link>

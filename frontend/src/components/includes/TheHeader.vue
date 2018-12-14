@@ -39,7 +39,7 @@
         </v-toolbar-items>
          <v-toolbar-items v-if='userLoggedIn == false'>
                 <v-menu color="blue-grey darken-1" bottom origin="center center" transition="scale-transition">
-                    <v-btn flat slot="activator">
+                    <v-btn flat slot="activator" style="outline: none;">
                         <v-icon>language</v-icon>
                         <span class='ml-2'>{{ headerLocale }}</span>
                     </v-btn>

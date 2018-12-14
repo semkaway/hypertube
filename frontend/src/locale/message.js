@@ -169,6 +169,9 @@ const messages = {
 			cast: 'Cast',
 			similar: 'Similar movies',
 			newComment: 'New comment'
+		},
+		notFound: {
+			text: 'Well, this is unpleasant. Let\'s just pretend you didn\'t see it.'
 		}
 	},
 	ru: {
@@ -340,6 +343,9 @@ const messages = {
 			cast: 'Актеры',
 			similar: 'Похожие фильмы',
 			newComment: 'Новый комментарий'
+		},
+		notFound: {
+			text: 'Хм, вот это неприятность. Давайте сделаем вид, что Вы этого не видели.'
 		}
 	},
 	uk: {
@@ -511,6 +517,9 @@ const messages = {
 			cast: 'Актори',
 			similar: 'Схожі фільми',
 			newComment: 'Новий коментар',
+		},
+		notFound: {
+			text: 'Оце так неприємність. Давайте зробимо вигляд, що Ви цього не бачили.'
 		}
 	}
 }

@@ -32,7 +32,7 @@ ${l['disclaimer']}
 
     <style>
         html {
-            background-image: linear-gradient(to bottom right, #f5f7fa , #c3cfe2);
+            background-image: linear-gradient(to bottom right, #f5f7fa , #90A4AE);
             font-size: 1.2rem;
             height: 100%;
         }
@@ -68,11 +68,11 @@ ${l['disclaimer']}
           padding: 13px;
           border: none;
           border-radius: 4px;
-          background-color: #4385f5;
+          background-color: #78909C;
         }
 
         button:hover {
-          background-color: #5b95f6;
+          background-color: #90A4AE;
         }
 
         a {
