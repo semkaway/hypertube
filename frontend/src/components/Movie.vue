@@ -258,7 +258,6 @@ export default {
 		this.loaded = false
         this.runLoader = true
         HTTP.get('movie/one/'+this.$route.params.id).then(result => {
-            console.log('result', result)
 			this.loaded = true
 			this.similar = []
 			this.actors = []

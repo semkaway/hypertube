@@ -2,13 +2,13 @@
   <v-container v-if='userLoggedIn == true' grid-list-md text-xs-center class="mt-5">
     <Loader :run='runLoader'/>
       <v-flex lg12>
-	  <SearchBar v-on:searchMovies='searchMovies' 
-		:searchAppText='searchAppText' 
-		:searchAppParams='searchAppParams' 
+	  <SearchBar v-on:searchMovies='searchMovies'
+		:searchAppText='searchAppText'
+		:searchAppParams='searchAppParams'
 		v-on:handleChangeFromDate='handleChangeFromDate'
 		v-on:handleChangeToDate='handleChangeToDate'
 	  />
-        <div v-if="notFound">{{ $t('movies.notFound') }}</div>
+        <div class="mt-4" style="font-size: 1.3rem;" v-if="notFound">{{ $t('movies.notFound') }}</div>
         <v-container grid-list-md>
           <v-layout row wrap class="mt-3">
             <v-flex v-for="(movie, index) in movies" :key='index' class="movie" xs12 md4 lg3>
@@ -22,13 +22,11 @@
                  >
                  <router-link :to="'/movies/'+movie.id">
                    <v-img :aspect-ratio="1/1.5" :src="movie.poster_path">
-                    <v-icon v-for="(watched, index) in watchedMovies"
-                            :key='index'
-                            v-if="watched.id === movie.id"
-                            color="white"
-                            size="40"
-                            style="position: absolute; right: 0;"
-                            class="mr-4 mt-3">remove_red_eye</v-icon>
+                    <div v-for="(watched, index) in watchedMovies"
+                              :key='index'
+                              v-if="watched.id === movie.id"
+                              style="opacity: 0.5; background-color: white; height: 100%;"
+                              ></div>
                      <v-layout slot="placeholder"
                                fill-height
                                align-center
@@ -116,7 +114,7 @@
           	this.runLoader = true
 			let query = this.query
 			let searchParams = {}
-			
+
 			if (filters && !this.searchText.length) {
 				searchParams = Object.assign({}, this.userParams)
 			} else {
