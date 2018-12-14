@@ -61,12 +61,12 @@ const messages = {
 			title: 'home',
 			title1: 'WATCH YOUR FAVORITE MOVIES ONLINE!',
 			quality: 'Different quality - 720p/1080p',
-			language: '3 languages',
+			language: 'Three interface languages',
 			subtitles: 'English and Russian subtitles',
 			title2: 'MADE WITH MODERN TECHNOLOGIES',
 			title3: 'COMPLETELY OPEN SOURCE PROJECT',
 			sources: 'Sources',
-			contributor: 'Contributor'
+			contributor: 'Contributors'
 		},
 		movies: {
 			notFound: 'Sorry, nothing was found :(',
@@ -247,12 +247,12 @@ const messages = {
 			title: 'Главная',
 			title1: 'Смотри любимые фильмы онлайн!',
 			quality: 'Доступные разрешения: 720p/1080p',
-			language: '3 языка',
+			language: 'Три языка интерфейса',
 			subtitles: 'Субтитры на английском и русском',
-			title2: 'Сделано с использованием современных технологий',
+			title2: 'Создан с использованием современных технологий',
 			title3: 'Полностью открытый исходный код',
 			sources: 'Источники',
-			contributor: 'Контрибьютор'
+			contributor: 'Контрибьюторы'
 		},
 		movies: {
 			notFound: 'Извините, мы ничего не нашли по Вашему запросу :(',
@@ -432,12 +432,12 @@ const messages = {
 			title: 'Головна',
 			title1: 'Дивись улюблені фільми онлайн!',
 			quality: 'Доступні у 720p та 1080p',
-			language: '3 мови',
+			language: 'Три мови інтерфейсу',
 			subtitles: 'Субтитри англійською та російською',
 			title2: 'Створений за домомогою сучасних технологій',
 			title3: 'Повністю відкритий програмний код',
 			sources: 'Джерела',
-			contributor: 'Контрибьютор'
+			contributor: 'Контрибьютори'
 		},
 		movies: {
 			notFound: 'Вибачте, за Вашим запитом нічого не знайдено :(',
