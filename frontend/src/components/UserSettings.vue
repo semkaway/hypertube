@@ -54,7 +54,7 @@
 											<v-card-text class='subheading black--text'>
 												{{$t('profile.settings.email_pending')}}
 												<span class='ml-1 subheading' style="color: #546E7A">{{ settingsUser.pendingEmail }}</span>
-												<v-btn @click='cancelPendingEmail' color="red ligten-1" dark style="outline: none;" flat>{{ $t('button.cancel') }}</v-btn>
+												<v-btn @click='cancelPendingEmail' color="red ligten-1" dark style="outline: none;" flat>{{ $t('button.delete') }}</v-btn>
 											</v-card-text>
 										</v-card>
 									</v-layout>

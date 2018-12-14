@@ -96,7 +96,7 @@
           </div>
           <div v-else class="text-xs-center">
 
-            <video id="moviePlayer" ref="videoRef" width="100%" :poster="movie.backdrop_path" controls crossorigin="anonymous">
+            <video id="moviePlayer" ref="videoRef" width="100%" :poster="movie.backdrop_path" controls controlsList="nodownload" crossorigin="anonymous">
               <source v-if="movieSource" :src="movieSource" type="video/mp4"/>
 						<track v-if='subtitles.enSubs' :src='subtitles.enSubs.file' kind="captions" srclang='en'/>
 						<track v-if='subtitles.ruSubs' :src='subtitles.ruSubs.file' kind="captions" srclang='ru'/>
@@ -265,7 +265,8 @@ export default {
 			this.genres = []
 			this.crew = []
 			this.movieSource = ''
-			this.qualitySelected = false
+      this.qualitySelected = false
+			this.quality = []
 			this.totalNumberOfComments = 0
             if (result.data.success == true) {
               let movie = result.data.data

@@ -8,7 +8,7 @@
 				</v-card-title>
 				<div class='center font-weight-regular headline mt-2'>
 					<div class='content-wrapper'>{{$t('home.quality')}}</div>
-					<div class='content-wrapper'>{{$t('home.languages')}}</div>
+					<div class='content-wrapper'>{{$t('home.language')}}</div>
 					<div class='content-wrapper'>{{$t('home.subtitles')}}</div>
 				</div>
 			</v-card>

@@ -47,6 +47,7 @@
           	<form color="blue-grey darken-1">
 				<v-text-field
 					@keyup.native="checkIfEmailExists"
+          @keyup.native.enter="logInUser"
 					name="email"
 					v-validate="'required|email'"
 					v-model="email"
@@ -60,6 +61,7 @@
 					ref="passwordRef"
 					:type="showPassword ? 'text' : 'password'"
 					@keyup.native='validatePassword'
+          @keyup.native.enter="logInUser"
 					name="password"
 					v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
 					@click:append="showPassword = !showPassword"
