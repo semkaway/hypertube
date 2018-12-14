@@ -58,7 +58,15 @@ const messages = {
 			watchIn: 'Watch in'
 		},
 		home: {
-			title: 'home'
+			title: 'home',
+			title1: 'WATCH YOUR FAVORITE MOVIES ONLINE!',
+			quality: 'Different quality - 720p/1080p',
+			language: '3 languages',
+			subtitles: 'English and Russian subtitles',
+			title2: 'MADE WITH MODERN TECHNOLOGIES',
+			title3: 'COMPLETELY OPEN SOURCE PROJECT',
+			sources: 'Sources',
+			contributor: 'Contributor'
 		},
 		movies: {
 			notFound: 'Sorry, nothing was found :(',
@@ -233,7 +241,15 @@ const messages = {
 			watchIn: 'Смотреть в'
 		},
 		home: {
-			title: 'Главная'
+			title: 'Главная',
+			title1: 'Смотри любимые фильмы онлайн!',
+			quality: 'Доступные разрешения: 720p/1080p',
+			language: '3 языка',
+			subtitles: 'Субтитры на английском и русском',
+			title2: 'Сделано с использованием современных технологий',
+			title3: 'Полностью открытый исходный код',
+			sources: 'Источники',
+			contributor: 'Контрибьютор'
 		},
 		movies: {
 			notFound: 'Извините, мы ничего не нашли по Вашему запросу :(',
@@ -407,7 +423,15 @@ const messages = {
 			watchIn: 'Дивитись у'
 		},
 		home: {
-			title: 'Головна'
+			title: 'Головна',
+			title1: 'Дивись улюблені фільми онлайн!',
+			quality: 'Доступні у 720p та 1080p',
+			language: '3 мови',
+			subtitles: 'Субтитри англійською та російською',
+			title2: 'Створений за домомогою сучасних технологій',
+			title3: 'Повністю відкритий програмний код',
+			sources: 'Джерела',
+			contributor: 'Контрибьютор'
 		},
 		movies: {
 			notFound: 'Вибачте, за Вашим запитом нічого не знайдено :(',
