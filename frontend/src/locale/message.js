@@ -233,7 +233,7 @@ const messages = {
 		movies: {
 			notFound: 'Извините, мы ничего не нашли по Вашему запросу :(',
 			search: 'Поиск',
-			filter: 'Фильтровать по',
+			filter: 'Фильтры',
 			popularity: 'Популярность',
 			releaseDate: 'Дата выхода',
 			voteNumber: 'Количество голосов',
@@ -403,7 +403,7 @@ const messages = {
 		movies: {
 			notFound: 'Вибачте, за Вашим запитом нічого не знайдено :(',
 			search: 'Пошук',
-			filter: 'Фільтрувати за',
+			filter: 'Фільтри',
 			popularity: 'Популярність',
 			releaseDate: 'Дата виходу',
 			voteNumber: 'Кількість голосів',
