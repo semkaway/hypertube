@@ -14,22 +14,22 @@
             </v-btn>
             <v-list>
                 <v-list-tile @click="menuClick('profile')">
-                    <v-icon class='mr-2'>account_circle</v-icon>
-                    <v-list-tile-title class='font-weight-medium'>
+                    <v-icon color="blue-grey darken-1" class='mr-2'>account_circle</v-icon>
+                    <v-list-tile-title class='font-weight-medium  blue-grey--text'>
                         {{ $t('profile.profile_title') | capitalizeFirstLetter }}
                     </v-list-tile-title>
                 </v-list-tile>
 
                 <v-list-tile @click="menuClick('settings')">
-                    <v-icon class='mr-2'>settings</v-icon>
-                    <v-list-tile-title class='font-weight-medium'>
+                    <v-icon color="blue-grey darken-1" class='mr-2'>settings</v-icon>
+                    <v-list-tile-title class='font-weight-medium blue-grey--text'>
                         {{ $t('profile.settings_title') | capitalizeFirstLetter }}
                     </v-list-tile-title>
                 </v-list-tile>
 
                 <v-list-tile @click="menuClick('logout')">
-                    <v-icon class='mr-2'>exit_to_app</v-icon>
-                    <v-list-tile-title class='font-weight-medium'>
+                    <v-icon color="blue-grey darken-1" class='mr-2'>exit_to_app</v-icon>
+                    <v-list-tile-title class='font-weight-medium  blue-grey--text'>
                         {{ $t('button.logout') | capitalizeFirstLetter }}
                     </v-list-tile-title>
                 </v-list-tile>
