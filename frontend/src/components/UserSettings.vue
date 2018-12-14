@@ -341,9 +341,8 @@ export default {
 						this.showSnackbar = true
 						this.snackbarText = this.$t('profile.success_alert')
 					}
-				}).catch((err) => {
-					console.log("server error")
-					console.log(err.response.data.error.message)
+				}).catch((error) => {
+					console.log("Server error:", error)
 				})
             }
 		},
@@ -437,7 +436,6 @@ export default {
 				}
 				this.runLoader = true
 				HTTP.put('user/change/data', newPassword).then((response) => {
-					console.log('response', response)
 					this.runLoader = false
 					if (!response.data.success) {
 						if (response.data.message === 'Invalid oldPassword') {
@@ -498,6 +496,10 @@ export default {
 		onFilePicture() {
 			this.runLoader = true
 			const file = this.$refs.fileInput[0].files[0]
+			if (!file) {
+				this.runLoader = false
+				return
+			}
 			const mbSize = file.size / 1024 / 1024
 			if (mbSize > 5 || file.size < 100) {
 				this.runLoader = false
@@ -561,7 +563,6 @@ export default {
 			if (!this.arrayOfAddNewPasswordErrors.length && this.addNewPassword.length) {
 				this.runLoader = true
 				HTTP.post('user/add/password', { password: this.addNewPassword}).then((response) => {
-					console.log('response')
 					if (response.data.success) {
 						this.showSnackbar = true
 						this.snackbarText = this.$t('profile.success_alert')
@@ -627,7 +628,6 @@ export default {
 				if (!this.arrayOfAddEmailErrors.length && this.addEmail.length) {
 					this.runLoader = true
 					HTTP.post('user/add/email', { email: this.addEmail }).then((response) => {
-						console.log('response =>', response)
 						if (response.data.success) {
 							this.showSnackbar = true
 							this.snackbarText = this.$t('registration.success_alert')
@@ -646,7 +646,7 @@ export default {
 						}
 						this.runLoader = false
 					}).catch((error) => {
-						console.log('errors', error)
+						console.log('Server error:', error)
 						this.showSnackbar = true
 						this.snackbarText = this.$t('login.error_alert')
 						this.runLoader = false
@@ -680,7 +680,6 @@ export default {
 		},
 
 		clearNewEmail() {
-			console.log('this.user ->', this.user)
 			this.newEmail = ''
 			this.passwordForNewEmail = ''
 			this.arrayOfNewEmailErrors = []
