@@ -13,6 +13,11 @@
 		<router-view
 			v-bind:user='user'
 			v-bind:token='token'
+
+			v-bind:searchAppText='searchAppText'
+			v-bind:searchAppParams='searchAppParams'
+			v-on:setSearchParams='setSearchParams'
+
 			v-on:setUser='setUser'
 			v-bind:locale='locale'
 			v-on:setLocale='setLocale'
@@ -48,10 +53,23 @@ export default {
 			locale: localStorage.locale ? localStorage.locale : 'en',
 			userLoggedIn: false,
 			showSnackbar: false,
-			snackbarText: ''
+			snackbarText: '',
+			searchAppParams: {
+				'release_date.gte': 2000,
+				'release_date.lte': 2018,
+				'with_genres': '',
+				'sort_by': ''
+			},
+			searchAppText: ''
 		}
 	},
 	methods: {
+
+		setSearchParams(params, text) {
+			this.searchAppParams = Object.assign(this.searchAppParams, params)
+			this.searchAppText = text
+		},
+
 		setToken (response) {
 			this.token = response.token
 			this.setLocale(response.locale)

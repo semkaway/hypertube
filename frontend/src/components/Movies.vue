@@ -2,7 +2,12 @@
   <v-container v-if='userLoggedIn == true' grid-list-md text-xs-center class="mt-5">
     <Loader :run='runLoader'/>
       <v-flex lg12>
-	  <SearchBar v-on:searchMovies='searchMovies'/>
+	  <SearchBar v-on:searchMovies='searchMovies' 
+		:searchAppText='searchAppText' 
+		:searchAppParams='searchAppParams' 
+		v-on:handleChangeFromDate='handleChangeFromDate'
+		v-on:handleChangeToDate='handleChangeToDate'
+	  />
         <div v-if="notFound">{{ $t('movies.notFound') }}</div>
         <v-container grid-list-md>
           <v-layout row wrap class="mt-3">
@@ -72,18 +77,18 @@
 	import axios from 'axios'
 	import NotFound from './NotFound'
 	import SearchBar from './SearchBar'
-  import Loader from './Loader'
+  	import Loader from './Loader'
 	import { HTTP } from '../http-common'
 	import * as constants from '../utils/constants'
-  import setAuthorizationToken from '../utils/setAuthToken'
-  import showYear from '../utils/showYear'
-  import setDefaultPosterPath from '../utils/setDefaultPosterPath'
+  	import setAuthorizationToken from '../utils/setAuthToken'
+  	import showYear from '../utils/showYear'
+  	import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 
 	export default {
 		name: 'Movies',
 		components: { NotFound, SearchBar, Loader },
-    filters: { date: showYear },
-		props: ['user', 'userLoggedIn', 'locale', 'token'],
+    	filters: { date: showYear },
+		props: ['user', 'userLoggedIn', 'locale', 'token', 'searchAppText', 'searchAppParams'],
 		data () {
 			return {
 				movies: [],
@@ -100,15 +105,15 @@
 				searchText: '',
 				userParams: {},
 				notFound: false,
-        watchedMovies: [],
-        runLoader: true
+        		watchedMovies: [],
+        		runLoader: true
 			}
 		},
 
     methods: {
       	requestMovies(filters) {
-          this.notFound = false
-          this.runLoader = true
+          	this.notFound = false
+          	this.runLoader = true
 			let query = this.query
 			let searchParams = {}
 
@@ -121,48 +126,44 @@
 					query = 'https://api.themoviedb.org/3/search/movie'
 				}
 			}
-
 			searchParams.page = this.page
-
-			// console.log("query =>", query)
-			// console.log('params =>', searchParams)
-
 			const token = axios.defaults.headers.common['Authorization']
 			delete axios.defaults.headers.common['Authorization']
 			HTTP.get(query, { params: searchParams } ).then(result => {
-				// console.log(result)
 				if (result.data.total_results == 0) {
 					this.notFound = true
 					this.totalPages = 1
+					this.runLoader = false
 					return false
 				}
-        setDefaultPosterPath(result.data.results)
-        console.log('watched: ', this.watchedMovies)
+				setDefaultPosterPath(result.data.results)
 				for (var i = 0; i < result.data.results.length; i++) {
 					this.movies.push(result.data.results[i])
 				}
 				this.totalPages = result.data.total_pages
-        this.runLoader = false
-			}).catch((e) => { console.log('e', e) })
+       			this.runLoader = false
+			}).catch((e) => { console.log('e', e);	this.runLoader = false })
 			setAuthorizationToken(token)
       	},
 
         getUserWatchedMovies() {
-          HTTP.get('/movie/watched').then(result => {
-            console.log('watched result: ', result)
-            if (result.data.success == true) {
-              this.currentUser = true
-              setDefaultPosterPath(result.data.movies)
-              this.watchedMovies = result.data.movies
-              this.requestMovies(false)
-            } else if (result.data.success == false) {
-              setAuthorizationToken(false)
-              this.$router.push('/')
-            }
-          })
-          .catch((err) => {
-            console.log('error', err.data)
-          })
+			this.runLoader = true
+			HTTP.get('/movie/watched').then(result => {
+				if (result.data.success == true) {
+					this.currentUser = true
+					setDefaultPosterPath(result.data.movies)
+					this.watchedMovies = result.data.movies
+					this.requestMovies(this.searchAppParams.with_genres || this.searchAppParams.sort_by)
+				} else if (result.data.success == false) {
+					setAuthorizationToken(false)
+					this.$router.push('/')
+				}
+				this.runLoader = false
+			})
+			.catch((err) => {
+				console.log('error', err.data)
+				this.runLoader = false
+			})
         },
 
       	showMore () {
@@ -179,26 +180,33 @@
 				"release_date.gte": fromDate,
 				"release_date.lte": toDate,
 			}
-			if (genre)
-				searchParams.with_genres = genre
-			if (sort)
-				searchParams.sort_by = sort
+			searchParams.with_genres = genre ? genre : ''
+			searchParams.sort_by = sort ? sort : ''
 			this.searchText = searchText.length ? searchText : ''
 			this.movies = []
 			this.page = 1
 			this.userParams = Object.assign({}, this.defaultParams)
 			this.userParams = Object.assign(this.userParams, searchParams)
+			this.$emit('setSearchParams', this.userParams, this.searchText)
 			this.requestMovies(true)
 		},
 
+		handleChangeFromDate(date) {
+			this.$emit('setSearchParams', Object.assign(this.searchAppParams, {'release_date.gte': parseInt(date)}), this.searchAppText)
+		},
 
+		handleChangeToDate(date) {
+			this.$emit('setSearchParams', Object.assign(this.searchAppParams, {'release_date.lte': parseInt(date)}), this.searchAppText)
+		}
 
     },
+
     mounted () {
+		this.userParams = this.searchAppParams
+		this.searchText = this.searchAppText
         this.getUserWatchedMovies()
-        // this.requestMovies(false)
-
     },
+
   }
 </script>
 

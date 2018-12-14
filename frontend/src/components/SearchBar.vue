@@ -12,8 +12,8 @@
 	</div>
 
 	<div class='dates-wrapper'>
-		<DatePicker v-on:changeDate='handleChangeFromDate' :label="this.$t('movies.since')" startDate='2000'/>
-		<DatePicker v-on:changeDate='handleChangeToDate' :label="this.$t('movies.to')" startDate='2018'/>
+		<DatePicker v-on:changeDate='handleChangeFromDate' :label="this.$t('movies.since')" :startDate='searchAppParams["release_date.gte"]'/>
+		<DatePicker v-on:changeDate='handleChangeToDate' :label="this.$t('movies.to')" :startDate='searchAppParams["release_date.lte"]'/>
 	</div>
 
 	<div class='search-input-wrapper'>
@@ -40,13 +40,14 @@
   export default {
     name: 'SearchBar',
 	components: { DatePicker },
+	props: ['searchAppText', 'searchAppParams'],
     data () {
       return {
-		genre: this.$t('movie.genres'),
-		sortBy: this.$t('movies.filter'),
-		fromDate: 2000,
-		toDate: 2018,
-		searchText: '',
+		genre: '',
+		sortBy: '',
+		fromDate: this.searchAppParams["release_date.gte"],
+		toDate: this.searchAppParams["release_date.lte"],
+		searchText: this.searchAppText,
         dropdown_genres: [
           { text: this.$t('genres.action'),         id: GENRES[0].id},
           { text: this.$t('genres.adventure'),      id: GENRES[1].id},
@@ -66,13 +67,15 @@
           { text: this.$t('genres.tvMovie'),        id: GENRES[15].id},
           { text: this.$t('genres.thriller'), 		id: GENRES[16].id},
           { text: this.$t('genres.war'), 			id: GENRES[17].id},
-          { text: this.$t('genres.western'), 		id: GENRES[18].id}
+          { text: this.$t('genres.western'), 		id: GENRES[18].id},
+          { text: this.$t('movie.genres'), 			id: ''}
         ],
 		dropdown_sorts: [
-			{text: this.$t('movies.popularity'), param: 'popularity.desc'},
-			{text: this.$t('movies.releaseDate'), param: 'release_date.desc'},
-			{text: this.$t('movies.voteNumber'), param: 'vote_count.desc'},
-			{text: this.$t('movies.rating'), param: 'vote_average.desc'},
+			{text: this.$t('movies.popularity'), 	param: 'popularity.desc'},
+			{text: this.$t('movies.releaseDate'), 	param: 'release_date.desc'},
+			{text: this.$t('movies.voteNumber'), 	param: 'vote_count.desc'},
+			{text: this.$t('movies.rating'), 		param: 'vote_average.desc'},
+			{text: this.$t('movies.filter'), 		param: ''},
 		],
         toggle_exclusive: 2,
         toggle_multiple: [1, 2, 3]
@@ -85,17 +88,33 @@
 			let sort = this.dropdown_sorts.find(o => o.text === this.sortBy)
 			genre = genre ? genre.id : ''
 			sort = sort ? sort.param : ''
-			this.$emit('searchMovies', { genre, sort, fromDate: this.fromDate, toDate: this.toDate, searchText: this.searchText } )
+			this.$emit('searchMovies', { genre, sort, fromDate: parseInt(this.searchAppParams["release_date.gte"]), toDate: parseInt(this.searchAppParams["release_date.lte"]), searchText: this.searchText } )
 		},
 
 		handleChangeFromDate(date) {
-			this.fromDate = date
+			this.$emit('handleChangeFromDate', date)
 		},
 
 		handleChangeToDate(date) {
-			this.toDate = date
+			this.$emit('handleChangeToDate', date)
 		}
+
 	},
+
+	mounted () {
+		if (this.searchAppParams.with_genres) {
+			const genreName = this.dropdown_genres.find(obj => obj.id == this.searchAppParams.with_genres)
+			this.genre = genreName.text
+		} else {
+			this.genre = this.$t('movie.genres')
+		}
+		if (this.searchAppParams.sort_by) {
+			const sortByName = this.dropdown_sorts.find(obj => obj.param == this.searchAppParams.sort_by)
+			this.sortBy = sortByName.text
+		} else {
+			this.sortBy = this.$t('movies.filter')
+		}
+	}
 
   }
 </script>
