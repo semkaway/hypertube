@@ -49,7 +49,7 @@ export default {
 		return {
 			user: {},
 			token: localStorage.token,
-			locale: 'en',
+			locale: localStorage.locale,
 			userLoggedIn: false,
 			showSnackbar: false,
 			snackbarText: '',
@@ -86,13 +86,16 @@ export default {
 			this.userLoggedIn = status
 		},
 
-		setUser (response) {
+		setUser (response, locale) {
 			let { email, first, last, image, user_id, pendingEmail, password, intra, github } = response
 			if (!image) image = defaultImage
 			this.user = { email, first, last, image, user_id, pendingEmail, password, intra, github }
+			this.setLocale(locale)
 		},
 
-		updateUser(updatedUser) {
+		updateUser(updatedUser, locale) {
+			if (locale)
+				this.locale = locale
 			if (!updatedUser) {
 				this.userLoggedIn = false
 				this.user = {}
@@ -118,6 +121,7 @@ export default {
 		},
 
 		setDefaultLocale(locale) {
+			console.log('LOCALE TO +>', locale)
 			if (locale == 'en' || locale == 'ru' || locale == 'uk')
                 this.$i18n.locale = locale
             else {
@@ -127,8 +131,8 @@ export default {
 		}
 	},
 
-	created() {
-		this.setDefaultLocale(this.locale)
+	created () {
+		this.setDefaultLocale(localStorage.locale)
 	},
 
 	watch: {

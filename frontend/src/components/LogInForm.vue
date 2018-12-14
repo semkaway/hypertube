@@ -280,7 +280,6 @@ export default {
 				"password": this.password,
 				"locale": this.locale })
 			.then(response => {
-				console.log(response)
 					if (response.data.success == true) {
 						this.showSuccess = true
 						this.successMessage = this.$t('registration.success_alert')

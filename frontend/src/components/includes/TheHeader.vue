@@ -118,7 +118,7 @@
                     setAuthorizationToken(false)
                     this.$router.push('/')
                 } else {
-                    this.$emit('setUser', result.data)
+                    this.$emit('setUser', result.data, this.headerLocale)
                     this.$emit('setUserStatus', true)
                 }
 		    }).catch((err) => { setAuthorizationToken(false); this.$router.push('/')})
@@ -186,9 +186,11 @@
             this.headerUser = this.user
         },
 
-        locale () {
-            if (this.locale == 'en' || this.locale == 'ru' || this.locale == 'uk')
-                this.$i18n.locale = this.locale
+        locale (newValue) {
+
+            console.log('watch locale in the header newValue =>', newValue)
+            if (newValue == 'en' || newValue == 'ru' || newValue == 'uk')
+                this.$i18n.locale = newValue
             else {
                 localStorage.locale = 'en'
                 this.$i18n.locale = 'en'

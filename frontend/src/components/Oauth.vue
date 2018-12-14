@@ -31,7 +31,6 @@ export default {
 			if (localStorage.token !== '') { // add user
 				HTTP.post(`user/add` + currUrl, { "code": myCode }).then(response => {
 					if (response.data.success == true) {
-						console.log('all good')
 						this.$emit('userAdded')
 						this.$router.push('/settings')
 					} else if (response.data.message == "Invalid token") {
@@ -60,7 +59,7 @@ export default {
 								setAuthorizationToken(false)
 								this.$router.push('/')
 							} else {
-								this.$emit('updateUser', result.data)
+								this.$emit('updateUser', result.data, response.data.locale)
 								this.$router.push('/movies')
 							}
 							this.runLoader = false

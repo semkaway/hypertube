@@ -208,7 +208,11 @@
     },
 
 	watch: {
-		userAppSetDate(newValue) { this.userSetDate = newValue }
+		userAppSetDate(newValue) { this.userSetDate = newValue },
+		locale(newValue) {
+			this.defaultParams.language = newValue 
+			this.defaultParams.include_image_language = newValue
+		}
 	}
 
   }
