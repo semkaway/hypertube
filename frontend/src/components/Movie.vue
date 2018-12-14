@@ -206,7 +206,7 @@
       </v-flex>
     </v-layout>
   </v-container>
-  <v-container v-else>
+  <v-container v-else-if='!loaded && !runLoader'>
    	<v-layout row wrap justify-center align-center class='mt-5 headline'> {{$t('button.notComing')}}</v-layout>
   </v-container>
   </div>

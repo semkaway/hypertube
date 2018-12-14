@@ -49,7 +49,7 @@ export default {
 		return {
 			user: {},
 			token: localStorage.token,
-			locale: localStorage.locale ? localStorage.locale : 'en',
+			locale: 'en',
 			userLoggedIn: false,
 			showSnackbar: false,
 			snackbarText: '',
@@ -115,6 +115,25 @@ export default {
 		userActivate(message) {
 			this.showSnackbar = true
 			this.snackbarText = this.$t(message)
+		},
+
+		setDefaultLocale(locale) {
+			if (locale == 'en' || locale == 'ru' || locale == 'uk')
+                this.$i18n.locale = locale
+            else {
+                localStorage.locale = 'en'
+                this.$i18n.locale = 'en'
+            }
+		}
+	},
+
+	created() {
+		this.setDefaultLocale(this.locale)
+	},
+
+	watch: {
+		locale(newValue) {
+			this.setDefaultLocale(newValue)
 		}
 	}
 }

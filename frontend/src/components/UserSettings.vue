@@ -772,19 +772,29 @@ export default {
 					this.snackbarText = this.$t('activation.error_alert')
 				})
 			}
+		},
+
+		setDefaultLocale(locale) {
+			if (locale == 'en' || locale == 'ru' || locale == 'uk')
+                this.$i18n.locale = locale
+            else {
+                localStorage.locale = 'en'
+                this.$i18n.locale = 'en'
+            }
 		}
 	},
 
 	created() {
-			HTTP.get('user/data/').then(result => {
-				if (result.data.success == false) {
-					setAuthorizationToken(false)
-					this.$router.push('/')
-				} else {
-					this.$emit('userLoggedIn', true)
-					this.$emit('setUser', result.data)
-				}
-			}).catch((err) => { setAuthorizationToken(false);})
+		this.setDefaultLocale(this.locale)
+		HTTP.get('user/data/').then(result => {
+			if (result.data.success == false) {
+				setAuthorizationToken(false)
+				this.$router.push('/')
+			} else {
+				this.$emit('userLoggedIn', true)
+				this.$emit('setUser', result.data)
+			}
+		}).catch((err) => { setAuthorizationToken(false);})
 	},
 
 
@@ -793,7 +803,11 @@ export default {
 	},
 
 	watch: {
-		locale () { this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail) },
+		locale (newValue) {
+			this.setDefaultLocale(this.locale)
+			this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail) 
+		},
+
 		user() {
 			this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail)
 			this.settingsUser = this.user

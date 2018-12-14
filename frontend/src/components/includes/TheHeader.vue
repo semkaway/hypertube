@@ -187,7 +187,12 @@
         },
 
         locale () {
-            this.$i18n.locale = this.locale
+            if (this.locale == 'en' || this.locale == 'ru' || this.locale == 'uk')
+                this.$i18n.locale = this.locale
+            else {
+                localStorage.locale = 'en'
+                this.$i18n.locale = 'en'
+            }
         },
 
         token () {
