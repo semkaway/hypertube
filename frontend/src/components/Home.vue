@@ -86,6 +86,10 @@ export default {
 
 <style scoped>
 
+ * {
+	 box-sizing: border-box;
+ }
+
 	.top-wrapper {
 		margin-top: 50px;
 	}
@@ -123,7 +127,7 @@ export default {
 		flex-flow: column;
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (max-width: 600px), (max-height: 1100px){
 
 		.pt-second-handler {
 			margin-top: 10px;
