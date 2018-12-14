@@ -30,13 +30,13 @@ const getTorrents = imdb_id => axios.get('https://tv-v2.api-fetch.website/movie/
 
 export const one = model => async (req, res, next) => {
     try {
-        let comments = await getComments(model, req.params.id)
+        let comments = await getComments(model, req.params.id);
 
-        let movie = await getMovieData(req.user.locale, req.params.id)
+        let movie = await getMovieData(req.user.locale, req.params.id);
 
-        let torrent = await getTorrents(movie.data.imdb_id)
+        let torrent = await getTorrents(movie.data.imdb_id);
 
-        let subtitle_array = await getSubtitle(movie.data.imdb_id, req.user.locale)
+        let subtitle_array = await getSubtitle(movie.data.imdb_id, req.user.locale);
 
         res.status(200).json({
             "success": true,
@@ -48,8 +48,7 @@ export const one = model => async (req, res, next) => {
             }
         });
     } catch (e) {
-        console.log('error in /movie/one =>', e)
-        next()
-    } 
-    
+        next(e)
+    }
+
 };
