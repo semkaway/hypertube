@@ -32,9 +32,8 @@
     <div class="text-xs-center">
     <v-btn  v-if="numComments + 1 < totalNumberOfComments"
             @click.prevent="showMore"
-            depressed
-            color="grey"
-            class="white--text mt-3"
+            color="blue-grey darken-1"
+            dark
             style="outline: none;">{{$t('button.showMore')}}</v-btn>
     </div>
   </v-flex>
