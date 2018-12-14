@@ -1,7 +1,7 @@
 <template>
   <v-layout row justify-center>
     <v-dialog v-model="showForm" persistent max-width="600px">
-      <v-layout justify-end class="p-2">
+      <v-layout justify-end class="p-2 blue-grey darken-1">
         <v-icon x-large color="white" dark class="white--text" flat @click="$emit('toggleForm')" right>clear</v-icon>
        </v-layout>
     <v-card >
