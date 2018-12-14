@@ -81,7 +81,10 @@
           	</form>
            <v-layout justify-start>
             <v-flex>
-              <v-btn v-if='!showRegisterForm && !showForgotPassForm' style="outline: none;" color="blue-grey lighten-1" dark @click='logInUser'>{{ $t('button.login') }}</v-btn>
+
+              <v-btn v-if='!showRegisterForm && !showForgotPassForm && showResendButton' style="outline: none;" color="blue-grey lighten-1" dark @click='ResendActivationEmail'>{{ $t('login.resendLink') }}</v-btn>
+              <v-btn v-else-if='!showRegisterForm && !showForgotPassForm' style="outline: none;" color="blue-grey lighten-1" dark @click='logInUser'>{{ $t('button.login') }}</v-btn>
+
               <v-btn v-if='showRegisterForm == true && !showForgotPassForm' style="outline: none;" color="blue-grey lighten-1" dark  @click='registerUser'>{{ $t('button.register') }}</v-btn>
               <v-btn v-if='showForgotPassForm == true' style="outline: none;" color="blue-grey lighten-1" dark @click='sendEmail'>{{ $t('button.send') }}</v-btn>
               <v-btn style="outline: none;" color="blue-grey lighten-1" dark @click='loginViaIntra'>42 Intra <v-icon right dark>school</v-icon></v-btn>
@@ -118,6 +121,7 @@ export default {
           firstName: '',
           lastName: '',
 		  showSuccess: false,
+		  showResendButton: false,
 		  successMessage: '',
           arrayOfEmailErrors: [],
           arrayOfPasswordErrors: [],
@@ -180,6 +184,26 @@ export default {
 		}
     },
 
+	ResendActivationEmail() {
+        if (this.email.length) {
+			HTTP.post('user/send-activation', {email: this.email}).then((response) => {
+				if (response.data.success) {
+					this.showSuccess = true
+					this.successMessage = this.$t('registration.success_alert')
+					setTimeout(() => { this.$emit('toggleForm')}, 1800)
+				} else {
+					if (response.data.message == "User with this email doesn't exist") {
+						this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
+					} else if (response.data.message == "User activated") {
+						this.arrayOfEmailErrors = [this.$t('login.doubleValidation')]
+					}
+				}
+			}).catch((error) => { console.log('Error:', error) })
+		} else {
+			this.arrayOfEmailErrors = [this.$t('validation.required')]
+		}
+	},
+
     loginViaIntra() {
 		this.$emit('runLoader')
     	window.location.href = 'https://api.intra.42.fr/oauth/authorize?' +
@@ -214,18 +238,23 @@ export default {
 					this.$emit('setUser', {token: response.data.token, locale: response.data.locale})
 				} else {
 					if (response.data.message == "Invalid email") {
+						this.showResendButton = false
 						this.arrayOfEmailErrors = [this.$t('validation.invalidEmail')]
 					} else if (response.data.message == "Invalid password") {
+						this.showResendButton = false
 						this.arrayOfPasswordErrors = [this.$t('validation.invalidPassword')]
-						} else if (response.data.message == "User not activated") {
-						this.arrayOfEmailErrors = [this.$t('validation.notActivated')]
-						this.arrayOfPasswordErrors = [this.$t('validation.notActivated')]
+					} else if (response.data.message == "User not activated") {
+							this.showResendButton = true
+							this.arrayOfEmailErrors = [this.$t('validation.notActivated')]
+							this.arrayOfPasswordErrors = [this.$t('validation.notActivated')]
 					} else {
+						this.showResendButton = false
 						this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
 						this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
 					}
 				}
 				}).catch(err => {
+					this.showResendButton = false
 					this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
 					this.arrayOfPasswordErrors = [this.$t('registration.error_alert')]
 				})
@@ -331,6 +360,15 @@ export default {
 			}
 		}
     },
+
+	watch: {
+		email() {
+			if (this.showResendButton) {
+				this.arrayOfPasswordErrors = []
+			}
+			this.showResendButton = false
+		}
+	}
 }
 
 </script>
