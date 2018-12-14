@@ -2,12 +2,12 @@
   <v-layout row wrap align-center justify-center>
 
 	<div class='item-wrapper'>
-			<v-overflow-btn v-model='genre' :items=" dropdown_genres" hide-details class="pa-0" >
+			<v-overflow-btn color="blue-grey lighten-1" v-model='genre' :items=" dropdown_genres" hide-details class="pa-0" >
 			</v-overflow-btn>
 	</div>
 
 	<div class='item-wrapper'>
-		<v-overflow-btn v-model='sortBy' :items=" dropdown_sorts" hide-details class="pa-0">
+		<v-overflow-btn color="blue-grey lighten-1" v-model='sortBy' :items=" dropdown_sorts" hide-details class="pa-0">
 		</v-overflow-btn>
 	</div>
 
@@ -17,7 +17,7 @@
 	</div>
 
 	<div class='search-input-wrapper'>
-		<v-text-field v-model='searchText'
+		<v-text-field color="blue-grey lighten-1" v-model='searchText'
 			flat
 		 	@keyup.native.enter="searchMovies"
 			@click:append-outer="searchMovies"
@@ -26,7 +26,6 @@
   	</div>
 
 	<div class='search-button-wrapper'>
-		<!-- <v-btn style="outline: none;" @click='searchMovies'>{{$t('movies.search')}}</v-btn> -->
     <v-btn style="outline: none;"
     color="blue-grey lighten-1" large
     dark @click='searchMovies'>{{$t('movies.search')}}</v-btn>

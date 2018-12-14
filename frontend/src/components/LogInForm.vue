@@ -6,8 +6,8 @@
        </v-layout>
     <v-card >
       <v-card-title v-if='showSuccess === false'>
-        <v-toolbar class='hidden-sm-and-down'>
-          <v-toolbar-items >
+        <v-toolbar class='hidden-sm-and-down' color="blue-grey lighten-5">
+          <v-toolbar-items>
               <v-btn :color='!showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showLogin' flat>{{ $t('button.login') }}</v-btn>
               <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showRegister' flat>{{ $t('button.register') }} </v-btn>
               <v-btn :color='showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
@@ -23,10 +23,10 @@
             <form>
                 <v-text-field
 					@keyup.native='validateFirstName'
-					v-if='showRegisterForm == true' 
-					:error-messages="arrayOfFirstNameErrors" 
+					v-if='showRegisterForm == true'
+					:error-messages="arrayOfFirstNameErrors"
 					v-model="firstName"
-					:label="$t('registration.first_name')" 
+					:label="$t('registration.first_name')"
 					color="grey darken-1"
 					name='firstName'
 					v-validate="'required|alpha|min:3|max:15'"
@@ -34,10 +34,10 @@
                 ></v-text-field>
                 <v-text-field
 					@keyup.native='validateLastName'
-					v-if='showRegisterForm == true' 
-					:error-messages="arrayOfLastNameErrors" 
-					v-model="lastName" 
-					:label="$t('registration.last_name')" 
+					v-if='showRegisterForm == true'
+					:error-messages="arrayOfLastNameErrors"
+					v-model="lastName"
+					:label="$t('registration.last_name')"
 					color="grey darken-1"
 					name='lastName'
 					v-validate="'required|alpha|min:3|max:15'"
@@ -46,51 +46,51 @@
 			</form>
           	<form>
 				<v-text-field
-					@keyup.native="checkIfEmailExists" 
-					name="email" 
-					v-validate="'required|email'" 
-					v-model="email" 
-					:error-messages="arrayOfEmailErrors" 
-					label="Email" 
+					@keyup.native="checkIfEmailExists"
+					name="email"
+					v-validate="'required|email'"
+					v-model="email"
+					:error-messages="arrayOfEmailErrors"
+					label="Email"
 					color="grey darken-1"></v-text-field>
-				<v-text-field 
+				<v-text-field
 					v-if='!showForgotPassForm'
 					persistent-hint
 					:hint="$t('validation.passwordHint')"
 					ref="passwordRef"
-					:type="showPassword ? 'text' : 'password'" 
-					@keyup.native='validatePassword' 
-					name="password" 
-					v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}" 
-					@click:append="showPassword = !showPassword"  
-					:append-icon="showPassword ? 'visibility_off' : 'visibility'" 
-					v-model="password" 
-					:error-messages="arrayOfPasswordErrors" 
-					:label="$t('registration.password')" 
+					:type="showPassword ? 'text' : 'password'"
+					@keyup.native='validatePassword'
+					name="password"
+					v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}"
+					@click:append="showPassword = !showPassword"
+					:append-icon="showPassword ? 'visibility_off' : 'visibility'"
+					v-model="password"
+					:error-messages="arrayOfPasswordErrors"
+					:label="$t('registration.password')"
 					color="grey darken-1"></v-text-field>
 				<v-text-field
-					v-if='showRegisterForm == true' 
-					v-model="repeatPassword" 
-					:type="showPassword ? 'text' : 'password'" 
-					@keyup.native='validateRepeatePassword' 
-					:error-messages="arrayOfRepeatPasswordErrors" 
-					name="repeatPassword" 
+					v-if='showRegisterForm == true'
+					v-model="repeatPassword"
+					:type="showPassword ? 'text' : 'password'"
+					@keyup.native='validateRepeatePassword'
+					:error-messages="arrayOfRepeatPasswordErrors"
+					name="repeatPassword"
 					v-validate="'required|confirmed:passwordRef'"
-					:label="$t('registration.repeat_password')" 
+					:label="$t('registration.repeat_password')"
 					color="grey darken-1"></v-text-field>
           	</form>
            <v-layout justify-start>
             <v-flex>
-              <v-btn v-if='!showRegisterForm && !showForgotPassForm' color="grey" class="white--text" @click='logInUser'>{{ $t('button.login') }}</v-btn>
-              <v-btn v-if='showRegisterForm == true && !showForgotPassForm' color="grey" class="white--text"  @click='registerUser'>{{ $t('button.register') }}</v-btn>
-              <v-btn v-if='showForgotPassForm == true' color="grey" class="white--text" @click='sendEmail'>{{ $t('button.send') }}</v-btn>
-              <v-btn color="grey" class="white--text" @click='loginViaIntra'>42 Intra <v-icon right dark>school</v-icon></v-btn>
-              <v-btn color="grey" class="white--text" @click='loginViaGit' >Github<v-icon right dark>public</v-icon></v-btn>
+              <v-btn v-if='!showRegisterForm && !showForgotPassForm' style="outline: none;" color="blue-grey lighten-1" dark @click='logInUser'>{{ $t('button.login') }}</v-btn>
+              <v-btn v-if='showRegisterForm == true && !showForgotPassForm' style="outline: none;" color="blue-grey lighten-1" dark  @click='registerUser'>{{ $t('button.register') }}</v-btn>
+              <v-btn v-if='showForgotPassForm == true' style="outline: none;" color="blue-grey lighten-1" dark @click='sendEmail'>{{ $t('button.send') }}</v-btn>
+              <v-btn style="outline: none;" color="blue-grey lighten-1" dark @click='loginViaIntra'>42 Intra <v-icon right dark>school</v-icon></v-btn>
+              <v-btn style="outline: none;" color="blue-grey lighten-1" dark @click='loginViaGit' >Github<v-icon right dark>public</v-icon></v-btn>
               </v-flex>
             </v-layout>
         </v-card-text>
 		<v-card-text v-if='showSuccess === true'>
-			<v-alert :value="showSuccess" color='grey' type="success" transition="scale-transition" >
+			<v-alert :value="showSuccess" color='blue-grey lighten-1' type="success" transition="scale-transition" >
       			{{ successMessage }}
     		</v-alert>
 		</v-card-text>
@@ -145,7 +145,7 @@ export default {
         this.arrayOfRepeatPasswordErrors = []
         this.showRegisterForm = true
         this.showForgotPassForm = false
-       
+
       },
       showLogin() {
         this.arrayOfEmailErrors = []
@@ -169,13 +169,13 @@ export default {
 						setTimeout(() => { this.$emit('toggleForm')}, 1800)
                 	} else if (response.data.success == false && (response.data.message == "User with this email doesn't exist")){
 						this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
-                	}}).catch((err) => { 
+                	}}).catch((err) => {
 						this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
 					})
 			} else {
 				this.arrayOfEmailErrors = [this.$t('forgot_password.error_alert')]
 			}}).catch((err) => {
-				this.arrayOfEmailErrors = [this.$t('registration.error_alert')] 
+				this.arrayOfEmailErrors = [this.$t('registration.error_alert')]
 			})
 		}
     },
