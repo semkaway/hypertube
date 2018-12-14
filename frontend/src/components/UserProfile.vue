@@ -14,7 +14,7 @@
                     <v-img  class='rounded round-img'
                           style="position: absolute;"
                           :aspect-ratio="16/9"
-                          :src="myUser.image">
+                          :src="myUser.image ? myUser.image : 'https://htstatic.imgsmail.ru/pic_image/f610f26e5e56d5851ef82213b8bbec5a/1200/630/1238972/'">
                           <v-layout slot="placeholder"
                                     fill-height
                                     align-center
@@ -27,14 +27,14 @@
                   </v-avatar>
                 </v-flex>
                 <v-flex shrink>
-                  <div style="word-break: break-all; font-size: 2.5rem;">{{myUser.first}}</div>
+                  <div style="word-break: break-all; font-size: 2.5rem;">{{myUser.first ? myUser.first : this.$t('activation.invalid_alert')}}</div>
                   <div style="word-break: break-all; font-size: 2.5rem;">{{myUser.last}}</div>
                 </v-flex>
               </v-layout>
             </v-layout>
           </v-img>
         </div>
-        <list-of-movies   :title="$t('profile.profile.commented')"
+        <list-of-movies v-if='myUser.first'  :title="$t('profile.profile.commented')"
                           :movies='commentedMovies'
                           :totalNumberOfMovies="totalNumberOfCommentedMovies"></list-of-movies>
         <list-of-movies   v-if="currentUser"
@@ -54,6 +54,7 @@ import {HTTP} from '../http-common';
 import randomImage from '../utils/randomImage'
 import listOfMovies from './listOfMovies'
 import setDefaultPosterPath from '../utils/setDefaultPosterPath'
+import setAuthorizationToken from '../utils/setAuthToken'
 
 export default {
   name: 'UserPage',
@@ -85,7 +86,8 @@ export default {
 			}
         })
         .catch((err) => {
-          console.log('Error:', err)
+          	console.log('Error:', err)
+			this.myUser.last = this.$t('activation.invalid_alert')
         })
       },
 
@@ -110,9 +112,7 @@ export default {
               this.$router.push('/')
             }
           })
-          .catch((error) => {
-            console.log('Error:', error)
-          })
+          .catch((err) => { console.log('Error:', err) })
       },
     },
 
