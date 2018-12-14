@@ -7,30 +7,30 @@
         <LogInForm v-if='showForm == true' v-bind:showForm='showForm' v-on:toggleForm='toggleForm' v-on:runLoader='runLoader = true' v-on:setUser='setUser' v-bind:locale='headerLocale'/>
         <v-spacer></v-spacer>
         <v-toolbar-items v-if='userLoggedIn === true'>
-            <v-menu color="grey darken-3" dark bottom origin="center center" transition="scale-transition">
+            <v-menu color="blue-grey darken-1" bottom origin="center center" transition="scale-transition">
             <v-btn flat slot="activator" style="outline: none;">
                 <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' :src="headerUser.image" alt="User photo"></v-img>
-                <span class='ml-2 header-name'>{{ headerUser.first | capitalizeFirstLetter }}</span>
+                <span class='ml-2 header-name '>{{ headerUser.first | capitalizeFirstLetter }}</span>
             </v-btn>
             <v-list>
                 <v-list-tile @click="menuClick('profile')">
                     <v-icon class='mr-2'>account_circle</v-icon>
-                    <v-list-tile-title>
-                        {{ $t('profile.profile_title') }}
+                    <v-list-tile-title class='font-weight-medium'>
+                        {{ $t('profile.profile_title') | capitalizeFirstLetter }}
                     </v-list-tile-title>
                 </v-list-tile>
 
                 <v-list-tile @click="menuClick('settings')">
                     <v-icon class='mr-2'>settings</v-icon>
-                    <v-list-tile-title>
-                        {{ $t('profile.settings_title') }}
+                    <v-list-tile-title class='font-weight-medium'>
+                        {{ $t('profile.settings_title') | capitalizeFirstLetter }}
                     </v-list-tile-title>
                 </v-list-tile>
 
                 <v-list-tile @click="menuClick('logout')">
                     <v-icon class='mr-2'>exit_to_app</v-icon>
-                    <v-list-tile-title>
-                        {{ $t('button.logout') }}
+                    <v-list-tile-title class='font-weight-medium'>
+                        {{ $t('button.logout') | capitalizeFirstLetter }}
                     </v-list-tile-title>
                 </v-list-tile>
 
