@@ -206,6 +206,9 @@
       </v-flex>
     </v-layout>
   </v-container>
+  <v-container v-else>
+   	<v-layout row wrap justify-center align-center class='mt-5 headline'> {{$t('button.notComing')}}</v-layout>
+  </v-container>
   </div>
   <NotFound v-else />
 </template>
@@ -264,7 +267,7 @@ export default {
 			this.genres = []
 			this.crew = []
 			this.movieSource = ''
-      this.qualitySelected = false
+      		this.qualitySelected = false
 			this.quality = []
 			this.totalNumberOfComments = 0
             if (result.data.success == true) {
@@ -341,7 +344,7 @@ export default {
       		this.showActors = this.actors.length > 0
           })
           .catch((err) => {
-            console.log('Error:', err)
+            console.log('Server error:', err)
             this.runLoader = false
 			this.showSimilar = this.similar.length > 0
 			this.showCrew = this.crew.length > 0
@@ -365,7 +368,7 @@ export default {
 				}
 			})
 			.catch(err => {
-				 console.log('Error:', err)
+				 console.log('Server error:', err)
 			})
       	},
 
