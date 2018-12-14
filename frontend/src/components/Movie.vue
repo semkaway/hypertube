@@ -63,10 +63,10 @@
         </v-list>
         </v-card>
       </v-flex>
-      <v-flex d-flex xs12 sm6 md6 class="p-3">
+      <v-flex d-flex xs12 sm6 md6 class="px-3">
         <v-card flat class="p-2" style="word-break: break-all;">
-          <h1>{{movie.title}}</h1>
-          <p class="subheading">{{movie.tagline}}</p>
+          <div style="font-size: 2rem;">{{movie.title}}</div>
+          <div class="subheading mb-2">{{movie.tagline}}</div>
           <v-card-text class="p-1 pb-3">{{movie.overview}}</v-card-text>
           <div v-if="!qualitySelected" class="text-xs-center">
             <v-img :src="movie.backdrop_path">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="display-1 font-weight-bold m-2">{{title}}</div>
+    <div class="m-2" style="font-size: 2rem;">{{title}}</div>
     <div style="position: relative">
         <v-container grid-list-md class="p-2">
           <v-layout wrap relative>
@@ -55,8 +55,8 @@
         <div class="text-xs-center hidden-md-and-up">
         <v-btn  v-if="endMoviesToShow < totalNumberOfMovies"
                 @click.prevent="addMore"
-                depressed
-                color="grey"
+                color="blue-grey lighten-1"
+                dark
                 style="outline: none;"
                 class="white--text mt-3">{{$t('button.showMore')}}</v-btn>
         </div>
