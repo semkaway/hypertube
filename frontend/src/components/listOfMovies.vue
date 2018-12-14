@@ -68,6 +68,7 @@
 
 export default {
     name: 'listOfMovies',
+	props: ['movies', 'totalNumberOfMovies', 'title'],
     data () {
       return {
         startMoviesToShow: 0,
@@ -76,36 +77,38 @@ export default {
       }
     },
     methods: {
+
         showPrevious() {
-          if (this.endMoviesToShow == this.totalNumberOfMovies && this.totalNumberOfMovies % this.showMoviesOnPage !== 0)
-            this.endMoviesToShow -= this.totalNumberOfMovies % this.showMoviesOnPage
-          else
-            this.endMoviesToShow -= this.showMoviesOnPage
-          this.startMoviesToShow -= this.showMoviesOnPage
+			if (this.endMoviesToShow == this.totalNumberOfMovies && this.totalNumberOfMovies % this.showMoviesOnPage !== 0)
+					this.endMoviesToShow -= this.totalNumberOfMovies % this.showMoviesOnPage
+			else
+					this.endMoviesToShow -= this.showMoviesOnPage
+			this.startMoviesToShow -= this.showMoviesOnPage
         },
+
         showNext() {
-          if (this.endMoviesToShow + this.showMoviesOnPage > this.totalNumberOfMovies)
-            this.endMoviesToShow = this.totalNumberOfMovies
-          else
-            this.endMoviesToShow += this.showMoviesOnPage
-          this.startMoviesToShow += this.showMoviesOnPage
+			if (this.endMoviesToShow + this.showMoviesOnPage > this.totalNumberOfMovies)
+					this.endMoviesToShow = this.totalNumberOfMovies
+			else
+					this.endMoviesToShow += this.showMoviesOnPage
+			this.startMoviesToShow += this.showMoviesOnPage
         },
+
         addMore() {
-          if (this.endMoviesToShow + this.showMoviesOnPage > this.totalNumberOfMovies)
-            this.endMoviesToShow = this.totalNumberOfMovies
-          else
-            this.endMoviesToShow += this.showMoviesOnPage
+			if (this.endMoviesToShow + this.showMoviesOnPage > this.totalNumberOfMovies)
+				this.endMoviesToShow = this.totalNumberOfMovies
+			else
+				this.endMoviesToShow += this.showMoviesOnPage
         }
     },
-    props: ['movies', 'totalNumberOfMovies', 'title']
 }
 
 </script>
 
 <style scoped>
 
-a {
-  text-decoration: none;
-}
+	a {
+		text-decoration: none;
+	}
 
 </style>

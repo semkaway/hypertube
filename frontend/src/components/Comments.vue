@@ -40,51 +40,47 @@
 </template>
 
 <script>
-
 import formatDate from '../utils/formatDate'
 
 export default {
     name: 'Comments',
     filters: {
-      date: formatDate
+     	date: formatDate
     },
+	props: ['allComments', 'totalNumberOfComments'],
     data () {
-      return {
-        newComment: '',
-        numComments: 4,
-        moreComments: false
-      }
+      	return {
+			newComment: '',
+			numComments: 4,
+			moreComments: false
+      	}
     },
     methods: {
-      submitComment() {
-        if(this.newComment !== '' && this.newComment.length <= 1000) {
-              this.$emit('submit-comment', this.newComment);
-              this.newComment = '';
-          }
-          console.log('numComments: ', this.numComments)
-          console.log('totalNumberOfComments: ', this.totalNumberOfComments)
+      	submitComment() {
+        	if(this.newComment !== '' && this.newComment.length <= 1000) {
+            	this.$emit('submit-comment', this.newComment);
+              	this.newComment = '';
+          	}
         },
+
         showMore() {
-          console.log('this.numComments: ', this.numComments)
-          console.log('this.totalNumberOfComments: ', this.totalNumberOfComments)
-          if (this.numComments + 5 <= this.totalNumberOfComments) {
-            this.numComments += 5
-          } else if (this.numComments + 5 > this.totalNumberOfComments) {
-            this.numComments = this.totalNumberOfComments
-            this.moreComments = false
-          }
+			if (this.numComments + 5 <= this.totalNumberOfComments) {
+				this.numComments += 5
+			} else if (this.numComments + 5 > this.totalNumberOfComments) {
+				this.numComments = this.totalNumberOfComments
+				this.moreComments = false
+			}
         }
     },
-    props: ['allComments', 'totalNumberOfComments']
 }
 
 </script>
 
 <style scoped>
 
-a {
-  text-decoration: none;
-  color: #455A64;
-}
+	a {
+		text-decoration: none;
+		color: #455A64;
+	}
 
 </style>

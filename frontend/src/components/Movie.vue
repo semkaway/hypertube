@@ -219,6 +219,7 @@ import Comments from './Comments'
 import NotFound from './NotFound'
 import showYear from '../utils/showYear'
 import setDefaultPosterPath from '../utils/setDefaultPosterPath'
+import setAuthorizationToken from '../utils/setAuthToken'
 
 export default {
   name: 'Movie',
@@ -276,11 +277,6 @@ export default {
                     }
                     if (key == 'poster_path') {
                       setDefaultPosterPath(movie)
-                      // if (movie[key] == null) {
-                      //   movie[key] = 'https://images.pexels.com/photos/1612462/pexels-photo-1612462.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-                      // } else {
-                      //   movie[key] = 'http://image.tmdb.org/t/p/original'+movie[key]
-                      // }
                     }
                     if (key == 'backdrop_path') {
                       if (movie[key] == null) {
@@ -331,35 +327,30 @@ export default {
 					for(key in movie.torrent.torrents.en) {
 						this.quality.push(key)
 					}
-				} else {
-					// not to show buttons
 				}
 				this.genres = this.genres.slice(0, this.genres.length - 2)
 				this.comments = movie.comments
 				this.totalNumberOfComments = movie.comments.length
             } else if (result.data.success == false) {
-				// show error
+				setAuthorizationToken(false);
+				this.$router.push('/')
             }
             this.runLoader = false
 			this.showSimilar = this.similar.length > 0
-      this.showCrew = this.crew.length > 0
-      this.showActors = this.actors.length > 0
+      		this.showCrew = this.crew.length > 0
+      		this.showActors = this.actors.length > 0
           })
           .catch((err) => {
-            console.log(err)
+            console.log('Error:', err)
             this.runLoader = false
 			this.showSimilar = this.similar.length > 0
-      this.showCrew = this.crew.length > 0
-      this.showActors = this.actors.length > 0
+			this.showCrew = this.crew.length > 0
+			this.showActors = this.actors.length > 0
           })
       },
 
       submitComment(newComment) {
-        console.log('user: ', this.user)
-
-			HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment})
-			.then(response => {
-				console.log(response)
+			HTTP.post('movie/comment', {'movieId': this.$route.params.id, 'text': newComment}).then(response => {
 				if (response.data.success) {
 					this.movie.comments.unshift({
 						date: response.date,
@@ -374,7 +365,7 @@ export default {
 				}
 			})
 			.catch(err => {
-				console.log(err)
+				 console.log('Error:', err)
 			})
       	},
 
@@ -383,11 +374,7 @@ export default {
 				if (this.quality.includes(quality)) {
 					this.movieSource = `http://localhost:3000/api/movie/stream/${this.$route.params.id}?quality=${quality}&token=${localStorage.token}`
 					this.qualitySelected = true
-				} else {
-					// show error
 				}
-			} else {
-				// show error
 			}
       	}
     },

@@ -103,23 +103,16 @@
             localStorage.locale = locale
             this.$emit('setLocale', locale)
             if (localStorage.token != '') {
-                HTTP.put('user/change/locale', {
-                    'token': localStorage.token,
-                    'locale': locale
-                }).then(result => {
+                HTTP.put('user/change/locale', { 'token': localStorage.token, 'locale': locale}).then(result => {
                     if (result.data.success == false) {
                         setAuthorizationToken(false)
                         this.$router.push('/')
                     }
-                }).catch((err) => {
-                    console.log("server error")
-                    console.log(err.response.data.error.message)
-                })
+                }).catch((err) => { console.log("Server error:", error) })
             }
         },
 
         requestUser () {
-            console.log('request !')
             HTTP.get('user/data/').then(result => {
                 if (result.data.success == false) {
                     setAuthorizationToken(false)
@@ -212,12 +205,12 @@
 
 <style>
 
-.round-img {
-    border-radius: 50px !important;
-}
+    .round-img {
+        border-radius: 50px !important;
+    }
 
-.header-name {
-    text-transform: none !important;
-}
+    .header-name {
+        text-transform: none !important;
+    }
 
 </style>
