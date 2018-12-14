@@ -11,7 +11,7 @@
               <v-layout shrink>
                 <v-flex shrink>
                   <v-avatar size="90" tile style="border: 8px solid white; border-radius: 50%;" class="p-5 mb-3 ml-3">
-                    <v-img  class='rounded round-img'
+                    <v-img  v-if='downloaded' class='rounded round-img'
                           style="position: absolute;"
                           :aspect-ratio="16/9"
                           :src="myUser.image ? myUser.image : 'https://htstatic.imgsmail.ru/pic_image/f610f26e5e56d5851ef82213b8bbec5a/1200/630/1238972/'">
@@ -27,7 +27,7 @@
                   </v-avatar>
                 </v-flex>
                 <v-flex shrink>
-                  <div style="word-break: break-all; font-size: 2.5rem;">{{myUser.first ? myUser.first : this.$t('activation.invalid_alert')}}</div>
+                  <div v-if='downloaded' style="word-break: break-all; font-size: 2.5rem;">{{myUser.first ? myUser.first : this.$t('activation.invalid_alert')}}</div>
                   <div style="word-break: break-all; font-size: 2.5rem;">{{myUser.last}}</div>
                 </v-flex>
               </v-layout>
@@ -69,6 +69,7 @@ export default {
 			totalNumberOfCommentedMovies: 0,
 			totalNumberOfWatchedMovies: 0,
 			currentUser: false,
+			downloaded: false
 		}
     },
     methods: {
@@ -84,9 +85,11 @@ export default {
 				setAuthorizationToken(false)
 				this.$router.push('/')
 			}
+			this.downloaded = true
         })
         .catch((err) => {
           	console.log('Error:', err)
+			this.downloaded = true
 			this.myUser.last = this.$t('activation.invalid_alert')
         })
       },
@@ -111,8 +114,9 @@ export default {
               setAuthorizationToken(false)
               this.$router.push('/')
             }
+			this.downloaded = true
           })
-          .catch((err) => { console.log('Error:', err) })
+          .catch((err) => { this.downloaded = true; console.log('Error:', err) })
       },
     },
 

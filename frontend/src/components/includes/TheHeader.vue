@@ -9,7 +9,7 @@
         <v-toolbar-items v-if='userLoggedIn === true'>
             <v-menu color="blue-grey darken-1" bottom origin="center center" transition="scale-transition">
             <v-btn flat slot="activator" style="outline: none;">
-                <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' :src="headerUser.image" alt="User photo"></v-img>
+                <v-img class='rounded round-img' :aspect-ratio="16/9" height='40px' width='40px' :src="headerUser ? headerUser.image : '' " alt="User photo"></v-img>
                 <span class='ml-2 header-name '>{{ headerUser.first | capitalizeFirstLetter }}</span>
             </v-btn>
             <v-list>
