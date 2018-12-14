@@ -56,9 +56,8 @@
         </v-container>
         <v-flex class="text-xs-center">
         <v-btn  v-if="page < totalPages"
-                depressed
-                color="grey"
-                class="white--text mt-3"
+        color="blue-grey lighten-1"
+        dark large
                 style="outline: none;"
                 @click="showMore">{{$t('button.showMore')}}
               </v-btn>

@@ -1,7 +1,7 @@
-<<template>
-    <v-snackbar v-model="active" :bottom="y === 'bottom'" :left="x === 'left'" :right="x === 'right'" :top="y === 'top'">
+<template>
+    <v-snackbar color="blue-grey darken-2" v-model="active" :bottom="y === 'bottom'" :left="x === 'left'" :right="x === 'right'" :top="y === 'top'">
 		{{text}}
-    	<v-btn color="pink" flat @click="closeSnackBar">{{$t('button.close')}}</v-btn>
+    	<v-btn color="red" flat @click="closeSnackBar">{{$t('button.close')}}</v-btn>
     </v-snackbar>
 </template>
 

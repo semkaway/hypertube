@@ -26,7 +26,10 @@
   	</div>
 
 	<div class='search-button-wrapper'>
-		<v-btn style="outline: none;" @click='searchMovies'>{{$t('movies.search')}}</v-btn>
+		<!-- <v-btn style="outline: none;" @click='searchMovies'>{{$t('movies.search')}}</v-btn> -->
+    <v-btn style="outline: none;"
+    color="blue-grey lighten-1" large
+    dark @click='searchMovies'>{{$t('movies.search')}}</v-btn>
 	</div>
 
   </v-layout>

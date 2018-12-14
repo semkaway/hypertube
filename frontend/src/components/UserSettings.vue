@@ -4,9 +4,9 @@
  		<Loader :run='runLoader'/>
 		<Snackbar :show='showSnackbar' :text='snackbarText' :y='snackbarY' :x='snackbarX' v-on:closeSnackbar='showSnackbar = false' :timeout='snackbarTimeout'/>
 
-		<ModalWindow 
+		<ModalWindow
 			:show='showModal'
-			:headerText='$t("profile.settings.delete_account_title")' 
+			:headerText='$t("profile.settings.delete_account_title")'
 			:text='$t("profile.settings.delete_account_text")'
 			:agreeButtonText='$t("button.delete")'
 			:disagreeButtonText='$t("button.cancel")'
@@ -25,8 +25,8 @@
 					</v-radio-group>
 				</v-container>
 				<v-card-actions class='pl-4'>
-					<v-btn color="grey" class="white--text" flat @click="changeLanguage">{{$t('button.save')}}</v-btn>
-					<v-btn color="grey" class="white--text" flat @click="showLangRadio = false; settingsLocale = locale">{{$t('button.cancel')}}</v-btn>
+					<v-btn color="blue-grey darken-2"	dark style="outline: none;" flat @click="changeLanguage">{{$t('button.save')}}</v-btn>
+					<v-btn color="grey" class="white--text" style="outline: none;" flat @click="showLangRadio = false; settingsLocale = locale">{{$t('button.cancel')}}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -45,16 +45,16 @@
 							<v-layout align-start column fill-height>
 									<v-layout v-if='user.email' class="grey--text">
 										<v-card class="grey--text">
-											<v-card-text class='subheading'>{{$t('profile.settings.active_email')}}: <span class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
+											<v-card-text class='subheading black--text'>{{$t('profile.settings.active_email')}}: <span style="color: #546E7A" class='ml-1 subheading'>{{settingsUser.email}}</span></v-card-text>
 										</v-card>
 									</v-layout>
 									<!-- show only if have pending email -->
 									<v-layout class="grey--text" v-if='settingsUser.pendingEmail != null'>
 										<v-card class="grey--text">
-											<v-card-text class='subheading'>
-												{{$t('profile.settings.email_pending')}} 
-												<span class='ml-1 subheading'>{{ settingsUser.pendingEmail }}</span>
-												<v-btn @click='cancelPendingEmail' color="red" class="white--text" flat>{{ $t('button.cancel') }}</v-btn>
+											<v-card-text class='subheading black--text'>
+												{{$t('profile.settings.email_pending')}}
+												<span class='ml-1 subheading' style="color: #546E7A">{{ settingsUser.pendingEmail }}</span>
+												<v-btn @click='cancelPendingEmail' color="red ligten-1" dark style="outline: none;" flat>{{ $t('button.cancel') }}</v-btn>
 											</v-card-text>
 										</v-card>
 									</v-layout>
@@ -75,19 +75,19 @@
 								v-if='user.email'
 								name='passwordForNewEmail'
 								@keyup.native='validatePassword'
-								v-model='passwordForNewEmail' 
-								:error-messages='arrayOfPasswordForNewEmailErrors' 
-								color="grey darken-1" 
+								v-model='passwordForNewEmail'
+								:error-messages='arrayOfPasswordForNewEmailErrors'
+								color="grey darken-1"
 								class='ml-3'
-								:label="$t('registration.password')" 
-								@click:append="showPassword = !showPassword" 
-								:type="showPassword ? 'text' : 'password'" 
+								:label="$t('registration.password')"
+								@click:append="showPassword = !showPassword"
+								:type="showPassword ? 'text' : 'password'"
 								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
 								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
 							</v-text-field>
 							</form>
-							<v-btn v-if='user.email' @click='changeEmail("newEmail")' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn v-if='user.email' @click='clearNewEmail' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+							<v-btn v-if='user.email' @click='changeEmail("newEmail")' color="blue-grey lighten-1"	dark style="outline: none;" class="ml-3">{{ $t('button.save') }}</v-btn>
+							<v-btn v-if='user.email' @click='clearNewEmail' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.reset') }}</v-btn>
 						</div>
 
 						<!-- CHANGE PERSONAL DATA -->
@@ -100,7 +100,7 @@
 									class='ml-3'
 									color="grey darken-1"
 									v-validate="'alpha|min:3|max:15'"
-									:error-messages='arrayOfFirstNameErrors' 
+									:error-messages='arrayOfFirstNameErrors'
                 					:counter='15'>
 								</v-text-field>
 								<v-text-field
@@ -114,8 +114,8 @@
 									v-validate="'alpha|min:3|max:15'"
                 					:counter='15'>
 								</v-text-field>
-								<v-btn @click='onChangeNames' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
-								<v-btn @click='clearNameFields' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+								<v-btn @click='onChangeNames' color="blue-grey lighten-1"	dark style="outline: none;" class="ml-3">{{ $t('button.save') }}</v-btn>
+								<v-btn @click='clearNameFields' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.reset') }}</v-btn>
 						</form>
 
 						<!-- CHANGE PASSWORD -->
@@ -125,11 +125,11 @@
 									class='ml-3'
 									:label="$t('profile.settings.old_password')"
 									@keyup.native='validatePassword'
-									:error-messages="arrayOfPasswordErrors" 
+									:error-messages="arrayOfPasswordErrors"
 									name='password'
-									v-model="password" 
+									v-model="password"
 									color="grey darken-1"
-									:type="showPassword ? 'text' : 'password'" 
+									:type="showPassword ? 'text' : 'password'"
 									:append-icon="showPassword ? 'visibility_off' : 'visibility'"
 									@click:append="showPassword = !showPassword"
 									v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
@@ -141,10 +141,10 @@
 									:hint="$t('validation.passwordHint')"
 									:label="$t('profile.settings.new_password')"
 									@keyup.native='validatePassword'
-									:error-messages="arrayOfNewPasswordErrors" 
+									:error-messages="arrayOfNewPasswordErrors"
 									v-model="newPassword"
 									ref="newPasswordRef"
-									:type="showPassword ? 'text' : 'password'" 
+									:type="showPassword ? 'text' : 'password'"
 									color="grey darken-1"
 									name='newPassword'
 									v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
@@ -153,16 +153,16 @@
 									class='ml-3'
 									:label="$t('profile.settings.new_password_repeat')"
 									@keyup.native='validatePassword'
-									:error-messages="arrayOfRepeatPasswordErrors" 
+									:error-messages="arrayOfRepeatPasswordErrors"
 									v-model="repeatNewPassword"
-									:type="showPassword ? 'text' : 'password'" 
+									:type="showPassword ? 'text' : 'password'"
 									color="grey darken-1"
 									name='repeatNewPassword'
 									v-validate="'required|confirmed:newPasswordRef'">
 								</v-text-field>
 							</form>
-							<v-btn @click='changePassword' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn @click='clearFields(section.name)' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+							<v-btn @click='changePassword' color="blue-grey lighten-1"	dark style="outline: none;" class="ml-3">{{ $t('button.save') }}</v-btn>
+							<v-btn @click='clearFields(section.name)' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.reset') }}</v-btn>
 						</div>
 
 
@@ -179,29 +179,29 @@
 								:error-messages='arrayOfImageURLerrors'
 								@keyup="onURLPicture">
 							</v-text-field>
-							<div class='subheading mt-3  ml-3 grey--text'>{{$t('profile.settings.click')}}</div>
+							<div class='subheading black--text ml-3 mt-3'>{{$t('profile.settings.click')}}</div>
 							<v-hover>
 								<v-card @click="$refs.fileInput[0].click()" slot-scope="{ hover }" :class="`ml-3 mt-3 mb-3 cursor-pointer rounded elevation-${hover ? 12 : 2}`" width="200px" height='200px'>
-									<v-img 
+									<v-img
 										class='rounded'
-										:aspect-ratio="16/9" 
-										height='200px' 
-										width='200px' 
-										:src="imgToShow" 
+										:aspect-ratio="16/9"
+										height='200px'
+										width='200px'
+										:src="imgToShow"
 										alt="User photo"
 										ref='imagePreview'>
 									</v-img>
 								</v-card>
 							</v-hover>
 							<input ref='fileInput' style='display: none;' type="file" accept="image/png, image/jpeg" @change="onFilePicture"/>
-							<v-btn @click='onSaveNewImage' color="grey" class="white--text ml-3" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn @click='resetImage' color="grey" class="white--text ml-3" flat>{{ $t('button.reset') }}</v-btn>
+							<v-btn @click='onSaveNewImage' color="blue-grey lighten-1"	dark style="outline: none;" class="ml-3">{{ $t('button.save') }}</v-btn>
+							<v-btn @click='resetImage' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.reset') }}</v-btn>
 						</form>
 
 						<!-- ADD MEDIA -->
 
 						<v-layout v-if='section.name == "media"' class="grey--text">
-							<v-card v-if='user.intra || user.github' class="grey--text"><v-card-text class='subheading'> {{ $t('profile.settings.added_media') }}:</v-card-text></v-card>
+							<v-card v-if='user.intra || user.github' class="grey--text"><v-card-text class='subheading black--text'> {{ $t('profile.settings.added_media') }}:</v-card-text></v-card>
 
 									<v-card v-if='user.intra' class="grey--text">
 										<v-card-text class='subheading'> 42 INTRA </v-card-text>
@@ -212,8 +212,8 @@
 
 						</v-layout>
 
-						<v-btn @click='addIntraMedia' v-if='section.name == "media" && !settingsUser.intra' color="grey darken-1" class="white--text" flat>42 Intra</v-btn>
-						<v-btn @click='addGitMedia' v-if='section.name == "media" && !settingsUser.github' color="grey darken-1" class="white--text" flat>github</v-btn>
+						<v-btn @click='addIntraMedia' v-if='section.name == "media" && !settingsUser.intra' color="blue-grey lighten-1"	dark style="outline: none;">42 Intra</v-btn>
+						<v-btn @click='addGitMedia' v-if='section.name == "media" && !settingsUser.github' color="blue-grey lighten-1"	dark style="outline: none;">github</v-btn>
 
 
 						<!-- ADD PASSWORD -->
@@ -222,18 +222,18 @@
 								name='addNewPassword'
 								@keyup.native='validatePassword'
 								:hint="$t('validation.passwordHint')"
-								v-model='addNewPassword' 
-								:error-messages='arrayOfAddNewPasswordErrors' 
-								color="grey darken-1" 
+								v-model='addNewPassword'
+								:error-messages='arrayOfAddNewPasswordErrors'
+								color="grey darken-1"
 								class='ml-3'
-								:label="$t('profile.settings.new_password')" 
-								@click:append="showPassword = !showPassword" 
-								:type="showPassword ? 'text' : 'password'" 
+								:label="$t('profile.settings.new_password')"
+								@click:append="showPassword = !showPassword"
+								:type="showPassword ? 'text' : 'password'"
 								:append-icon="showPassword ? 'visibility_off' : 'visibility'"
 								v-validate="{required: true, min: 8, max: 20, regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/}">
 							</v-text-field>
-							<v-btn @click='onSaveAddNewPassword' color="grey" class="white--text" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn @click='resetAddNewPassword' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+							<v-btn @click='onSaveAddNewPassword' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.save') }}</v-btn>
+							<v-btn @click='resetAddNewPassword' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.reset') }}</v-btn>
 						</form>
 
 						<!-- ADD EMAIL -->
@@ -242,22 +242,22 @@
 							<v-text-field
 								@keyup.native='validateEmail("addEmail")'
 								name='addEmail'
-								v-model='addEmail'  
-								color="grey darken-1" 
+								v-model='addEmail'
+								color="grey darken-1"
 								class='ml-3'
 								:error-messages='arrayOfAddEmailErrors'
 								v-validate="'email'"
 								:label="$t('registration.email')">
 							</v-text-field>
-							<v-btn @click='changeEmail("addEmail")' color="grey" class="white--text" flat>{{ $t('button.save') }}</v-btn>
-							<v-btn @click='clearAddEmailSection' color="grey" class="white--text" flat>{{ $t('button.reset') }}</v-btn>
+							<v-btn @click='changeEmail("addEmail")' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.save') }}</v-btn>
+							<v-btn @click='clearAddEmailSection' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('button.reset') }}</v-btn>
 						</form>
 
 						<!-- DELETE -->
-						<v-btn v-if='section.name == "delete"' @click='deleteAccount' color="red" class="white--text" flat>{{ $t('profile.settings.delete_account_title') }}</v-btn>
+						<v-btn v-if='section.name == "delete"' @click='deleteAccount' color="red lighten-1"	dark style="outline: none;">{{ $t('profile.settings.delete_account_title') }}</v-btn>
 
 						<!-- CHANGE LANGUAGE -->
-						<v-btn v-if='section.name == "lang"' @click='showLangRadio = true'  color="grey" class="white--text" flat>{{ $t('profile.settings.change_language') }}</v-btn>
+						<v-btn v-if='section.name == "lang"' @click='showLangRadio = true' color="blue-grey lighten-1"	dark style="outline: none;">{{ $t('profile.settings.change_language') }}</v-btn>
 
 					</v-card-text>
 				</v-card>
@@ -429,7 +429,7 @@ export default {
 		},
 
 		changePassword() {
-			if (!this.arrayOfPasswordErrors.length && !this.arrayOfNewPasswordErrors.length && 
+			if (!this.arrayOfPasswordErrors.length && !this.arrayOfNewPasswordErrors.length &&
 			!this.arrayOfRepeatPasswordErrors.length && this.newPassword.length && this.password.length) {
 				const newPassword = {
 					oldPassword: this.password,
@@ -510,13 +510,13 @@ export default {
 					getBase64(compressedFile).then((baseString) => {
 						this.imgToShow = baseString
 						this.runLoader = false
-					}).catch((e) => { 
-						this.runLoader = false 
+					}).catch((e) => {
+						this.runLoader = false
 						this.showSnackbar = true
 						this.snackbarText = this.$t('profile.settings.pictureError')
 					})
                 }).catch((error) => {
-					this.runLoader = false 
+					this.runLoader = false
 					this.showSnackbar = true
 					this.snackbarText = this.$t('profile.settings.pictureError')
 				})
@@ -639,7 +639,7 @@ export default {
 								setAuthorizationToken(false)
 								this.$router.push('/')
 							} else if (response.data.message === 'Invalid email') {
-								this.arrayOfAddEmailErrors = [this.$t('validation.email')] 
+								this.arrayOfAddEmailErrors = [this.$t('validation.email')]
 							} else {
 								this.arrayOfAddEmailErrors = [this.$t('login.error_alert')]
 							}
@@ -653,7 +653,7 @@ export default {
 					})
 				}
 			}
-			
+
 		},
 
 		cancelPendingEmail() {
@@ -704,7 +704,7 @@ export default {
 		validateLastName() {
 			if (this.errors.has('newLastName')) {
 				if (this.newLastName.length > 15) {
-					this.arrayOfLastNameErrors = [this.$t('validation.firstNameLong')] 
+					this.arrayOfLastNameErrors = [this.$t('validation.firstNameLong')]
 				} else if (this.newLastName.length < 3){
 					this.arrayOfLastNameErrors = [this.$t('validation.firstNameShort')]
 				} else {
@@ -733,7 +733,7 @@ export default {
 					.catch((err) => { this.arrayOfAddEmailErrors = [this.$t('registration.error_alert')] })
 				}
 			}
-			
+
 		},
 
 		onChangeNames() {
@@ -811,6 +811,6 @@ export default {
 	.cursor-pointer:hover {
 		cursor: pointer;
 	}
-	
+
 
 </style>

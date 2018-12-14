@@ -10,7 +10,7 @@
 
             <v-list-tile>
               <v-list-tile-action>
-                <v-icon>date_range</v-icon>
+                <v-icon color="blue-grey darken-2">date_range</v-icon>
               </v-list-tile-action>
 
               <v-list-tile-content>
@@ -23,7 +23,7 @@
 
             <v-list-tile>
               <v-list-tile-action>
-                <v-icon>star</v-icon>
+                <v-icon color="blue-grey darken-2">star</v-icon>
               </v-list-tile-action>
 
               <v-list-tile-content>
@@ -36,7 +36,7 @@
 
           <v-list-tile v-if="movie.runtime > 0">
             <v-list-tile-action>
-              <v-icon>access_time</v-icon>
+              <v-icon color="blue-grey darken-2">access_time</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
@@ -49,7 +49,7 @@
 
           <v-list-tile v-if="genres.length != 0">
             <v-list-tile-action>
-              <v-icon>drag_indicator</v-icon>
+              <v-icon color="blue-grey darken-2">drag_indicator</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
@@ -72,8 +72,18 @@
             <v-img :src="movie.backdrop_path">
             </v-img>
             <div class="mt-3">
-              <v-btn v-if="quality.includes('720p')" @click="selectQuality('720p')" depressed color="grey" class="white--text" style="outline: none;">720p</v-btn>
-              <v-btn v-if="quality.includes('1080p')" @click="selectQuality('1080p')" depressed color="grey" class="white--text" style="outline: none;">1080p</v-btn>
+              <v-btn  v-if="quality.includes('720p')"
+                      @click="selectQuality('720p')"
+                      color="blue-grey lighten-1"
+                      dark
+                      style="outline: none;">{{$t('button.watchIn')}} 720p
+                    </v-btn>
+              <v-btn  v-if="quality.includes('1080p')"
+                      @click="selectQuality('1080p')"
+                      color="blue-grey lighten-1"
+                      dark
+                      style="outline: none;">{{$t('button.watchIn')}} 1080p
+                    </v-btn>
               <div v-if="!quality.includes('720p') && !quality.includes('1080p')">
                 <div v-if="movie.release_date && movie.release_date < '2017'" style="font-size: 1.5rem; letter-spacing: 13px;" class="font-weight-regular text-uppercase">
                   {{$t('button.notComing')}}
@@ -401,6 +411,7 @@ export default {
 
 a {
   text-decoration: none;
+  color: #455A64;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar color="grey darken-3" dark fixed height='68'>
+    <v-toolbar color="blue-grey darken-1" dark flat fixed height='68'>
         <v-toolbar-items>
             <v-btn v-if='userLoggedIn === true' flat  @click='goToHomePage' style="outline: none;"> <v-icon>home</v-icon> <span class='ml-2'>{{ $t('button.home') }}</span> </v-btn>
             <v-btn v-if='userLoggedIn === false' flat @click="toggleForm" style="outline: none;"> <v-icon>exit_to_app</v-icon> <span class='ml-2'>{{ $t('button.login') }}</span> </v-btn>

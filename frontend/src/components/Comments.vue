@@ -1,6 +1,7 @@
 <template>
   <v-flex xs12>
     <v-text-field class="mt-4"
+                color="#455A64"
                 v-model.trim="newComment"
                 :label="$t('movie.newComment')"
                 type="text"
@@ -84,6 +85,7 @@ export default {
 
 a {
   text-decoration: none;
+  color: #455A64;
 }
 
 </style>
