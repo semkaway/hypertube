@@ -2,18 +2,18 @@
   <v-layout row wrap align-center justify-center>
 
 	<div class='item-wrapper'>
-			<v-overflow-btn color="blue-grey lighten-1" v-model='genre' :items=" dropdown_genres" hide-details class="pa-0" >
+			<v-overflow-btn color="blue-grey lighten-1" v-model='genre' :items=" dropdown_genres" hide-details class="pa-0" :disabled='haveSearchText ? true : false'>
 			</v-overflow-btn>
 	</div>
 
 	<div class='item-wrapper'>
-		<v-overflow-btn color="blue-grey lighten-1" v-model='sortBy' :items=" dropdown_sorts" hide-details class="pa-0">
+		<v-overflow-btn color="blue-grey lighten-1" v-model='sortBy' :items=" dropdown_sorts" hide-details class="pa-0" :disabled='haveSearchText ? true : false'>
 		</v-overflow-btn>
 	</div>
 
 	<div class='dates-wrapper'>
-		<DatePicker v-on:changeDate='handleChangeFromDate' :label="this.$t('movies.since')" :startDate='searchAppParams["release_date.gte"]'/>
-		<DatePicker v-on:changeDate='handleChangeToDate' :label="this.$t('movies.to')" :startDate='searchAppParams["release_date.lte"]'/>
+		<DatePicker :disabled='haveSearchText' v-on:changeDate='handleChangeFromDate' :label="this.$t('movies.since')" :startDate='searchAppParams["release_date.gte"]'/>
+		<DatePicker :disabled='haveSearchText' v-on:changeDate='handleChangeToDate' :label="this.$t('movies.to')" :startDate='searchAppParams["release_date.lte"]'/>
 	</div>
 
 	<div class='search-input-wrapper'>
@@ -50,6 +50,7 @@
 		fromDate: this.searchAppParams["release_date.gte"],
 		toDate: this.searchAppParams["release_date.lte"],
 		searchText: this.searchAppText,
+		haveSearchText: false,
         dropdown_genres: [
           { text: this.$t('genres.action'),         id: GENRES[0].id},
           { text: this.$t('genres.adventure'),      id: GENRES[1].id},
@@ -115,6 +116,17 @@
 			this.sortBy = sortByName.text
 		} else {
 			this.sortBy = this.$t('movies.filter')
+		}
+	},
+
+	watch: {
+		searchText(newValue) {
+			if (newValue.length) {
+				this.haveSearchText = true
+			} else {
+				this.haveSearchText = false
+			}
+				
 		}
 	}
 
