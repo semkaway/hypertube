@@ -3,10 +3,10 @@
 		<div class='section pt-5 top-wrapper'>
 			<v-card class="elevation-0 transparent">
 				<v-card-title primary-title class="layout justify-center pb-1 pt-second-handler">
-					<v-icon x-large class="black--text text--lighten-2 mr-3">fas fa-film</v-icon>
+					<v-icon x-large class="black--text text--lighten-2 mr-3" color='blue-grey darken-1'>fas fa-film</v-icon>
 					<div class="head-wrapper headline text-xs-center font-weight-medium text-uppercase">Watch your favorite movies online!</div>
 				</v-card-title>
-				<div class='center font-weight-light headline mt-2'>
+				<div class='center font-weight-regular headline mt-2'>
 					<div class='content-wrapper'>Different quality - 720p/1080p</div>
 					<div class='content-wrapper'>3 languages</div>
 					<div class='content-wrapper'>English and Russian subtitles</div>
@@ -18,27 +18,27 @@
 			<v-card class="elevation-0 transparent">
 				
 				<v-card-title primary-title class="layout justify-center pb-0 padding-top-handler">
-					<v-icon x-large class="black--text text--lighten-2 mr-3">far fa-lightbulb</v-icon>
-					<div class=" head-wrapper headline text-xs-center font-weight-medium text-uppercase">Made with modern technologies</div>			
+					<v-icon x-large class="black--text text--lighten-2 mr-3" color='blue-grey darken-1'>far fa-lightbulb</v-icon>
+					<div class=" head-wrapper headline text-xs-center font-weight-medium text-uppercase" >Made with modern technologies</div>			
 				</v-card-title>
 				<v-card-text class="text-xs-center">
 				
 				<div class='center'>
-					<div class='start font-weight-light headline'>
+					<div class='start font-weight-regular headline'>
 					<div class='content-wrapper mt-3'>
-						<v-icon  medium class="black--text text--lighten-2 mr-3">fab fa-vuejs</v-icon>
+						<v-icon  medium class="black--text text--lighten-2 mr-3" color='green darken-1'>fab fa-vuejs</v-icon>
 						<span>VUE.js</span>
 					</div>
 					<div class='content-wrapper mt-3'>
-						<v-icon medium class="black--text text--lighten-2 mr-3">color_lens</v-icon>
+						<v-icon medium class="black--text text--lighten-2 mr-3" color='light-blue darken-2'>color_lens</v-icon>
 						<span>Material Design</span>
 					</div>
 					<div class='content-wrapper mt-3'>
-						<v-icon medium class="black--text text--lighten-2 mr-3">fab fa-node-js</v-icon>
+						<v-icon medium class="black--text text--lighten-2 mr-3" color='green darken-3'>fab fa-node-js</v-icon>
 						<span>Node.js</span>
 					</div>
 					<div class='content-wrapper mt-3'>
-						<v-icon medium class="black--text text--lighten-2 mr-3">fas fa-database</v-icon>
+						<v-icon medium class="black--text text--lighten-2 mr-3" color='red darken-1'>fas fa-database</v-icon>
 						<span>MongoDB</span>
 					</div>
 				</div>
@@ -51,16 +51,16 @@
 		<div class='section'>
 			<v-card class="elevation-0 transparent">
 				<v-card-title primary-title class="layout justify-center pb-0 padding-top-handler">
-				<v-icon x-large class="black--text text--lighten-2 mr-3">fas fa-globe</v-icon>
+				<v-icon x-large class="black--text text--lighten-2 mr-3" color='blue-grey darken-1'>fas fa-globe</v-icon>
 				<div class="head-wrapper headline text-xs-center font-weight-medium text-uppercase">Completely open source project</div>
 				</v-card-title>
 				<div class='center mt-4'>
-					<div class='start font-weight-light headline'>
-						<div class='content-wrapper'>Github link -&MediumSpace;<a href='https://github.com/semkaway/hypertube' target="_blank">hypertube</a></div>
-						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/semkaway' target="_blank">Kvilna</a></div>
-						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/vliubko' target="_blank">Vliubko</a></div>
-						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/pkolomiy' target="_blank">Pkolomiy</a></div>
-						<div class='content-wrapper mt-3'>Contributor -&MediumSpace;<a href='https://github.com/vtolochk' target="_blank">Vtolochk</a></div>
+					<div class='start font-weight-regular headline'>
+						<div class='content-wrapper'>Sources   <span class='ml-1'><a href='https://github.com/semkaway/hypertube' target="_blank">hypertube</a></span></div>
+						<div class='content-wrapper mt-3'>Contributor   <span class='ml-1'><a href='https://github.com/semkaway' target="_blank">Kvilna</a></span></div>
+						<div class='content-wrapper mt-3'>Contributor   <span class='ml-1'><a href='https://github.com/vliubko' target="_blank">Vliubko</a></span></div>
+						<div class='content-wrapper mt-3'>Contributor   <span class='ml-1'><a href='https://github.com/pkolomiy' target="_blank">Pkolomiy</a></span></div>
+						<div class='content-wrapper mt-3'>Contributor  <span class='ml-1'><a href='https://github.com/vtolochk' target="_blank">Vtolochk</a></span></div>
 					</div>
 				</div>
 			</v-card>
