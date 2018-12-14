@@ -11,7 +11,7 @@
             <div style="font-size: 1.3rem;">Well, this is unpleasant. Let's just pretend you didn't see it.</div>
             <!-- <div style="font-size: 1.3rem;">Хм, вот это неприятность. Давайте сделаем вид, что Вы этого не видели.</div> -->
             <!-- <div style="font-size: 1.3rem;">Оце так неприємність. Давайте зробимо вигляд, що Ви цього не бачили.</div> -->
-            <v-btn  depressed color="grey"
+            <v-btn  color="blue-grey lighten-1"
                     class="white--text mt-4 ma-0">
                     <router-link to="/">{{$t('button.home')}}</router-link>
                   </v-btn>

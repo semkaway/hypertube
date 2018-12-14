@@ -6,7 +6,7 @@
        </v-layout>
     <v-card >
       <v-card-title v-if='showSuccess === false'>
-        <v-toolbar class='hidden-sm-and-down' color="blue-grey lighten-5">
+        <v-toolbar class='hidden-sm-and-down' color="blue-grey lighten-4" flat>
           <v-toolbar-items>
               <v-btn :color='!showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showLogin' flat>{{ $t('button.login') }}</v-btn>
               <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showRegister' flat>{{ $t('button.register') }} </v-btn>
