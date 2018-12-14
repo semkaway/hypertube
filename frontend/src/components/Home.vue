@@ -70,25 +70,16 @@
 </template>
 
 <script>
-import {HTTP} from '../http-common';
-import axios from 'axios'
 
-export default {
-  name: 'Home',
-  data () {
-    return {
-
-    }
-  }
-}
+export default { name: 'Home' }
 
 </script>
 
 <style scoped>
 
- * {
-	 box-sizing: border-box;
- }
+ 	* {
+		box-sizing: border-box;
+ 	}
 
 	.top-wrapper {
 		margin-top: 50px;
@@ -127,8 +118,7 @@ export default {
 		flex-flow: column;
 	}
 
-	@media only screen and (max-width: 600px), (max-height: 1100px){
-
+	@media only screen and (max-width: 600px), (max-height: 1100px) {
 		.pt-second-handler {
 			margin-top: 10px;
 			padding-top: 10px !important;

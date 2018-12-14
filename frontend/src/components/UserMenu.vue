@@ -26,7 +26,6 @@
         }),
         methods: {
             menuClick(target) {
-                console.log('target =>', target)
                 if (target === 'logout') {
                     setAuthorizationToken(false)
                     this.$router.push('/')

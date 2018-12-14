@@ -27,20 +27,15 @@
 
 <script>
     export default {
-        name: 'NotFound',
-        data() {
-            return {
-
-            }
-        },
+        name: 'NotFound'
     }
 </script>
 
 <style scoped>
 
-a {
-  text-decoration: none;
-  color: white;
-}
+  a {
+    text-decoration: none;
+    color: white;
+  }
 
 </style>

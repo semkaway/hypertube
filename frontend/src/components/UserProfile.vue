@@ -60,39 +60,38 @@ export default {
   props: ['user', 'userLoggedIn'],
   components: {'list-of-movies': listOfMovies},
   data () {
-    return {
-      myUser: {},
-      commentedMovies: [],
-      watchedMovies: [],
-      bgImg:  randomImage(),
-      totalNumberOfCommentedMovies: 0,
-      totalNumberOfWatchedMovies: 0,
-      currentUser: false,
-      }
+		return {
+			myUser: {},
+			commentedMovies: [],
+			watchedMovies: [],
+			bgImg:  randomImage(),
+			totalNumberOfCommentedMovies: 0,
+			totalNumberOfWatchedMovies: 0,
+			currentUser: false,
+		}
     },
     methods: {
 
       getUserWatchedMovies() {
         HTTP.get('/movie/watched').then(result => {
-          if (result.data.success == true) {
-            this.currentUser = true
-            setDefaultPosterPath(result.data.movies)
-            this.watchedMovies = result.data.movies
-            this.totalNumberOfWatchedMovies = this.watchedMovies.length
-          } else if (result.data.success == false) {
-            setAuthorizationToken(false)
-            this.$router.push('/')
-          }
+			if (result.data.success == true) {
+				this.currentUser = true
+				setDefaultPosterPath(result.data.movies)
+				this.watchedMovies = result.data.movies
+				this.totalNumberOfWatchedMovies = this.watchedMovies.length
+			} else if (result.data.success == false) {
+				setAuthorizationToken(false)
+				this.$router.push('/')
+			}
         })
         .catch((err) => {
-          console.log('error', err.data)
+          console.log('Error:', err)
         })
       },
 
       getData() {
         let user_id = window.location.pathname.split('/')[2]
         HTTP.get('user/commented-movies/' + user_id).then(result => {
-            console.log(result)
             if (result.data.success == true) {
               if (user_id === this.user.user_id) {
                 this.getUserWatchedMovies()
@@ -111,8 +110,8 @@ export default {
               this.$router.push('/')
             }
           })
-          .catch((err) => {
-            console.log(err)
+          .catch((error) => {
+            console.log('Error:', error)
           })
       },
     },
