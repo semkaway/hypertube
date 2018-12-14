@@ -3,7 +3,7 @@
         <v-dialog v-model="run" persistent content content-class="centered-dialog" width='92px'>
             <v-card color="white" dark>
                 <v-card-text>
-                    <self-building-square-spinner :animation-duration="1500" :size="64" color="#616161" />
+                    <self-building-square-spinner :animation-duration="1500" :size="64" color="#455A64" />
                 </v-card-text>
             </v-card>
         </v-dialog>
@@ -18,5 +18,5 @@
         components: { SelfBuildingSquareSpinner },
         props: ['run']
     }
-    
+
   </script>

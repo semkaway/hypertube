@@ -32,7 +32,7 @@
     <div class="text-xs-center">
     <v-btn  v-if="numComments + 1 < totalNumberOfComments"
             @click.prevent="showMore"
-            color="blue-grey darken-1"
+            color="blue-grey lighten-1"
             dark
             style="outline: none;">{{$t('button.showMore')}}</v-btn>
     </div>

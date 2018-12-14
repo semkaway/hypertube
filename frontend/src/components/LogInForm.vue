@@ -8,26 +8,26 @@
       <v-card-title v-if='showSuccess === false'>
         <v-toolbar class='hidden-sm-and-down' color="blue-grey lighten-4" flat>
           <v-toolbar-items>
-              <v-btn :color='!showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showLogin' flat>{{ $t('button.login') }}</v-btn>
-              <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showRegister' flat>{{ $t('button.register') }} </v-btn>
-              <v-btn :color='showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
+              <v-btn :color='!showRegisterForm && !showForgotPassForm ? "blue-grey darken-4" : "blue-grey "' class="white--text" style="outline: none;" @click='showLogin' flat>{{ $t('button.login') }}</v-btn>
+              <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-4" : "blue-grey "' class="white--text" style="outline: none;" @click='showRegister' flat>{{ $t('button.register') }} </v-btn>
+              <v-btn :color='showForgotPassForm ? "blue-grey darken-4" : "blue-grey "' class="white--text" style="outline: none;" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
         </v-toolbar-items>
         </v-toolbar>
          <v-layout class='hidden-md-and-up' align-center justify-start column fill-height>
-              <v-btn :color='!showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showLogin' flat>{{ $t('button.login') }}</v-btn>
-              <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showRegister' flat>{{ $t('button.register') }}</v-btn>
-              <v-btn :color='showForgotPassForm ? "blue-grey darken-3" : "grey"' class="white--text" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
+              <v-btn :color='!showRegisterForm && !showForgotPassForm ? "blue-grey darken-4" : "blue-grey "' class="white--text" style="outline: none;" @click='showLogin' flat>{{ $t('button.login') }}</v-btn>
+              <v-btn :color='showRegisterForm && !showForgotPassForm ? "blue-grey darken-4" : "blue-grey "' class="white--text" style="outline: none;" @click='showRegister' flat>{{ $t('button.register') }}</v-btn>
+              <v-btn :color='showForgotPassForm ? "blue-grey darken-4" : "blue-grey "' class="white--text" style="outline: none;" @click='showForgotPass' flat>{{ $t('forgot_password.message') }}</v-btn>
          </v-layout>
       </v-card-title>
         <v-card-text v-if='showSuccess === false'>
-            <form>
+            <form color="blue-grey darken-1">
                 <v-text-field
 					@keyup.native='validateFirstName'
 					v-if='showRegisterForm == true'
 					:error-messages="arrayOfFirstNameErrors"
 					v-model="firstName"
 					:label="$t('registration.first_name')"
-					color="grey darken-1"
+					color="blue-grey darken-1"
 					name='firstName'
 					v-validate="'required|alpha|min:3|max:15'"
 					:counter='15'
@@ -38,13 +38,13 @@
 					:error-messages="arrayOfLastNameErrors"
 					v-model="lastName"
 					:label="$t('registration.last_name')"
-					color="grey darken-1"
+					color="blue-grey darken-1"
 					name='lastName'
 					v-validate="'required|alpha|min:3|max:15'"
 					:counter='15'
                 ></v-text-field>
 			</form>
-          	<form>
+          	<form color="blue-grey darken-1">
 				<v-text-field
 					@keyup.native="checkIfEmailExists"
 					name="email"
@@ -52,7 +52,7 @@
 					v-model="email"
 					:error-messages="arrayOfEmailErrors"
 					label="Email"
-					color="grey darken-1"></v-text-field>
+					color="blue-grey darken-1"></v-text-field>
 				<v-text-field
 					v-if='!showForgotPassForm'
 					persistent-hint
@@ -67,7 +67,7 @@
 					v-model="password"
 					:error-messages="arrayOfPasswordErrors"
 					:label="$t('registration.password')"
-					color="grey darken-1"></v-text-field>
+					color="blue-grey darken-1"></v-text-field>
 				<v-text-field
 					v-if='showRegisterForm == true'
 					v-model="repeatPassword"
@@ -77,7 +77,7 @@
 					name="repeatPassword"
 					v-validate="'required|confirmed:passwordRef'"
 					:label="$t('registration.repeat_password')"
-					color="grey darken-1"></v-text-field>
+					color="blue-grey darken-1"></v-text-field>
           	</form>
            <v-layout justify-start>
             <v-flex>
