@@ -1,4 +1,4 @@
-<template>
+l<template>
 	 <v-app>
 	 	<app-snackbar :show='showSnackbar' :text='snackbarText' y='bottom' x='right' v-on:closeSnackbar='showSnackbar = false' timeout='2500' />
 		<app-header
@@ -109,7 +109,7 @@ export default {
 
 		showWarning() {
 			this.showSnackbar = true
-			this.snackbarText = this.$t('validation.serverError')
+			this.snackbarText = this.$t('profile.settings.userExists')
 		},
 
 		userActivate(message) {

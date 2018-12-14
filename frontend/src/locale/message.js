@@ -124,7 +124,9 @@ const messages = {
 			success_alert: 'You successfully logged in.',
 			error_alert: 'Ooopsie, something went wrong.',
 			wrong_pass_alert: 'Sorry, your password is incorrect',
-			no_validation_alert: 'Sorry, your account is not validated.'
+			no_validation_alert: 'Sorry, your account is not validated.',
+			doubleValidation: 'Sorry, this email has already been activated.',
+			resendLink: 'Resend activation link'
 		},
 		forgot_password: {
 			title: "Restore password",
@@ -156,6 +158,7 @@ const messages = {
 				click: 'Or click on an image below',
 				add_media: 'Link social media accounts',
 				added_media: 'Added social media',
+				userExists: 'Sorry, this user already exists',
 				old_password: 'Old password',
 				new_password: 'New password',
 				new_password_repeat: 'Repeat new password',
@@ -307,6 +310,8 @@ const messages = {
 			success_alert: 'Вы успешно вошли в свой аккаунт.',
 			wrong_pass_alert: 'Вы ввели неверный пароль.',
 			no_validation_alert: 'Извините, Ваш аккаунт не подтвержден.',
+			doubleValidation: 'Извините, этот email уже был активирован.',
+			resendLink: 'Отправить письмо активации',
 			error_alert: 'Ой. Что-то пошло не так.'
 		},
 		forgot_password: {
@@ -339,6 +344,7 @@ const messages = {
 				click: 'Или нажмите на фото внизу',
 				add_media: 'Добавить социальные сети',
 				added_media: 'Добавленные социальные сети',
+				userExists: 'Извините, этот пользователь уже существует',
 				old_password: 'Старый пароль',
 				new_password: 'Новый пароль',
 				new_password_repeat: 'Повторите новый пароль',
@@ -489,6 +495,8 @@ const messages = {
 			success_alert: 'Ви успішно увійшли до свого акаунту.',
 			wrong_pass_alert: 'Неправильний пароль.',
 			no_validation_alert: 'Активуйте свій акаунт, будь ласка.',
+			doubleValidation: 'Вибачте, цей email вже активовано.',
+			resendLink: 'Надіслати лист активації',
 			error_alert: 'Ой. Щось пішло не так.'
 		},
 		forgot_password: {
@@ -521,6 +529,7 @@ const messages = {
 				click: 'Або натисніть на фото нижче',
 				add_media: 'Додати соціальні мережі',
 				added_media: 'Додані соціальні мережі',
+				userExists: 'Вибачте, цей користувач вже існує',
 				old_password: 'Старий пароль',
 				new_password: 'Новий пароль',
 				new_password_repeat: 'Повторіть новий пароль',
