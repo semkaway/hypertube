@@ -59,6 +59,7 @@ const messages = {
 		},
 		home: {
 			title: 'home',
+			subtitle: 'Get comfortable. It\'s time to watch a movie.',
 			title1: 'WATCH YOUR FAVORITE MOVIES ONLINE!',
 			quality: 'Different quality - 720p/1080p',
 			language: 'Three interface languages',
@@ -245,6 +246,7 @@ const messages = {
 		},
 		home: {
 			title: 'Главная',
+			subtitle: 'Устраивайтесь поудобнее. Пора посмотреть фильм.',
 			title1: 'Смотри любимые фильмы онлайн!',
 			quality: 'Доступные разрешения: 720p/1080p',
 			language: 'Три языка интерфейса',
@@ -430,6 +432,7 @@ const messages = {
 		},
 		home: {
 			title: 'Головна',
+			subtitle: 'Влаштовуйтеся зручніше. Настав час подивитися фільм.',
 			title1: 'Дивись улюблені фільми онлайн!',
 			quality: 'Доступні у 720p та 1080p',
 			language: 'Три мови інтерфейсу',
