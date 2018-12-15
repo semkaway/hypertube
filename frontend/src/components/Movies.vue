@@ -3,10 +3,10 @@
     <Loader :run='runLoader'/>
       <v-flex lg12>
 	  <SearchBar v-on:searchMovies='searchMovies'
-		:searchAppText='searchAppText'
-		:searchAppParams='searchAppParams'
-		v-on:handleChangeFromDate='handleChangeFromDate'
-		v-on:handleChangeToDate='handleChangeToDate'
+			:searchAppText='searchAppText'
+			:searchAppParams='searchAppParams'
+			v-on:handleChangeFromDate='handleChangeFromDate'
+			v-on:handleChangeToDate='handleChangeToDate'
 	  />
         <div class="mt-4" style="font-size: 1.3rem;" v-if="notFound">{{ $t('movies.notFound') }}</div>
         <v-container grid-list-md>

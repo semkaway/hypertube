@@ -117,6 +117,9 @@
 		} else {
 			this.sortBy = this.$t('movies.filter')
 		}
+		if (this.searchAppText.length) {
+			 this.haveSearchText = true
+		}
 	},
 
 	watch: {
