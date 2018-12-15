@@ -75,6 +75,15 @@
 
 <script>
 
-export default { name: 'Home' }
+export default {
+  name: 'Home',
+  props: ['userLoggedIn'],
+  created() {
+    if (this.userLoggedIn) {
+      console.log(this.userLoggedIn)
+      this.$router.push('/movies')
+    }
+  }
+ }
 
 </script>

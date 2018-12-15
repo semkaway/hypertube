@@ -11,7 +11,8 @@
             <div style="font-size: 1.3rem;">{{$t('notFound.text')}}</div>
             <v-btn  color="blue-grey lighten-1"
                     class="white--text mt-4 ma-0">
-                    <router-link to="/">{{$t('button.home')}}</router-link>
+                    <router-link v-if="!userLoggedIn" to="/">{{$t('button.home')}}</router-link>
+                    <router-link v-else to="/movies">{{$t('button.home')}}</router-link>
                   </v-btn>
           </v-flex>
           <v-flex xs12 style="position: relative;">
@@ -27,7 +28,8 @@
 
 <script>
     export default {
-        name: 'NotFound'
+        name: 'NotFound',
+        props: ['userLoggedIn']
     }
 </script>
 
