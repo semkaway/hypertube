@@ -1,5 +1,6 @@
 <template>
   <v-container fluid grid-list-md class="mt-3 white">
+  <Loader :run='!downloaded'/>
     <v-layout row wrap>
       <v-flex d-flex md2 sm3 lg2>
       </v-flex>
@@ -53,13 +54,14 @@
 import {HTTP} from '../http-common';
 import randomImage from '../utils/randomImage'
 import listOfMovies from './listOfMovies'
+import Loader from './Loader'
 import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 import setAuthorizationToken from '../utils/setAuthToken'
 
 export default {
   name: 'UserPage',
   props: ['user', 'userLoggedIn'],
-  components: {'list-of-movies': listOfMovies},
+  components: {'list-of-movies': listOfMovies, Loader },
   data () {
 		return {
 			myUser: {},
@@ -69,7 +71,7 @@ export default {
 			totalNumberOfCommentedMovies: 0,
 			totalNumberOfWatchedMovies: 0,
 			currentUser: false,
-			downloaded: false
+			downloaded: false,
 		}
     },
     methods: {
