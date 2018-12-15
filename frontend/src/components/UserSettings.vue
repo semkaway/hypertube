@@ -264,7 +264,7 @@
     		</v-expansion-panel-content>
   		</v-expansion-panel>
 	</v-container>
-	<NotFound v-else />
+	<!-- <NotFound v-else /> -->
 </template>
 
 
@@ -802,7 +802,7 @@ export default {
 
 	watch: {
 		locale (newValue) {
-			this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail) 
+			this.sections = this.getSections(this.user.password, this.user.email, this.user.pendingEmail)
 		},
 
 		user() {

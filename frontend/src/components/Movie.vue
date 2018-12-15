@@ -210,7 +210,7 @@
    	<v-layout row wrap justify-center align-center class='mt-5 headline'> {{$t('button.notComing')}}</v-layout>
   </v-container>
   </div>
-  <NotFound v-else />
+  <!-- <NotFound v-else /> -->
 </template>
 
 <script>
@@ -258,7 +258,7 @@ export default {
 
 	created() {
 		if (localStorage.locale == 'en' || localStorage.locale  == 'ru' || localStorage.locale == 'uk') {
- 			this.$i18n.locale = localStorage.locale
+ 			this.$i18n.locale = locale
 		}
         else {
             localStorage.locale = 'en'

@@ -3,10 +3,10 @@
     <Loader :run='runLoader'/>
       <v-flex lg12>
 	  <SearchBar v-on:searchMovies='searchMovies'
-			:searchAppText='searchAppText'
-			:searchAppParams='searchAppParams'
-			v-on:handleChangeFromDate='handleChangeFromDate'
-			v-on:handleChangeToDate='handleChangeToDate'
+		:searchAppText='searchAppText'
+		:searchAppParams='searchAppParams'
+		v-on:handleChangeFromDate='handleChangeFromDate'
+		v-on:handleChangeToDate='handleChangeToDate'
 	  />
         <div class="mt-4" style="font-size: 1.3rem;" v-if="notFound">{{ $t('movies.notFound') }}</div>
         <v-container grid-list-md>
@@ -67,7 +67,7 @@
         </v-flex>
       </v-flex>
   </v-container>
-	<NotFound v-else />
+	<!-- <NotFound v-else /> -->
 </template>
 
 <script>
@@ -215,17 +215,17 @@
 			this.defaultParams.language = 'en'
 			this.defaultParams.include_image_language = 'en'
 		}
-		
+
         this.getUserWatchedMovies()
     },
 
 	watch: {
 		userAppSetDate(newValue) { this.userSetDate = newValue },
 		locale(newValue) {
-			this.defaultParams.language = newValue 
+			this.defaultParams.language = newValue
 			this.defaultParams.include_image_language = newValue
 		}
-		
+
 	}
 
   }
