@@ -20,6 +20,12 @@ let router = new Router({
 			path: '/',
 			component: Home,
 			props: true,
+			beforeEnter: (to, from, next) => {
+				if (localStorage.token != '') {
+					next('/movies')
+				}
+				next()
+      }
 		},
 		{
 			path: '/movies',
