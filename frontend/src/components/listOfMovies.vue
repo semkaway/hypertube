@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="totalNumberOfMovies != 0">
     <div class="m-2" style="font-size: 2rem;">{{title}}</div>
     <div style="position: relative">
         <v-container grid-list-md class="p-2">
