@@ -79,6 +79,7 @@ export default {
 		},
 
 		setLocale (locale) {
+			this.setDefaultLocale(locale)
 			this.locale = locale
 		},
 
@@ -121,9 +122,10 @@ export default {
 		},
 
 		setDefaultLocale(locale) {
-			console.log('LOCALE TO +>', locale)
-			if (locale == 'en' || locale == 'ru' || locale == 'uk')
-                this.$i18n.locale = locale
+			if (locale == 'en' || locale == 'ru' || locale == 'uk') {
+ 				this.$i18n.locale = locale
+				localStorage.locale = locale
+			}
             else {
                 localStorage.locale = 'en'
                 this.$i18n.locale = 'en'

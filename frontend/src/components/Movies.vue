@@ -204,6 +204,18 @@
 		this.userParams = this.searchAppParams
 		this.searchText = this.searchAppText
 		this.userSetDate = this.userAppSetDate
+
+		if (this.locale == 'en' || this.locale == 'ru' || this.locale == 'uk') {
+			this.$i18n.locale = this.locale
+			localStorage.locale = this.locale
+			this.defaultParams.language = this.locale
+			this.defaultParams.include_image_language = this.locale
+		} else {
+			localStorage.locale = 'en'
+			this.defaultParams.language = 'en'
+			this.defaultParams.include_image_language = 'en'
+		}
+		
         this.getUserWatchedMovies()
     },
 
@@ -213,6 +225,7 @@
 			this.defaultParams.language = newValue 
 			this.defaultParams.include_image_language = newValue
 		}
+		
 	}
 
   }

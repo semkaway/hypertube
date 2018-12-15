@@ -60,7 +60,7 @@ import setAuthorizationToken from '../utils/setAuthToken'
 
 export default {
   name: 'UserPage',
-  props: ['user', 'userLoggedIn'],
+  props: ['user', 'userLoggedIn', 'locale'],
   components: {'list-of-movies': listOfMovies, Loader },
   data () {
 		return {
@@ -124,7 +124,17 @@ export default {
 
     mounted() {
         this.getData()
-    }
+    },
+
+	created() {
+		if (localStorage.locale == 'en' || localStorage.locale  == 'ru' || localStorage.locale == 'uk') {
+ 			this.$i18n.locale = locale
+		}
+        else {
+            localStorage.locale = 'en'
+            this.$i18n.locale = 'en'
+        }
+	},
 
   }
 </script>

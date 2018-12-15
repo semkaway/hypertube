@@ -256,6 +256,16 @@ export default {
       this.rerender()
     },
 
+	created() {
+		if (localStorage.locale == 'en' || localStorage.locale  == 'ru' || localStorage.locale == 'uk') {
+ 			this.$i18n.locale = locale
+		}
+        else {
+            localStorage.locale = 'en'
+            this.$i18n.locale = 'en'
+        }
+	},
+
     methods: {
       rerender() {
 		this.loaded = false

@@ -290,7 +290,7 @@ export default {
 			runLoader: false,
 			showPassword: false,
 			settingsUser: this.user,
-			settingsLocale: this.locale,
+			settingsLocale: '',
 			originalImg: this.user.image,
 			imgToShow: this.user.image,
 			sections: this.getSections(),
@@ -776,6 +776,14 @@ export default {
 	},
 
 	created() {
+		if (this.locale == 'en' || this.locale == 'ru' || this.locale == 'uk') {
+			this.$i18n.locale = this.locale
+			localStorage.locale = this.locale
+			this.settingsLocale = this.locale
+		} else {
+			localStorage.locale = 'en'
+			 this.settingsLocale = 'en'
+		}
 		HTTP.get('user/data/').then(result => {
 			if (result.data.success == false) {
 				setAuthorizationToken(false)
