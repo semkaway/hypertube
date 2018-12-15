@@ -41,7 +41,8 @@ export const stream = model => (req, res, next) => {
                 }
                 axios.get('https://api.themoviedb.org/3/movie/' + req.params.id,
                     {params: {api_key: '09665afd54623c9413c3f9336484b01c'}})
-                    .then(movie =>
+                    .then(movie => {
+                        console.log('API movie request =>', 'https://tv-v2.api-fetch.website/movie/' + movie.data.imdb_id)
                         axios.get('https://tv-v2.api-fetch.website/movie/' + movie.data.imdb_id)
                             .then(torrent => {
                                 if (torrent.data === '') {
@@ -61,7 +62,7 @@ export const stream = model => (req, res, next) => {
                                     .then(() => startStreaming(req, res, magnet))
                                     .catch(next);
                             })
-                            .catch(next)
+                            .catch(next)}
                     )
                     .catch(next);
             })

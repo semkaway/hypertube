@@ -30,12 +30,13 @@ const getTorrents = imdb_id => axios.get('https://tv-v2.api-fetch.website/movie/
 
 export const one = model => async (req, res, next) => {
     try {
+        console.log('getComments')
         let comments = await getComments(model, req.params.id);
-
+        console.log('getMovieData')
         let movie = await getMovieData(req.user.locale, req.params.id);
-
+        console.log('getTorrents')
         let torrent = await getTorrents(movie.data.imdb_id);
-
+        console.log('getSubtitle')
         let subtitle_array = await getSubtitle(movie.data.imdb_id, req.user.locale);
 
         res.status(200).json({
