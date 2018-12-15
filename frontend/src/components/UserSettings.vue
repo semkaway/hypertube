@@ -777,7 +777,7 @@ export default {
 
 	created() {
 		if (this.locale == 'en' || this.locale == 'ru' || this.locale == 'uk') {
-			this.$i18n.locale = this.locale
+			this.$i18n.locale = localStorage.locale
 			localStorage.locale = this.locale
 			this.settingsLocale = this.locale
 		} else {
