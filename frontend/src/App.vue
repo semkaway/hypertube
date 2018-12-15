@@ -49,7 +49,7 @@ export default {
 		return {
 			user: {},
 			token: localStorage.token,
-			locale: localStorage.locale,
+			locale: localStorage.locale ? localStorage.locale : 'en',
 			userLoggedIn: false,
 			showSnackbar: false,
 			snackbarText: '',
