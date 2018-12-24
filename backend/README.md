@@ -1,6 +1,4 @@
-# hypertube_back
-
-> Hypertube Node.js
+# HYPERTUBE BACKEND
 
 ## Build Setup
 
@@ -21,4 +19,4 @@ npm start
 ```
 
 ### Sendmail
-Currently, __Mailhog__ is working on http://localhost:8025
+__Mailhog__ is working on http://localhost:8025
