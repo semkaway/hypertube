@@ -51,7 +51,7 @@
 
 <script>
 
-import {HTTP} from '../http-common';
+import { HTTP } from '../http-common'
 import randomImage from '../utils/randomImage'
 import listOfMovies from './listOfMovies'
 import Loader from './Loader'

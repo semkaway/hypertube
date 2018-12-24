@@ -67,7 +67,6 @@
         </v-flex>
       </v-flex>
   </v-container>
-	<!-- <NotFound v-else /> -->
 </template>
 
 <script>

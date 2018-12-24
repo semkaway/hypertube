@@ -199,7 +199,6 @@
 						</form>
 
 						<!-- ADD MEDIA -->
-
 						<v-layout v-if='section.name == "media"' class="grey--text">
 							<v-card v-if='user.intra || user.github' class="grey--text"><v-card-text class='subheading black--text'> {{ $t('profile.settings.added_media') }}:</v-card-text></v-card>
 
@@ -211,7 +210,6 @@
 									</v-card>
 
 						</v-layout>
-
 						<v-btn @click='addIntraMedia' v-if='section.name == "media" && !settingsUser.intra' color="blue-grey lighten-1"	dark style="outline: none;">42 Intra</v-btn>
 						<v-btn @click='addGitMedia' v-if='section.name == "media" && !settingsUser.github' color="blue-grey lighten-1"	dark style="outline: none;">github</v-btn>
 
@@ -237,7 +235,6 @@
 						</form>
 
 						<!-- ADD EMAIL -->
-
 						<form v-if='section.name == "addEmail"'>
 							<v-text-field
 								@keyup.native='validateEmail("addEmail")'

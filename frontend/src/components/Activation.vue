@@ -10,7 +10,7 @@ export default {
     const urlParams = new URLSearchParams(window.location.search);
     const myToken = urlParams.get('token');
 
-    HTTP.post(`user/activate`, { "token": myToken}).then(response => {
+    HTTP.post(`user/activate`, { "token": myToken }).then(response => {
 			if (response.data.success == true) {
 				this.$router.push('/')
 				this.$emit('userActivate', 'activation.success_title')

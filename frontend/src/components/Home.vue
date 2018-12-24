@@ -80,7 +80,6 @@ export default {
   props: ['userLoggedIn'],
   created() {
     if (this.userLoggedIn) {
-      console.log(this.userLoggedIn)
       this.$router.push('/movies')
     }
   }
