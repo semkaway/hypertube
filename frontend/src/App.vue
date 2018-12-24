@@ -36,7 +36,7 @@ l<template>
 import AppHeader from './components/includes/TheHeader'
 import AppFooter from './components/includes/TheFooter'
 import Snackbar from './components/Snackbar'
-const defaultImage = 'http://www.studioclio.com.br/sites/default/files/imagens/evento/pitagoras_0.jpg'
+import { DEFAULT_IMAGE } from './utils/constants'
 
 export default {
 	name: 'App',
@@ -89,7 +89,7 @@ export default {
 
 		setUser (response, locale) {
 			let { email, first, last, image, user_id, pendingEmail, password, intra, github } = response
-			if (!image) image = defaultImage
+			if (!image) image = DEFAULT_IMAGE
 			this.user = { email, first, last, image, user_id, pendingEmail, password, intra, github }
 			this.setLocale(locale)
 		},
@@ -147,8 +147,8 @@ export default {
 
 <style>
  html, body, #app {
-      min-height: 100%;
-			font-family: 'Maven Pro', sans-serif;
+      	min-height: 100%;
+		font-family: 'Maven Pro', sans-serif;
     }
 
 	body {

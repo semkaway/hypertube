@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios from 'axios'
+import { URL_PATH } from './utils/constants'
 
 export const HTTP = axios.create({
-  baseURL: `http://localhost:3000/api/`
+  baseURL: `${URL_PATH}/api/`
 })

@@ -210,23 +210,22 @@
    	<v-layout row wrap justify-center align-center class='mt-5 headline'> {{$t('button.notComing')}}</v-layout>
   </v-container>
   </div>
-  <!-- <NotFound v-else /> -->
 </template>
 
 <script>
 
 import { HTTP } from '../http-common'
+import { URL_PATH } from '../utils/constants'
 import axios from 'axios'
 import Loader from './Loader'
 import Comments from './Comments'
-import NotFound from './NotFound'
 import showYear from '../utils/showYear'
 import setDefaultPosterPath from '../utils/setDefaultPosterPath'
 import setAuthorizationToken from '../utils/setAuthToken'
 
 export default {
   name: 'Movie',
-  components: { Loader, Comments, NotFound },
+  components: { Loader, Comments },
   filters: { date: showYear },
   props: ['user', 'userLoggedIn'],
   data () {
@@ -270,7 +269,7 @@ export default {
       rerender() {
 		this.loaded = false
         this.runLoader = true
-        HTTP.get('movie/one/'+this.$route.params.id).then(result => {
+        HTTP.get('movie/one/' + this.$route.params.id).then(result => {
 			this.loaded = true
 			this.similar = []
 			this.actors = []
@@ -385,7 +384,7 @@ export default {
       	selectQuality(quality) {
 			if (quality == '720p' || quality == '1080p') {
 				if (this.quality.includes(quality)) {
-					this.movieSource = `http://localhost:3000/api/movie/stream/${this.$route.params.id}?quality=${quality}&token=${localStorage.token}`
+					this.movieSource = `${URL_PATH}/api/movie/stream/${this.$route.params.id}?quality=${quality}&token=${localStorage.token}`
 					this.qualitySelected = true
 				}
 			}

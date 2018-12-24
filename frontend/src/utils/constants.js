@@ -1,5 +1,7 @@
 
-export const API_KEY = '09665afd54623c9413c3f9336484b01c'
+export const API_KEY = '09665afd54623c9413c3f9336484b01c' // api key for api.themoviedb.org
+export const URL_PATH = 'http://localhost:3000'
+export const DEFAULT_IMAGE = 'https://www.qualiscare.com/wp-content/uploads/2017/08/default-user.png'
 export const GENRES = [
         {id: 28, name: "Action"},
         {id: 12, name: "Adventure"},
